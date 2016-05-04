@@ -45,6 +45,13 @@ class Module extends AbstractModule
     {
         parent::onBootstrap($event);
 
+        $acl = $this->getServiceLocator()->get('Omeka\Acl');
+        $acl->allow(null, 'Search\Api\Adapter\SearchPageAdapter');
+        $acl->allow(null, 'Search\Api\Adapter\SearchIndexAdapter');
+        $acl->allow(null, 'Search\Entity\SearchPage', 'read');
+        $acl->allow(null, 'Search\Entity\SearchIndex', 'read');
+        $acl->allow(null, 'Search\Controller\Index');
+
         $this->addRoutes();
     }
 
