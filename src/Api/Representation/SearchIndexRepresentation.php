@@ -95,7 +95,13 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
 
     public function adapterLabel()
     {
-        return $this->adapter()->getLabel();
+        $adapter = $this->adapter();
+        if (!$adapter) {
+            $translator = $this->getServiceLocator()->get('MvcTranslator');
+            return $translator->translate('[No adapter]');
+        }
+
+        return $adapter->getLabel();
     }
 
     public function indexer()
