@@ -33,6 +33,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 use Search\Form\Admin\SearchPageForm;
+use Search\Form\Admin\SearchPageConfigureForm;
 
 class SearchPageController extends AbstractActionController
 {
@@ -85,6 +86,41 @@ class SearchPageController extends AbstractActionController
                     $this->messenger()->addSuccess('Search page created.');
                     return $this->redirect()->toRoute('admin/search');
                 }
+            } else {
+                $this->messenger()->addError('There was an error during validation');
+            }
+        }
+
+        $view = new ViewModel;
+        $view->setVariable('form', $form);
+        return $view;
+    }
+
+    public function configureAction()
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $entityManager = $serviceLocator->get('Omeka\EntityManager');
+        $adapterManager = $serviceLocator->get('Search\AdapterManager');
+
+        $id = $this->params('id');
+
+        $page = $entityManager->find('Search\Entity\SearchPage', $id);
+        $adapter = $adapterManager->get($page->getIndex()->getAdapter());
+
+        $form = new SearchPageConfigureForm($serviceLocator, null, ['adapter' => $adapter]);
+        $form->setData($page->getSettings());
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                unset($formData['csrf']);
+
+                $page->setSettings($formData);
+                $entityManager->flush();
+
+                $this->messenger()->addSuccess('Configuration saved.');
+                return $this->redirect()->toRoute('admin/search');
             } else {
                 $this->messenger()->addError('There was an error during validation');
             }

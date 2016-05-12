@@ -29,14 +29,19 @@
 
 namespace Search\Adapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-interface AdapterInterface extends ServiceLocatorAwareInterface
+abstract class AbstractAdapter implements AdapterInterface
 {
-    public function getLabel();
-    public function getConfigForm();
-    public function getIndexerClass();
-    public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
+    use ServiceLocatorAwareTrait;
+
+    public function getAvailableFacetFields()
+    {
+        return [];
+    }
+
+    public function getAvailableSortFields()
+    {
+        return [];
+    }
 }

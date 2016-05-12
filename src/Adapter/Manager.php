@@ -29,8 +29,13 @@
 
 namespace Search\Adapter;
 
-class Manager
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
+
+class Manager implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     protected $config;
 
     public function __construct($config)
@@ -53,7 +58,10 @@ class Manager
             return null;
         }
 
-        return new $class;
+        $adapter = new $class;
+        $adapter->setServiceLocator($this->getServiceLocator());
+
+        return $adapter;
     }
 
     public function getAll()

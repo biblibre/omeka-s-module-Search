@@ -1,0 +1,23 @@
+.ui-sortable {
+  background-color: #eeeeee;
+  padding: 5px;
+}
+
+.ui-sortable-handle {
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid black;
+  background-color: white;
+  cursor: grab;
+}
+
+.ui-sortable-handle::before {
+  display: inline-block;
+  font-family: FontAwesome;
+  content: "\f047";
+  width: 1.5em;
+}
+
+.ui-sortable-handle .legend {
+  display: inline-block;
+}

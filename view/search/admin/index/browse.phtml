@@ -114,6 +114,14 @@
                                 ?>
                             </li>
                             <li>
+                                <?php
+                                    echo $search_page->link('', 'configure', [
+                                        'class' => 'o-icon-configure',
+                                        'title' => $this->translate('Configure'),
+                                    ]);
+                                ?>
+                            </li>
+                            <li>
                                 <a href="#"
                                 data-sidebar-content-url="<?php echo $escape($search_page->url('delete-confirm')); ?>"
                                 class="o-icon-delete sidebar-content"

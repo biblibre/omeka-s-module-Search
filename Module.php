@@ -77,6 +77,7 @@ class Module extends AbstractModule
                 `path` varchar(255) NOT NULL,
                 `index_id` int(11) unsigned NOT NULL,
                 `form` varchar(255) NOT NULL,
+                `settings` text,
                 `created` datetime NOT NULL,
                 `modified` datetime DEFAULT NULL,
                 PRIMARY KEY (`id`),

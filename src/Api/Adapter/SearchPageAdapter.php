@@ -90,6 +90,9 @@ class SearchPageAdapter extends AbstractEntityAdapter
         if ($this->shouldHydrate($request, 'o:form')) {
             $entity->setForm($request->getValue('o:form'));
         }
+        if ($this->shouldHydrate($request, 'o:settings')) {
+            $entity->setSettings($request->getValue('o:settings'));
+        }
     }
 
     /**

@@ -69,6 +69,11 @@ class SearchPage extends AbstractEntity
     protected $form;
 
     /**
+     * @Column(type="json_array", nullable=true)
+     */
+    protected $settings;
+
+    /**
      * @Column(type="datetime")
      */
     protected $created;
@@ -121,6 +126,16 @@ class SearchPage extends AbstractEntity
     public function getForm()
     {
         return $this->form;
+    }
+
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
+    }
+
+    public function getSettings()
+    {
+        return $this->settings;
     }
 
     public function getCreated()

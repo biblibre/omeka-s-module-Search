@@ -40,6 +40,7 @@ class AdapterManagerFactory implements FactoryInterface
         $config = $serviceLocator->get('Config');
 
         $am = new Manager($config['search']['adapters']);
+        $am->setServiceLocator($serviceLocator);
 
         return $am;
     }
