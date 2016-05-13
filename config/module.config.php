@@ -122,6 +122,12 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'view_helpers' => [
+        'invokables' => [
+            'facetLink' => 'Search\View\Helper\FacetLink',
+            'facetLabel' => 'Search\View\Helper\FacetLabel',
+        ],
+    ],
     'search' => [
         'adapters' => [],
         'forms' => [

@@ -32,14 +32,36 @@ namespace Search;
 class Query
 {
     protected $query;
+    protected $facetFields = [];
+    protected $filters = [];
 
     public function setQuery($query)
     {
         $this->query = $query;
     }
 
-    public function getQuery($query)
+    public function getQuery()
     {
         return $this->query;
+    }
+
+    public function addFacetField($field)
+    {
+        $this->facetFields[] = $field;
+    }
+
+    public function getFacetFields()
+    {
+        return $this->facetFields;
+    }
+
+    public function addFilter($name, $value)
+    {
+        $this->filters[$name][] = $value;
+    }
+
+    public function getFilters()
+    {
+        return $this->filters;
     }
 }

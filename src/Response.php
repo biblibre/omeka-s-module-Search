@@ -34,6 +34,7 @@ class Response
     protected $totalResults;
 
     protected $results = [];
+    protected $facetCounts = [];
 
     public function setTotalResults($totalResults)
     {
@@ -53,5 +54,18 @@ class Response
     public function getResults()
     {
         return $this->results;
+    }
+
+    public function addFacetCount($name, $value, $count)
+    {
+        $this->facetCounts[$name][] = [
+            'value' => $value,
+            'count' => $count,
+        ];
+    }
+
+    public function getFacetCounts()
+    {
+        return $this->facetCounts;
     }
 }

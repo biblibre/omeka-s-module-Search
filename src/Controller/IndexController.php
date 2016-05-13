@@ -59,8 +59,33 @@ class IndexController extends AbstractActionController
                 $querier->setLogger($serviceLocator->get('Omeka\Logger'));
                 $querier->setIndex($index);
 
+                $settings = $page->settings();
+                foreach ($settings['facets'] as $name => $facet) {
+                    if ($facet['enabled']) {
+                        $query->addFacetField($name);
+                    }
+                }
+
+                if (isset($params['limit'])) {
+                    foreach ($params['limit'] as $name => $values) {
+                        foreach ($values as $value) {
+                            $query->addFilter($name, $value);
+                        }
+                    }
+                }
+
                 $response = $querier->query($query);
+
+                $facets = $response->getFacetCounts();
+                uksort($facets, function($a, $b) use ($settings) {
+                    $aWeight = $settings['facets'][$a]['weight'];
+                    $bWeight = $settings['facets'][$b]['weight'];
+                    return $aWeight - $bWeight;
+                });
+
+                $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
+                $view->setVariable('facets', $facets);
             } else {
                 $this->messenger()->addError('There was an error during validation');
             }

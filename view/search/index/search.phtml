@@ -27,7 +27,10 @@
  */
 ?>
 
-<?php $escape = $this->plugin('escapeHtml');?>
+<?php
+    $escape = $this->plugin('escapeHtml');
+    $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
+?>
 
 <div id="content" role="main">
     <?php echo $this->pageTitle($this->translate('Search')); ?>
@@ -38,30 +41,53 @@
     <?php echo $this->form()->closeTag(); ?>
 
     <?php if (isset($response)): ?>
-        <?php $totalResults = $response->getTotalResults(); ?>
-        <p>Total results: <?php echo $totalResults; ?></p>
+        <div class="search-results-wrapper">
+            <div class="search-results">
+                <?php $totalResults = $response->getTotalResults(); ?>
+                <p>Total results: <?php echo $totalResults; ?></p>
 
-        <?php if ($totalResults > 0): ?>
-            <ul class="resource-list">
-                <?php foreach ($response->getResults() as $result): ?>
-                    <?php $item = $this->api()->read('items', $result['id'])->getContent(); ?>
-                    <li class="item resource">
-                        <?php if ($primaryMedia = $item->primaryMedia()): ?>
-                            <img
-                                src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
-                                title="<?php echo $escape($primaryMedia->displayTitle()); ?>"
-                                alt="<?php echo $escape($primaryMedia->mediaType()); ?> thumbnail"
-                            >
-                        <?php endif; ?>
-                        <h4><?php echo $item->link($item->displayTitle()); ?></h4>
-                        <?php if ($description = $item->displayDescription()): ?>
-                            <div class="description">
-                                <?php echo $description; ?>
-                            </div>
-                        <?php endif; ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+                <?php if ($totalResults > 0): ?>
+                    <ul class="resource-list">
+                        <?php foreach ($response->getResults() as $result): ?>
+                            <?php $item = $this->api()->read('items', $result['id'])->getContent(); ?>
+                            <li class="item resource">
+                                <?php if ($primaryMedia = $item->primaryMedia()): ?>
+                                    <img
+                                        src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
+                                        title="<?php echo $escape($primaryMedia->displayTitle()); ?>"
+                                        alt="<?php echo $escape($primaryMedia->mediaType()); ?> thumbnail"
+                                    >
+                                <?php endif; ?>
+                                <h4><?php echo $item->link($item->displayTitle()); ?></h4>
+                                <?php if ($description = $item->displayDescription()): ?>
+                                    <div class="description">
+                                        <?php echo $description; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+
+            <?php if (!empty($facets)): ?>
+                <aside class="search-facets">
+                    <ul>
+                        <?php foreach ($facets as $name => $facetValues): ?>
+                            <li class="search-facet">
+                                <h3><?php echo $this->facetLabel($name); ?></h3>
+                                <ul class="search-facet-items">
+                                    <?php foreach ($facetValues as $facetValue): ?>
+                                        <li class="search-facet-item">
+                                            <?php echo $this->facetLink($name, $facetValue); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </aside>
+            <?php endif; ?>
+        </div>
     <?php endif; ?>
 </div>
