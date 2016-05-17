@@ -43,11 +43,13 @@ class IndexController extends AbstractActionController
     {
         $serviceLocator = $this->getServiceLocator();
         $api = $serviceLocator->get('Omeka\ApiManager');
-        $form = new BasicForm($serviceLocator);
-        $form->setAttribute('method', 'GET');
+        $formManager = $this->getServiceLocator()->get('Search\FormManager');
 
         $this->page = $api->read('search_pages', $this->params('id'))->getContent();
         $index_id = $this->page->index()->id();
+        $form = $formManager->get($this->page->form());
+        $form->setAttribute('method', 'GET');
+
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
