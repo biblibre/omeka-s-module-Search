@@ -1,5 +1,3 @@
-<?php
-
 /*
  * Copyright BibLibre, 2016
  *
@@ -27,52 +25,25 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search;
+var Search = (function() {
+    var self = {};
 
-class Query
-{
-    protected $query;
-    protected $sort;
-    protected $facetFields = [];
-    protected $filters = [];
+    self.objectFromQueryString = function(str) {
+        return str
+            .replace(/(^\?)/, '')
+            .split("&")
+            .map(function(n) {
+                n = n.split('=');
+                this[decodeURIComponent(n[0])] = decodeURIComponent(n[1]);
+            return this;
+        }.bind({}))[0];
+    };
 
-    public function setQuery($query)
-    {
-        $this->query = $query;
-    }
+    self.queryStringFromObject = function(obj) {
+        return Object.keys(obj).map(function(name) {
+            return name + '=' + obj[name];
+        }).join('&');
+    };
 
-    public function getQuery()
-    {
-        return $this->query;
-    }
-
-    public function addFacetField($field)
-    {
-        $this->facetFields[] = $field;
-    }
-
-    public function getFacetFields()
-    {
-        return $this->facetFields;
-    }
-
-    public function addFilter($name, $value)
-    {
-        $this->filters[$name][] = $value;
-    }
-
-    public function getFilters()
-    {
-        return $this->filters;
-    }
-
-    public function setSort($sort)
-    {
-        $this->sort = $sort;
-    }
-
-    public function getSort()
-    {
-        return $this->sort;
-    }
-}
+    return self;
+})();

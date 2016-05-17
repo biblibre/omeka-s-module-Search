@@ -36,6 +36,9 @@ use Search\Querier\Exception\QuerierException;
 
 class IndexController extends AbstractActionController
 {
+    protected $page;
+    protected $index;
+
     public function searchAction()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -43,8 +46,8 @@ class IndexController extends AbstractActionController
         $form = new BasicForm($serviceLocator);
         $form->setAttribute('method', 'GET');
 
-        $page = $api->read('search_pages', $this->params('id'))->getContent();
-        $index_id = $page->index()->id();
+        $this->page = $api->read('search_pages', $this->params('id'))->getContent();
+        $index_id = $this->page->index()->id();
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
@@ -53,14 +56,14 @@ class IndexController extends AbstractActionController
             $form->setData($params);
             if ($form->isValid()) {
                 $query = $form->toQuery();
-                $index = $api->read('search_indexes', $index_id)->getContent();
+                $this->index = $api->read('search_indexes', $index_id)->getContent();
 
-                $querier = $index->querier();
+                $querier = $this->index->querier();
                 $querier->setServiceLocator($serviceLocator);
                 $querier->setLogger($serviceLocator->get('Omeka\Logger'));
-                $querier->setIndex($index);
+                $querier->setIndex($this->index);
 
-                $settings = $page->settings();
+                $settings = $this->page->settings();
                 foreach ($settings['facets'] as $name => $facet) {
                     if ($facet['enabled']) {
                         $query->addFacetField($name);
@@ -74,6 +77,16 @@ class IndexController extends AbstractActionController
                         }
                     }
                 }
+
+                $sortOptions = $this->getSortOptions();
+
+                if (isset($params['sort'])) {
+                    $sort = $params['sort'];
+                } else {
+                    reset($sortOptions);
+                    $sort = key($sortOptions);
+                }
+                $query->setSort($sort);
 
                 try {
                     $response = $querier->query($query);
@@ -92,11 +105,31 @@ class IndexController extends AbstractActionController
                 $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
                 $view->setVariable('facets', $facets);
+                $view->setVariable('sortOptions', $sortOptions);
             } else {
                 $this->messenger()->addError('There was an error during validation');
             }
         }
 
         return $view;
+    }
+
+    protected function getSortOptions() {
+        $sortOptions = [];
+
+        $sortFields = $this->index->adapter()->getAvailableSortFields();
+        $settings = $this->page->settings();
+        foreach ($settings['sort_fields'] as $name => $sort_field) {
+            if ($sort_field['enabled']) {
+                $sortOptions[$name] = $sortFields[$name]['label'];
+            }
+        }
+        uksort($sortOptions, function($a, $b) use ($settings) {
+            $aWeight = $settings['sort_fields'][$a]['weight'];
+            $bWeight = $settings['sort_fields'][$b]['weight'];
+            return $aWeight - $bWeight;
+        });
+
+        return $sortOptions;
     }
 }

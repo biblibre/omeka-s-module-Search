@@ -30,6 +30,7 @@
 <?php
     $escape = $this->plugin('escapeHtml');
     $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
+    $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
 
 <div id="content" role="main">
@@ -44,7 +45,23 @@
         <div class="search-results-wrapper">
             <div class="search-results">
                 <?php $totalResults = $response->getTotalResults(); ?>
-                <p>Total results: <?php echo $totalResults; ?></p>
+                <div class="search-results-header">
+                    <div class="search-results-count">
+                        Total results: <?php echo $totalResults; ?>
+                    </div>
+                    <div class="search-results-sort">
+                        <form>
+                            <?php
+                                $sortSelect = new Zend\Form\Element\Select('sort');
+                                $sortSelect->setValueOptions($sortOptions);
+                                $sortSelect->setValue($query->getSort());
+                                $sortSelect->setLabel($this->translate('Sort by'));
+                            ?>
+                            <?php echo $this->formLabel($sortSelect); ?>
+                            <?php echo $this->formSelect($sortSelect); ?>
+                        </form>
+                    </div>
+                </div>
 
                 <?php if ($totalResults > 0): ?>
                     <ul class="resource-list">
@@ -91,3 +108,13 @@
         </div>
     <?php endif; ?>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.search-results-sort select').on('change', function() {
+            var params = Search.objectFromQueryString(document.location.search);
+            params.sort = $(this).val();
+            window.location.search = '?' + Search.queryStringFromObject(params);
+        });
+    });
+</script>
