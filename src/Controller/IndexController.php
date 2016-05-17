@@ -32,6 +32,7 @@ namespace Search\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Search\Form\BasicForm;
+use Search\Querier\Exception\QuerierException;
 
 class IndexController extends AbstractActionController
 {
@@ -74,7 +75,12 @@ class IndexController extends AbstractActionController
                     }
                 }
 
-                $response = $querier->query($query);
+                try {
+                    $response = $querier->query($query);
+                } catch (QuerierException $e) {
+                    $this->messenger()->addError('Query error: ' . $e->getMessage());
+                    return $view;
+                }
 
                 $facets = $response->getFacetCounts();
                 uksort($facets, function($a, $b) use ($settings) {
