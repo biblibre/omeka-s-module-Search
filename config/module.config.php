@@ -20,7 +20,7 @@ return [
         ],
     ],
     'navigation' => [
-        'admin' => [
+        'AdminGlobal' => [
             [
                 'label' => 'Search',
                 'route' => 'admin/search',
