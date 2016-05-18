@@ -89,7 +89,8 @@ class IndexController extends AbstractActionController
                     $sort = key($sortOptions);
                 }
                 $query->setSort($sort);
-
+                $page_number=isset($params['page'])? $params['page'] : 1;
+                $this->setPagination($query,$page_number);
                 try {
                     $response = $querier->query($query);
                 } catch (QuerierException $e) {
@@ -104,6 +105,8 @@ class IndexController extends AbstractActionController
                     return $aWeight - $bWeight;
                 });
 
+                $this->paginator($response->getTotalResults(),$page_number);
+
                 $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
                 $view->setVariable('facets', $facets);
@@ -114,6 +117,11 @@ class IndexController extends AbstractActionController
         }
 
         return $view;
+    }
+
+    protected function setPagination($query,$page) {
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        $query->setLimitPage($page,$settings->get('pagination_per_page', \Omeka\Service\Paginator::PER_PAGE));
     }
 
     protected function getSortOptions() {

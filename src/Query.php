@@ -35,7 +35,8 @@ class Query
     protected $sort;
     protected $facetFields = [];
     protected $filters = [];
-
+    protected $offset = 0 ;
+    protected $limit = 0;
     public function setQuery($query)
     {
         $this->query = $query;
@@ -74,5 +75,23 @@ class Query
     public function getSort()
     {
         return $this->sort;
+    }
+
+
+    public function getOffset() {
+        return $this->offset;
+    }
+
+    public function getLimit() {
+        return $this->limit;
+    }
+
+
+    public function setLimitPage($page,$rowCount) {
+        $page     = ($page > 0)     ? $page     : 1;
+        $rowCount = ($rowCount > 0) ? $rowCount : 1;
+        $this->limit = (int) $rowCount;
+        $this->offset = (int) $rowCount * ($page - 1);
+
     }
 }
