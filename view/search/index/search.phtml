@@ -45,7 +45,6 @@
         <div class="search-results-wrapper">
             <div class="search-results">
 
-                <?php $totalResults = $response->getTotalResults(); ?>
                 <div class="search-results-header">
                     <div class="search-results-count">
                         <?php echo $this->pagination(); ?>
@@ -64,24 +63,19 @@
                     </div>
                 </div>
 
-
                 <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
-                <?php if ($itemSetsCount > 0): ?>
-                    <h3><?php echo sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount); ?></h3>
-                    <?php echo $this->partial('search/resource-list', [
-                        'response' => $response,
-                        'resourceName' => 'item_sets',
-                    ]); ?>
-                <?php endif; ?>
+                <?php echo $this->partial('search/resource-list', [
+                    'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
+                    'response' => $response,
+                    'resourceName' => 'item_sets',
+                ]); ?>
 
                 <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
-                <?php if ($itemsCount > 0): ?>
-                    <h3><?php echo sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount); ?></h3>
-                    <?php echo $this->partial('search/resource-list', [
-                        'response' => $response,
-                        'resourceName' => 'items',
-                    ]); ?>
-                <?php endif; ?>
+                <?php echo $this->partial('search/resource-list', [
+                    'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
+                    'response' => $response,
+                    'resourceName' => 'items',
+                ]); ?>
 
                 <?php echo $this->pagination(); ?>
             </div>

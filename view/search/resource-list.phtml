@@ -27,9 +27,14 @@
  */
 ?>
 
-<ul class="resource-list">
-    <?php foreach ($response->getResults($resourceName) as $result): ?>
-        <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
-        <?php echo $this->partial('search/resource', ['resource' => $resource]); ?>
-    <?php endforeach; ?>
-</ul>
+<?php $results = $response->getResults($resourceName); ?>
+<?php if (!empty($results)): ?>
+    <h3><?php echo $title; ?></h3>
+    <ul class="resource-list">
+        <?php foreach ($results as $result): ?>
+            <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
+            <?php echo $this->partial('search/resource', ['resource' => $resource]); ?>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
