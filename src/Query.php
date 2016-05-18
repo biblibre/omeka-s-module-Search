@@ -37,6 +37,8 @@ class Query
     protected $filters = [];
     protected $offset = 0 ;
     protected $limit = 0;
+    protected $resources = [];
+
     public function setQuery($query)
     {
         $this->query = $query;
@@ -77,21 +79,31 @@ class Query
         return $this->sort;
     }
 
-
-    public function getOffset() {
+    public function getOffset()
+    {
         return $this->offset;
     }
 
-    public function getLimit() {
+    public function getLimit()
+    {
         return $this->limit;
     }
 
-
-    public function setLimitPage($page,$rowCount) {
+    public function setLimitPage($page, $rowCount)
+    {
         $page     = ($page > 0)     ? $page     : 1;
         $rowCount = ($rowCount > 0) ? $rowCount : 1;
         $this->limit = (int) $rowCount;
         $this->offset = (int) $rowCount * ($page - 1);
+    }
 
+    public function setResources($resources)
+    {
+        $this->resources = $resources;
+    }
+
+    public function getResources()
+    {
+        return $this->resources;
     }
 }

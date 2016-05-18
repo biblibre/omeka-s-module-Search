@@ -32,6 +32,7 @@ namespace Search;
 class Response
 {
     protected $totalResults;
+    protected $resourceTotalResults = [];
 
     protected $results = [];
     protected $facetCounts = [];
@@ -46,14 +47,24 @@ class Response
         return $this->totalResults;
     }
 
-    public function addResult($result)
+    public function setResourceTotalResults($resource, $totalResults)
     {
-        $this->results[] = $result;
+        $this->resourceTotalResults[$resource] = $totalResults;
     }
 
-    public function getResults()
+    public function getResourceTotalResults($resource)
     {
-        return $this->results;
+        return $this->resourceTotalResults[$resource];
+    }
+
+    public function addResult($resource, $result)
+    {
+        $this->results[$resource][] = $result;
+    }
+
+    public function getResults($resource)
+    {
+        return $this->results[$resource];
     }
 
     public function addFacetCount($name, $value, $count)

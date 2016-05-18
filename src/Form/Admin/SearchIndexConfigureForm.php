@@ -27,16 +27,31 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Adapter;
+namespace Search\Form\Admin;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\Form\Fieldset;
+use Omeka\Form\AbstractForm;
 
-interface AdapterInterface extends ServiceLocatorAwareInterface
+class SearchIndexConfigureForm extends AbstractForm
 {
-    public function getLabel();
-    public function getConfigFieldset();
-    public function getIndexerClass();
-    public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
+    public function buildForm()
+    {
+        $translator = $this->getTranslator();
+        $serviceLocator = $this->getServiceLocator();
+
+        $this->add([
+            'name' => 'resources',
+            'type' => 'MultiCheckbox',
+            'options' => [
+                'label' => $translator->translate('Resources indexed'),
+                'value_options' => [
+                    'items' => $translator->translate('Items'),
+                    'item_sets' => $translator->translate('Item sets'),
+                ],
+            ],
+            'attributes' => [
+                'value' => ['items'],
+            ],
+        ]);
+    }
 }

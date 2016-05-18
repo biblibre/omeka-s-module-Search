@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright BibLibre, 2016
  *
@@ -26,17 +25,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL license and that you accept its terms.
  */
+?>
 
-namespace Search\Adapter;
-
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-interface AdapterInterface extends ServiceLocatorAwareInterface
-{
-    public function getLabel();
-    public function getConfigFieldset();
-    public function getIndexerClass();
-    public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
-}
+<?php if (!empty($facets)): ?>
+    <aside class="search-facets">
+        <ul>
+            <?php foreach ($facets as $name => $facetValues): ?>
+                <li class="search-facet">
+                    <h3><?php echo $this->facetLabel($name); ?></h3>
+                    <ul class="search-facet-items">
+                        <?php foreach ($facetValues as $facetValue): ?>
+                            <li class="search-facet-item">
+                                <?php echo $this->facetLink($name, $facetValue); ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </aside>
+<?php endif; ?>

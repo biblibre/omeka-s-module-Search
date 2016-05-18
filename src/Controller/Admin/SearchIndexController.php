@@ -33,6 +33,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 use Search\Form\Admin\SearchIndexForm;
+use Search\Form\Admin\SearchIndexConfigureForm;
 
 class SearchIndexController extends AbstractActionController
 {
@@ -74,7 +75,11 @@ class SearchIndexController extends AbstractActionController
         $searchIndex = $entityManager->find('Search\Entity\SearchIndex', $id);
         $adapter = $adapterManager->get($searchIndex->getAdapter());
 
-        $form = $adapter->getConfigForm($serviceLocator);
+        $form = new SearchIndexConfigureForm($serviceLocator);
+        $adapterFieldset = $adapter->getConfigFieldset();
+        $adapterFieldset->setName('adapter');
+        $adapterFieldset->setLabel('Adapter settings');
+        $form->add($adapterFieldset);
         $form->setData($searchIndex->getSettings());
 
         if ($this->getRequest()->isPost()) {

@@ -34,6 +34,8 @@ use Omeka\Log\Writer\Job as JobWriter;
 
 class Index extends AbstractJob
 {
+    const BATCH_SIZE = 100;
+
     protected $logger;
 
     public function perform()
@@ -54,9 +56,25 @@ class Index extends AbstractJob
 
         $indexer->clearIndex();
 
-        $items = $api->search('items')->getContent();
-        foreach ($items as $item) {
-            $indexer->indexItem($item);
+        $searchIndexSettings = $searchIndex->settings();
+        $resources = $searchIndexSettings['resources'];
+
+        if (in_array('items', $resources)) {
+            $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
+            do {
+                $items = $api->search('items', $data)->getContent();
+                $indexer->indexItems($items);
+                $data['page']++;
+            } while (count($items) == self::BATCH_SIZE);
+        }
+
+        if (in_array('item_sets', $resources)) {
+            $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
+            do {
+                $itemSets = $api->search('item_sets', $data)->getContent();
+                $indexer->indexItemSets($itemSets);
+                $data['page']++;
+            } while (count($itemSets) == self::BATCH_SIZE);
         }
 
         $this->logger->info('End');

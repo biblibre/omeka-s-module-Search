@@ -44,10 +44,11 @@
     <?php if (isset($response)): ?>
         <div class="search-results-wrapper">
             <div class="search-results">
+
                 <?php $totalResults = $response->getTotalResults(); ?>
                 <div class="search-results-header">
                     <div class="search-results-count">
-                        Total results: <?php echo $totalResults; ?>
+                        <?php echo $this->pagination(); ?>
                     </div>
                     <div class="search-results-sort">
                         <form>
@@ -63,52 +64,32 @@
                     </div>
                 </div>
 
-                <?php if ($totalResults > 0): ?>
-                    <ul class="resource-list">
-                        <?php foreach ($response->getResults() as $result): ?>
-                            <?php $item = $this->api()->read('items', $result['id'])->getContent(); ?>
-                            <li class="item resource">
-                                <?php if ($primaryMedia = $item->primaryMedia()): ?>
-                                    <img
-                                        src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
-                                        title="<?php echo $escape($primaryMedia->displayTitle()); ?>"
-                                        alt="<?php echo $escape($primaryMedia->mediaType()); ?> thumbnail"
-                                    >
-                                <?php endif; ?>
-                                <h4><?php echo $item->link($item->displayTitle()); ?></h4>
-                                <?php if ($description = $item->displayDescription()): ?>
-                                    <div class="description">
-                                        <?php echo $description; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+
+                <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
+                <?php if ($itemSetsCount > 0): ?>
+                    <h3><?php echo sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount); ?></h3>
+                    <?php echo $this->partial('search/resource-list', [
+                        'response' => $response,
+                        'resourceName' => 'item_sets',
+                    ]); ?>
                 <?php endif; ?>
+
+                <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
+                <?php if ($itemsCount > 0): ?>
+                    <h3><?php echo sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount); ?></h3>
+                    <?php echo $this->partial('search/resource-list', [
+                        'response' => $response,
+                        'resourceName' => 'items',
+                    ]); ?>
+                <?php endif; ?>
+
+                <?php echo $this->pagination(); ?>
             </div>
 
-            <?php if (!empty($facets)): ?>
-                <aside class="search-facets">
-                    <ul>
-                        <?php foreach ($facets as $name => $facetValues): ?>
-                            <li class="search-facet">
-                                <h3><?php echo $this->facetLabel($name); ?></h3>
-                                <ul class="search-facet-items">
-                                    <?php foreach ($facetValues as $facetValue): ?>
-                                        <li class="search-facet-item">
-                                            <?php echo $this->facetLink($name, $facetValue); ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </aside>
-            <?php endif; ?>
+            <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
         </div>
     <?php endif; ?>
 </div>
-    <?php echo $this->Pagination(); ?>
 <script>
     $(document).ready(function() {
         $('.search-results-sort select').on('change', function() {

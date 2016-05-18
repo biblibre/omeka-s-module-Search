@@ -54,4 +54,15 @@ abstract class AbstractQuerier implements QuerierInterface
 
         return $default;
     }
+
+    protected function getAdapterSetting($name, $default = null)
+    {
+        $adapterSettings = $this->getSetting('adapter', []);
+
+        if (isset($adapterSettings[$name])) {
+            return $adapterSettings[$name];
+        }
+
+        return $default;
+    }
 }

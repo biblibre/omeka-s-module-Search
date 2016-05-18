@@ -65,6 +65,9 @@ class IndexController extends AbstractActionController
                 $querier->setLogger($serviceLocator->get('Omeka\Logger'));
                 $querier->setIndex($this->index);
 
+                $indexSettings = $this->index->settings();
+                $query->setResources($indexSettings['resources']);
+
                 $settings = $this->page->settings();
                 foreach ($settings['facets'] as $name => $facet) {
                     if ($facet['enabled']) {
@@ -105,7 +108,10 @@ class IndexController extends AbstractActionController
                     return $aWeight - $bWeight;
                 });
 
-                $this->paginator($response->getTotalResults(),$page_number);
+                $totalResults = array_map(function($resource) use ($response) {
+                    return $response->getResourceTotalResults($resource);
+                }, $indexSettings['resources']);
+                $this->paginator(max($totalResults), $page_number);
 
                 $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
