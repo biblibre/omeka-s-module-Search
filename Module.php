@@ -29,6 +29,7 @@
 
 namespace Search;
 
+use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -94,6 +95,51 @@ class Module extends AbstractModule
         $connection->exec($sql);
         $sql = 'DROP TABLE IF EXISTS `search_index`';
         $connection->exec($sql);
+    }
+
+    public function attachListeners(SharedEventManagerInterface $sharedEventManager)
+    {
+        $sharedEventManager->attach(
+            [
+                'Omeka\Api\Adapter\ItemAdapter',
+                'Omeka\Api\Adapter\ItemSetAdapter',
+            ],
+            [
+                'api.create.post',
+                'api.update.post',
+                'api.delete.post',
+            ],
+            [$this, 'updateSearchIndex']
+        );
+    }
+
+    public function updateSearchIndex($event)
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $api = $serviceLocator->get('Omeka\ApiManager');
+
+        $request = $event->getParam('request');
+        $response = $event->getParam('response');
+        $requestResource = $request->getResource();
+
+        $searchIndexes = $api->search('search_indexes')->getContent();
+        foreach ($searchIndexes as $searchIndex) {
+            $searchIndexSettings = $searchIndex->settings();
+            if (in_array($requestResource, $searchIndexSettings['resources'])) {
+                $indexer = $searchIndex->indexer();
+                $indexer->setServiceLocator($serviceLocator);
+                $indexer->setLogger($serviceLocator->get('Omeka\Logger'));
+                $indexer->setSearchIndex($searchIndex);
+
+                if ($request->getOperation() == 'delete') {
+                    $id = $request->getId();
+                    $indexer->deleteResource($id);
+                } else {
+                    $resource = $response->getContent();
+                    $indexer->indexResource($resource);
+                }
+            }
+        }
     }
 
     protected function addRoutes()

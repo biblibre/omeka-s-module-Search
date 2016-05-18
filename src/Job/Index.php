@@ -57,24 +57,15 @@ class Index extends AbstractJob
         $indexer->clearIndex();
 
         $searchIndexSettings = $searchIndex->settings();
-        $resources = $searchIndexSettings['resources'];
+        $resourceNames = $searchIndexSettings['resources'];
 
-        if (in_array('items', $resources)) {
+        foreach ($resourceNames as $resourceName) {
             $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
             do {
-                $items = $api->search('items', $data)->getContent();
-                $indexer->indexItems($items);
+                $resources = $api->search($resourceName, $data)->getContent();
+                $indexer->indexResources($resources);
                 $data['page']++;
-            } while (count($items) == self::BATCH_SIZE);
-        }
-
-        if (in_array('item_sets', $resources)) {
-            $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
-            do {
-                $itemSets = $api->search('item_sets', $data)->getContent();
-                $indexer->indexItemSets($itemSets);
-                $data['page']++;
-            } while (count($itemSets) == self::BATCH_SIZE);
+            } while (count($resources) == self::BATCH_SIZE);
         }
 
         $this->logger->info('End');

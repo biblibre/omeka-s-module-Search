@@ -31,16 +31,14 @@ namespace Search\Indexer;
 
 use Zend\Log\LoggerAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Omeka\Api\Representation\ItemRepresentation;
-use Omeka\Api\Representation\ItemSetRepresentation;
+use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
 use Search\Api\Representation\SearchIndexRepresentation;
 
 interface IndexerInterface extends ServiceLocatorAwareInterface, LoggerAwareInterface
 {
     public function setSearchIndex(SearchIndexRepresentation $index);
     public function clearIndex();
-    public function indexItem(ItemRepresentation $item);
-    public function indexItems(array $items);
-    public function indexItemSet(ItemSetRepresentation $itemSet);
-    public function indexItemSets(array $itemSets);
+    public function indexResource(AbstractResourceEntityRepresentation $resource);
+    public function indexResources(array $resources);
+    public function deleteResource($id);
 }
