@@ -30,10 +30,10 @@
 namespace Search\Site\Navigation\Link;
 
 use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Site\Navigation\Link\AbstractLink;
+use Omeka\Site\Navigation\Link\LinkInterface;
 use Omeka\Stdlib\ErrorStore;
 
-class SearchPage extends AbstractLink
+class SearchPage implements LinkInterface
 {
     public function getLabel()
     {
@@ -53,33 +53,14 @@ class SearchPage extends AbstractLink
         return true;
     }
 
-    public function getForm(array $data, SiteRepresentation $site)
+    public function getFormTemplate()
     {
-        $escape = $this->getViewHelper('escapeHtml');
-        $label = isset($data['label']) ? $data['label'] : $this->getLabel();
-        $search_page_id = isset($data['search_page_id']) ? $data['search_page_id'] : null;
-
-        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
-        $pages = $api->search('search_pages')->getContent();
-
-        $html = '<label>Type <input type="text" value="' . $escape($this->getLabel()) . '" disabled></label>';
-        $html .= '<label>Label <input type="text" data-name="label" value="' . $escape($label) . '"></label>';
-        $html .= '<label>Page ';
-        $html .= '<select data-name="search_page_id">';
-        foreach ($pages as $page) {
-            $html .= '<option value="' . $page->id() . '"';
-            if ($search_page_id && $search_page_id == $page->id()) {
-                $html .= ' selected="selected"';
-            }
-            $html .= '>' . $page->name() . '</option>';
-        }
-        $html .= '</select></label>';
-        return $html;
+        return 'search/navigation-link-form/search-page';
     }
 
     public function toZend(array $data, SiteRepresentation $site)
     {
-        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        $api = $site->getServiceLocator()->get('Omeka\ApiManager');
         $page = $api->read('search_pages', $data['search_page_id'])->getContent();
         return [
             'label' => $data['label'],
