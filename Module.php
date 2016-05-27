@@ -127,13 +127,10 @@ class Module extends AbstractModule
             $searchIndexSettings = $searchIndex->settings();
             if (in_array($requestResource, $searchIndexSettings['resources'])) {
                 $indexer = $searchIndex->indexer();
-                $indexer->setServiceLocator($serviceLocator);
-                $indexer->setLogger($serviceLocator->get('Omeka\Logger'));
-                $indexer->setSearchIndex($searchIndex);
 
                 if ($request->getOperation() == 'delete') {
                     $id = $request->getId();
-                    $indexer->deleteResource($id);
+                    $indexer->deleteResource($requestResource, $id);
                 } else {
                     $resource = $response->getContent();
                     $indexer->indexResource($resource);

@@ -75,7 +75,9 @@ class SearchIndexController extends AbstractActionController
         $searchIndex = $entityManager->find('Search\Entity\SearchIndex', $id);
         $adapter = $adapterManager->get($searchIndex->getAdapter());
 
-        $form = $this->getForm(SearchIndexConfigureForm::class);
+        $form = $this->getForm(SearchIndexConfigureForm::class, [
+            'search_index_id' => $id,
+        ]);
         $adapterFieldset = $adapter->getConfigFieldset();
         $adapterFieldset->setName('adapter');
         $adapterFieldset->setLabel('Adapter settings');

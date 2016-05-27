@@ -49,10 +49,7 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
             'type' => 'MultiCheckbox',
             'options' => [
                 'label' => $translator->translate('Resources indexed'),
-                'value_options' => [
-                    'items' => $translator->translate('Items'),
-                    'item_sets' => $translator->translate('Item sets'),
-                ],
+                'value_options' => $this->getResourcesOptions(),
             ],
             'attributes' => [
                 'value' => ['items'],
@@ -68,5 +65,23 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
     public function getApiManager()
     {
         return $this->apiManager;
+    }
+
+    protected function getResourcesOptions()
+    {
+        $api = $this->getApiManager();
+        $translator = $this->getTranslator();
+
+        $searchIndexId = $this->getOption('search_index_id');
+        $response = $api->read('search_indexes', $searchIndexId);
+        $searchIndex = $response->getContent();
+        $indexer = $searchIndex->indexer();
+
+        $options = [
+            'items' => $translator->translate('Items'),
+            'item_sets' => $translator->translate('Item sets'),
+        ];
+
+        return $options;
     }
 }

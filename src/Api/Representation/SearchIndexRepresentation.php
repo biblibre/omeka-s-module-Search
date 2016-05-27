@@ -106,8 +106,15 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
 
     public function indexer()
     {
+        $serviceLocator = $this->getServiceLocator();
         $indexerClass = $this->adapter()->getIndexerClass();
-        return new $indexerClass;
+
+        $indexer = new $indexerClass;
+        $indexer->setSearchIndex($this);
+        $indexer->setServiceLocator($serviceLocator);
+        $indexer->setLogger($serviceLocator->get('Omeka\Logger'));
+
+        return $indexer;
     }
 
     public function querier()

@@ -52,12 +52,15 @@ class Index extends AbstractJob
         $indexer = $searchIndex->indexer();
         $indexer->setServiceLocator($serviceLocator);
         $indexer->setLogger($this->logger);
-        $indexer->setSearchIndex($searchIndex);
 
         $indexer->clearIndex();
 
         $searchIndexSettings = $searchIndex->settings();
         $resourceNames = $searchIndexSettings['resources'];
+
+        $resourceNames = array_filter($resourceNames, function($resourceName) use($indexer) {
+            return $indexer->canIndex($resourceName);
+        });
 
         foreach ($resourceNames as $resourceName) {
             $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
