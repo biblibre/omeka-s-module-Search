@@ -33,12 +33,14 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Search\Form\BasicForm;
 use Search\Querier\Exception\QuerierException;
+use Zend\Http\Header\SetCookie;
+
 
 class IndexController extends AbstractActionController
 {
     protected $page;
     protected $index;
-
+    const COOKIE_VIEW_TYPE='search_view_type';
     public function searchAction()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -91,6 +93,7 @@ class IndexController extends AbstractActionController
                     reset($sortOptions);
                     $sort = key($sortOptions);
                 }
+
                 $query->setSort($sort);
                 $page_number=isset($params['page'])? $params['page'] : 1;
                 $this->setPagination($query,$page_number);
@@ -112,7 +115,7 @@ class IndexController extends AbstractActionController
                     return $response->getResourceTotalResults($resource);
                 }, $indexSettings['resources']);
                 $this->paginator(max($totalResults), $page_number);
-
+                $view->setVariable('view_type',$this->getViewType($params));
                 $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
                 $view->setVariable('facets', $facets);
@@ -129,6 +132,36 @@ class IndexController extends AbstractActionController
         $settings = $this->getServiceLocator()->get('Omeka\Settings');
         $query->setLimitPage($page,$settings->get('pagination_per_page', \Omeka\Service\Paginator::PER_PAGE));
     }
+
+
+    protected function getCookieViewType() {
+        $cookie = $this->getRequest()->getCookie();
+        if (isset($cookie[self::COOKIE_VIEW_TYPE]))
+            return $cookie[self::COOKIE_VIEW_TYPE];
+        return false;
+    }
+
+    protected function storeCookieViewType($type) {
+        $cookie = new SetCookie(self::COOKIE_VIEW_TYPE,$type);
+        $this->getResponse()->getHeaders()
+             ->addHeader($cookie);
+    }
+
+    protected function getViewType($params) {
+        if (($view_type=$this->getCookieViewType()) && !isset($params['view']))
+            return $view_type;
+
+        if (!isset($params['view']))
+            return 'list';
+
+        if ($params['view']=='list' || $params['view'] == 'grid') {
+            $this->storeCookieViewType($params['view']);
+            return $params['view'];
+        }
+        return 'list';
+
+    }
+
 
     protected function getSortOptions() {
         $sortOptions = [];

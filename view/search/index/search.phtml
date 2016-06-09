@@ -61,17 +61,26 @@
                             <?php echo $this->formSelect($sortSelect); ?>
                         </form>
                     </div>
+                    <div>
+                      <?php
+                      $query = $this->params()->fromQuery();
+
+?>
+                      <a href="<?php $query['view'] = 'list';
+                                     echo $this->url(null,[],['query' => $query],true);?>">list</a> |
+                      <a href="<?php $query['view']='grid'; echo $this->url(null,[],['query'=>$query],true); ?>">grid</a>
+                      </div>
                 </div>
 
                 <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
-                <?php echo $this->partial('search/resource-list', [
+                <?php echo $this->partial('search/resource-'.$this->view_type, [
                     'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
                     'response' => $response,
                     'resourceName' => 'item_sets',
                 ]); ?>
 
                 <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
-                <?php echo $this->partial('search/resource-list', [
+                <?php echo $this->partial('search/resource-'.$this->view_type, [
                     'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                     'response' => $response,
                     'resourceName' => 'items',

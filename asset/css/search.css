@@ -47,3 +47,10 @@
 .search-facet-item .active a::before {
   content: "\f046";
 }
+
+
+.resource-grid div.items {
+    float: left;
+    margin: 0px 25px 25px 0px; }
+
+nav.pagination {clear:both;}

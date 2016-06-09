@@ -29,7 +29,7 @@
 
 <?php $escape = $this->plugin('escapeHtml'); ?>
 
-<li class="<?php echo $resource->resourceName(); ?> resource">
+<<?php echo $tag; ?> class="<?php echo $resource->resourceName(); ?> resource">
     <?php if (method_exists($resource, 'primaryMedia') && $primaryMedia = $resource->primaryMedia()): ?>
         <img
             src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
@@ -43,4 +43,4 @@
             <?php echo $description; ?>
         </div>
     <?php endif; ?>
-</li>
+</<?php echo $tag ?>>
