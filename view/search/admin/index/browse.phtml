@@ -133,7 +133,16 @@
                     </td>
                     <td><?php echo $search_page->path(); ?></td>
                     <td><?php echo $search_page->index()->name(); ?></td>
-                    <td><?php echo $search_page->form(); ?></td>
+                    <td>
+                        <?php
+                            $formAdapter = $search_page->formAdapter();
+                            if ($formAdapter) {
+                                echo $formAdapter->getLabel();
+                            } else {
+                                echo $search_page->form();
+                            }
+                        ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

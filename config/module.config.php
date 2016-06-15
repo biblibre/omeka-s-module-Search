@@ -126,7 +126,7 @@ return [
     'service_manager' => [
         'factories' => [
             'Search\AdapterManager' => 'Search\Service\AdapterManagerFactory',
-            'Search\FormManager' => 'Search\Service\FormManagerFactory',
+            'Search\FormAdapterManager' => 'Search\Service\FormAdapterManagerFactory',
         ],
     ],
     'view_manager' => [
@@ -142,8 +142,8 @@ return [
     ],
     'search' => [
         'adapters' => [],
-        'forms' => [
-            'basic' => 'Search\Form\BasicForm',
+        'form_adapters' => [
+            'basic' => 'Search\FormAdapter\BasicFormAdapter',
         ],
     ]
 ];

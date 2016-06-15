@@ -32,9 +32,8 @@ namespace Search\Form;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
-use Search\Query;
 
-class BasicForm extends Form implements SearchFormInterface, TranslatorAwareInterface
+class BasicForm extends Form implements TranslatorAwareInterface
 {
     use TranslatorAwareTrait;
 
@@ -54,17 +53,5 @@ class BasicForm extends Form implements SearchFormInterface, TranslatorAwareInte
                 'placeholder' => $translator->translate('Search items'),
             ],
         ]);
-    }
-
-    public function toQuery()
-    {
-        $data = $this->getData();
-        $query = new Query();
-
-        if (isset($data['q'])) {
-            $query->setQuery($data['q']);
-        }
-
-        return $query;
     }
 }

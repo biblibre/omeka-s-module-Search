@@ -38,7 +38,7 @@ class SearchPageForm extends Form
     use TranslatorAwareTrait;
 
     protected $apiManager;
-    protected $searchFormManager;
+    protected $formAdapterManager;
 
     public function init()
     {
@@ -101,14 +101,14 @@ class SearchPageForm extends Form
         return $this->apiManager;
     }
 
-    public function setSearchFormManager($searchFormManager)
+    public function setFormAdapterManager($formAdapterManager)
     {
-        $this->searchFormManager = $searchFormManager;
+        $this->formAdapterManager = $formAdapterManager;
     }
 
-    public function getSearchFormManager()
+    public function getFormAdapterManager()
     {
-        return $this->searchFormManager;
+        return $this->formAdapterManager;
     }
 
     protected function getIndexesOptions()
@@ -129,14 +129,14 @@ class SearchPageForm extends Form
 
     protected function getFormsOptions()
     {
-        $formManager = $this->getSearchFormManager();
-        $forms = $formManager->getAll();
+        $formAdapterManager = $this->getFormAdapterManager();
+        $formAdapters = $formAdapterManager->getAll();
 
         $options = [
             '' => $this->getTranslator()->translate('None'),
         ];
-        foreach ($forms as $name => $form) {
-            $options[$name] = $name;
+        foreach ($formAdapters as $name => $formAdapter) {
+            $options[$name] = $formAdapter->getLabel();
         }
 
         return $options;

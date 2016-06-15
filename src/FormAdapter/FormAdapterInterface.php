@@ -27,17 +27,27 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Adapter;
+namespace Search\FormAdapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-interface AdapterInterface extends ServiceLocatorAwareInterface
+interface FormAdapterInterface
 {
+    /**
+     * @return string
+     */
     public function getLabel();
-    public function getConfigFieldset();
-    public function getIndexerClass();
-    public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
-    public function getAvailableFields();
+
+    /**
+     * @return string
+     */
+    public function getFormClass();
+
+    /**
+     * @return string
+     */
+    public function getConfigFormClass();
+
+    /**
+     * @return Search\Query
+     */
+    public function toQuery($data, $formSettings);
 }

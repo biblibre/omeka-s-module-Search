@@ -12,12 +12,12 @@ class SearchPageFormFactory implements FactoryInterface
         $serviceLocator = $elements->getServiceLocator();
         $translator = $serviceLocator->get('MvcTranslator');
         $api = $serviceLocator->get('Omeka\ApiManager');
-        $searchFormManager = $serviceLocator->get('Search\FormManager');
+        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
 
         $form = new SearchPageForm;
         $form->setTranslator($translator);
         $form->setApiManager($api);
-        $form->setSearchFormManager($searchFormManager);
+        $form->setFormAdapterManager($formAdapterManager);
 
         return $form;
     }

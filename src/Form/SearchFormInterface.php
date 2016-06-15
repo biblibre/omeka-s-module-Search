@@ -37,4 +37,9 @@ interface SearchFormInterface extends FormInterface
      * @return Search\Query
      */
     public function toQuery();
+
+    /**
+     * @ return Zend\Form\Fieldset
+     */
+    public function getConfigFieldset();
 }

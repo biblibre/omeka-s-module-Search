@@ -44,4 +44,9 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         return [];
     }
+
+    public function getAvailableFields()
+    {
+        return [];
+    }
 }

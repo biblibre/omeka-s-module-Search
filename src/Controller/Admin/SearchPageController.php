@@ -79,7 +79,7 @@ class SearchPageController extends AbstractActionController
             $form->setData($this->params()->fromPost());
             if ($form->isValid()) {
                 $formData = $form->getData();
-                $response = $this->api()->update('search_pages', $id, $formData);
+                $response = $this->api()->update('search_pages', $id, $formData, [], true);
                 if ($response->isError()) {
                     $form->setMessages($response->getErrors());
                 } else {
@@ -99,18 +99,20 @@ class SearchPageController extends AbstractActionController
     public function configureAction()
     {
         $serviceLocator = $this->getServiceLocator();
+        $api = $serviceLocator->get('Omeka\ApiManager');
         $entityManager = $serviceLocator->get('Omeka\EntityManager');
         $adapterManager = $serviceLocator->get('Search\AdapterManager');
+        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
 
         $id = $this->params('id');
 
-        $page = $entityManager->find('Search\Entity\SearchPage', $id);
-        $adapter = $adapterManager->get($page->getIndex()->getAdapter());
+        $searchPage = $api->read('search_pages', $id)->getContent();
+        $adapter = $searchPage->index()->adapter();
 
         $form = $this->getForm(SearchPageConfigureForm::class, [
-            'adapter' => $adapter,
+            'search_page' => $searchPage,
         ]);
-        $form->setData($page->getSettings());
+        $form->setData($searchPage->settings());
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
@@ -118,6 +120,7 @@ class SearchPageController extends AbstractActionController
                 $formData = $form->getData();
                 unset($formData['csrf']);
 
+                $page = $searchPage->getEntity();
                 $page->setSettings($formData);
                 $entityManager->flush();
 

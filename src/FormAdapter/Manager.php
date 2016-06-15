@@ -27,17 +27,50 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Adapter;
+namespace Search\FormAdapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-interface AdapterInterface extends ServiceLocatorAwareInterface
+class Manager
 {
-    public function getLabel();
-    public function getConfigFieldset();
-    public function getIndexerClass();
-    public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
-    public function getAvailableFields();
+    protected $config;
+    protected $adapters;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
+    public function get($name)
+    {
+        if (isset($this->adapters[$name])) {
+            return $this->adapters[$name];
+        }
+
+        if (!isset($this->config[$name])) {
+            return null;
+        }
+
+        $class = $this->config[$name];
+        if (!class_exists($class)) {
+            return null;
+        }
+
+        if (!in_array('Search\FormAdapter\FormAdapterInterface', class_implements($class))) {
+            return null;
+        }
+
+        $this->adapters[$name] = new $class;
+        return $this->adapters[$name];
+    }
+
+    public function getAll()
+    {
+        $adapters = [];
+        foreach ($this->config as $name => $class) {
+            $adapter = $this->get($name);
+            if ($adapter !== null) {
+                $adapters[$name] = $adapter;
+            }
+        }
+        return $adapters;
+    }
 }

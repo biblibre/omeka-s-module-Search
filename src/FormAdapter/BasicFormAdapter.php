@@ -27,21 +27,35 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Service;
+namespace Search\FormAdapter;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Search\Form\Manager;
+use Search\Query;
 
-class FormManagerFactory implements FactoryInterface
+class BasicFormAdapter implements FormAdapterInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function getLabel()
     {
-        $config = $serviceLocator->get('Config');
-        $formElementManager = $serviceLocator->get('FormElementManager');
+        return 'Basic';
+    }
 
-        $fm = new Manager($config['search']['forms'], $formElementManager);
+    public function getFormClass()
+    {
+        return 'Search\Form\BasicForm';
+    }
 
-        return $fm;
+    public function getConfigFormClass()
+    {
+        return null;
+    }
+
+    public function toQuery($data, $formSettings)
+    {
+        $query = new Query();
+
+        if (isset($data['q'])) {
+            $query->setQuery($data['q']);
+        }
+
+        return $query;
     }
 }

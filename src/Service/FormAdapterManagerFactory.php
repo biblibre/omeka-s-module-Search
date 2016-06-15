@@ -27,46 +27,20 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Form;
+namespace Search\Service;
 
-class Manager
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Search\FormAdapter\Manager;
+
+class FormAdapterManagerFactory implements FactoryInterface
 {
-    protected $config;
-    protected $formElementManager;
-
-    public function __construct($config, $formElementManager)
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->config = $config;
-        $this->formElementManager = $formElementManager;
-    }
+        $config = $serviceLocator->get('Config');
 
-    public function get($name)
-    {
-        if (!isset($this->config[$name])) {
-            return null;
-        }
+        $fm = new Manager($config['search']['form_adapters']);
 
-        $class = $this->config[$name];
-        if (!class_exists($class)) {
-            return null;
-        }
-
-        if (!in_array('Search\Form\SearchFormInterface', class_implements($class))) {
-            return null;
-        }
-
-        return $this->formElementManager->get($class);
-    }
-
-    public function getAll()
-    {
-        $adapters = [];
-        foreach ($this->config as $name => $class) {
-            $adapter = $this->get($name);
-            if ($adapter !== null) {
-                $adapters[$name] = $adapter;
-            }
-        }
-        return $adapters;
+        return $fm;
     }
 }

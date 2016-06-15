@@ -39,11 +39,14 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 {
     use TranslatorAwareTrait;
 
+    protected $formElementManager;
+
     public function init()
     {
         $translator = $this->getTranslator();
 
-        $adapter = $this->options['adapter'];
+        $searchPage = $this->getOption('search_page');
+        $adapter = $searchPage->index()->adapter();
 
         $facets = new Fieldset('facets');
         $facets->setLabel($translator->translate('Facets'));
@@ -119,5 +122,31 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         }
 
         $this->add($sort_fields_fieldset);
+
+        $this->add($this->getFormFieldset());
+    }
+
+    public function setFormElementManager($formElementManager)
+    {
+        $this->formElementManager = $formElementManager;
+    }
+
+    public function getFormElementManager()
+    {
+        return $this->formElementManager;
+    }
+
+    protected function getFormFieldset()
+    {
+        $formElementManager = $this->getFormElementManager();
+        $searchPage = $this->getOption('search_page');
+        $formAdapter = $searchPage->formAdapter();
+        $fieldset = $formElementManager->get($formAdapter->getConfigFormClass(), [
+            'search_page' => $searchPage,
+        ]);
+        $fieldset->setName('form');
+        $fieldset->setLabel($this->getTranslator()->translate('Form settings'));
+
+        return $fieldset;
     }
 }

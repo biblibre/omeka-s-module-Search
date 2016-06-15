@@ -52,6 +52,10 @@
         <?php foreach ($fieldset->getFieldsets() as $subfieldset): ?>
             <?php echo $this->formCollection($subfieldset); ?>
         <?php endforeach; ?>
+
+        <?php foreach ($fieldset->getElements() as $element): ?>
+            <?php echo $this->formRow($element); ?>
+        <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
 

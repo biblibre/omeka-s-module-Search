@@ -12,8 +12,13 @@ class SearchPageConfigureFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $elements)
     {
         $serviceLocator = $elements->getServiceLocator();
+        $translator = $serviceLocator->get('MvcTranslator');
+        $formElementManager = $serviceLocator->get('FormElementManager');
+
         $form = new SearchPageConfigureForm(null, $this->options);
-        $form->setTranslator($serviceLocator->get('MvcTranslator'));
+        $form->setTranslator($translator);
+        $form->setFormElementManager($formElementManager);
+
         return $form;
     }
 

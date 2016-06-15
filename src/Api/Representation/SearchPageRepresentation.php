@@ -98,6 +98,13 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $this->resource->getCreated();
     }
 
+    public function formAdapter()
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
+        return $formAdapterManager->get($this->form());
+    }
+
     public function getEntity()
     {
         return $this->resource;
