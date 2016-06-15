@@ -41,7 +41,7 @@ class SearchIndexController extends AbstractActionController
     {
         $serviceLocator = $this->getServiceLocator();
 
-        $form = new SearchIndexForm($serviceLocator);
+        $form = $this->getForm(SearchIndexForm::class);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
@@ -75,7 +75,7 @@ class SearchIndexController extends AbstractActionController
         $searchIndex = $entityManager->find('Search\Entity\SearchIndex', $id);
         $adapter = $adapterManager->get($searchIndex->getAdapter());
 
-        $form = new SearchIndexConfigureForm($serviceLocator);
+        $form = $this->getForm(SearchIndexConfigureForm::class);
         $adapterFieldset = $adapter->getConfigFieldset();
         $adapterFieldset->setName('adapter');
         $adapterFieldset->setLabel('Adapter settings');
@@ -128,7 +128,7 @@ class SearchIndexController extends AbstractActionController
     public function deleteAction()
     {
         if ($this->getRequest()->isPost()) {
-            $form = new ConfirmForm($this->getServiceLocator());
+            $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_indexes', $this->params('id'));

@@ -30,14 +30,19 @@
 namespace Search\Form\Admin;
 
 use Zend\Form\Fieldset;
-use Omeka\Form\AbstractForm;
+use Zend\Form\Form;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class SearchIndexConfigureForm extends AbstractForm
+class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
 {
-    public function buildForm()
+    use TranslatorAwareTrait;
+
+    protected $apiManager;
+
+    public function init()
     {
         $translator = $this->getTranslator();
-        $serviceLocator = $this->getServiceLocator();
 
         $this->add([
             'name' => 'resources',
@@ -53,5 +58,15 @@ class SearchIndexConfigureForm extends AbstractForm
                 'value' => ['items'],
             ],
         ]);
+    }
+
+    public function setApiManager($apiManager)
+    {
+        $this->apiManager = $apiManager;
+    }
+
+    public function getApiManager()
+    {
+        return $this->apiManager;
     }
 }

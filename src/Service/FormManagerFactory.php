@@ -38,9 +38,9 @@ class FormManagerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Config');
+        $formElementManager = $serviceLocator->get('FormElementManager');
 
-        $fm = new Manager($config['search']['forms']);
-        $fm->setServiceLocator($serviceLocator);
+        $fm = new Manager($config['search']['forms'], $formElementManager);
 
         return $fm;
     }

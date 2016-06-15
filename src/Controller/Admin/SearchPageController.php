@@ -41,7 +41,7 @@ class SearchPageController extends AbstractActionController
     {
         $serviceLocator = $this->getServiceLocator();
 
-        $form = new SearchPageForm($serviceLocator);
+        $form = $this->getForm(SearchPageForm::class);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
@@ -72,7 +72,7 @@ class SearchPageController extends AbstractActionController
         $id = $this->params('id');
         $page = $api->read('search_pages', $id)->getContent();
 
-        $form = new SearchPageForm($serviceLocator);
+        $form = $this->getForm(SearchPageForm::class);
         $form->setData($page->jsonSerialize());
 
         if ($this->getRequest()->isPost()) {
@@ -107,7 +107,9 @@ class SearchPageController extends AbstractActionController
         $page = $entityManager->find('Search\Entity\SearchPage', $id);
         $adapter = $adapterManager->get($page->getIndex()->getAdapter());
 
-        $form = new SearchPageConfigureForm($serviceLocator, null, ['adapter' => $adapter]);
+        $form = $this->getForm(SearchPageConfigureForm::class, [
+            'adapter' => $adapter,
+        ]);
         $form->setData($page->getSettings());
 
         if ($this->getRequest()->isPost()) {
@@ -150,7 +152,7 @@ class SearchPageController extends AbstractActionController
     public function deleteAction()
     {
         if ($this->getRequest()->isPost()) {
-            $form = new ConfirmForm($this->getServiceLocator());
+            $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_pages', $this->params('id'));

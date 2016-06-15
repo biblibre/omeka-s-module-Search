@@ -29,12 +29,16 @@
 
 namespace Search\Form;
 
-use Omeka\Form\Form;
+use Zend\Form\Form;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 use Search\Query;
 
-class BasicForm extends Form implements SearchFormInterface
+class BasicForm extends Form implements SearchFormInterface, TranslatorAwareInterface
 {
-    public function buildForm()
+    use TranslatorAwareTrait;
+
+    public function init()
     {
         $translator = $this->getTranslator();
 

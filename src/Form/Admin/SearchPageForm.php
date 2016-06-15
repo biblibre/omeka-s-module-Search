@@ -29,14 +29,20 @@
 
 namespace Search\Form\Admin;
 
-use Omeka\Form\AbstractForm;
+use Zend\Form\Form;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class SearchPageForm extends AbstractForm
+class SearchPageForm extends Form
 {
-    public function buildForm()
+    use TranslatorAwareTrait;
+
+    protected $apiManager;
+    protected $searchFormManager;
+
+    public function init()
     {
         $translator = $this->getTranslator();
-        $serviceLocator = $this->getServiceLocator();
 
         $this->add([
             'name' => 'o:name',
@@ -85,10 +91,29 @@ class SearchPageForm extends AbstractForm
         ]);
     }
 
+    public function setApiManager($apiManager)
+    {
+        $this->apiManager = $apiManager;
+    }
+
+    public function getApiManager()
+    {
+        return $this->apiManager;
+    }
+
+    public function setSearchFormManager($searchFormManager)
+    {
+        $this->searchFormManager = $searchFormManager;
+    }
+
+    public function getSearchFormManager()
+    {
+        return $this->searchFormManager;
+    }
+
     protected function getIndexesOptions()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
+        $api = $this->getApiManager();
 
         $indexes = $api->search('search_indexes')->getContent();
         $options = [
@@ -104,7 +129,7 @@ class SearchPageForm extends AbstractForm
 
     protected function getFormsOptions()
     {
-        $formManager = $this->getServiceLocator()->get('Search\FormManager');
+        $formManager = $this->getSearchFormManager();
         $forms = $formManager->getAll();
 
         $options = [

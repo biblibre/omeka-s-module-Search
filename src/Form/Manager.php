@@ -29,18 +29,15 @@
 
 namespace Search\Form;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-
-class Manager implements ServiceLocatorAwareInterface
+class Manager
 {
-    use ServiceLocatorAwareTrait;
-
     protected $config;
+    protected $formElementManager;
 
-    public function __construct($config)
+    public function __construct($config, $formElementManager)
     {
         $this->config = $config;
+        $this->formElementManager = $formElementManager;
     }
 
     public function get($name)
@@ -54,11 +51,11 @@ class Manager implements ServiceLocatorAwareInterface
             return null;
         }
 
-        if (!in_array('Zend\Form\FormInterface', class_implements($class))) {
+        if (!in_array('Search\Form\SearchFormInterface', class_implements($class))) {
             return null;
         }
 
-        return new $class($this->getServiceLocator());
+        return $this->formElementManager->get($class);
     }
 
     public function getAll()

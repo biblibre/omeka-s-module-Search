@@ -19,6 +19,15 @@ return [
             'search_pages' => 'Search\Api\Adapter\SearchPageAdapter',
         ],
     ],
+    'form_elements' => [
+        'factories' => [
+            'Search\Form\Admin\SearchIndexForm' => 'Search\Service\Form\SearchIndexFormFactory',
+            'Search\Form\Admin\SearchIndexConfigureForm' => 'Search\Service\Form\SearchIndexConfigureFormFactory',
+            'Search\Form\Admin\SearchPageForm' => 'Search\Service\Form\SearchPageFormFactory',
+            'Search\Form\Admin\SearchPageConfigureForm' => 'Search\Service\Form\SearchPageConfigureFormFactory',
+            'Search\Form\BasicForm' => 'Search\Service\Form\BasicFormFactory',
+        ],
+    ],
     'navigation' => [
         'AdminGlobal' => [
             [

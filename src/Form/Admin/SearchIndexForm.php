@@ -29,14 +29,19 @@
 
 namespace Search\Form\Admin;
 
-use Omeka\Form\AbstractForm;
+use Zend\Form\Form;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class SearchIndexForm extends AbstractForm
+class SearchIndexForm extends Form implements TranslatorAwareInterface
 {
-    public function buildForm()
+    use TranslatorAwareTrait;
+
+    protected $searchAdapterManager;
+
+    public function init()
     {
         $translator = $this->getTranslator();
-        $serviceLocator = $this->getServiceLocator();
 
         $this->add([
             'name' => 'o:name',
@@ -65,9 +70,19 @@ class SearchIndexForm extends AbstractForm
         ]);
     }
 
+    public function setSearchAdapterManager($searchAdapterManager)
+    {
+        $this->searchAdapterManager = $searchAdapterManager;
+    }
+
+    public function getSearchAdapterManager()
+    {
+        return $this->searchAdapterManager;
+    }
+
     protected function getAdaptersOptions()
     {
-        $adapterManager = $this->getServiceLocator()->get('Search\AdapterManager');
+        $adapterManager = $this->getSearchAdapterManager();
         $adapters = $adapterManager->getAll();
 
         $options = [

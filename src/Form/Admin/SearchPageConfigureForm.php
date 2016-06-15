@@ -29,15 +29,19 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Form;
 use Zend\Form\Fieldset;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 use Omeka\Form\AbstractForm;
 
-class SearchPageConfigureForm extends AbstractForm
+class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 {
-    public function buildForm()
+    use TranslatorAwareTrait;
+
+    public function init()
     {
         $translator = $this->getTranslator();
-        $serviceLocator = $this->getServiceLocator();
 
         $adapter = $this->options['adapter'];
 
@@ -46,7 +50,7 @@ class SearchPageConfigureForm extends AbstractForm
         $facets->setAttribute('data-sortable', '1');
 
         $facetFields = $adapter->getAvailableFacetFields();
-        $weights = range(0, +count($facetFields));
+        $weights = range(0, count($facetFields));
         $weight_options = array_combine($weights, $weights);
         $weight = 0;
         foreach ($facetFields as $field) {
