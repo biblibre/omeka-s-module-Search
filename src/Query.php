@@ -35,6 +35,7 @@ class Query
     protected $sort;
     protected $facetFields = [];
     protected $filters = [];
+    protected $dateRangeFilters = [];
     protected $offset = 0 ;
     protected $limit = 0;
     protected $resources = [];
@@ -67,6 +68,19 @@ class Query
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    public function addDateRangeFilter($name, $start, $end)
+    {
+        $this->dateRangeFilters[$name][] = [
+            'start' => $start,
+            'end' => $end,
+        ];
+    }
+
+    public function getDateRangeFilters()
+    {
+        return $this->dateRangeFilters;
     }
 
     public function setSort($sort)
