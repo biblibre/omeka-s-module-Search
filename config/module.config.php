@@ -12,6 +12,9 @@ return [
         'mapping_classes_paths' => [
             __DIR__ . '/../src/Entity',
         ],
+        'proxy_paths' => [
+            __DIR__ . '/../data/doctrine-proxies',
+        ],
     ],
     'api_adapters' => [
         'invokables' => [
