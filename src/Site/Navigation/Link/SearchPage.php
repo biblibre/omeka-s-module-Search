@@ -35,9 +35,14 @@ use Omeka\Stdlib\ErrorStore;
 
 class SearchPage implements LinkInterface
 {
-    public function getLabel()
+    public function getName()
     {
         return 'Search';
+    }
+
+    public function getLabel(array $data, SiteRepresentation $site)
+    {
+        return $data['label'] ? $data['label'] : 'Search';
     }
 
     public function isValid(array $data, ErrorStore $errorStore)

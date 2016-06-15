@@ -29,13 +29,13 @@
 
 <?php
     $escape = $this->plugin('escapeHtml');
-    $label = isset($data['label']) ? $data['label'] : $link->getLabel();
+    $label = isset($data['label']) ? $data['label'] : null;
     $search_page_id = isset($data['search_page_id']) ? $data['search_page_id'] : null;
 
     $searchPages = $this->api()->search('search_pages')->getContent();
 ?>
 
-<label>Type <input type="text" value="<?php echo $escape($link->getLabel()); ?>" disabled="disabled"></label>
+<label>Type <input type="text" value="<?php echo $escape($link->getName()); ?>" disabled="disabled"></label>
 <label>Label <input type="text" data-name="label" value="<?php echo $escape($label); ?>"></label>
 <label>
     Page
