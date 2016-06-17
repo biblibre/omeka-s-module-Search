@@ -40,7 +40,6 @@ class IndexController extends AbstractActionController
 {
     protected $page;
     protected $index;
-    const COOKIE_VIEW_TYPE='search_view_type';
     public function searchAction()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -61,7 +60,10 @@ class IndexController extends AbstractActionController
             $form->setData($params);
             if ($form->isValid()) {
                 $searchPageSettings = $this->page->settings();
-                $searchFormSettings = $searchPageSettings['form'];
+
+                if (isset($searchPageSettings['form']))
+                    $searchFormSettings = $searchPageSettings['form'];
+                else $searchFormSettings=[];
                 $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
                 $this->index = $api->read('search_indexes', $index_id)->getContent();
 
@@ -118,7 +120,6 @@ class IndexController extends AbstractActionController
                     return $response->getResourceTotalResults($resource);
                 }, $indexSettings['resources']);
                 $this->paginator(max($totalResults), $page_number);
-                $view->setVariable('view_type',$this->getViewType($params));
                 $view->setVariable('query', $query);
                 $view->setVariable('response', $response);
                 $view->setVariable('facets', $facets);
@@ -134,35 +135,6 @@ class IndexController extends AbstractActionController
     protected function setPagination($query,$page) {
         $settings = $this->getServiceLocator()->get('Omeka\Settings');
         $query->setLimitPage($page,$settings->get('pagination_per_page', \Omeka\Service\Paginator::PER_PAGE));
-    }
-
-
-    protected function getCookieViewType() {
-        $cookie = $this->getRequest()->getCookie();
-        if (isset($cookie[self::COOKIE_VIEW_TYPE]))
-            return $cookie[self::COOKIE_VIEW_TYPE];
-        return false;
-    }
-
-    protected function storeCookieViewType($type) {
-        $cookie = new SetCookie(self::COOKIE_VIEW_TYPE,$type);
-        $this->getResponse()->getHeaders()
-             ->addHeader($cookie);
-    }
-
-    protected function getViewType($params) {
-        if (($view_type=$this->getCookieViewType()) && !isset($params['view']))
-            return $view_type;
-
-        if (!isset($params['view']))
-            return 'list';
-
-        if ($params['view']=='list' || $params['view'] == 'grid') {
-            $this->storeCookieViewType($params['view']);
-            return $params['view'];
-        }
-        return 'list';
-
     }
 
 

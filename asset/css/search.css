@@ -49,8 +49,19 @@
 }
 
 
-.resource-grid div.items {
-    float: left;
-    margin: 0px 25px 25px 0px; }
+.resource-list.grid {
+    display:flex;
+}
 
-nav.pagination {clear:both;}
+
+.resource-list.list h4 {
+    float:right;
+}
+
+.resource-list.grid .description {
+    display:none;
+}
+
+.resource-list div.items {
+   margin: 0px 25px 25px 0px; 
+}

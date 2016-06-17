@@ -35,7 +35,7 @@
             src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
             title="<?php echo $escape($primaryMedia->displayTitle()); ?>"
             alt="<?php echo $escape($primaryMedia->mediaType()); ?> thumbnail"
-        >
+        />
     <?php endif; ?>
     <h4><?php echo $resource->link($resource->displayTitle()); ?></h4>
     <?php if ($description = $resource->displayDescription()): ?>
