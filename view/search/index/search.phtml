@@ -63,25 +63,21 @@
                         </form>
                     </div>
                     <div>
-                      <?php
-                      $query = $this->params()->fromQuery();
-
-?>
-                      <a href="#" onClick="<?php $query['view'] = 'list';
-                                     echo 'javascript:populateStorage(\'list\');return false;';?>">list</a> |
-                      <a  href="#" onClick="<?php $query['view']='grid';echo 'populateStorage(\'grid\');return false;'; ?>">grid</a>
-                      </div>
+                        <a id="search-view-type-list" href="#">list</a>
+                        |
+                        <a id="search-view-type-grid" href="#">grid</a>
+                    </div>
                 </div>
 
                 <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
-                <?php echo $this->partial('search/resource-grid', [
+                <?php echo $this->partial('search/resource-list', [
                     'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
                     'response' => $response,
                     'resourceName' => 'item_sets',
                 ]); ?>
 
                 <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
-                <?php echo $this->partial('search/resource-grid', [
+                <?php echo $this->partial('search/resource-list', [
                     'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                     'response' => $response,
                     'resourceName' => 'items',
@@ -100,6 +96,21 @@
             var params = Search.objectFromQueryString(document.location.search);
             params.sort = $(this).val();
             window.location.search = '?' + Search.queryStringFromObject(params);
+        });
+
+        var view_type = localStorage.getItem('search_view_type');
+        if (!view_type) {
+            view_type = 'list';
+        }
+        Search.setViewType(view_type);
+
+        $('#search-view-type-list').on('click', function(e) {
+            e.preventDefault();
+            Search.setViewType('list');
+        });
+        $('#search-view-type-grid').on('click', function(e) {
+            e.preventDefault();
+            Search.setViewType('grid');
         });
     });
 </script>

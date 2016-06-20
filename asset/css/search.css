@@ -48,20 +48,23 @@
   content: "\f046";
 }
 
-
-.resource-list.grid {
-    display:flex;
+.resource-list {
+  display: flex;
 }
 
+.resource-list.list {
+  flex-direction: column;
+}
 
-.resource-list.list h4 {
-    float:right;
+.resource-list.grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.resource-list.grid > * {
+  flex-basis: 33%;
 }
 
 .resource-list.grid .description {
-    display:none;
-}
-
-.resource-list div.items {
-   margin: 0px 25px 25px 0px; 
+  display: none;
 }

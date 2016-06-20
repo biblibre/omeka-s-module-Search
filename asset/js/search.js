@@ -45,25 +45,14 @@ var Search = (function() {
         }).join('&');
     };
 
+    self.setViewType = function(viewType) {
+        var resourceLists = document.querySelectorAll("div.resource-list");
+        for (var i = 0; i < resourceLists.length; i++) {
+            var resourceItem = resourceLists[i];
+            resourceItem.className = 'resource-list ' + viewType;
+        }
+        localStorage.setItem('search_view_type', viewType);
+    };
+
     return self;
 })();
-
-$(document).ready(function() {
-var defined_view=localStorage.getItem('search_view_type');
-if (!defined_view) 
-  populateStorage('list');
-else setStyles(defined_view);
-});
-
-function populateStorage(view_type) {
-  localStorage.setItem('search_view_type', view_type);
-  setStyles(view_type);
-}
-
-
-function setStyles(view_type) {
-  var resourceElem = document.querySelector("div.resource-list");
-  if (resourceElem)
-    resourceElem.className = 'resource-list '+view_type;
-
-}
