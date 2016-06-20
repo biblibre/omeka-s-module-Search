@@ -37,10 +37,7 @@
 <div id="content" role="main">
     <?php echo $this->pageTitle($this->translate('Search')); ?>
 
-    <?php $form->prepare(); ?>
-    <?php echo $this->form()->openTag($form); ?>
-    <?php echo $this->formCollection($form, false); ?>
-    <?php echo $this->form()->closeTag(); ?>
+    <?php echo $this->partial($formPartial, ['form' => $form]); ?>
 
     <?php if (isset($response)): ?>
         <div class="search-results-wrapper">

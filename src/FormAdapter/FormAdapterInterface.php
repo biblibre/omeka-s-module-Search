@@ -44,6 +44,11 @@ interface FormAdapterInterface
     /**
      * @return string
      */
+    public function getFormPartial();
+
+    /**
+     * @return string
+     */
     public function getConfigFormClass();
 
     /**

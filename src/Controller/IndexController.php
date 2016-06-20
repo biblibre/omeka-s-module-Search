@@ -55,9 +55,14 @@ class IndexController extends AbstractActionController
 
         $form = $formElementManager->get($formAdapter->getFormClass());
         $form->setAttribute('method', 'GET');
+        $formPartial = $formAdapter->getFormPartial();
+        if (!isset($formPartial)) {
+            $formPartial = 'search/search-form';
+        }
 
         $view = new ViewModel;
         $view->setVariable('form', $form);
+        $view->setVariable('formPartial', $formPartial);
 
         $params = $this->params()->fromQuery();
         if (empty($params))
