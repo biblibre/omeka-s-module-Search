@@ -43,25 +43,32 @@ class SearchPageController extends AbstractActionController
 
         $form = $this->getForm(SearchPageForm::class);
 
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->params()->fromPost());
-            if ($form->isValid()) {
-                $formData = $form->getData();
-                $response = $this->api()->create('search_pages', $formData);
-                if ($response->isError()) {
-                    $form->setMessages($response->getErrors());
-                } else {
-                    $this->messenger()->addSuccess('Search page created.');
-                    return $this->redirect()->toRoute('admin/search');
-                }
-            } else {
-                $this->messenger()->addError('There was an error during validation');
-            }
-        }
-
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        return $view;
+        if (!$this->checkPostAndValidForm($form))
+            return $view;
+        $formData = $form->getData();
+        $response = $this->api()->create('search_pages', $formData);
+        if ($response->isError()) {
+            $form->setMessages($response->getErrors());
+            return $view;
+        }
+
+        $this->messenger()->addSuccess('Search page created.');
+        return $this->redirect()->toRoute('admin/search');
+
+    }
+
+    protected function checkPostAndValidForm($form) {
+        if (!$this->getRequest()->isPost())
+            return false;
+
+        $form->setData($this->params()->fromPost());
+        if (!$form->isValid()) {
+            $this->messenger()->addError('There was an error during validation');
+            return false;
+        }
+        return true;
     }
 
     public function editAction()
@@ -74,26 +81,22 @@ class SearchPageController extends AbstractActionController
 
         $form = $this->getForm(SearchPageForm::class);
         $form->setData($page->jsonSerialize());
-
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->params()->fromPost());
-            if ($form->isValid()) {
-                $formData = $form->getData();
-                $response = $this->api()->update('search_pages', $id, $formData, [], true);
-                if ($response->isError()) {
-                    $form->setMessages($response->getErrors());
-                } else {
-                    $this->messenger()->addSuccess('Search page created.');
-                    return $this->redirect()->toRoute('admin/search');
-                }
-            } else {
-                $this->messenger()->addError('There was an error during validation');
-            }
-        }
-
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        return $view;
+
+        if (!$this->checkPostAndValidForm($form))
+            return $view;
+
+        $formData = $form->getData();
+        $response = $this->api()->update('search_pages', $id, $formData, [], true);
+        if ($response->isError()) {
+            $form->setMessages($response->getErrors());
+            return $view;
+        }
+
+        $this->messenger()->addSuccess('Search page created.');
+        return $this->redirect()->toRoute('admin/search');
+
     }
 
     public function configureAction()
@@ -113,27 +116,22 @@ class SearchPageController extends AbstractActionController
             'search_page' => $searchPage,
         ]);
         $form->setData($searchPage->settings());
-
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->params()->fromPost());
-            if ($form->isValid()) {
-                $formData = $form->getData();
-                unset($formData['csrf']);
-
-                $page = $searchPage->getEntity();
-                $page->setSettings($formData);
-                $entityManager->flush();
-
-                $this->messenger()->addSuccess('Configuration saved.');
-                return $this->redirect()->toRoute('admin/search');
-            } else {
-                $this->messenger()->addError('There was an error during validation');
-            }
-        }
-
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        return $view;
+
+        if (!$this->checkPostAndValidForm($form))
+            return $view;
+
+        $formData = $form->getData();
+        unset($formData['csrf']);
+
+        $page = $searchPage->getEntity();
+        $page->setSettings($formData);
+        $entityManager->flush();
+
+        $this->messenger()->addSuccess('Configuration saved.');
+        return $this->redirect()->toRoute('admin/search');
+
     }
 
     public function deleteConfirmAction()

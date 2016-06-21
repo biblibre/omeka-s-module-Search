@@ -56,78 +56,76 @@ class IndexController extends AbstractActionController
         $view->setVariable('form', $form);
 
         $params = $this->params()->fromQuery();
-        if (!empty($params)) {
-            $form->setData($params);
-            if ($form->isValid()) {
-                $searchPageSettings = $this->page->settings();
+        if (empty($params))
+            return $view;
 
-                if (isset($searchPageSettings['form']))
-                    $searchFormSettings = $searchPageSettings['form'];
-                else $searchFormSettings=[];
-                $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
-                $this->index = $api->read('search_indexes', $index_id)->getContent();
+        $form->setData($params);
+        if (!$form->isValid()) {
+            $this->messenger()->addError('There was an error during validation');
+            return $view;
+        }
 
-                $querier = $this->index->querier();
-                $querier->setServiceLocator($serviceLocator);
-                $querier->setLogger($serviceLocator->get('Omeka\Logger'));
-                $querier->setIndex($this->index);
+        $searchPageSettings = $this->page->settings();
+        $searchFormSettings=[];
+        if (isset($searchPageSettings['form']))
+            $searchFormSettings = $searchPageSettings['form'];
 
-                $indexSettings = $this->index->settings();
-                $query->setResources($indexSettings['resources']);
+        $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
+        $this->index = $api->read('search_indexes', $index_id)->getContent();
 
-                $settings = $this->page->settings();
-                foreach ($settings['facets'] as $name => $facet) {
-                    if ($facet['enabled']) {
-                        $query->addFacetField($name);
-                    }
-                }
+        $querier = $this->index->querier();
+        $querier->setServiceLocator($serviceLocator);
+        $querier->setLogger($serviceLocator->get('Omeka\Logger'));
+        $querier->setIndex($this->index);
 
-                if (isset($params['limit'])) {
-                    foreach ($params['limit'] as $name => $values) {
-                        foreach ($values as $value) {
-                            $query->addFilter($name, $value);
-                        }
-                    }
-                }
+        $indexSettings = $this->index->settings();
+        $query->setResources($indexSettings['resources']);
 
-                $sortOptions = $this->getSortOptions();
-
-                if (isset($params['sort'])) {
-                    $sort = $params['sort'];
-                } else {
-                    reset($sortOptions);
-                    $sort = key($sortOptions);
-                }
-
-                $query->setSort($sort);
-                $page_number=isset($params['page'])? $params['page'] : 1;
-                $this->setPagination($query,$page_number);
-                try {
-                    $response = $querier->query($query);
-                } catch (QuerierException $e) {
-                    $this->messenger()->addError('Query error: ' . $e->getMessage());
-                    return $view;
-                }
-
-                $facets = $response->getFacetCounts();
-                uksort($facets, function($a, $b) use ($settings) {
-                    $aWeight = $settings['facets'][$a]['weight'];
-                    $bWeight = $settings['facets'][$b]['weight'];
-                    return $aWeight - $bWeight;
-                });
-
-                $totalResults = array_map(function($resource) use ($response) {
-                    return $response->getResourceTotalResults($resource);
-                }, $indexSettings['resources']);
-                $this->paginator(max($totalResults), $page_number);
-                $view->setVariable('query', $query);
-                $view->setVariable('response', $response);
-                $view->setVariable('facets', $facets);
-                $view->setVariable('sortOptions', $sortOptions);
-            } else {
-                $this->messenger()->addError('There was an error during validation');
+        $settings = $this->page->settings();
+        foreach ($settings['facets'] as $name => $facet) {
+            if ($facet['enabled']) {
+                $query->addFacetField($name);
             }
         }
+
+        if (isset($params['limit'])) {
+            foreach ($params['limit'] as $name => $values) {
+                foreach ($values as $value) {
+                    $query->addFilter($name, $value);
+                }
+            }
+        }
+
+        $sortOptions = $this->getSortOptions();
+
+        if (isset($params['sort'])) {
+            $sort = $params['sort'];
+        } else {
+            reset($sortOptions);
+            $sort = key($sortOptions);
+        }
+
+        $query->setSort($sort);
+        $page_number=isset($params['page'])? $params['page'] : 1;
+        $this->setPagination($query,$page_number);
+        try {
+            $response = $querier->query($query);
+        } catch (QuerierException $e) {
+            $this->messenger()->addError('Query error: ' . $e->getMessage());
+            return $view;
+        }
+
+        $facets = $response->getFacetCounts();
+        $facets = $this->sortByWeight($facets,'facets');
+
+        $totalResults = array_map(function($resource) use ($response) {
+                                                                           return $response->getResourceTotalResults($resource);
+                                                                       }, $indexSettings['resources']);
+        $this->paginator(max($totalResults), $page_number);
+        $view->setVariable('query', $query);
+        $view->setVariable('response', $response);
+        $view->setVariable('facets', $facets);
+        $view->setVariable('sortOptions', $sortOptions);
 
         return $view;
     }
@@ -137,6 +135,15 @@ class IndexController extends AbstractActionController
         $query->setLimitPage($page,$settings->get('pagination_per_page', \Omeka\Service\Paginator::PER_PAGE));
     }
 
+    protected function sortByWeight($fields, $setting_name) {
+        $settings = $this->page->settings();
+        uksort($fields, function($a, $b) use ($settings) {
+            $aWeight = $settings[$setting_name][$a]['weight'];
+            $bWeight = $settings[$setting_name][$b]['weight'];
+            return $aWeight - $bWeight;
+        });
+        return $fields;
+    }
 
     protected function getSortOptions() {
         $sortOptions = [];
@@ -148,11 +155,7 @@ class IndexController extends AbstractActionController
                 $sortOptions[$name] = $sortFields[$name]['label'];
             }
         }
-        uksort($sortOptions, function($a, $b) use ($settings) {
-            $aWeight = $settings['sort_fields'][$a]['weight'];
-            $bWeight = $settings['sort_fields'][$b]['weight'];
-            return $aWeight - $bWeight;
-        });
+        $sortOptions = $this->sortByWeight($sortOptions,'sort_fields');
 
         return $sortOptions;
     }

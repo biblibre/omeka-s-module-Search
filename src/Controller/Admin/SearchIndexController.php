@@ -42,25 +42,23 @@ class SearchIndexController extends AbstractActionController
         $serviceLocator = $this->getServiceLocator();
 
         $form = $this->getForm(SearchIndexForm::class);
+        $view = new ViewModel;
+        $view->setVariable('form', $form);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
-            if ($form->isValid()) {
-                $formData = $form->getData();
-                $response = $this->api()->create('search_indexes', $formData);
-                if ($response->isError()) {
-                    $form->setMessages($response->getErrors());
-                } else {
-                    $this->messenger()->addSuccess('Search index created.');
-                    return $this->redirect()->toUrl($response->getContent()->url('configure'));
-                }
-            } else {
+            if (!$form->isValid()) {
                 $this->messenger()->addError('There was an error during validation');
+                return $view;
             }
+            $formData = $form->getData();
+            $response = $this->api()->create('search_indexes', $formData);
+            if (!$response->isError()) {
+                $this->messenger()->addSuccess('Search index created.');
+                return $this->redirect()->toUrl($response->getContent()->url('configure'));
+            }
+            $form->setMessages($response->getErrors());
         }
-
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
         return $view;
     }
 
@@ -84,22 +82,24 @@ class SearchIndexController extends AbstractActionController
         $form->add($adapterFieldset);
         $form->setData($searchIndex->getSettings());
 
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->params()->fromPost());
-            if ($form->isValid()) {
-                $formData = $form->getData();
-                unset($formData['csrf']);
-                $searchIndex->setSettings($formData);
-                $entityManager->flush();
-                $this->messenger()->addSuccess('Search index successfully configured');
-                return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
-            } else {
-                $this->messenger()->addError('There was an error during validation');
-            }
-        }
-
         $view = new ViewModel;
         $view->setVariable('form', $form);
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+            if (!$form->isValid()) {
+                $this->messenger()->addError('There was an error during validation');
+                return $view;
+            }
+            $formData = $form->getData();
+            unset($formData['csrf']);
+            $searchIndex->setSettings($formData);
+            $entityManager->flush();
+            $this->messenger()->addSuccess('Search index successfully configured');
+            return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
+
+        }
+
         return $view;
     }
 
