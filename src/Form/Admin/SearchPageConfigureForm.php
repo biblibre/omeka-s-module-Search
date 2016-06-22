@@ -143,7 +143,12 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
     {
         $formElementManager = $this->getFormElementManager();
         $searchPage = $this->getOption('search_page');
+
         $formAdapter = $searchPage->formAdapter();
+        if (!isset($formAdapter)) {
+            return null;
+        }
+
         $configFormClass = $formAdapter->getConfigFormClass();
         if (!isset($configFormClass)) {
             return null;

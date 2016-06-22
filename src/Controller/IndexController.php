@@ -31,10 +31,9 @@ namespace Search\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Omeka\Mvc\Exception\RuntimeException;
 use Search\Form\BasicForm;
 use Search\Querier\Exception\QuerierException;
-use Zend\Http\Header\SetCookie;
-
 
 class IndexController extends AbstractActionController
 {
@@ -48,7 +47,12 @@ class IndexController extends AbstractActionController
         $response = $this->api()->read('search_pages', $this->params('id'));
         $this->page = $response->getContent();
         $index_id = $this->page->index()->id();
+
         $formAdapter = $this->page->formAdapter();
+        if (!isset($formAdapter)) {
+            throw new RuntimeException(sprintf("Form adapter '%s' not found", $this->page->form()));
+        }
+
         $form = $formElementManager->get($formAdapter->getFormClass());
         $form->setAttribute('method', 'GET');
 
