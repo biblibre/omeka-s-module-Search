@@ -109,4 +109,26 @@ class SearchPageAdapter extends AbstractEntityAdapter
             $errorStore->addError('o:path', sprintf('The path "%s" is already taken.', $path));
         }
     }
+
+    public function buildQuery(QueryBuilder $qb, array $query)
+    {
+        if (isset($query['name'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".name",
+                $this->createNamedParameter($qb, $query['name']))
+            );
+        }
+        if (isset($query['path'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".path",
+                $this->createNamedParameter($qb, $query['path']))
+            );
+        }
+        if (isset($query['form'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".form",
+                $this->createNamedParameter($qb, $query['form']))
+            );
+        }
+    }
 }

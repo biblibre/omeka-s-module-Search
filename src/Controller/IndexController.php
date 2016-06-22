@@ -66,9 +66,10 @@ class IndexController extends AbstractActionController
         }
 
         $searchPageSettings = $this->page->settings();
-        $searchFormSettings=[];
-        if (isset($searchPageSettings['form']))
+        $searchFormSettings = [];
+        if (isset($searchPageSettings['form'])) {
             $searchFormSettings = $searchPageSettings['form'];
+        }
 
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
         $this->index = $api->read('search_indexes', $index_id)->getContent();
@@ -119,8 +120,8 @@ class IndexController extends AbstractActionController
         $facets = $this->sortByWeight($facets,'facets');
 
         $totalResults = array_map(function($resource) use ($response) {
-                                                                           return $response->getResourceTotalResults($resource);
-                                                                       }, $indexSettings['resources']);
+            return $response->getResourceTotalResults($resource);
+        }, $indexSettings['resources']);
         $this->paginator(max($totalResults), $page_number);
         $view->setVariable('query', $query);
         $view->setVariable('response', $response);

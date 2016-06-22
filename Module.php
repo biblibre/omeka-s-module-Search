@@ -153,7 +153,7 @@ class Module extends AbstractModule
         $pages = $api->search('search_pages')->getContent();
         foreach ($pages as $page) {
             $path = $page->path();
-            $router->addRoute('search-' . $path, [
+            $router->addRoute('search-page-' . $page->id(), [
                 'type' => 'segment',
                 'options' => [
                     'route' => '/s/:site-slug/' . $path,

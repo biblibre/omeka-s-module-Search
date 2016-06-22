@@ -64,7 +64,7 @@ class Response
 
     public function getResults($resource)
     {
-        return $this->results[$resource];
+        return isset($this->results[$resource]) ? $this->results[$resource] : [];
     }
 
     public function addFacetCount($name, $value, $count)

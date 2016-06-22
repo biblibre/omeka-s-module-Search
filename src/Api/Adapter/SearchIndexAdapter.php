@@ -97,4 +97,20 @@ class SearchIndexAdapter extends AbstractEntityAdapter
             $errorStore->addError('o:name', 'The name cannot be empty.');
         }
     }
+
+    public function buildQuery(QueryBuilder $qb, array $query)
+    {
+        if (isset($query['name'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".name",
+                $this->createNamedParameter($qb, $query['name']))
+            );
+        }
+        if (isset($query['adapter'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".adapter",
+                $this->createNamedParameter($qb, $query['adapter']))
+            );
+        }
+    }
 }

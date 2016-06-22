@@ -123,7 +123,10 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $this->add($sort_fields_fieldset);
 
-        $this->add($this->getFormFieldset());
+        $formFieldset = $this->getFormFieldset();
+        if ($formFieldset) {
+            $this->add($formFieldset);
+        }
     }
 
     public function setFormElementManager($formElementManager)
@@ -141,6 +144,11 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $formElementManager = $this->getFormElementManager();
         $searchPage = $this->getOption('search_page');
         $formAdapter = $searchPage->formAdapter();
+        $configFormClass = $formAdapter->getConfigFormClass();
+        if (!isset($configFormClass)) {
+            return null;
+        }
+
         $fieldset = $formElementManager->get($formAdapter->getConfigFormClass(), [
             'search_page' => $searchPage,
         ]);

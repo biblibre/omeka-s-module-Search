@@ -55,7 +55,8 @@ class SearchPageController extends AbstractActionController
         }
 
         $this->messenger()->addSuccess('Search page created.');
-        return $this->redirect()->toRoute('admin/search');
+        $searchPage = $response->getContent();
+        return $this->redirect()->toUrl($searchPage->url('configure'));
 
     }
 
