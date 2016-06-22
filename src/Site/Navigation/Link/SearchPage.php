@@ -69,7 +69,7 @@ class SearchPage implements LinkInterface
         $page = $api->read('search_pages', $data['search_page_id'])->getContent();
         return [
             'label' => $data['label'],
-            'route' => 'search-' . $page->path(),
+            'route' => 'search-page-' . $page->id(),
             'params' => [
                 'site-slug' => $site->slug(),
             ],
