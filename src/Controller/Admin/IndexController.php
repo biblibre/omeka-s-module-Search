@@ -37,10 +37,9 @@ class IndexController extends AbstractActionController
     public function browseAction()
     {
         $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
 
-        $search_indexes = $api->search('search_indexes')->getContent();
-        $search_pages = $api->search('search_pages')->getContent();
+        $search_indexes = $this->api()->search('search_indexes')->getContent();
+        $search_pages = $this->api()->search('search_pages')->getContent();
 
         $view = new ViewModel;
         $view->setVariable('search_indexes', $search_indexes);

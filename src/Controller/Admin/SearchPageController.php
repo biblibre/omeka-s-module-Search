@@ -75,10 +75,9 @@ class SearchPageController extends AbstractActionController
     public function editAction()
     {
         $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
 
         $id = $this->params('id');
-        $page = $api->read('search_pages', $id)->getContent();
+        $page = $this->api()->read('search_pages', $id)->getContent();
 
         $form = $this->getForm(SearchPageForm::class);
         $form->setData($page->jsonSerialize());
@@ -103,14 +102,13 @@ class SearchPageController extends AbstractActionController
     public function configureAction()
     {
         $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
         $entityManager = $serviceLocator->get('Omeka\EntityManager');
         $adapterManager = $serviceLocator->get('Search\AdapterManager');
         $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
 
         $id = $this->params('id');
 
-        $searchPage = $api->read('search_pages', $id)->getContent();
+        $searchPage = $this->api()->read('search_pages', $id)->getContent();
         $adapter = $searchPage->index()->adapter();
 
         $form = $this->getForm(SearchPageConfigureForm::class, [
@@ -138,9 +136,8 @@ class SearchPageController extends AbstractActionController
     public function deleteConfirmAction()
     {
         $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
         $id = $this->params('id');
-        $response = $api->read('search_pages', $id);
+        $response = $this->api()->read('search_pages', $id);
         $page = $response->getContent();
 
         $view = new ViewModel;
