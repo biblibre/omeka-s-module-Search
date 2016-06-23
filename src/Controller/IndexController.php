@@ -148,7 +148,7 @@ class IndexController extends AbstractActionController
 
     protected function sortByWeight($fields, $setting_name) {
         $settings = $this->page->settings();
-        uksort($fields, function($a, $b) use ($settings) {
+        uksort($fields, function($a, $b) use ($settings,$setting_name) {
             $aWeight = $settings[$setting_name][$a]['weight'];
             $bWeight = $settings[$setting_name][$b]['weight'];
             return $aWeight - $bWeight;
