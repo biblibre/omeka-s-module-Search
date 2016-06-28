@@ -53,7 +53,9 @@ class IndexController extends AbstractActionController
             throw new RuntimeException(sprintf("Form adapter '%s' not found", $this->page->form()));
         }
 
-        $form = $formElementManager->get($formAdapter->getFormClass());
+        $form = $formElementManager->get($formAdapter->getFormClass(), [
+            'search_page' => $this->page,
+        ]);
         $form->setAttribute('method', 'GET');
         $formPartial = $formAdapter->getFormPartial();
         if (!isset($formPartial)) {
