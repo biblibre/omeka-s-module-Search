@@ -43,6 +43,11 @@ class BasicFormAdapter implements FormAdapterInterface
         return 'Search\Form\BasicForm';
     }
 
+    public function getFormPartial()
+    {
+        return null;
+    }
+
     public function getConfigFormClass()
     {
         return null;
