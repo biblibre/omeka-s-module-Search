@@ -87,9 +87,6 @@ class IndexController extends AbstractActionController
         $this->index = $response->getContent();
 
         $querier = $this->index->querier();
-        $querier->setServiceLocator($serviceLocator);
-        $querier->setLogger($serviceLocator->get('Omeka\Logger'));
-        $querier->setIndex($this->index);
 
         $indexSettings = $this->index->settings();
         $query->setResources($indexSettings['resources']);
