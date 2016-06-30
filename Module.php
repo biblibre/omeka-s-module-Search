@@ -77,7 +77,7 @@ class Module extends AbstractModule
                 `name` varchar(255) NOT NULL,
                 `path` varchar(255) NOT NULL,
                 `index_id` int(11) unsigned NOT NULL,
-                `form` varchar(255) NOT NULL,
+                `form_adapter` varchar(255) NOT NULL,
                 `settings` text,
                 `created` datetime NOT NULL,
                 `modified` datetime DEFAULT NULL,
@@ -86,6 +86,19 @@ class Module extends AbstractModule
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
         ';
         $connection->exec($sql);
+    }
+
+    public function upgrade($oldVersion, $newVersion,
+        ServiceLocatorInterface $serviceLocator)
+    {
+        $connection = $serviceLocator->get('Omeka\Connection');
+
+        if (version_compare($oldVersion, '0.1.1', '<')) {
+            $connection->exec('
+                ALTER TABLE search_page
+                CHANGE `form` `form_adapter` varchar(255) NOT NULL
+            ');
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)

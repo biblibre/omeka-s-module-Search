@@ -39,6 +39,7 @@ class IndexController extends AbstractActionController
 {
     protected $page;
     protected $index;
+
     public function searchAction()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -48,27 +49,15 @@ class IndexController extends AbstractActionController
         $this->page = $response->getContent();
         $index_id = $this->page->index()->id();
 
-        $formAdapter = $this->page->formAdapter();
-        if (!isset($formAdapter)) {
-            throw new RuntimeException(sprintf("Form adapter '%s' not found", $this->page->form()));
-        }
-
-        $form = $formElementManager->get($formAdapter->getFormClass(), [
-            'search_page' => $this->page,
-        ]);
-        $form->setAttribute('method', 'GET');
-        $formPartial = $formAdapter->getFormPartial();
-        if (!isset($formPartial)) {
-            $formPartial = 'search/search-form';
-        }
+        $form = $this->page->form();
 
         $view = new ViewModel;
-        $view->setVariable('form', $form);
-        $view->setVariable('formPartial', $formPartial);
+        $view->setVariable('searchPage', $this->page);
 
         $params = $this->params()->fromQuery();
-        if (empty($params))
+        if (empty($params)) {
             return $view;
+        }
 
         $form->setData($params);
         if (!$form->isValid()) {
@@ -80,6 +69,13 @@ class IndexController extends AbstractActionController
         $searchFormSettings = [];
         if (isset($searchPageSettings['form'])) {
             $searchFormSettings = $searchPageSettings['form'];
+        }
+
+        $formAdapter = $this->page->formAdapter();
+        if (!isset($formAdapter)) {
+            $formAdapterName = $this->page->formAdapterName();
+            $msg = sprintf("Form adapter '%s' not found", $formAdapterName);
+            throw new RuntimeException($msg);
         }
 
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);

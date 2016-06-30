@@ -29,6 +29,7 @@ return [
             'Search\Form\Admin\SearchPageForm' => 'Search\Service\Form\SearchPageFormFactory',
             'Search\Form\Admin\SearchPageConfigureForm' => 'Search\Service\Form\SearchPageConfigureFormFactory',
             'Search\Form\BasicForm' => 'Search\Service\Form\BasicFormFactory',
+            'Search\Form\Element\SearchPageSelect' => 'Search\Service\Form\Element\SearchPageSelectFactory',
         ],
     ],
     'navigation' => [
@@ -138,6 +139,7 @@ return [
         'invokables' => [
             'facetLink' => 'Search\View\Helper\FacetLink',
             'facetLabel' => 'Search\View\Helper\FacetLabel',
+            'searchForm' => 'Search\View\Helper\SearchForm',
         ],
     ],
     'search' => [

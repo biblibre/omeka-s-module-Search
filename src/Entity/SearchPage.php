@@ -66,7 +66,7 @@ class SearchPage extends AbstractEntity
     /**
      * @Column(type="string", length=255)
      */
-    protected $form;
+    protected $formAdapter;
 
     /**
      * @Column(type="json_array", nullable=true)
@@ -118,14 +118,14 @@ class SearchPage extends AbstractEntity
         return $this->index;
     }
 
-    public function setForm($form)
+    public function setFormAdapter($formAdapter)
     {
-        $this->form = $form;
+        $this->formAdapter = $formAdapter;
     }
 
-    public function getForm()
+    public function getFormAdapter()
     {
-        return $this->form;
+        return $this->formAdapter;
     }
 
     public function setSettings($settings)

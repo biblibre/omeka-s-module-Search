@@ -68,6 +68,19 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $url('admin/search/page-id', $params, $options);
     }
 
+    public function siteUrl($siteSlug = null, $canonical = false)
+    {
+        $url = $this->getViewHelper('Url');
+        $params = [
+            'site-slug' => $siteSlug,
+        ];
+        $options = [
+            'force_canonical' => $canonical
+        ];
+
+        return $url('search-page-' . $this->id(), $params, $options);
+    }
+
     public function name()
     {
         return $this->resource->getName();
@@ -83,9 +96,30 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $this->getAdapter('search_indexes')->getRepresentation($this->resource->getIndex());
     }
 
+    public function formAdapterName()
+    {
+        return $this->resource->getFormAdapter();
+    }
+
+    public function formAdapter()
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
+        return $formAdapterManager->get($this->formAdapterName());
+    }
+
     public function form()
     {
-        return $this->resource->getForm();
+        $serviceLocator = $this->getServiceLocator();
+        $formElementManager = $serviceLocator->get('FormElementManager');
+        $formAdapter = $this->formAdapter();
+
+        $form = $formElementManager->get($formAdapter->getFormClass(), [
+            'search_page' => $this,
+        ]);
+        $form->setAttribute('method', 'GET');
+
+        return $form;
     }
 
     public function settings()
@@ -98,12 +132,6 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $this->resource->getCreated();
     }
 
-    public function formAdapter()
-    {
-        $serviceLocator = $this->getServiceLocator();
-        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
-        return $formAdapterManager->get($this->form());
-    }
 
     public function getEntity()
     {
