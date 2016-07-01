@@ -88,7 +88,7 @@ class SearchPageAdapter extends AbstractEntityAdapter
             $entity->setIndex($this->getAdapter('search_indexes')->findEntity($indexId));
         }
         if ($this->shouldHydrate($request, 'o:form')) {
-            $entity->setForm($request->getValue('o:form'));
+            $entity->setFormAdapter($request->getValue('o:form'));
         }
         if ($this->shouldHydrate($request, 'o:settings')) {
             $entity->setSettings($request->getValue('o:settings'));
