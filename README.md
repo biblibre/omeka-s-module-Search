@@ -15,3 +15,7 @@ However the [Solr module](https://github.com/biblibre/omeka-s-module-Solr) provi
 ## Requirements
 
 - [jQueryUI module](https://github.com/biblibre/omeka-s-module-jQueryUI) for admin interface
+
+## Build status
+
+[![Build Status](https://travis-ci.org/biblibre/omeka-s-module-Search.svg?branch=master)](https://travis-ci.org/biblibre/omeka-s-module-Search)
