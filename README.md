@@ -15,11 +15,3 @@ However the [Solr module](https://github.com/biblibre/omeka-s-module-Solr) provi
 ## Requirements
 
 - [jQueryUI module](https://github.com/biblibre/omeka-s-module-jQueryUI) for admin interface
-
-## Installation notes
-
-Due to [a bug in Omeka S](https://github.com/omeka/omeka-s/issues/619), you will have to run the following command after installing the module:
-
-```
-vendor/bin/doctrine orm:generate-proxies
-```
