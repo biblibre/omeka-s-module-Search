@@ -32,6 +32,7 @@ namespace Search\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
+use Omeka\Service\Paginator;
 use Search\Form\BasicForm;
 use Search\Querier\Exception\QuerierException;
 
@@ -42,9 +43,6 @@ class IndexController extends AbstractActionController
 
     public function searchAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $formElementManager = $serviceLocator->get('FormElementManager');
-
         $response = $this->api()->read('search_pages', $this->params('id'));
         $this->page = $response->getContent();
         $index_id = $this->page->index()->id();
@@ -136,9 +134,10 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    protected function setPagination($query,$page) {
-        $settings = $this->getServiceLocator()->get('Omeka\Settings');
-        $query->setLimitPage($page,$settings->get('pagination_per_page', \Omeka\Service\Paginator::PER_PAGE));
+    protected function setPagination($query,$page)
+    {
+        $per_page = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
+        $query->setLimitPage($page, $per_page);
     }
 
     protected function sortByWeight($fields, $setting_name) {

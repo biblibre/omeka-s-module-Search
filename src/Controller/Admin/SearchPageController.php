@@ -37,10 +37,12 @@ use Search\Form\Admin\SearchPageConfigureForm;
 
 class SearchPageController extends AbstractActionController
 {
+    protected $entityManager;
+    protected $searchAdapterManager;
+    protected $searchFormAdapterManager;
+
     public function addAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-
         $form = $this->getForm(SearchPageForm::class);
 
         $view = new ViewModel;
@@ -74,8 +76,6 @@ class SearchPageController extends AbstractActionController
 
     public function editAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-
         $id = $this->params('id');
         $page = $this->api()->read('search_pages', $id)->getContent();
 
@@ -101,10 +101,9 @@ class SearchPageController extends AbstractActionController
 
     public function configureAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $entityManager = $serviceLocator->get('Omeka\EntityManager');
-        $adapterManager = $serviceLocator->get('Search\AdapterManager');
-        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
+        $entityManager = $this->getEntityManager();
+        $adapterManager = $this->getSearchAdapterManager();
+        $formAdapterManager = $this->getSearchFormAdapterManager();
 
         $id = $this->params('id');
 
@@ -135,7 +134,6 @@ class SearchPageController extends AbstractActionController
 
     public function deleteConfirmAction()
     {
-        $serviceLocator = $this->getServiceLocator();
         $id = $this->params('id');
         $response = $this->api()->read('search_pages', $id);
         $page = $response->getContent();
@@ -165,5 +163,35 @@ class SearchPageController extends AbstractActionController
             }
         }
         return $this->redirect()->toRoute('admin/search');
+    }
+
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    public function setSearchAdapterManager($searchAdapterManager)
+    {
+        $this->searchAdapterManager = $searchAdapterManager;
+    }
+
+    public function getSearchAdapterManager()
+    {
+        return $this->searchAdapterManager;
+    }
+
+    public function setSearchFormAdapterManager($searchFormAdapterManager)
+    {
+        $this->searchFormAdapterManager = $searchFormAdapterManager;
+    }
+
+    public function getSearchFormAdapterManager()
+    {
+        return $this->searchFormAdapterManager;
     }
 }

@@ -29,9 +29,7 @@
 
 namespace Search\Adapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-interface AdapterInterface extends ServiceLocatorAwareInterface
+interface AdapterInterface
 {
     public function getLabel();
     public function getConfigFieldset();
@@ -40,4 +38,7 @@ interface AdapterInterface extends ServiceLocatorAwareInterface
     public function getAvailableFacetFields();
     public function getAvailableSortFields();
     public function getAvailableFields();
+
+    public function setServiceLocator($serviceLocator);
+    public function getServiceLocator();
 }

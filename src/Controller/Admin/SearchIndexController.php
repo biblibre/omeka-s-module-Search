@@ -37,10 +37,12 @@ use Search\Form\Admin\SearchIndexConfigureForm;
 
 class SearchIndexController extends AbstractActionController
 {
+    protected $entityManager;
+    protected $searchAdapterManager;
+    protected $jobDispatcher;
+
     public function addAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-
         $form = $this->getForm(SearchIndexForm::class);
         $view = new ViewModel;
         $view->setVariable('form', $form);
@@ -64,9 +66,8 @@ class SearchIndexController extends AbstractActionController
 
     public function configureAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $entityManager = $serviceLocator->get('Omeka\EntityManager');
-        $adapterManager = $serviceLocator->get('Search\AdapterManager');
+        $entityManager = $this->getEntityManager();
+        $adapterManager = $this->getSearchAdapterManager();
 
         $id = $this->params('id');
 
@@ -105,8 +106,7 @@ class SearchIndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $jobDispatcher = $serviceLocator->get('Omeka\JobDispatcher');
+        $jobDispatcher = $this->getJobDispatcher();
         $indexId = $this->params('id');
 
         $job = $jobDispatcher->dispatch('Search\Job\Index', ['index-id' => $indexId]);
@@ -144,5 +144,35 @@ class SearchIndexController extends AbstractActionController
             }
         }
         return $this->redirect()->toRoute('admin/search');
+    }
+
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    public function setSearchAdapterManager($searchAdapterManager)
+    {
+        $this->searchAdapterManager = $searchAdapterManager;
+    }
+
+    public function getSearchAdapterManager()
+    {
+        return $this->searchAdapterManager;
+    }
+
+    public function setJobDispatcher($jobDispatcher)
+    {
+        $this->jobDispatcher = $jobDispatcher;
+    }
+
+    public function getJobDispatcher()
+    {
+        return $this->jobDispatcher;
     }
 }

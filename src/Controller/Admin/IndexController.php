@@ -36,8 +36,6 @@ class IndexController extends AbstractActionController
 {
     public function browseAction()
     {
-        $serviceLocator = $this->getServiceLocator();
-
         $search_indexes = $this->api()->search('search_indexes')->getContent();
         $search_pages = $this->api()->search('search_pages')->getContent();
 

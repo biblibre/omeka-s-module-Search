@@ -4,8 +4,10 @@ return [
         'invokables' => [
             'Search\Controller\Index' => 'Search\Controller\IndexController',
             'Search\Controller\Admin\Index' => 'Search\Controller\Admin\IndexController',
-            'Search\Controller\Admin\SearchIndex' => 'Search\Controller\Admin\SearchIndexController',
-            'Search\Controller\Admin\SearchPage' => 'Search\Controller\Admin\SearchPageController',
+        ],
+        'factories' => [
+            'Search\Controller\Admin\SearchIndex' => 'Search\Service\Controller\Admin\SearchIndexControllerFactory',
+            'Search\Controller\Admin\SearchPage' => 'Search\Service\Controller\Admin\SearchPageControllerFactory',
         ],
     ],
     'entity_manager' => [

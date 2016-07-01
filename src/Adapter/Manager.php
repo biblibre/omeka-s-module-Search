@@ -29,12 +29,9 @@
 
 namespace Search\Adapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-
-class Manager implements ServiceLocatorAwareInterface
+class Manager
 {
-    use ServiceLocatorAwareTrait;
+    protected $serviceLocator;
 
     protected $config;
 
@@ -74,5 +71,15 @@ class Manager implements ServiceLocatorAwareInterface
             }
         }
         return $adapters;
+    }
+
+    public function setServiceLocator($serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 }

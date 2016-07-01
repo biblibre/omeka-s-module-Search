@@ -29,11 +29,9 @@
 
 namespace Search\Adapter;
 
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-
 abstract class AbstractAdapter implements AdapterInterface
 {
-    use ServiceLocatorAwareTrait;
+    protected $serviceLocator;
 
     public function getAvailableFacetFields()
     {
@@ -48,5 +46,15 @@ abstract class AbstractAdapter implements AdapterInterface
     public function getAvailableFields()
     {
         return [];
+    }
+
+    public function setServiceLocator($serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 }
