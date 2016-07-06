@@ -2,9 +2,9 @@
 
 namespace SearchTest\Controller;
 
-use Omeka\Test\AbstractHttpControllerTestCase;
+use OmekaTestHelper\Controller\OmekaControllerTestCase;
 
-abstract class SearchControllerTestCase extends AbstractHttpControllerTestCase
+abstract class SearchControllerTestCase extends OmekaControllerTestCase
 {
     protected $searchIndex;
     protected $searchPage;
@@ -50,17 +50,6 @@ abstract class SearchControllerTestCase extends AbstractHttpControllerTestCase
         $this->api()->delete('search_indexes', $this->searchIndex->id());
     }
 
-    protected function loginAsAdmin()
-    {
-        $application = $this->getApplication();
-        $serviceLocator = $application->getServiceManager();
-        $auth = $serviceLocator->get('Omeka\AuthenticationService');
-        $adapter = $auth->getAdapter();
-        $adapter->setIdentity('admin@example.com');
-        $adapter->setCredential('root');
-        $auth->authenticate();
-    }
-
     protected function setupTestSearchAdapter()
     {
         $serviceLocator = $this->getApplication()->getServiceManager();
@@ -71,19 +60,10 @@ abstract class SearchControllerTestCase extends AbstractHttpControllerTestCase
         $serviceLocator->setAllowOverride(false);
     }
 
-    protected function getServiceLocator()
-    {
-        return $this->getApplication()->getServiceManager();
-    }
-
-    protected function api()
-    {
-        return $this->getServiceLocator()->get('Omeka\ApiManager');
-    }
-
     protected function resetApplication()
     {
-        $this->application = null;
+        parent::resetApplication();
+
         $this->setupTestSearchAdapter();
     }
 }
