@@ -33,6 +33,7 @@ class Query
 {
     protected $query;
     protected $sort;
+    protected $facetLimit;
     protected $facetFields = [];
     protected $filters = [];
     protected $dateRangeFilters = [];
@@ -48,6 +49,16 @@ class Query
     public function getQuery()
     {
         return $this->query;
+    }
+
+    public function setFacetLimit($facetLimit)
+    {
+        $this->facetLimit = $facetLimit;
+    }
+
+    public function getFacetLimit($facetLimit)
+    {
+        return $this->facetLimit;
     }
 
     public function addFacetField($field)

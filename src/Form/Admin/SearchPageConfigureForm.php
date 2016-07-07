@@ -48,6 +48,19 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
 
+        $this->add([
+            'name' => 'facet_limit',
+            'type' => 'Number',
+            'options' => [
+                'label' => $translator->translate('Facet limit'),
+                'info' => $translator->translate('The maximum number of values fetched for each facet'),
+            ],
+            'attributes' => [
+                'min' => '1',
+                'required' => true,
+            ],
+        ]);
+
         $facets = new Fieldset('facets');
         $facets->setLabel($translator->translate('Facets'));
         $facets->setAttribute('data-sortable', '1');
