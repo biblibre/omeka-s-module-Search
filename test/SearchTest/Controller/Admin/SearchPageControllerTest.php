@@ -49,6 +49,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm');
 
         $this->dispatch($this->searchPage->url('configure'), 'POST', [
+            'facet_limit' => '10',
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $this->assertRedirectTo("/admin/search");

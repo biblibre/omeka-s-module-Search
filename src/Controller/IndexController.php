@@ -90,7 +90,7 @@ class IndexController extends AbstractActionController
                 $query->addFacetField($name);
             }
         }
-        if ($settings['facet_limit']) {
+        if (isset($settings['facet_limit'])) {
             $query->setFacetLimit($settings['facet_limit']);
         }
 
