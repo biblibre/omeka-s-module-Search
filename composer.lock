@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "3e52e48cd5078617c48b5f83cafd5343",
+    "content-hash": "698e59fa020ec6b1a86762ee8e062a6d",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "biblibre/omeka-s-test-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/biblibre/omeka-s-test-helper.git",
+                "reference": "36d42cd6d3d3694c6fd2da1d0824573a109bb8db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/biblibre/omeka-s-test-helper/zipball/36d42cd6d3d3694c6fd2da1d0824573a109bb8db",
+                "reference": "36d42cd6d3d3694c6fd2da1d0824573a109bb8db",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OmekaTestHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Test helpers for Omeka S",
+            "homepage": "https://github.com/biblibre/omeka-s-test-helper",
+            "keywords": [
+                "omeka",
+                "test"
+            ],
+            "time": "2016-07-06 12:49:47"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "biblibre/omeka-s-test-helper": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
