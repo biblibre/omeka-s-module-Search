@@ -10,6 +10,11 @@ return [
             'Search\Controller\Admin\SearchPage' => 'Search\Service\Controller\Admin\SearchPageControllerFactory',
         ],
     ],
+    'controller_plugins' => [
+        'factories' => [
+            'searchForm' => 'Search\Service\Mvc\Controller\Plugin\SearchFormFactory',
+        ],
+    ],
     'entity_manager' => [
         'mapping_classes_paths' => [
             __DIR__ . '/../src/Entity',

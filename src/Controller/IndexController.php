@@ -47,10 +47,9 @@ class IndexController extends AbstractActionController
         $this->page = $response->getContent();
         $index_id = $this->page->index()->id();
 
-        $form = $this->page->form();
+        $form = $this->searchForm($this->page);
 
         $view = new ViewModel;
-        $view->setVariable('searchPage', $this->page);
 
         $params = $this->params()->fromQuery();
         if (empty($params)) {

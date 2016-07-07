@@ -6,14 +6,37 @@ use Zend\View\Helper\AbstractHelper;
 
 class SearchForm extends AbstractHelper
 {
-    public function __invoke($searchPage)
+    protected $searchPage;
+    protected $form;
+
+    public function __invoke($searchPage = null)
+    {
+        if (isset($searchPage)) {
+            $this->searchPage = $searchPage;
+            $this->form = null;
+        }
+
+        return $this;
+    }
+
+    public function __toString()
     {
         $view = $this->getView();
 
-        $formPartial = $this->getFormPartial($searchPage);
-        $form = $this->getForm($searchPage);
+        $formPartial = $this->getFormPartial();
+        $form = $this->getForm();
 
         return $view->partial($formPartial, ['form' => $form]);
+    }
+
+    public function getForm()
+    {
+        if (!isset($this->form)) {
+            $this->form = $this->searchPage->form();
+            $this->form->setAttribute('action', $this->searchPage->url());
+        }
+
+        return $this->form;
     }
 
     protected function getServiceLocator()
@@ -21,9 +44,9 @@ class SearchForm extends AbstractHelper
         return $this->getView()->getHelperPluginManager()->getServiceLocator();
     }
 
-    protected function getFormPartial($searchPage)
+    protected function getFormPartial()
     {
-        $formAdapter = $searchPage->formAdapter();
+        $formAdapter = $this->searchPage->formAdapter();
 
         $formPartial = $formAdapter->getFormPartial();
         if (!isset($formPartial)) {
@@ -31,13 +54,5 @@ class SearchForm extends AbstractHelper
         }
 
         return $formPartial;
-    }
-
-    public function getForm($searchPage)
-    {
-        $form = $searchPage->form();
-        $form->setAttribute('action', $searchPage->url());
-
-        return $form;
     }
 }

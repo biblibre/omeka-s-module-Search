@@ -32,5 +32,6 @@ class IndexControllerTest extends SearchControllerTestCase
         $this->dispatch('/s/test/test/search', 'GET', ['q' => 'test']);
         $this->assertResponseStatusCode(200);
         $this->assertQuery('.search-results');
+        $this->assertQuery('input[name="q"][value="test"]');
     }
 }
