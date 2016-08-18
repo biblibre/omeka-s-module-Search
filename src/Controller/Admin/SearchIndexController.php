@@ -110,7 +110,7 @@ class SearchIndexController extends AbstractActionController
         $indexId = $this->params('id');
 
         $job = $jobDispatcher->dispatch('Search\Job\Index', ['index-id' => $indexId]);
-        $this->messenger()->addSuccess('Indexing in job ID ' . $job->getId());
+        $this->messenger()->addSuccess('Indexing in job ID %s', [$job->getId()]);
         return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
     }
 

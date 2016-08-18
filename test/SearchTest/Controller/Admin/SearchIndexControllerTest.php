@@ -59,6 +59,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $messenger = new Messenger;
         $messages = $messenger->get();
         $message = $messages[Messenger::SUCCESS][0];
-        $this->assertRegExp('/^Indexing in job ID \d+$/', $message);
+        $this->assertEquals('Indexing in job ID %s', $message[0]);
+        $this->assertTrue(is_numeric($message[1][0]));
     }
 }
