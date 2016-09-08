@@ -5,6 +5,7 @@ namespace SearchTest\Controller\Admin;
 require_once __DIR__ . '/../SearchControllerTestCase.php';
 
 use Omeka\Mvc\Controller\Plugin\Messenger;
+use Search\Form\Admin\SearchIndexConfigureForm;
 use SearchTest\Controller\SearchControllerTestCase;
 
 class SearchIndexControllerTest extends SearchControllerTestCase
@@ -41,7 +42,9 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $this->assertQuery('input[name="resources[]"]');
 
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchIndexConfigureForm');
+        $form = $forms->get(SearchIndexConfigureForm::class, [
+            'search_index_id' => $this->searchIndex->id(),
+        ]);
 
         $this->dispatch($this->searchIndex->adminUrl('configure'), 'POST', [
             'resources' => ['items', 'item_sets'],

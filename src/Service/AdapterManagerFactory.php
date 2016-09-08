@@ -29,18 +29,18 @@
 
 namespace Search\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\Adapter\Manager;
 
 class AdapterManagerFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('Config');
 
         $am = new Manager($config['search']['adapters']);
-        $am->setServiceLocator($serviceLocator);
+        $am->setServiceLocator($container);
 
         return $am;
     }

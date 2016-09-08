@@ -41,8 +41,6 @@ class BasicForm extends Form implements TranslatorAwareInterface
     {
         $translator = $this->getTranslator();
 
-        $this->remove('csrf');
-
         $this->add([
             'name' => 'q',
             'type' => 'Text',

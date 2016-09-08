@@ -30,11 +30,10 @@
 namespace Search\Indexer;
 
 use Zend\Log\LoggerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Omeka\Api\Representation\AbstractResourceRepresentation;
 use Search\Api\Representation\SearchIndexRepresentation;
 
-interface IndexerInterface extends ServiceLocatorAwareInterface, LoggerAwareInterface
+interface IndexerInterface extends LoggerAwareInterface
 {
     public function setSearchIndex(SearchIndexRepresentation $index);
     public function canIndex($resourceName);

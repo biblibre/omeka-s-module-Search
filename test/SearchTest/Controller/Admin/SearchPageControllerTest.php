@@ -46,7 +46,9 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $this->assertQueryContentContains('h2', 'Sort fields');
 
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm');
+        $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm', [
+            'search_page' => $this->searchPage,
+        ]);
 
         $this->dispatch($this->searchPage->url('configure'), 'POST', [
             'facet_limit' => '10',

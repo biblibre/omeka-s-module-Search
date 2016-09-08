@@ -2,27 +2,20 @@
 namespace Search\Service\Form;
 
 use Search\Form\Admin\SearchIndexConfigureForm;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class SearchIndexConfigureFormFactory implements FactoryInterface
 {
-    protected $options = [];
-
-    public function createService(ServiceLocatorInterface $elements)
+    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $serviceLocator = $elements->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
+        $api = $services->get('Omeka\ApiManager');
+        $translator = $services->get('MvcTranslator');
 
-        $form = new SearchIndexConfigureForm(null, $this->options);
-        $form->setTranslator($serviceLocator->get('MvcTranslator'));
+        $form = new SearchIndexConfigureForm(null, $options);
+        $form->setTranslator($translator);
         $form->setApiManager($api);
 
         return $form;
-    }
-
-    public function setCreationOptions($options)
-    {
-        $this->options = $options;
     }
 }

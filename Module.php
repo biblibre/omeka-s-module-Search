@@ -113,15 +113,34 @@ class Module extends AbstractModule
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
-            [
-                'Omeka\Api\Adapter\ItemAdapter',
-                'Omeka\Api\Adapter\ItemSetAdapter',
-            ],
-            [
-                'api.create.post',
-                'api.update.post',
-                'api.delete.post',
-            ],
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.create.post',
+            [$this, 'updateSearchIndex']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.update.post',
+            [$this, 'updateSearchIndex']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.delete.post',
+            [$this, 'updateSearchIndex']
+        );
+
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.create.post',
+            [$this, 'updateSearchIndex']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.update.post',
+            [$this, 'updateSearchIndex']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.delete.post',
             [$this, 'updateSearchIndex']
         );
     }
@@ -159,7 +178,7 @@ class Module extends AbstractModule
         $router = $serviceLocator->get('Router');
         $api = $serviceLocator->get('Omeka\ApiManager');
 
-        if (!$router instanceof \Zend\Mvc\Router\Http\TreeRouteStack) {
+        if (!$router instanceof \Zend\Router\Http\TreeRouteStack) {
             return;
         }
 

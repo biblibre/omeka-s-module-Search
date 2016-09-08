@@ -1,15 +1,14 @@
 <?php
 namespace Search\Service\Controller\Admin;
 
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\Controller\Admin\SearchIndexController;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class SearchIndexControllerFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $controllers)
+    public function __invoke(ContainerInterface $services, $requestedNamed, array $options = null)
     {
-        $services = $controllers->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
         $searchAdapterManager = $services->get('Search\AdapterManager');
         $jobDispatcher = $services->get('Omeka\JobDispatcher');

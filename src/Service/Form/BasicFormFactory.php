@@ -1,19 +1,16 @@
 <?php
 namespace Search\Service\Form;
 
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\Form\BasicForm;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class BasicFormFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $elements)
+    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $serviceLocator = $elements->getServiceLocator();
-        $searchAdapterManager = $serviceLocator->get('Search\AdapterManager');
-
         $form = new BasicForm;
-        $form->setTranslator($serviceLocator->get('MvcTranslator'));
+        $form->setTranslator($services->get('MvcTranslator'));
 
         return $form;
     }

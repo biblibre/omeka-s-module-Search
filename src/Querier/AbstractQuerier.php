@@ -30,18 +30,29 @@
 namespace Search\Querier;
 
 use Zend\Log\LoggerAwareTrait;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Search\Api\Representation\SearchIndexRepresentation;
 
 abstract class AbstractQuerier implements QuerierInterface
 {
-    use ServiceLocatorAwareTrait, LoggerAwareTrait;
+    use LoggerAwareTrait;
 
     protected $index;
+    protected $serviceLocator;
 
     public function setIndex(SearchIndexRepresentation $index)
     {
         $this->index = $index;
+    }
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 
     protected function getSetting($name, $default = null)

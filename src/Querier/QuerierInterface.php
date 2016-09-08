@@ -30,12 +30,15 @@
 namespace Search\Querier;
 
 use Zend\Log\LoggerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Query;
 
-interface QuerierInterface extends ServiceLocatorAwareInterface, LoggerAwareInterface
+interface QuerierInterface extends LoggerAwareInterface
 {
     public function setIndex(SearchIndexRepresentation $index);
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+    public function getServiceLocator();
+
     public function query(Query $query);
 }

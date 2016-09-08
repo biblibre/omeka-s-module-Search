@@ -117,6 +117,7 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         $form = $formElementManager->get($formAdapter->getFormClass(), [
             'search_page' => $this,
         ]);
+        $form->remove('csrf');
         $form->setAttribute('method', 'GET');
 
         return $form;
