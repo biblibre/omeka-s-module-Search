@@ -56,7 +56,7 @@ class Query
         $this->facetLimit = $facetLimit;
     }
 
-    public function getFacetLimit($facetLimit)
+    public function getFacetLimit()
     {
         return $this->facetLimit;
     }
