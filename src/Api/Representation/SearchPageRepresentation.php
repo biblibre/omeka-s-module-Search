@@ -48,7 +48,7 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
             'o:name' => $entity->getName(),
             'o:path' => $entity->getPath(),
             'o:index_id' => $entity->getIndex()->getId(),
-            'o:form' => $entity->getForm(),
+            'o:form' => $entity->getFormAdapter(),
             'o:settings' => $entity->getSettings(),
             'o:created' => $this->getDateTime($entity->getCreated()),
         ];
