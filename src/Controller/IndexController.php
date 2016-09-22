@@ -50,7 +50,7 @@ class IndexController extends AbstractActionController
         $form = $this->searchForm($this->page);
 
         $view = new ViewModel;
-
+        $site = $this->currentSite();
         $params = $this->params()->fromQuery();
         if (empty($params)) {
             return $view;
@@ -129,6 +129,7 @@ class IndexController extends AbstractActionController
         }, $indexSettings['resources']);
         $this->paginator(max($totalResults), $page_number);
         $view->setVariable('query', $query);
+        $view->setVariable('site', $site);
         $view->setVariable('response', $response);
         $view->setVariable('facets', $facets);
         $view->setVariable('sortOptions', $sortOptions);

@@ -78,6 +78,7 @@
                         'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                         'response' => $response,
                         'resourceName' => 'items',
+                        'site' => $site
                     ]); ?>
 
                     <?php echo $this->pagination(); ?>

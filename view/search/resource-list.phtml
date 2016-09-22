@@ -34,6 +34,7 @@
         <?php foreach ($results as $result): ?>
             <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
             <?php echo $this->partial('search/resource', ['resource' => $resource,
+                                                          'site' => $site,
                                                           'tag' => 'div']); ?>
         <?php endforeach; ?>
     </div>
