@@ -45,6 +45,12 @@ var Search = (function() {
         }).join('&');
     };
 
+    self.sortBy = function(sort) {
+        var params = Search.objectFromQueryString(document.location.search);
+        params['sort'] = sort;
+        window.location.search = '?' + Search.queryStringFromObject(params);
+    };
+
     self.setViewType = function(viewType) {
         var resourceLists = document.querySelectorAll("div.resource-list");
         for (var i = 0; i < resourceLists.length; i++) {
