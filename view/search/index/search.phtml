@@ -35,8 +35,6 @@
 ?>
 
 <div id="content" role="main">
-    <?php echo $this->pageTitle($this->translate('Search')); ?>
-
     <?php echo $this->searchForm(); ?>
 
     <?php if (isset($response)): ?>
@@ -66,7 +64,13 @@
                         'site' => $site
                     ]); ?>
 
-                    <?php echo $this->pagination(); ?>
+                    <?php
+                        echo $this->partial('search/results-footer', [
+                            'query' => $query,
+                            'response' => $response,
+                            'sortOptions' => $sortOptions,
+                        ]);
+                    ?>
                 <?php else: ?>
                     <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
                 <?php endif; ?>
