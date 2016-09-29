@@ -29,6 +29,7 @@
 
 <?php if (!empty($facets)): ?>
     <aside class="search-facets">
+        <h2><?php echo $this->translate('Filters'); ?></h2>
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
                 <li class="search-facet">
