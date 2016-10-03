@@ -29,19 +29,36 @@ var Search = (function() {
     var self = {};
 
     self.objectFromQueryString = function(str) {
-        return str
+        var params = {};
+        str
             .replace(/(^\?)/, '')
             .split("&")
-            .map(function(n) {
+            .filter(function(element) { return element !== '' })
+            .forEach(function(n) {
                 n = n.split('=');
-                this[decodeURIComponent(n[0])] = decodeURIComponent(n[1]);
-            return this;
-        }.bind({}))[0];
+                var name = decodeURIComponent(n[0]);
+                if (!params.hasOwnProperty(name)) {
+                    params[name] = decodeURIComponent(n[1]);
+                } else {
+                    if (!Array.isArray(params[name])) {
+                        params[name] = [params[name]];
+                    }
+                    params[name].push(decodeURIComponent(n[1]));
+                }
+            });
+
+        return params;
     };
 
     self.queryStringFromObject = function(obj) {
         return Object.keys(obj).map(function(name) {
-            return name + '=' + obj[name];
+            if (Array.isArray(obj[name])) {
+                return obj[name].map(function(value) {
+                    return name + '=' + value;
+                }).join('&');
+            } else {
+                return name + '=' + obj[name];
+            }
         }).join('&');
     };
 
