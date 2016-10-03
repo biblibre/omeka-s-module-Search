@@ -5,6 +5,7 @@ namespace SearchTest\Controller\Admin;
 require_once __DIR__ . '/../SearchControllerTestCase.php';
 
 use Omeka\Mvc\Controller\Plugin\Messenger;
+use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexConfigureForm;
 use SearchTest\Controller\SearchControllerTestCase;
 
@@ -62,6 +63,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $messenger = new Messenger;
         $messages = $messenger->get();
         $message = $messages[Messenger::SUCCESS][0];
-        $this->assertEquals('Indexing in job ID %s', $message);
+        $this->assertInstanceOf(Message::class, $message);
+        $this->assertEquals('Indexing started in %s', $message->getMessage());
     }
 }

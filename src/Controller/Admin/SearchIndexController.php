@@ -32,6 +32,7 @@ namespace Search\Controller\Admin;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
+use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexForm;
 use Search\Form\Admin\SearchIndexConfigureForm;
 
@@ -110,7 +111,25 @@ class SearchIndexController extends AbstractActionController
         $indexId = $this->params('id');
 
         $job = $jobDispatcher->dispatch('Search\Job\Index', ['index-id' => $indexId]);
-        $this->messenger()->addSuccess('Indexing in job ID %s', [$job->getId()]);
+
+        $jobUrl = $this->url()->fromRoute('admin/id', [
+            'controller' => 'job',
+            'action' => 'show',
+            'id' => $job->getId(),
+        ]);
+
+        $message = new Message(
+            'Indexing started in %s',
+            sprintf(
+                '<a href="%s">%s</a>',
+                htmlspecialchars($jobUrl),
+                sprintf($this->translate('job %s'), $job->getId())
+            )
+        );
+
+        $message->setEscapeHtml(false);
+        $this->messenger()->addSuccess($message);
+
         return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
     }
 
