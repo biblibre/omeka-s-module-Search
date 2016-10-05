@@ -34,6 +34,8 @@
     $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
 
+<?php $this->pageTitle($this->translate('Search')); ?>
+
 <div id="content" role="main">
     <?php echo $this->searchForm(); ?>
 
