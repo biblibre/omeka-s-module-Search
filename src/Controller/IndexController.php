@@ -82,7 +82,15 @@ class IndexController extends AbstractActionController
         $querier = $this->index->querier();
 
         $indexSettings = $this->index->settings();
-        $query->setResources($indexSettings['resources']);
+        if (array_key_exists('resource_type', $params)) {
+            $resource_type = $params['resource_type'];
+            if (!is_array($resource_type)) {
+                $resource_type = [$resource_type];
+            }
+            $query->setResources($resource_type);
+        } else {
+            $query->setResources($indexSettings['resources']);
+        }
 
         $settings = $this->page->settings();
         foreach ($settings['facets'] as $name => $facet) {
