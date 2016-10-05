@@ -30,6 +30,8 @@ class FacetLink extends AbstractHelper
             $query['limit'][$name][] = $facet['value'];
         }
 
+        unset($query['page']);
+
         $url = $view->url($route, $params, ['query' => $query]);
 
         return $view->partial('search/facet-link', [
