@@ -168,6 +168,20 @@ msgstr "Modifier la page de recherche"
 msgid "Filters"
 msgstr "Filtres"
 
+#: view/search/index/search.phtml:56
+#, php-format
+msgid "%s item set"
+msgid_plural "%s item sets"
+msgstr[0] "%s collection"
+msgstr[1] "%s collections"
+
+#: view/search/index/search.phtml:63
+#, php-format
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] "%s contenu"
+msgstr[1] "%s contenus"
+
 #: view/search/index/search.phtml:77
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"

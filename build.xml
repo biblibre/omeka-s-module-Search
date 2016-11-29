@@ -10,17 +10,17 @@
         <property name="pot.base" location="${lang.dir}/template.base.pot"/>
         <tempfile property="pot.temp" suffix=".pot"/>
         <tempfile property="pot.duplicates" suffix="-duplicates.pot" />
-        <tempfile property="xgettext.temp" suffix=".pot" destdir="${lang.dir}" createfile="true" deleteonexit="true" />
         <tempfile property="tagged.temp" suffix=".pot" destdir="${lang.dir}" deleteonexit="true"/>
         <copy file="${pot.base}" tofile="${pot.temp}"/>
         <apply executable="xgettext" relative="true" parallel="true" verbose="true">
             <arg value="--language=php"/>
             <arg value="--from-code=utf-8"/>
             <arg value="--keyword=translate"/>
+            <arg value="--keyword=translatePlural:1,2"/>
             <arg value="--omit-header"/>
             <arg value="--join-existing"/>
             <arg value="-o"/>
-            <arg file="${xgettext.temp}"/>
+            <arg file="${pot.temp}"/>
             <fileset dir="." includes="**/*.php **/*.phtml"
                 excludes="test/"/>
         </apply>
@@ -28,7 +28,7 @@
             <arg value="${module.dir}"/>
         </exec>
         <exec executable="msgcat">
-            <arg file="${xgettext.temp}"/>
+            <arg file="${pot.temp}"/>
             <arg file="${tagged.temp}"/>
             <arg value="-o"/>
             <arg file="${pot.temp}"/>
