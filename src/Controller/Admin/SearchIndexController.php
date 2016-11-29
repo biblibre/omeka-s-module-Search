@@ -119,12 +119,10 @@ class SearchIndexController extends AbstractActionController
         ]);
 
         $message = new Message(
-            'Indexing started in %s',
-            sprintf(
-                '<a href="%s">%s</a>',
-                htmlspecialchars($jobUrl),
-                sprintf($this->translate('job %s'), $job->getId())
-            )
+            'Indexing started in %sjob %s%s', // @translate
+            sprintf('<a href="%s">', htmlspecialchars($jobUrl)),
+            $job->getId(),
+            '</a>'
         );
 
         $message->setEscapeHtml(false);

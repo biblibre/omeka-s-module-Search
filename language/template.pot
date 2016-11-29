@@ -1,0 +1,163 @@
+#: src/Api/Representation/SearchIndexRepresentation.php:101
+msgid "[No adapter]"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:51
+msgid "Resources indexed"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:81
+msgid "Items"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:82
+msgid "Item sets"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexForm.php:50 src/Form/Admin/SearchPageForm.php:51
+msgid "Name"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexForm.php:63
+msgid "Adapter"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexForm.php:89 src/Form/Admin/SearchPageForm.php:120
+#: src/Form/Admin/SearchPageForm.php:136
+msgid "None"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:55
+msgid "Facet limit"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:56
+msgid "The maximum number of values fetched for each facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:65
+msgid "Facets"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:80
+#: src/Form/Admin/SearchPageConfigureForm.php:118
+msgid "Enabled"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:88
+#: src/Form/Admin/SearchPageConfigureForm.php:126
+msgid "Weight"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:103
+msgid "Sort fields"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:174
+msgid "Form settings"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:62
+msgid "Path"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:73
+msgid "Index"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:85
+msgid "Form"
+msgstr ""
+
+#: src/Form/BasicForm.php:48 view/search/index/search.phtml:37
+msgid "Search"
+msgstr ""
+
+#: src/Form/BasicForm.php:51
+msgid "Search items"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:32
+msgid "Search configuration"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:60
+#: view/search/admin/index/browse.phtml:120
+#: view/search/admin/search-page/configure.phtml:42
+msgid "Configure"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:68
+msgid "Reindex all"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:77
+#: view/search/admin/index/browse.phtml:78
+#: view/search/admin/index/browse.phtml:128
+#: view/search/admin/index/browse.phtml:129
+msgid "Delete"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:89
+msgid "No search indexes created yet."
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:112
+#: view/search/admin/search-page/edit.phtml:36
+msgid "Edit"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:151
+msgid "No search pages created yet."
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:157
+#: view/search/admin/index/browse.phtml:158
+msgid "Close"
+msgstr ""
+
+#: view/search/admin/search-index/add.phtml:32
+msgid "Add search index"
+msgstr ""
+
+#: view/search/admin/search-index/add.phtml:36
+#: view/search/admin/search-page/add.phtml:36
+msgid "Add"
+msgstr ""
+
+#: view/search/admin/search-index/configure.phtml:32
+msgid "Configure search index"
+msgstr ""
+
+#: view/search/admin/search-index/configure.phtml:36
+msgid "Save configuration"
+msgstr ""
+
+#: view/search/admin/search-page/add.phtml:32
+msgid "Add search page"
+msgstr ""
+
+#: view/search/admin/search-page/configure.phtml:38
+msgid "Configure search page"
+msgstr ""
+
+#: view/search/admin/search-page/edit.phtml:32
+msgid "Edit search page"
+msgstr ""
+
+#: view/search/facets.phtml:32
+msgid "Filters"
+msgstr ""
+
+#: view/search/index/search.phtml:77
+msgid "Your query returned no results"
+msgstr ""
+
+#: view/search/results-header.phtml:11
+msgid "Sort by"
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:122
+#, php-format
+msgid "Indexing started in %sjob %s%s"
+msgstr ""
