@@ -111,6 +111,16 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             $fieldset = new Fieldset($field['name']);
             $fieldset->setLabel(sprintf('%s (%s)', $field['label'], $field['name']));
 
+            $displayFieldset = new Fieldset('display');
+            $displayFieldset->add([
+                'name' => 'label',
+                'type' => 'Text',
+                'options' => [
+                    'label' => $translator->translate('Label'),
+                ],
+            ]);
+            $fieldset->add($displayFieldset);
+
             $fieldset->add([
                 'name' => 'enabled',
                 'type' => 'Checkbox',

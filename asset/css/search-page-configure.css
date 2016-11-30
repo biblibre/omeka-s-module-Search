@@ -9,6 +9,8 @@
   border: 1px solid black;
   background-color: white;
   cursor: grab;
+  display: flex;
+  align-items: center;
 }
 
 .ui-sortable-handle::before {
@@ -18,6 +20,6 @@
   width: 1.5em;
 }
 
-.ui-sortable-handle .legend {
-  display: inline-block;
+.ui-sortable-handle > span {
+  flex-grow: 1;
 }

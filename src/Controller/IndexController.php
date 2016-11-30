@@ -168,7 +168,12 @@ class IndexController extends AbstractActionController
         $settings = $this->page->settings();
         foreach ($settings['sort_fields'] as $name => $sort_field) {
             if ($sort_field['enabled']) {
-                $sortOptions[$name] = $sortFields[$name]['label'];
+                $label = $sortFields[$name]['label'];
+                if (isset($sort_field['display']['label']) && !empty($sort_field['display']['label'])) {
+                    $label = $sort_field['display']['label'];
+                }
+
+                $sortOptions[$name] = $label;
             }
         }
         $sortOptions = $this->sortByWeight($sortOptions,'sort_fields');

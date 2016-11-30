@@ -67,7 +67,7 @@
             var container = $('<div>').addClass('container');
             $(this).append(container);
 
-            var fieldsets = $(this).find('fieldset');
+            var fieldsets = $(this).children('fieldset');
             fieldsets.hide();
 
             var availableContainer = $('<div>')
@@ -88,9 +88,42 @@
             };
             fieldsets.each(function() {
                 var enabled = $(this).find('input[name*="enabled"]:checkbox').prop('checked');
-                var handle = $('<div>')
-                    .html($(this).find('legend').html())
-                    .append($(this));
+
+                var handleTitle = $('<span>')
+                    .html($(this).find('legend').html());
+
+                var handle = $('<div>').append(handleTitle);
+
+                if ($(this).children('fieldset').length > 0) {
+                    var configButton = $('<a></a>')
+                        .attr('href', '#')
+                        .html('<i class="fa fa-cog"></i>')
+                        .on('click', function(e) {
+                            e.preventDefault();
+                            var f = $(this).siblings('fieldset').children('fieldset');
+                            var dialog = f.clone().dialog({
+                                autoOpen: true,
+                                modal: true,
+                                buttons: {
+                                    "OK": function() {
+                                        dialog.find('input').each(function() {
+                                            var name = $(this).attr('name');
+                                            var value = $(this).val();
+                                            f.find('input[name="' + name + '"]').val(value);
+                                        });
+                                        dialog.dialog('close');
+                                    },
+                                    "Cancel": function() {
+                                        dialog.dialog('close');
+                                    }
+                                }
+                            });
+                        });
+
+                    handle.append(configButton);
+                }
+
+                handle.append($(this));
                 if (enabled) {
                     handles.enabled.push(handle);
                 } else {
