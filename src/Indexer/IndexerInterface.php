@@ -30,7 +30,7 @@
 namespace Search\Indexer;
 
 use Zend\Log\LoggerAwareInterface;
-use Omeka\Api\Representation\AbstractResourceRepresentation;
+use Omeka\Api\Representation\AbstractRepresentation;
 use Search\Api\Representation\SearchIndexRepresentation;
 
 interface IndexerInterface extends LoggerAwareInterface
@@ -38,7 +38,7 @@ interface IndexerInterface extends LoggerAwareInterface
     public function setSearchIndex(SearchIndexRepresentation $index);
     public function canIndex($resourceName);
     public function clearIndex();
-    public function indexResource(AbstractResourceRepresentation $resource);
+    public function indexResource(AbstractRepresentation $resource);
     public function indexResources(array $resources);
     public function deleteResource($resourceName, $id);
 }
