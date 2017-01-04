@@ -88,19 +88,23 @@
             Search.sortBy($(this).val());
         });
 
+        $('.search-view-type-list').on('click', function(e) {
+            e.preventDefault();
+            Search.setViewType('list');
+            $('.search-view-type').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('.search-view-type-grid').on('click', function(e) {
+            e.preventDefault();
+            Search.setViewType('grid');
+            $('.search-view-type').removeClass('active');
+            $(this).addClass('active');
+        });
+
         var view_type = localStorage.getItem('search_view_type');
         if (!view_type) {
             view_type = 'list';
         }
-        Search.setViewType(view_type);
-
-        $('#search-view-type-list').on('click', function(e) {
-            e.preventDefault();
-            Search.setViewType('list');
-        });
-        $('#search-view-type-grid').on('click', function(e) {
-            e.preventDefault();
-            Search.setViewType('grid');
-        });
+        $('.search-view-type-' + view_type).click();
     });
 </script>

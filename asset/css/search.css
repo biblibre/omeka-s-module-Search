@@ -11,6 +11,10 @@
   justify-content: space-between;
 }
 
+.search-view-type.active {
+  font-weight: bold;
+}
+
 .search-facets {
   flex-basis: 25%;
   order: -1;
