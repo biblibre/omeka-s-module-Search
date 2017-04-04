@@ -56,11 +56,8 @@ class SearchIndexController extends AbstractActionController
             }
             $formData = $form->getData();
             $response = $this->api()->create('search_indexes', $formData);
-            if (!$response->isError()) {
-                $this->messenger()->addSuccess('Search index created.');
-                return $this->redirect()->toUrl($response->getContent()->url('configure'));
-            }
-            $form->setMessages($response->getErrors());
+            $this->messenger()->addSuccess('Search index created.');
+            return $this->redirect()->toUrl($response->getContent()->url('configure'));
         }
         return $view;
     }
@@ -151,11 +148,7 @@ class SearchIndexController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_indexes', $this->params('id'));
-                if ($response->isError()) {
-                    $this->messenger()->addError('Search index could not be deleted');
-                } else {
-                    $this->messenger()->addSuccess('Search index successfully deleted');
-                }
+                $this->messenger()->addSuccess('Search index successfully deleted');
             } else {
                 $this->messenger()->addError('Search index could not be deleted');
             }

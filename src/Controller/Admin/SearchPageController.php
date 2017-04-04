@@ -51,15 +51,10 @@ class SearchPageController extends AbstractActionController
             return $view;
         $formData = $form->getData();
         $response = $this->api()->create('search_pages', $formData);
-        if ($response->isError()) {
-            $form->setMessages($response->getErrors());
-            return $view;
-        }
 
         $this->messenger()->addSuccess('Search page created.');
         $searchPage = $response->getContent();
         return $this->redirect()->toUrl($searchPage->url('configure'));
-
     }
 
     protected function checkPostAndValidForm($form) {
@@ -88,11 +83,7 @@ class SearchPageController extends AbstractActionController
             return $view;
 
         $formData = $form->getData();
-        $response = $this->api()->update('search_pages', $id, $formData, [], true);
-        if ($response->isError()) {
-            $form->setMessages($response->getErrors());
-            return $view;
-        }
+        $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
 
         $this->messenger()->addSuccess('Search page created.');
         return $this->redirect()->toRoute('admin/search');
@@ -153,11 +144,7 @@ class SearchPageController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_pages', $this->params('id'));
-                if ($response->isError()) {
-                    $this->messenger()->addError('Search page could not be deleted');
-                } else {
-                    $this->messenger()->addSuccess('Search page successfully deleted');
-                }
+                $this->messenger()->addSuccess('Search page successfully deleted');
             } else {
                 $this->messenger()->addError('Search page could not be deleted');
             }
