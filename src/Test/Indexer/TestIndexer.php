@@ -2,7 +2,7 @@
 
 namespace Search\Test\Indexer;
 
-use Omeka\Api\Representation\AbstractRepresentation;
+use Omeka\Entity\Resource;
 use Search\Indexer\AbstractIndexer;
 
 class TestIndexer extends AbstractIndexer
@@ -16,7 +16,7 @@ class TestIndexer extends AbstractIndexer
     {
     }
 
-    public function indexResource(AbstractRepresentation $resource)
+    public function indexResource(Resource $resource)
     {
     }
 
