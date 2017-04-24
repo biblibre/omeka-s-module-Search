@@ -39,11 +39,6 @@ class SearchForm extends AbstractHelper
         return $this->form;
     }
 
-    protected function getServiceLocator()
-    {
-        return $this->getView()->getHelperPluginManager()->getServiceLocator();
-    }
-
     protected function getFormPartial()
     {
         $formAdapter = $this->searchPage->formAdapter();

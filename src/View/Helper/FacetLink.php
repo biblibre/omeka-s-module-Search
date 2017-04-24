@@ -3,14 +3,18 @@
 namespace Search\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Zend\Mvc\Application;
 
 class FacetLink extends AbstractHelper
 {
+    public function __construct(Application $application)
+    {
+        $this->application = $application;
+    }
+
     public function __invoke($name, $facet)
     {
-        $view = $this->getView();
-        $serviceLocator = $view->getHelperPluginManager()->getServiceLocator();
-        $mvcEvent = $serviceLocator->get('Application')->getMvcEvent();
+        $mvcEvent = $this->application->getMvcEvent();
         $routeMatch = $mvcEvent->getRouteMatch();
         $request = $mvcEvent->getRequest();
 
@@ -32,6 +36,7 @@ class FacetLink extends AbstractHelper
 
         unset($query['page']);
 
+        $view = $this->getView();
         $url = $view->url($route, $params, ['query' => $query]);
 
         return $view->partial('search/facet-link', [

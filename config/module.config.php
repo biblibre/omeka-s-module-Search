@@ -143,9 +143,11 @@ return [
         ],
     ],
     'view_helpers' => [
+        'factories' => [
+            'facetLink' => 'Search\Service\ViewHelper\FacetLinkFactory',
+            'facetLabel' => 'Search\Service\ViewHelper\FacetLabelFactory',
+        ],
         'invokables' => [
-            'facetLink' => 'Search\View\Helper\FacetLink',
-            'facetLabel' => 'Search\View\Helper\FacetLabel',
             'searchForm' => 'Search\View\Helper\SearchForm',
         ],
     ],
