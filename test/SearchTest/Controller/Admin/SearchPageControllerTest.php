@@ -9,7 +9,7 @@ use SearchTest\Controller\SearchControllerTestCase;
 
 class SearchPageControllerTest extends SearchControllerTestCase
 {
-    public function testAddAction()
+    public function testAddGetAction()
     {
         $this->dispatch('/admin/search/page/add');
         $this->assertResponseStatusCode(200);
@@ -18,7 +18,10 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $this->assertQuery('input[name="o:path"]');
         $this->assertQuery('select[name="o:index_id"]');
         $this->assertQuery('select[name="o:form"]');
+    }
 
+    public function testAddPostAction()
+    {
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get('Search\Form\Admin\SearchPageForm');
 
@@ -37,20 +40,24 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $this->assertRedirectTo($searchPage->adminUrl('configure'));
     }
 
-    public function testConfigureAction()
+    public function testConfigureGetAction()
     {
         $this->dispatch($this->searchPage->adminUrl('configure'));
         $this->assertResponseStatusCode(200);
 
         $this->assertQueryContentContains('h2', 'Facets');
         $this->assertQueryContentContains('h2', 'Sort fields');
+    }
 
+    public function testConfigurePostAction()
+    {
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm', [
             'search_page' => $this->searchPage,
         ]);
 
-        $this->dispatch($this->searchPage->url('configure'), 'POST', [
+        $url = '/admin/search/page/' . $this->searchPage->id() . '/configure';
+        $this->dispatch($url, 'POST', [
             'facet_limit' => '10',
             'csrf' => $form->get('csrf')->getValue(),
         ]);

@@ -11,14 +11,17 @@ use SearchTest\Controller\SearchControllerTestCase;
 
 class SearchIndexControllerTest extends SearchControllerTestCase
 {
-    public function testAddAction()
+    public function testAddGetAction()
     {
         $this->dispatch('/admin/search/index/add');
         $this->assertResponseStatusCode(200);
 
         $this->assertQuery('input[name="o:name"]');
         $this->assertQuery('select[name="o:adapter"]');
+    }
 
+    public function testAddPostAction()
+    {
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get('Search\Form\Admin\SearchIndexForm');
 
@@ -35,13 +38,16 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $this->assertRedirectTo($searchIndex->adminUrl('configure'));
     }
 
-    public function testConfigureAction()
+    public function testConfigureGetAction()
     {
         $this->dispatch($this->searchIndex->adminUrl('configure'));
         $this->assertResponseStatusCode(200);
 
         $this->assertQuery('input[name="resources[]"]');
+    }
 
+    public function testConfigurePostAction()
+    {
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get(SearchIndexConfigureForm::class, [
             'search_index_id' => $this->searchIndex->id(),

@@ -12,13 +12,21 @@ class IndexControllerTest extends SearchControllerTestCase
     {
         parent::setUp();
 
-        $this->api()->create('sites', [
+        $response = $this->api()->create('sites', [
             'o:title' => 'Test site',
             'o:slug' => 'test',
             'o:theme' => 'default',
         ]);
+        $this->site = $response->getContent();
 
         $this->resetApplication();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $this->api()->delete('sites', $this->site->id());
     }
 
     public function testSearchAction()
@@ -28,7 +36,10 @@ class IndexControllerTest extends SearchControllerTestCase
 
         $this->assertQuery('input[name="q"]');
         $this->assertNotQuery('.search-results');
+    }
 
+    public function testSearchWithParamsAction()
+    {
         $this->dispatch('/s/test/test/search', 'GET', ['q' => 'test']);
         $this->assertResponseStatusCode(200);
         $this->assertQuery('.search-results');
