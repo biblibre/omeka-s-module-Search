@@ -31,6 +31,7 @@ namespace Search\Job;
 
 use Omeka\Job\AbstractJob;
 use Omeka\Log\Writer\Job as JobWriter;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Index extends AbstractJob
 {
@@ -41,7 +42,9 @@ class Index extends AbstractJob
     public function perform()
     {
         $serviceLocator = $this->getServiceLocator();
+        $apiAdapters = $serviceLocator->get('Omeka\ApiAdapterManager');
         $api = $serviceLocator->get('Omeka\ApiManager');
+        $em = $serviceLocator->get('Omeka\EntityManager');
         $this->logger = $serviceLocator->get('Omeka\Logger');
 
         $indexId = $this->getArg('index-id');
@@ -64,9 +67,15 @@ class Index extends AbstractJob
 
         foreach ($resourceNames as $resourceName) {
             $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
+            $adapter = $apiAdapters->get($resourceName);
+            $entityClass = $adapter->getEntityClass();
             do {
                 $resources = $api->search($resourceName, $data)->getContent();
-                $indexer->indexResources($resources);
+                $entities = [];
+                foreach ($resources as $resource) {
+                    $entities[] = $em->find($entityClass, $resource->id());
+                }
+                $indexer->indexResources($entities);
                 $data['page']++;
             } while (count($resources) == self::BATCH_SIZE);
         }
