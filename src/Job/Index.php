@@ -31,7 +31,6 @@ namespace Search\Job;
 
 use Omeka\Job\AbstractJob;
 use Omeka\Log\Writer\Job as JobWriter;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Index extends AbstractJob
 {
