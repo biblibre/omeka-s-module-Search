@@ -27,6 +27,7 @@
  */
 ?>
 
+<?php $this->htmlElement('body')->appendAttribute('class', 'search browse'); ?>
 <?php $escape = $this->plugin('escapeHtml'); ?>
 
 <?php echo $this->pageTitle($this->translate('Search configuration')); ?>
@@ -40,7 +41,7 @@
 
 <h2>Indexes</h2>
 <?php if (count($search_indexes) > 0): ?>
-    <table class="tablesaw">
+    <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
                 <th>Name</th>
@@ -78,7 +79,7 @@
                                 title="<?php echo $escape($this->translate('Delete')); ?>"></a>
                             </li>
                         </ul>
-                        <?php echo $search_index->name(); ?>
+                        <span><?php echo $search_index->name(); ?></span>
                     </td>
                     <td><?php echo $search_index->adapterLabel(); ?></td>
                 </tr>
@@ -91,7 +92,7 @@
 
 <h2>Pages</h2>
 <?php if (count($search_pages) > 0): ?>
-    <table class="tablesaw">
+    <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
                 <th>Name</th>
@@ -129,7 +130,7 @@
                                 title="<?php echo $escape($this->translate('Delete')); ?>"></a>
                             </li>
                         </ul>
-                        <?php echo $search_page->name(); ?>
+                        <span><?php echo $search_page->name(); ?></span>
                     </td>
                     <td><?php echo $search_page->path(); ?></td>
                     <td><?php echo $search_page->index()->name(); ?></td>
