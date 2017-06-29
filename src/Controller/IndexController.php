@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -164,13 +164,16 @@ class IndexController extends AbstractActionController
     protected function getSortOptions() {
         $sortOptions = [];
 
-        $sortFields = $this->index->adapter()->getAvailableSortFields();
+        $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         $settings = $this->page->settings();
         foreach ($settings['sort_fields'] as $name => $sort_field) {
             if ($sort_field['enabled']) {
-                $label = $sortFields[$name]['label'];
                 if (isset($sort_field['display']['label']) && !empty($sort_field['display']['label'])) {
                     $label = $sort_field['display']['label'];
+                } elseif (isset($sortFields[$name]['label']) && !empty($sortFields[$name]['label'])) {
+                    $label = $sortFields[$name]['label'];
+                } else {
+                    $label = $name;
                 }
 
                 $sortOptions[$name] = $label;

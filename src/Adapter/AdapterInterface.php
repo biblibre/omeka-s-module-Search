@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,15 +29,17 @@
 
 namespace Search\Adapter;
 
+use Search\Api\Representation\SearchIndexRepresentation;
+
 interface AdapterInterface
 {
     public function getLabel();
     public function getConfigFieldset();
     public function getIndexerClass();
     public function getQuerierClass();
-    public function getAvailableFacetFields();
-    public function getAvailableSortFields();
-    public function getAvailableFields();
+    public function getAvailableFacetFields(SearchIndexRepresentation $index);
+    public function getAvailableSortFields(SearchIndexRepresentation $index);
+    public function getAvailableFields(SearchIndexRepresentation $index);
 
     public function setServiceLocator($serviceLocator);
     public function getServiceLocator();

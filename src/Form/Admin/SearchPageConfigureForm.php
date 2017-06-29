@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -47,6 +47,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
+        $settings = $searchPage->settings();
 
         $this->add([
             'name' => 'facet_limit',
@@ -65,13 +66,23 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $facets->setLabel($translator->translate('Facets'));
         $facets->setAttribute('data-sortable', '1');
 
-        $facetFields = $adapter->getAvailableFacetFields();
+        $facetFields = $adapter->getAvailableFacetFields($searchPage->index());
         $weights = range(0, count($facetFields));
         $weight_options = array_combine($weights, $weights);
         $weight = 0;
         foreach ($facetFields as $field) {
             $fieldset = new Fieldset($field['name']);
-            $fieldset->setLabel(sprintf('%s (%s)', $field['label'], $field['name']));
+            $fieldset->setLabel($this->getFacetFieldLabel($field));
+
+            $displayFieldset = new Fieldset('display');
+            $displayFieldset->add([
+                'name' => 'label',
+                'type' => 'Text',
+                'options' => [
+                    'label' => $translator->translate('Label'),
+                ],
+            ]);
+            $fieldset->add($displayFieldset);
 
             $fieldset->add([
                 'name' => 'enabled',
@@ -103,13 +114,13 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $sort_fields_fieldset->setLabel($translator->translate('Sort fields'));
         $sort_fields_fieldset->setAttribute('data-sortable', '1');
 
-        $sortFields = $adapter->getAvailableSortFields();
+        $sortFields = $adapter->getAvailableSortFields($searchPage->index());
         $weights = range(0, +count($sortFields));
         $weight_options = array_combine($weights, $weights);
         $weight = 0;
         foreach ($sortFields as $field) {
             $fieldset = new Fieldset($field['name']);
-            $fieldset->setLabel(sprintf('%s (%s)', $field['label'], $field['name']));
+            $fieldset->setLabel($this->getSortFieldLabel($field));
 
             $displayFieldset = new Fieldset('display');
             $displayFieldset->add([
@@ -184,5 +195,36 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $fieldset->setLabel($this->getTranslator()->translate('Form settings'));
 
         return $fieldset;
+    }
+
+    protected function getFieldLabel($field, $settings_key)
+    {
+        $searchPage = $this->getOption('search_page');
+        $settings = $searchPage->settings();
+
+        $name = $field['name'];
+        $label = isset($field['label']) ? $field['label'] : null;
+        if (isset($settings[$settings_key][$name])) {
+            $fieldSettings = $settings[$settings_key][$name];
+
+            if (isset($fieldSettings['display']['label'])
+                && $fieldSettings['display']['label'])
+            {
+                $label = $fieldSettings['display']['label'];
+            }
+        }
+        $label = $label ? sprintf('%s (%s)', $label, $field['name']) : $field['name'];
+
+        return $label;
+    }
+
+    protected function getSortFieldLabel($field)
+    {
+        return $this->getFieldLabel($field, 'sort_fields');
+    }
+
+    protected function getFacetFieldLabel($field)
+    {
+        return $this->getFieldLabel($field, 'facets');
     }
 }
