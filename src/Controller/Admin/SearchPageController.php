@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -57,18 +57,6 @@ class SearchPageController extends AbstractActionController
         return $this->redirect()->toUrl($searchPage->url('configure'));
     }
 
-    protected function checkPostAndValidForm($form) {
-        if (!$this->getRequest()->isPost())
-            return false;
-
-        $form->setData($this->params()->fromPost());
-        if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation');
-            return false;
-        }
-        return true;
-    }
-
     public function editAction()
     {
         $id = $this->params('id');
@@ -86,8 +74,7 @@ class SearchPageController extends AbstractActionController
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
 
         $this->messenger()->addSuccess('Search page created.');
-        return $this->redirect()->toRoute('admin/search');
-
+        return $this->redirect()->toUrl($page->url('configure'));
     }
 
     public function configureAction()
@@ -120,7 +107,6 @@ class SearchPageController extends AbstractActionController
 
         $this->messenger()->addSuccess('Configuration saved.');
         return $this->redirect()->toRoute('admin/search');
-
     }
 
     public function deleteConfirmAction()
@@ -180,5 +166,20 @@ class SearchPageController extends AbstractActionController
     public function getSearchFormAdapterManager()
     {
         return $this->searchFormAdapterManager;
+    }
+
+    protected function checkPostAndValidForm($form)
+    {
+        if (!$this->getRequest()->isPost()) {
+            return false;
+        }
+
+        $form->setData($this->params()->fromPost());
+        if (!$form->isValid()) {
+            $this->messenger()->addError('There was an error during validation');
+            return false;
+        }
+
+        return true;
     }
 }
