@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,19 +29,10 @@
 
 namespace Search\Service;
 
-use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\Mvc\Service\AbstractPluginManagerFactory;
 use Search\Adapter\Manager;
 
-class AdapterManagerFactory implements FactoryInterface
+class AdapterManagerFactory extends AbstractPluginManagerFactory
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {
-        $config = $container->get('Config');
-
-        $am = new Manager($config['search']['adapters']);
-        $am->setServiceLocator($container);
-
-        return $am;
-    }
+    const PLUGIN_MANAGER_CLASS = Manager::class;
 }

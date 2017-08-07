@@ -151,9 +151,8 @@ return [
             'searchForm' => 'Search\View\Helper\SearchForm',
         ],
     ],
-    'search' => [
-        'adapters' => [],
-        'form_adapters' => [
+    'search_form_adapters' => [
+        'invokables' => [
             'basic' => 'Search\FormAdapter\BasicFormAdapter',
         ],
     ],

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -130,12 +130,13 @@ class SearchPageForm extends Form
     protected function getFormsOptions()
     {
         $formAdapterManager = $this->getFormAdapterManager();
-        $formAdapters = $formAdapterManager->getAll();
+        $formAdapterNames = $formAdapterManager->getRegisteredNames();
 
         $options = [
             '' => $this->getTranslator()->translate('None'),
         ];
-        foreach ($formAdapters as $name => $formAdapter) {
+        foreach ($formAdapterNames as $name) {
+            $formAdapter = $formAdapterManager->get($name);
             $options[$name] = $formAdapter->getLabel();
         }
 

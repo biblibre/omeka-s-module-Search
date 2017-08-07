@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,6 +29,7 @@
 
 namespace Search;
 
+use Zend\ModuleManager\ModuleManager;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\MvcEvent;
@@ -54,6 +55,26 @@ class Module extends AbstractModule
         $acl->allow(null, 'Search\Controller\Index');
 
         $this->addRoutes();
+    }
+
+    public function init(ModuleManager $moduleManager)
+    {
+        $event = $moduleManager->getEvent();
+        $container = $event->getParam('ServiceManager');
+        $serviceListener = $container->get('ServiceListener');
+
+        $serviceListener->addServiceManager(
+            'Search\AdapterManager',
+            'search_adapters',
+            'Search\Feature\AdapterProviderInterface',
+            'getSearchAdapterConfig'
+        );
+        $serviceListener->addServiceManager(
+            'Search\FormAdapterManager',
+            'search_form_adapters',
+            'Search\Feature\FormAdapterProviderInterface',
+            'getSearchFormAdapterConfig'
+        );
     }
 
     public function install(ServiceLocatorInterface $serviceLocator)

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,48 +29,9 @@
 
 namespace Search\FormAdapter;
 
-class Manager
+use Omeka\ServiceManager\AbstractPluginManager;
+
+class Manager extends AbstractPluginManager
 {
-    protected $config;
-    protected $adapters;
-
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
-
-    public function get($name)
-    {
-        if (isset($this->adapters[$name])) {
-            return $this->adapters[$name];
-        }
-
-        if (!isset($this->config[$name])) {
-            return null;
-        }
-
-        $class = $this->config[$name];
-        if (!class_exists($class)) {
-            return null;
-        }
-
-        if (!in_array('Search\FormAdapter\FormAdapterInterface', class_implements($class))) {
-            return null;
-        }
-
-        $this->adapters[$name] = new $class;
-        return $this->adapters[$name];
-    }
-
-    public function getAll()
-    {
-        $adapters = [];
-        foreach ($this->config as $name => $class) {
-            $adapter = $this->get($name);
-            if ($adapter !== null) {
-                $adapters[$name] = $adapter;
-            }
-        }
-        return $adapters;
-    }
+    protected $instanceOf = FormAdapterInterface::class;
 }

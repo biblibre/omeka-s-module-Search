@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016-2017
+ * Copyright BibLibre, 2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,11 +27,9 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Adapter;
+namespace Search\Feature;
 
-use Omeka\ServiceManager\AbstractPluginManager;
-
-class Manager extends AbstractPluginManager
+interface AdapterProviderInterface
 {
-    protected $instanceOf = AdapterInterface::class;
+    public function getSearchAdapterConfig();
 }
