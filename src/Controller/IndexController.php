@@ -110,6 +110,8 @@ class IndexController extends AbstractActionController
             }
         }
 
+        $query->setSite($this->currentSite());
+
         $sortOptions = $this->getSortOptions();
 
         if (isset($params['sort'])) {

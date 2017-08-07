@@ -29,6 +29,8 @@
 
 namespace Search;
 
+use Omeka\Api\Representation\SiteRepresentation;
+
 class Query
 {
     protected $query;
@@ -40,6 +42,7 @@ class Query
     protected $offset = 0 ;
     protected $limit = 0;
     protected $resources = [];
+    protected $site;
 
     public function setQuery($query)
     {
@@ -69,6 +72,16 @@ class Query
     public function getFacetFields()
     {
         return $this->facetFields;
+    }
+
+    public function setSite(SiteRepresentation $site)
+    {
+        $this->site = $site;
+    }
+
+    public function getSite()
+    {
+        return $this->site;
     }
 
     public function addFilter($name, $value)
