@@ -53,11 +53,13 @@ abstract class SearchControllerTestCase extends OmekaControllerTestCase
     protected function setupTestSearchAdapter()
     {
         $serviceLocator = $this->getApplication()->getServiceManager();
-        $config = $serviceLocator->get('Config');
-        $config['search']['adapters']['test'] = 'Search\Test\Adapter\TestAdapter';
-        $serviceLocator->setAllowOverride(true);
-        $serviceLocator->setService('Config', $config);
-        $serviceLocator->setAllowOverride(false);
+        $adapterManager = $serviceLocator->get('Search\AdapterManager');
+        $config = [
+            'invokables' => [
+                'test' => 'Search\Test\Adapter\TestAdapter',
+            ],
+        ];
+        $adapterManager->configure($config);
     }
 
     protected function resetApplication()
