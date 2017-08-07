@@ -52,6 +52,7 @@
             <?php foreach ($search_indexes as $search_index): ?>
                 <tr>
                     <td>
+                        <span><?php echo $search_index->name(); ?></span>
                         <ul class="actions">
                             <?php if ($search_index->adapter()): ?>
                                 <li>
@@ -79,7 +80,6 @@
                                 title="<?php echo $escape($this->translate('Delete')); ?>"></a>
                             </li>
                         </ul>
-                        <span><?php echo $search_index->name(); ?></span>
                     </td>
                     <td><?php echo $search_index->adapterLabel(); ?></td>
                 </tr>
@@ -105,6 +105,7 @@
             <?php foreach ($search_pages as $search_page): ?>
                 <tr>
                     <td>
+                        <span><?php echo $search_page->name(); ?></span>
                         <ul class="actions">
                             <li>
                                 <?php
@@ -130,7 +131,6 @@
                                 title="<?php echo $escape($this->translate('Delete')); ?>"></a>
                             </li>
                         </ul>
-                        <span><?php echo $search_page->name(); ?></span>
                     </td>
                     <td><?php echo $search_page->path(); ?></td>
                     <td><?php echo $search_page->index()->name(); ?></td>
