@@ -96,7 +96,6 @@ class SearchIndexController extends AbstractActionController
             $entityManager->flush();
             $this->messenger()->addSuccess('Search index successfully configured');
             return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
-
         }
 
         return $view;

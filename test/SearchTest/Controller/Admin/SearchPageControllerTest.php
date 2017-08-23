@@ -4,7 +4,6 @@ namespace SearchTest\Controller\Admin;
 
 require_once __DIR__ . '/../SearchControllerTestCase.php';
 
-use Omeka\Mvc\Controller\Plugin\Messenger;
 use SearchTest\Controller\SearchControllerTestCase;
 
 class SearchPageControllerTest extends SearchControllerTestCase
@@ -33,7 +32,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $response = $this->api()->search('search_pages', [
-            'name' => 'TestPage2'
+            'name' => 'TestPage2',
         ]);
         $searchPages = $response->getContent();
         $searchPage = reset($searchPages);

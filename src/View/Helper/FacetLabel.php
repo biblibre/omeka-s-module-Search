@@ -52,14 +52,12 @@ class FacetLabel extends AbstractHelper
         $searchPage = $this->getSearchPage();
         $settings = $searchPage->settings();
 
-        if (isset($settings['facets'][$name]['display']['label'])
-            && $settings['facets'][$name]['display']['label'])
-        {
+        if (!empty($settings['facets'][$name]['display']['label'])) {
             return $settings['facets'][$name]['display']['label'];
         }
 
         $availableFacetFields = $this->getAvailableFacetFields();
-        if (isset($availableFacetFields[$name]['label']) && $availableFacetFields[$name]['label']) {
+        if (!empty($availableFacetFields[$name]['label'])) {
             return $availableFacetFields[$name]['label'];
         }
 

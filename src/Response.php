@@ -54,8 +54,11 @@ class Response
 
     public function getResourceTotalResults($resource)
     {
-        return isset($this->resourceTotalResults[$resource]) ? $this->resourceTotalResults[$resource]
-            :0;
+        if (!isset($this->resourceTotalResults[$resource])) {
+            return 0;
+        }
+
+        return $this->resourceTotalResults[$resource];
     }
 
     public function addResult($resource, $result)

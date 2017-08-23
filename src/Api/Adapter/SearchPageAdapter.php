@@ -41,10 +41,10 @@ class SearchPageAdapter extends AbstractEntityAdapter
      * {@inheritDoc}
      */
     protected $sortFields = [
-        'id'        => 'id',
-        'name'      => 'name',
-        'created'   => 'created',
-        'modified'  => 'modified',
+        'id' => 'id',
+        'name' => 'name',
+        'created' => 'created',
+        'modified' => 'modified',
     ];
 
     /**

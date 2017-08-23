@@ -47,8 +47,9 @@ class SearchPageController extends AbstractActionController
 
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        if (!$this->checkPostAndValidForm($form))
+        if (!$this->checkPostAndValidForm($form)) {
             return $view;
+        }
         $formData = $form->getData();
         $response = $this->api()->create('search_pages', $formData);
 
@@ -67,8 +68,9 @@ class SearchPageController extends AbstractActionController
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
-        if (!$this->checkPostAndValidForm($form))
+        if (!$this->checkPostAndValidForm($form)) {
             return $view;
+        }
 
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
@@ -95,8 +97,9 @@ class SearchPageController extends AbstractActionController
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
-        if (!$this->checkPostAndValidForm($form))
+        if (!$this->checkPostAndValidForm($form)) {
             return $view;
+        }
 
         $formData = $form->getData();
         unset($formData['csrf']);

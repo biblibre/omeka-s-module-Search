@@ -29,7 +29,6 @@
 
 namespace Search\Form\Admin;
 
-use Zend\Form\Fieldset;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;

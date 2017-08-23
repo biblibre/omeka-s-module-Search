@@ -31,7 +31,6 @@ namespace Search;
 
 use Zend\ModuleManager\ModuleManager;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Omeka\Module\AbstractModule;

@@ -4,8 +4,6 @@ namespace SearchTest\Controller;
 
 require_once __DIR__ . '/SearchControllerTestCase.php';
 
-use SearchTest\Controller\SearchControllerTestCase;
-
 class IndexControllerTest extends SearchControllerTestCase
 {
     public function setUp()

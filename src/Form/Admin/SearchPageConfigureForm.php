@@ -33,7 +33,6 @@ use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
-use Omeka\Form\AbstractForm;
 
 class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 {
@@ -108,7 +107,6 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         }
 
         $this->add($facets);
-
 
         $sort_fields_fieldset = new Fieldset('sort_fields');
         $sort_fields_fieldset->setLabel($translator->translate('Sort fields'));
@@ -207,9 +205,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         if (isset($settings[$settings_key][$name])) {
             $fieldSettings = $settings[$settings_key][$name];
 
-            if (isset($fieldSettings['display']['label'])
-                && $fieldSettings['display']['label'])
-            {
+            if (!empty($fieldSettings['display']['label'])) {
                 $label = $fieldSettings['display']['label'];
             }
         }

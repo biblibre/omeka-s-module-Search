@@ -55,7 +55,6 @@ class SearchIndexForm extends Form implements TranslatorAwareInterface
             ],
         ]);
 
-
         $this->add([
             'name' => 'o:adapter',
             'type' => 'Select',

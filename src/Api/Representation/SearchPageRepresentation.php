@@ -62,7 +62,7 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
             'id' => $this->id(),
         ];
         $options = [
-            'force_canonical' => $canonical
+            'force_canonical' => $canonical,
         ];
 
         return $url('admin/search/page-id', $params, $options);
@@ -75,7 +75,7 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
             'site-slug' => $siteSlug,
         ];
         $options = [
-            'force_canonical' => $canonical
+            'force_canonical' => $canonical,
         ];
 
         return $url('search-page-' . $this->id(), $params, $options);
@@ -132,7 +132,6 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
     {
         return $this->resource->getCreated();
     }
-
 
     public function getEntity()
     {

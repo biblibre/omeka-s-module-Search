@@ -30,7 +30,6 @@
 namespace Search\Job;
 
 use Omeka\Job\AbstractJob;
-use Omeka\Log\Writer\Job as JobWriter;
 
 class Index extends AbstractJob
 {
@@ -60,7 +59,7 @@ class Index extends AbstractJob
         $searchIndexSettings = $searchIndex->settings();
         $resourceNames = $searchIndexSettings['resources'];
 
-        $resourceNames = array_filter($resourceNames, function($resourceName) use($indexer) {
+        $resourceNames = array_filter($resourceNames, function ($resourceName) use ($indexer) {
             return $indexer->canIndex($resourceName);
         });
 

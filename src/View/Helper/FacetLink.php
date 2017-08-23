@@ -23,9 +23,9 @@ class FacetLink extends AbstractHelper
         $query = $request->getQuery()->toArray();
 
         $active = false;
-        if (isset($query['limit'][$name]) && FALSE !== array_search($facet['value'], $query['limit'][$name])) {
+        if (isset($query['limit'][$name]) && false !== array_search($facet['value'], $query['limit'][$name])) {
             $values = $query['limit'][$name];
-            $values = array_filter($values, function($v) use ($facet) {
+            $values = array_filter($values, function ($v) use ($facet) {
                 return $v != $facet['value'];
             });
             $query['limit'][$name] = $values;

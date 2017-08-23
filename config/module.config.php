@@ -55,7 +55,7 @@ return [
             'search-page' => 'Search\Site\Navigation\Link\SearchPage',
         ],
     ],
-    'router' =>[
+    'router' => [
         'routes' => [
             'admin' => [
                 'child_routes' => [
@@ -159,9 +159,9 @@ return [
     'translator' => [
         'translation_file_patterns' => [
             [
-                'type'        => 'gettext',
-                'base_dir'    => __DIR__ . '/../language',
-                'pattern'     => '%s.mo',
+                'type' => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.mo',
                 'text_domain' => null,
             ],
         ],

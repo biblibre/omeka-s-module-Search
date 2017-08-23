@@ -33,7 +33,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
-use Search\Form\BasicForm;
 use Search\Querier\Exception\QuerierException;
 
 class IndexController extends AbstractActionController
@@ -122,8 +121,8 @@ class IndexController extends AbstractActionController
         }
 
         $query->setSort($sort);
-        $page_number=isset($params['page'])? $params['page'] : 1;
-        $this->setPagination($query,$page_number);
+        $page_number = isset($params['page']) ? $params['page'] : 1;
+        $this->setPagination($query, $page_number);
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
@@ -132,9 +131,9 @@ class IndexController extends AbstractActionController
         }
 
         $facets = $response->getFacetCounts();
-        $facets = $this->sortByWeight($facets,'facets');
+        $facets = $this->sortByWeight($facets, 'facets');
 
-        $totalResults = array_map(function($resource) use ($response) {
+        $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
         $this->paginator(max($totalResults), $page_number);
@@ -147,15 +146,16 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    protected function setPagination($query,$page)
+    protected function setPagination($query, $page)
     {
         $per_page = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
         $query->setLimitPage($page, $per_page);
     }
 
-    protected function sortByWeight($fields, $setting_name) {
+    protected function sortByWeight($fields, $setting_name)
+    {
         $settings = $this->page->settings();
-        uksort($fields, function($a, $b) use ($settings,$setting_name) {
+        uksort($fields, function ($a, $b) use ($settings,$setting_name) {
             $aWeight = $settings[$setting_name][$a]['weight'];
             $bWeight = $settings[$setting_name][$b]['weight'];
             return $aWeight - $bWeight;
@@ -163,7 +163,8 @@ class IndexController extends AbstractActionController
         return $fields;
     }
 
-    protected function getSortOptions() {
+    protected function getSortOptions()
+    {
         $sortOptions = [];
 
         $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
@@ -181,7 +182,7 @@ class IndexController extends AbstractActionController
                 $sortOptions[$name] = $label;
             }
         }
-        $sortOptions = $this->sortByWeight($sortOptions,'sort_fields');
+        $sortOptions = $this->sortByWeight($sortOptions, 'sort_fields');
 
         return $sortOptions;
     }

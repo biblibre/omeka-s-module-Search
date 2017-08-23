@@ -31,7 +31,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $response = $this->api()->search('search_indexes', [
-            'name' => 'TestIndex2'
+            'name' => 'TestIndex2',
         ]);
         $searchIndexes = $response->getContent();
         $searchIndex = reset($searchIndexes);

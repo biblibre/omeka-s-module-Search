@@ -129,7 +129,7 @@ class Query
 
     public function setLimitPage($page, $rowCount)
     {
-        $page     = ($page > 0)     ? $page     : 1;
+        $page = ($page > 0) ? $page : 1;
         $rowCount = ($rowCount > 0) ? $rowCount : 1;
         $this->limit = (int) $rowCount;
         $this->offset = (int) $rowCount * ($page - 1);

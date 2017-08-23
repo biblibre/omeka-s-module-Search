@@ -60,7 +60,7 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
             'id' => $this->id(),
         ];
         $options = [
-            'force_canonical' => $canonical
+            'force_canonical' => $canonical,
         ];
 
         return $url('admin/search/index-id', $params, $options);
