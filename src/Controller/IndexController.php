@@ -32,7 +32,7 @@ namespace Search\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
-use Omeka\Service\Paginator;
+use Omeka\Stdlib\Paginator;
 use Search\Form\BasicForm;
 use Search\Querier\Exception\QuerierException;
 
