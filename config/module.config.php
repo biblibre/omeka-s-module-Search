@@ -42,7 +42,7 @@ return [
     'navigation' => [
         'AdminGlobal' => [
             [
-                'label' => 'Search',
+                'label' => 'Search', // @translate
                 'route' => 'admin/search',
                 'resource' => 'Search\Controller\Admin\Index',
                 'privilege' => 'browse',
