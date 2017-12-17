@@ -69,7 +69,7 @@ var Search = (function() {
     };
 
     self.setViewType = function(viewType) {
-        var resourceLists = document.querySelectorAll("div.resource-list");
+        var resourceLists = document.querySelectorAll('div.resource-list');
         for (var i = 0; i < resourceLists.length; i++) {
             var resourceItem = resourceLists[i];
             resourceItem.className = 'resource-list ' + viewType;

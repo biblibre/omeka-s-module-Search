@@ -33,9 +33,6 @@ use Omeka\Api\Representation\AbstractEntityRepresentation;
 
 class SearchPageRepresentation extends AbstractEntityRepresentation
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getJsonLdType()
     {
         return 'o:SearchPage';
