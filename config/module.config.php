@@ -17,10 +17,10 @@ return [
     ],
     'entity_manager' => [
         'mapping_classes_paths' => [
-            __DIR__ . '/../src/Entity',
+            dirname(__DIR__) . '/src/Entity',
         ],
         'proxy_paths' => [
-            __DIR__ . '/../data/doctrine-proxies',
+            dirname(__DIR__) . '/data/doctrine-proxies',
         ],
     ],
     'api_adapters' => [
@@ -139,7 +139,7 @@ return [
     ],
     'view_manager' => [
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            dirname(__DIR__) . '/view',
         ],
     ],
     'view_helpers' => [
@@ -160,7 +160,7 @@ return [
         'translation_file_patterns' => [
             [
                 'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
+                'base_dir' => dirname(__DIR__) . '/language',
                 'pattern' => '%s.mo',
                 'text_domain' => null,
             ],
