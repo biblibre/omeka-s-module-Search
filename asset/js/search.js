@@ -1,5 +1,6 @@
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -79,3 +80,28 @@ var Search = (function() {
 
     return self;
 })();
+
+$(document).ready(function() {
+    $('.search-results-sort select').on('change', function() {
+        Search.sortBy($(this).val());
+    });
+
+    $('.search-view-type-list').on('click', function(e) {
+        e.preventDefault();
+        Search.setViewType('list');
+        $('.search-view-type').removeClass('active');
+        $(this).addClass('active');
+    });
+    $('.search-view-type-grid').on('click', function(e) {
+        e.preventDefault();
+        Search.setViewType('grid');
+        $('.search-view-type').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    var view_type = localStorage.getItem('search_view_type');
+    if (!view_type) {
+        view_type = 'list';
+    }
+    $('.search-view-type-' + view_type).click();
+});
