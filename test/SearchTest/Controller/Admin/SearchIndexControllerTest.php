@@ -13,7 +13,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
 {
     public function testAddGetAction()
     {
-        $this->dispatch('/admin/search/index/add');
+        $this->dispatch('/admin/search-manager/index/add');
         $this->assertResponseStatusCode(200);
 
         $this->assertQuery('input[name="o:name"]');
@@ -25,7 +25,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get('Search\Form\Admin\SearchIndexForm');
 
-        $this->dispatch('/admin/search/index/add', 'POST', [
+        $this->dispatch('/admin/search-manager/index/add', 'POST', [
             'o:name' => 'TestIndex2',
             'o:adapter' => 'test',
             'csrf' => $form->get('csrf')->getValue(),
@@ -35,12 +35,12 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         ]);
         $searchIndexes = $response->getContent();
         $searchIndex = reset($searchIndexes);
-        $this->assertRedirectTo($searchIndex->adminUrl('configure'));
+        $this->assertRedirectTo($searchIndex->adminUrl('edit'));
     }
 
     public function testConfigureGetAction()
     {
-        $this->dispatch($this->searchIndex->adminUrl('configure'));
+        $this->dispatch($this->searchIndex->adminUrl('edit'));
         $this->assertResponseStatusCode(200);
 
         $this->assertQuery('input[name="resources[]"]');
@@ -53,18 +53,18 @@ class SearchIndexControllerTest extends SearchControllerTestCase
             'search_index_id' => $this->searchIndex->id(),
         ]);
 
-        $this->dispatch($this->searchIndex->adminUrl('configure'), 'POST', [
+        $this->dispatch($this->searchIndex->adminUrl('edit'), 'POST', [
             'resources' => ['items', 'item_sets'],
             'csrf' => $form->get('csrf')->getValue(),
         ]);
-        $this->assertRedirectTo("/admin/search");
+        $this->assertRedirectTo('/admin/search-manager');
     }
 
     public function testIndexAction()
     {
         $this->dispatch($this->searchIndex->adminUrl('index'));
 
-        $this->assertRedirectTo("/admin/search");
+        $this->assertRedirectTo('/admin/search-manager');
 
         $messenger = new Messenger;
         $messages = $messenger->get();

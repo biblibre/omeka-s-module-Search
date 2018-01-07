@@ -17,6 +17,10 @@ class IndexControllerTest extends SearchControllerTestCase
         ]);
         $this->site = $response->getContent();
 
+        $siteSettings = $this->getServiceLocator()->get('Omeka\Settings\Site');
+        $siteSettings->setTargetId($this->site->id());
+        $siteSettings->set('search_pages', [$this->searchPage->id()]);
+
         $this->resetApplication();
     }
 

@@ -10,7 +10,7 @@ class IndexControllerTest extends SearchControllerTestCase
 {
     public function testIndexAction()
     {
-        $this->dispatch('/admin/search');
+        $this->dispatch('/admin/search-manager');
         $this->assertResponseStatusCode(200);
 
         $this->assertXpathQueryContentRegex('//table[1]//td[1]', '/TestIndex/');

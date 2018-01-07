@@ -113,6 +113,12 @@ class SearchPageForm extends Form
                 'value' => 'let',
             ],
         ]);
+
+        $inputFilter = $this->getInputFilter();
+        $inputFilter->add([
+            'name' => 'manage_page',
+            'required' => false,
+        ]);
     }
 
     public function setApiManager($apiManager)

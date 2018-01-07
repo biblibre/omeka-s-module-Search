@@ -49,7 +49,7 @@ class IndexController extends AbstractActionController
             $site = null;
         } else {
             $site = $this->currentSite();
-            $siteSearchPages = $this->siteSettings()->get('search_pages');
+            $siteSearchPages = $this->siteSettings()->get('search_pages', []);
             if (!in_array($pageId, $siteSearchPages)) {
                 return $this->notFoundAction();
             }

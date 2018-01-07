@@ -10,7 +10,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
 {
     public function testAddGetAction()
     {
-        $this->dispatch('/admin/search/page/add');
+        $this->dispatch('/admin/search-manager/page/add');
         $this->assertResponseStatusCode(200);
 
         $this->assertQuery('input[name="o:name"]');
@@ -22,9 +22,9 @@ class SearchPageControllerTest extends SearchControllerTestCase
     public function testAddPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchPageForm');
+        $form = $forms->get(\Search\Form\Admin\SearchPageForm::class);
 
-        $this->dispatch('/admin/search/page/add', 'POST', [
+        $this->dispatch('/admin/search-manager/page/add', 'POST', [
             'o:name' => 'TestPage2',
             'o:path' => 'search/test2',
             'o:index_id' => $this->searchIndex->id(),
@@ -35,6 +35,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
             'name' => 'TestPage2',
         ]);
         $searchPages = $response->getContent();
+        $this->assertNotEmpty($searchPages);
         $searchPage = reset($searchPages);
         $this->assertRedirectTo($searchPage->adminUrl('configure'));
     }
@@ -55,11 +56,11 @@ class SearchPageControllerTest extends SearchControllerTestCase
             'search_page' => $this->searchPage,
         ]);
 
-        $url = '/admin/search/page/' . $this->searchPage->id() . '/configure';
+        $url = '/admin/search-manager/page/' . $this->searchPage->id() . '/configure';
         $this->dispatch($url, 'POST', [
             'facet_limit' => '10',
             'csrf' => $form->get('csrf')->getValue(),
         ]);
-        $this->assertRedirectTo("/admin/search");
+        $this->assertRedirectTo("/admin/search-manager");
     }
 }
