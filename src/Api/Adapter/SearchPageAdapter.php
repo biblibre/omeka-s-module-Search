@@ -115,7 +115,7 @@ class SearchPageAdapter extends AbstractEntityAdapter
         }
         if (isset($query['form'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".form",
+                $this->getEntityClass() . ".formAdapter",
                 $this->createNamedParameter($qb, $query['form']))
             );
         }
