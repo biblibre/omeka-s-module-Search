@@ -102,7 +102,7 @@ CREATE TABLE search_page (
     INDEX IDX_4F10A34984337261 (index_id),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id);
+ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id) ON DELETE CASCADE;
 SQL;
         $connection = $serviceLocator->get('Omeka\Connection');
         $sqls = array_filter(array_map('trim', explode(';', $sql)));
@@ -131,6 +131,17 @@ ALTER TABLE search_page CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE index_i
 DROP INDEX index_id ON search_page;
 CREATE INDEX IDX_4F10A34984337261 ON search_page (index_id);
 ALTER TABLE search_page ADD CONSTRAINT search_page_ibfk_1 FOREIGN KEY (index_id) REFERENCES search_index (id);
+SQL;
+            $sqls = array_filter(array_map('trim', explode(';', $sql)));
+            foreach ($sqls as $sql) {
+                $connection->exec($sql);
+            }
+        }
+
+        if (version_compare($oldVersion, '0.5.1', '<')) {
+            $sql = <<<'SQL'
+ALTER TABLE search_page DROP FOREIGN KEY FK_4F10A34984337261;
+ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id) ON DELETE CASCADE;
 SQL;
             $sqls = array_filter(array_map('trim', explode(';', $sql)));
             foreach ($sqls as $sql) {

@@ -58,8 +58,14 @@ class SearchPage extends AbstractEntity
     protected $path;
 
     /**
-     * @ManyToOne(targetEntity="SearchIndex", inversedBy="pages")
-     * @JoinColumn(nullable=false)
+     * @ManyToOne(
+     *     targetEntity="SearchIndex",
+     *     inversedBy="pages"
+     * )
+     * @JoinColumn(
+     *     nullable=false,
+     *     onDelete="CASCADE"
+     * )
      */
     protected $index;
 
