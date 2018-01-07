@@ -11,6 +11,7 @@ class SearchForm extends AbstractHelper
 
     public function __invoke($searchPage = null)
     {
+        // FIXME The view helper should not fail if it has not been initialized.
         if (isset($searchPage)) {
             $this->searchPage = $searchPage;
             $this->form = null;

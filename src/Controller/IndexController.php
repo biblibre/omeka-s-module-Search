@@ -57,11 +57,6 @@ class IndexController extends AbstractActionController
 
         $view = new ViewModel;
 
-        $params = $this->params()->fromQuery();
-        if (empty($params)) {
-            return $view;
-        }
-
         $api = $this->api();
         $response = $api->read('search_pages', $pageId);
         $page = $this->page = $response->getContent();
@@ -73,7 +68,14 @@ class IndexController extends AbstractActionController
             throw new RuntimeException($msg);
         }
 
+        // FIXME The form should not require to be initialized with a page to use the view helper.
         $form = $this->searchForm($page);
+
+        $params = $this->params()->fromQuery();
+        if (empty($params)) {
+            return $view;
+        }
+
         $form->setData($params);
         if (!$form->isValid()) {
             $this->messenger()->addError('There was an error during validation'); // @translate
