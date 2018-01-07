@@ -96,8 +96,13 @@ class SearchPageAdapter extends AbstractEntityAdapter
     public function buildQuery(QueryBuilder $qb, array $query)
     {
         if (isset($query['index_id'])) {
+            $alias = $this->createAlias();
+            $qb->innerJoin(
+                $this->getEntityClass() . '.job',
+                $alias
+            );
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".index",
+                $alias . '.index',
                 $this->createNamedParameter($qb, $query['index_id']))
             );
         }
