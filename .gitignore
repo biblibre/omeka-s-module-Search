@@ -1,1 +1,7 @@
-/vendor/
+/asset/vendor
+/build
+/node_modules
+/vendor
+.DS_Store
+.php_cs.cache
+debug.log
