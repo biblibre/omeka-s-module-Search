@@ -57,7 +57,7 @@ class IndexController extends AbstractActionController
 
         $form->setData($params);
         if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation');
+            $this->messenger()->addError('There was an error during validation'); // @translate
             return $view;
         }
 
@@ -70,7 +70,7 @@ class IndexController extends AbstractActionController
         $formAdapter = $this->page->formAdapter();
         if (!isset($formAdapter)) {
             $formAdapterName = $this->page->formAdapterName();
-            $msg = sprintf("Form adapter '%s' not found", $formAdapterName);
+            $msg = sprintf("Form adapter '%s' not found", $formAdapterName); // @translate
             throw new RuntimeException($msg);
         }
 
@@ -126,7 +126,7 @@ class IndexController extends AbstractActionController
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
-            $this->messenger()->addError('Query error: ' . $e->getMessage());
+            $this->messenger()->addError('Query error: ' . $e->getMessage()); // @translate
             return $view;
         }
 

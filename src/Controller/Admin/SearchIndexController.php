@@ -51,12 +51,12 @@ class SearchIndexController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
             if (!$form->isValid()) {
-                $this->messenger()->addError('There was an error during validation');
+                $this->messenger()->addError('There was an error during validation'); // @translate
                 return $view;
             }
             $formData = $form->getData();
             $response = $this->api()->create('search_indexes', $formData);
-            $this->messenger()->addSuccess('Search index created.');
+            $this->messenger()->addSuccess('Search index created.'); // @translate
             return $this->redirect()->toUrl($response->getContent()->url('configure'));
         }
         return $view;
@@ -77,7 +77,7 @@ class SearchIndexController extends AbstractActionController
         ]);
         $adapterFieldset = $adapter->getConfigFieldset();
         $adapterFieldset->setName('adapter');
-        $adapterFieldset->setLabel('Adapter settings');
+        $adapterFieldset->setLabel('Adapter settings'); // @translate
         $form->add($adapterFieldset);
         $form->setData($searchIndex->getSettings());
 
@@ -87,14 +87,14 @@ class SearchIndexController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
             if (!$form->isValid()) {
-                $this->messenger()->addError('There was an error during validation');
+                $this->messenger()->addError('There was an error during validation'); // @translate
                 return $view;
             }
             $formData = $form->getData();
             unset($formData['csrf']);
             $searchIndex->setSettings($formData);
             $entityManager->flush();
-            $this->messenger()->addSuccess('Search index successfully configured');
+            $this->messenger()->addSuccess('Search index successfully configured'); // @translate
             return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
         }
 
@@ -147,9 +147,9 @@ class SearchIndexController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_indexes', $this->params('id'));
-                $this->messenger()->addSuccess('Search index successfully deleted');
+                $this->messenger()->addSuccess('Search index successfully deleted'); // @translate
             } else {
-                $this->messenger()->addError('Search index could not be deleted');
+                $this->messenger()->addError('Search index could not be deleted'); // @translate
             }
         }
         return $this->redirect()->toRoute('admin/search');
