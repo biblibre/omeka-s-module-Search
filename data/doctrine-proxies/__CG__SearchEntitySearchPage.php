@@ -64,10 +64,10 @@ class SearchPage extends \Search\Entity\SearchPage implements \Doctrine\ORM\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'name', 'path', 'index', 'form', 'settings', 'created', 'modified'];
+            return ['__isInitialized__', 'id', 'name', 'path', 'index', 'formAdapter', 'settings', 'created', 'modified'];
         }
 
-        return ['__isInitialized__', 'id', 'name', 'path', 'index', 'form', 'settings', 'created', 'modified'];
+        return ['__isInitialized__', 'id', 'name', 'path', 'index', 'formAdapter', 'settings', 'created', 'modified'];
     }
 
     /**
@@ -257,23 +257,23 @@ class SearchPage extends \Search\Entity\SearchPage implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function setForm($form)
+    public function setFormAdapter($formAdapter)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setForm', [$form]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFormAdapter', [$formAdapter]);
 
-        return parent::setForm($form);
+        return parent::setFormAdapter($formAdapter);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getForm()
+    public function getFormAdapter()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getForm', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFormAdapter', []);
 
-        return parent::getForm();
+        return parent::getFormAdapter();
     }
 
     /**
