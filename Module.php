@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,11 +30,12 @@
 
 namespace Search;
 
-use Zend\ModuleManager\ModuleManager;
+use Omeka\Module\AbstractModule;
+use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Omeka\Module\AbstractModule;
 
 class Module extends AbstractModule
 {
@@ -47,10 +49,10 @@ class Module extends AbstractModule
         parent::onBootstrap($event);
 
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $acl->allow(null, 'Search\Api\Adapter\SearchPageAdapter');
-        $acl->allow(null, 'Search\Api\Adapter\SearchIndexAdapter');
-        $acl->allow(null, 'Search\Entity\SearchPage', 'read');
-        $acl->allow(null, 'Search\Entity\SearchIndex', 'read');
+        $acl->allow(null, \Search\Api\Adapter\SearchPageAdapter::class);
+        $acl->allow(null, \Search\Api\Adapter\SearchIndexAdapter::class);
+        $acl->allow(null, \Search\Entity\SearchPage::class, 'read');
+        $acl->allow(null, \Search\Entity\SearchIndex::class, 'read');
         $acl->allow(null, 'Search\Controller\Index');
 
         $this->addRoutes();
@@ -65,13 +67,13 @@ class Module extends AbstractModule
         $serviceListener->addServiceManager(
             'Search\AdapterManager',
             'search_adapters',
-            'Search\Feature\AdapterProviderInterface',
+            Feature\AdapterProviderInterface::class,
             'getSearchAdapterConfig'
         );
         $serviceListener->addServiceManager(
             'Search\FormAdapterManager',
             'search_form_adapters',
-            'Search\Feature\FormAdapterProviderInterface',
+            Feature\FormAdapterProviderInterface::class,
             'getSearchFormAdapterConfig'
         );
     }
@@ -133,39 +135,39 @@ class Module extends AbstractModule
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
+            \Omeka\Api\Adapter\ItemAdapter::class,
             'api.create.post',
             [$this, 'updateSearchIndex']
         );
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
+            \Omeka\Api\Adapter\ItemAdapter::class,
             'api.update.post',
             [$this, 'updateSearchIndex']
         );
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
+            \Omeka\Api\Adapter\ItemAdapter::class,
             'api.delete.post',
             [$this, 'updateSearchIndex']
         );
 
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemSetAdapter',
+            \Omeka\Api\Adapter\ItemSetAdapter::class,
             'api.create.post',
             [$this, 'updateSearchIndex']
         );
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemSetAdapter',
+            \Omeka\Api\Adapter\ItemSetAdapter::class,
             'api.update.post',
             [$this, 'updateSearchIndex']
         );
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemSetAdapter',
+            \Omeka\Api\Adapter\ItemSetAdapter::class,
             'api.delete.post',
             [$this, 'updateSearchIndex']
         );
     }
 
-    public function updateSearchIndex($event)
+    public function updateSearchIndex(Event $event)
     {
         $serviceLocator = $this->getServiceLocator();
         $api = $serviceLocator->get('Omeka\ApiManager');

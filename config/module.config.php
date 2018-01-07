@@ -1,18 +1,11 @@
 <?php
+namespace Search;
+
 return [
-    'controllers' => [
+    'api_adapters' => [
         'invokables' => [
-            'Search\Controller\Index' => 'Search\Controller\IndexController',
-            'Search\Controller\Admin\Index' => 'Search\Controller\Admin\IndexController',
-        ],
-        'factories' => [
-            'Search\Controller\Admin\SearchIndex' => 'Search\Service\Controller\Admin\SearchIndexControllerFactory',
-            'Search\Controller\Admin\SearchPage' => 'Search\Service\Controller\Admin\SearchPageControllerFactory',
-        ],
-    ],
-    'controller_plugins' => [
-        'factories' => [
-            'searchForm' => 'Search\Service\Mvc\Controller\Plugin\SearchFormFactory',
+            'search_indexes' => Api\Adapter\SearchIndexAdapter::class,
+            'search_pages' => Api\Adapter\SearchPageAdapter::class,
         ],
     ],
     'entity_manager' => [
@@ -23,20 +16,49 @@ return [
             dirname(__DIR__) . '/data/doctrine-proxies',
         ],
     ],
-    'api_adapters' => [
+    'view_manager' => [
+        'template_path_stack' => [
+            dirname(__DIR__) . '/view',
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
+            'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
+        ],
         'invokables' => [
-            'search_indexes' => 'Search\Api\Adapter\SearchIndexAdapter',
-            'search_pages' => 'Search\Api\Adapter\SearchPageAdapter',
+            'searchForm' => View\Helper\SearchForm::class,
         ],
     ],
     'form_elements' => [
         'factories' => [
-            'Search\Form\Admin\SearchIndexForm' => 'Search\Service\Form\SearchIndexFormFactory',
-            'Search\Form\Admin\SearchIndexConfigureForm' => 'Search\Service\Form\SearchIndexConfigureFormFactory',
-            'Search\Form\Admin\SearchPageForm' => 'Search\Service\Form\SearchPageFormFactory',
-            'Search\Form\Admin\SearchPageConfigureForm' => 'Search\Service\Form\SearchPageConfigureFormFactory',
-            'Search\Form\BasicForm' => 'Search\Service\Form\BasicFormFactory',
-            'Search\Form\Element\SearchPageSelect' => 'Search\Service\Form\Element\SearchPageSelectFactory',
+            Form\Admin\SearchIndexConfigureForm::class => Service\Form\SearchIndexConfigureFormFactory::class,
+            Form\Admin\SearchIndexForm::class => Service\Form\SearchIndexFormFactory::class,
+            Form\Admin\SearchPageConfigureForm::class => Service\Form\SearchPageConfigureFormFactory::class,
+            Form\Admin\SearchPageForm::class => Service\Form\SearchPageFormFactory::class,
+            Form\BasicForm::class => Service\Form\BasicFormFactory::class,
+            Form\Element\SearchPageSelect::class => Service\Form\Element\SearchPageSelectFactory::class,
+        ],
+    ],
+    'controllers' => [
+        'invokables' => [
+            'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
+            'Search\Controller\Index' => Controller\IndexController::class,
+        ],
+        'factories' => [
+            'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
+            'Search\Controller\Admin\SearchPage' => Service\Controller\Admin\SearchPageControllerFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
+            'searchForm' => Service\Mvc\Controller\Plugin\SearchFormFactory::class,
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            'Search\AdapterManager' => Service\AdapterManagerFactory::class,
+            'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
         ],
     ],
     'navigation' => [
@@ -52,7 +74,7 @@ return [
     ],
     'navigation_links' => [
         'invokables' => [
-            'search-page' => 'Search\Site\Navigation\Link\SearchPage',
+            'search-page' => Site\Navigation\Link\SearchPage::class,
         ],
     ],
     'router' => [
@@ -60,7 +82,7 @@ return [
             'admin' => [
                 'child_routes' => [
                     'search' => [
-                        'type' => 'Segment',
+                        'type' => 'Literal',
                         'options' => [
                             'route' => '/search',
                             'defaults' => [
@@ -75,12 +97,12 @@ return [
                                 'type' => 'Segment',
                                 'options' => [
                                     'route' => '/index/:action',
+                                    'constraints' => [
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
                                         'controller' => 'SearchIndex',
-                                    ],
-                                    'constraints' => [
-                                        'id' => '\d+',
                                     ],
                                 ],
                             ],
@@ -88,13 +110,14 @@ return [
                                 'type' => 'Segment',
                                 'options' => [
                                     'route' => '/index/:id[/:action]',
+                                    'constraints' => [
+                                        'id' => '\d+',
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
                                         'controller' => 'SearchIndex',
                                         'action' => 'show',
-                                    ],
-                                    'constraints' => [
-                                        'id' => '\d+',
                                     ],
                                 ],
                             ],
@@ -102,12 +125,12 @@ return [
                                 'type' => 'Segment',
                                 'options' => [
                                     'route' => '/page/:action',
+                                    'constraints' => [
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
                                         'controller' => 'SearchPage',
-                                    ],
-                                    'constraints' => [
-                                        'id' => '\d+',
                                     ],
                                 ],
                             ],
@@ -115,13 +138,14 @@ return [
                                 'type' => 'Segment',
                                 'options' => [
                                     'route' => '/page/:id[/:action]',
+                                    'constraints' => [
+                                        'id' => '\d+',
+                                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
                                         'controller' => 'SearchPage',
                                         'action' => 'show',
-                                    ],
-                                    'constraints' => [
-                                        'id' => '\d+',
                                     ],
                                 ],
                             ],
@@ -129,31 +153,6 @@ return [
                     ],
                 ],
             ],
-        ],
-    ],
-    'service_manager' => [
-        'factories' => [
-            'Search\AdapterManager' => 'Search\Service\AdapterManagerFactory',
-            'Search\FormAdapterManager' => 'Search\Service\FormAdapterManagerFactory',
-        ],
-    ],
-    'view_manager' => [
-        'template_path_stack' => [
-            dirname(__DIR__) . '/view',
-        ],
-    ],
-    'view_helpers' => [
-        'factories' => [
-            'facetLink' => 'Search\Service\ViewHelper\FacetLinkFactory',
-            'facetLabel' => 'Search\Service\ViewHelper\FacetLabelFactory',
-        ],
-        'invokables' => [
-            'searchForm' => 'Search\View\Helper\SearchForm',
-        ],
-    ],
-    'search_form_adapters' => [
-        'invokables' => [
-            'basic' => 'Search\FormAdapter\BasicFormAdapter',
         ],
     ],
     'translator' => [
@@ -164,6 +163,13 @@ return [
                 'pattern' => '%s.mo',
                 'text_domain' => null,
             ],
+        ],
+    ],
+    'search_adapters' => [
+    ],
+    'search_form_adapters' => [
+        'invokables' => [
+            'basic' => FormAdapter\BasicFormAdapter::class,
         ],
     ],
 ];
