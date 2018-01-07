@@ -60,7 +60,8 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
                 'info' => 'The maximum number of values fetched for each facet', // @translate
             ],
             'attributes' => [
-                'min' => '1',
+                'value' => 10,
+                'min' => 1,
                 'required' => true,
             ],
         ]);
