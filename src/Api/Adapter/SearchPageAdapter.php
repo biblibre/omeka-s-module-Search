@@ -95,6 +95,12 @@ class SearchPageAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query)
     {
+        if (isset($query['index_id'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . ".index",
+                $this->createNamedParameter($qb, $query['index_id']))
+            );
+        }
         if (isset($query['name'])) {
             $qb->andWhere($qb->expr()->eq(
                 $this->getEntityClass() . ".name",
