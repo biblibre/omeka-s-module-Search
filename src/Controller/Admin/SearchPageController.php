@@ -53,7 +53,7 @@ class SearchPageController extends AbstractActionController
         $formData = $form->getData();
         $response = $this->api()->create('search_pages', $formData);
 
-        $this->messenger()->addSuccess('Search page created.');
+        $this->messenger()->addSuccess('Search page created.'); // @translate
         $searchPage = $response->getContent();
         return $this->redirect()->toUrl($searchPage->url('configure'));
     }
@@ -75,7 +75,7 @@ class SearchPageController extends AbstractActionController
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
 
-        $this->messenger()->addSuccess('Search page created.');
+        $this->messenger()->addSuccess('Search page saved.'); // @translate
         return $this->redirect()->toUrl($page->url('configure'));
     }
 
@@ -108,7 +108,7 @@ class SearchPageController extends AbstractActionController
         $page->setSettings($formData);
         $entityManager->flush();
 
-        $this->messenger()->addSuccess('Configuration saved.');
+        $this->messenger()->addSuccess('Configuration saved.'); // @translate
         return $this->redirect()->toRoute('admin/search');
     }
 
@@ -133,9 +133,9 @@ class SearchPageController extends AbstractActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $response = $this->api()->delete('search_pages', $this->params('id'));
-                $this->messenger()->addSuccess('Search page successfully deleted');
+                $this->messenger()->addSuccess('Search page successfully deleted'); // @translate
             } else {
-                $this->messenger()->addError('Search page could not be deleted');
+                $this->messenger()->addError('Search page could not be deleted'); // @translate
             }
         }
         return $this->redirect()->toRoute('admin/search');
@@ -179,7 +179,7 @@ class SearchPageController extends AbstractActionController
 
         $form->setData($this->params()->fromPost());
         if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation');
+            $this->messenger()->addError('There was an error during validation'); // @translate
             return false;
         }
 

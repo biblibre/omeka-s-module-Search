@@ -59,6 +59,8 @@ class SearchPageForm extends Form
             'type' => 'Text',
             'options' => [
                 'label' => $translator->translate('Path'),
+                'info' => $translator->translate('The path to the search form.') // @translate
+                    . ' ' . $translator->translate('The site path will be automatically prepended.'), // @translate
             ],
             'attributes' => [
                 'required' => true,

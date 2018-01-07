@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,7 +30,7 @@
 
 <?php $escape = $this->plugin('escapeHtml'); ?>
 
-<<?php echo $tag; ?> class="<?php echo $resource->resourceName(); ?> resource">
+<?php echo sprintf('<%s class="%s resource">', $tag, $resource->resourceName()); ?>
     <?php if (method_exists($resource, 'primaryMedia') && $primaryMedia = $resource->primaryMedia()): ?>
         <img
             src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
@@ -44,4 +45,4 @@
             <?php echo $description; ?>
         </div>
     <?php endif; ?>
-</<?php echo $tag ?>>
+<?php echo sprintf('</%s>', $tag); ?>
