@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,6 +30,8 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareTrait;
 
@@ -45,9 +48,9 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:name',
-            'type' => 'Text',
+            'type' => Text::class,
             'options' => [
-                'label' => $translator->translate('Name'),
+                'label' => 'Name', // @translate
             ],
             'attributes' => [
                 'required' => true,
@@ -56,9 +59,9 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:path',
-            'type' => 'Text',
+            'type' => Text::class,
             'options' => [
-                'label' => $translator->translate('Path'),
+                'label' => 'Path', // @translate
                 'info' => $translator->translate('The path to the search form.') // @translate
                     . ' ' . $translator->translate('The site path will be automatically prepended.'), // @translate
             ],
@@ -69,10 +72,11 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:index_id',
-            'type' => 'Select',
+            'type' => Select::class,
             'options' => [
-                'label' => $translator->translate('Index'),
+                'label' => 'Index', // @translate
                 'value_options' => $this->getIndexesOptions(),
+                'empty_option' => 'Select an index below...', // @translate
             ],
             'attributes' => [
                 'required' => true,
@@ -81,10 +85,11 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:form',
-            'type' => 'Select',
+            'type' => Select::class,
             'options' => [
-                'label' => $translator->translate('Form'),
+                'label' => 'Form', // @translate
                 'value_options' => $this->getFormsOptions(),
+                'empty_option' => 'Select a form below...', // @translate
             ],
             'attributes' => [
                 'required' => true,
@@ -117,9 +122,7 @@ class SearchPageForm extends Form
         $api = $this->getApiManager();
 
         $indexes = $api->search('search_indexes')->getContent();
-        $options = [
-            '' => $this->getTranslator()->translate('None'),
-        ];
+        $options = [];
         foreach ($indexes as $index) {
             $options[$index->id()] =
                 sprintf('%s (%s)', $index->name(), $index->adapterLabel());
@@ -133,9 +136,7 @@ class SearchPageForm extends Form
         $formAdapterManager = $this->getFormAdapterManager();
         $formAdapterNames = $formAdapterManager->getRegisteredNames();
 
-        $options = [
-            '' => $this->getTranslator()->translate('None'),
-        ];
+        $options = [];
         foreach ($formAdapterNames as $name) {
             $formAdapter = $formAdapterManager->get($name);
             $options[$name] = $formAdapter->getLabel();

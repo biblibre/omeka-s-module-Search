@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,6 +30,8 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
@@ -45,9 +48,9 @@ class SearchIndexForm extends Form implements TranslatorAwareInterface
 
         $this->add([
             'name' => 'o:name',
-            'type' => 'Text',
+            'type' => Text::class,
             'options' => [
-                'label' => $translator->translate('Name'),
+                'label' => 'Name', // @translate
             ],
             'attributes' => [
                 'id' => 'name',
@@ -57,10 +60,11 @@ class SearchIndexForm extends Form implements TranslatorAwareInterface
 
         $this->add([
             'name' => 'o:adapter',
-            'type' => 'Select',
+            'type' => Select::class,
             'options' => [
-                'label' => $translator->translate('Adapter'),
+                'label' => 'Adapter', // @translate
                 'value_options' => $this->getAdaptersOptions(),
+                'empty_option' => 'Select an adapter below...', // @translate
             ],
             'attributes' => [
                 'id' => 'name',
@@ -84,9 +88,7 @@ class SearchIndexForm extends Form implements TranslatorAwareInterface
         $adapterManager = $this->getSearchAdapterManager();
         $adapterNames = $adapterManager->getRegisteredNames();
 
-        $options = [
-            '' => $this->getTranslator()->translate('None'),
-        ];
+        $options = [];
 
         foreach ($adapterNames as $name) {
             $adapter = $adapterManager->get($name);

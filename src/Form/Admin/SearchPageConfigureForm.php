@@ -29,6 +29,10 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Element\Checkbox;
+use Zend\Form\Element\Number;
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\I18n\Translator\TranslatorAwareInterface;
@@ -50,7 +54,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $this->add([
             'name' => 'facet_limit',
-            'type' => 'Number',
+            'type' => Number::class,
             'options' => [
                 'label' => 'Facet limit', // @translate
                 'info' => 'The maximum number of values fetched for each facet', // @translate
@@ -76,7 +80,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             $displayFieldset = new Fieldset('display');
             $displayFieldset->add([
                 'name' => 'label',
-                'type' => 'Text',
+                'type' => Text::class,
                 'options' => [
                     'label' => $translator->translate('Label'),
                 ],
@@ -85,7 +89,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'enabled',
-                'type' => 'Checkbox',
+                'type' => Checkbox::class,
                 'options' => [
                     'label' => $translator->translate('Enabled'),
                 ],
@@ -93,13 +97,13 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'weight',
-                'type' => 'Select',
+                'type' => Select::class,
                 'options' => [
                     'label' => $translator->translate('Weight'),
                     'value_options' => $weight_options,
                 ],
                 'attributes' => [
-                    'value' => $weight++,
+                    'value' => ++$weight,
                 ],
             ]);
 
@@ -113,7 +117,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $sort_fields_fieldset->setAttribute('data-sortable', '1');
 
         $sortFields = $adapter->getAvailableSortFields($searchPage->index());
-        $weights = range(0, +count($sortFields));
+        $weights = range(0, count($sortFields));
         $weight_options = array_combine($weights, $weights);
         $weight = 0;
         foreach ($sortFields as $field) {
@@ -123,7 +127,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             $displayFieldset = new Fieldset('display');
             $displayFieldset->add([
                 'name' => 'label',
-                'type' => 'Text',
+                'type' => Text::class,
                 'options' => [
                     'label' => $translator->translate('Label'),
                 ],
@@ -132,7 +136,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'enabled',
-                'type' => 'Checkbox',
+                'type' => Checkbox::class,
                 'options' => [
                     'label' => $translator->translate('Enabled'),
                 ],
@@ -140,13 +144,13 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'weight',
-                'type' => 'Select',
+                'type' => Select::class,
                 'options' => [
                     'label' => $translator->translate('Weight'),
                     'value_options' => $weight_options,
                 ],
                 'attributes' => [
-                    'value' => $weight++,
+                    'value' => ++$weight,
                 ],
             ]);
 
@@ -195,22 +199,20 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         return $fieldset;
     }
 
-    protected function getFieldLabel($field, $settings_key)
+    protected function getFieldLabel($field, $settingsKey)
     {
         $searchPage = $this->getOption('search_page');
         $settings = $searchPage->settings();
 
         $name = $field['name'];
         $label = isset($field['label']) ? $field['label'] : null;
-        if (isset($settings[$settings_key][$name])) {
-            $fieldSettings = $settings[$settings_key][$name];
-
+        if (isset($settings[$settingsKey][$name])) {
+            $fieldSettings = $settings[$settingsKey][$name];
             if (!empty($fieldSettings['display']['label'])) {
                 $label = $fieldSettings['display']['label'];
             }
         }
         $label = $label ? sprintf('%s (%s)', $label, $field['name']) : $field['name'];
-
         return $label;
     }
 

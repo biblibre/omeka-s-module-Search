@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,6 +30,7 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Element\MultiCheckbox;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
@@ -45,9 +47,9 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
 
         $this->add([
             'name' => 'resources',
-            'type' => 'MultiCheckbox',
+            'type' => MultiCheckbox::class,
             'options' => [
-                'label' => $translator->translate('Resources indexed'),
+                'label' => 'Resources indexed', // @translate
                 'value_options' => $this->getResourcesOptions(),
             ],
             'attributes' => [
