@@ -23,3 +23,7 @@
 .ui-sortable-handle > span {
   flex-grow: 1;
 }
+
+.ui-dialog .ui-dialog-titlebar-close {
+    min-height: inherit;
+}

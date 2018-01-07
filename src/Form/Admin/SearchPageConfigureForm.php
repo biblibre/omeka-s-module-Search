@@ -85,6 +85,9 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
                 'options' => [
                     'label' => $translator->translate('Label'),
                 ],
+                'attributes' => [
+                    'value' => isset($field['label']) ? $field['label'] : '',
+                ],
             ]);
             $fieldset->add($displayFieldset);
 
@@ -131,6 +134,9 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
                 'type' => Text::class,
                 'options' => [
                     'label' => $translator->translate('Label'),
+                ],
+                'attributes' => [
+                    'value' => isset($field['label']) ? $field['label'] : '',
                 ],
             ]);
             $fieldset->add($displayFieldset);
@@ -209,7 +215,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $label = isset($field['label']) ? $field['label'] : null;
         if (isset($settings[$settingsKey][$name])) {
             $fieldSettings = $settings[$settingsKey][$name];
-            if (!empty($fieldSettings['display']['label'])) {
+            if (isset($fieldSettings['display']['label'])) {
                 $label = $fieldSettings['display']['label'];
             }
         }

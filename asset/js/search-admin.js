@@ -124,6 +124,6 @@ $(document).ready(function() {
         container.css('display', 'flex');
         container.css('justify-content', 'space-around');
         container.css('align-items', 'flex-start');
-        container.children().css('flex-basis', '30%');
+        container.children().css('flex-basis', '40%');
     });
 });
