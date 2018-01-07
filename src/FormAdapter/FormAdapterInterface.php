@@ -52,7 +52,7 @@ interface FormAdapterInterface
     public function getConfigFormClass();
 
     /**
-     * @return Search\Query
+     * @return \Search\Query
      */
     public function toQuery($data, $formSettings);
 }
