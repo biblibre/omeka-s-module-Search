@@ -52,8 +52,8 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             'name' => 'facet_limit',
             'type' => 'Number',
             'options' => [
-                'label' => $translator->translate('Facet limit'),
-                'info' => $translator->translate('The maximum number of values fetched for each facet'),
+                'label' => 'Facet limit', // @translate
+                'info' => 'The maximum number of values fetched for each facet', // @translate
             ],
             'attributes' => [
                 'min' => '1',

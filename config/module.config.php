@@ -165,6 +165,10 @@ return [
             ],
         ],
     ],
+    'js_translate_strings' => [
+        'Available', // @translate
+        'Enabled', // @translate
+    ],
     'search_adapters' => [
     ],
     'search_form_adapters' => [

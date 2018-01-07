@@ -1,5 +1,6 @@
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -35,11 +36,11 @@ $(document).ready(function() {
 
         var availableContainer = $('<div>')
             .addClass('available')
-            .append('<h3>Available</h3>')
+            .append('<h3>' + Omeka.jsTranslate('Available') + '</h3>')
             .append('<div class="sortable"></div>');
         var enabledContainer = $('<div>')
             .addClass('enabled')
-            .append('<h3>Enabled</h3>')
+            .append('<h3>' + Omeka.jsTranslate('Enabled') + '</h3>')
             .append('<div class="sortable"></div>');
         container.append(availableContainer).append(enabledContainer);
 
