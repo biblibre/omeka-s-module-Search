@@ -80,34 +80,35 @@ class Module extends AbstractModule
 
     public function install(ServiceLocatorInterface $serviceLocator)
     {
+        $sql = <<<'SQL'
+CREATE TABLE search_index (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    adapter VARCHAR(255) NOT NULL,
+    settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)',
+    created DATETIME NOT NULL,
+    modified DATETIME DEFAULT NULL,
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+CREATE TABLE search_page (
+    id INT AUTO_INCREMENT NOT NULL,
+    index_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    path VARCHAR(255) NOT NULL,
+    form_adapter VARCHAR(255) NOT NULL,
+    settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)',
+    created DATETIME NOT NULL,
+    modified DATETIME DEFAULT NULL,
+    INDEX IDX_4F10A34984337261 (index_id),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id);
+SQL;
         $connection = $serviceLocator->get('Omeka\Connection');
-        $sql = '
-            CREATE TABLE IF NOT EXISTS `search_index` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                `name` varchar(255) NOT NULL,
-                `adapter` varchar(255) NOT NULL,
-                `settings` text,
-                `created` datetime NOT NULL,
-                `modified` datetime DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-        ';
-        $connection->exec($sql);
-        $sql = '
-            CREATE TABLE IF NOT EXISTS `search_page` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                `name` varchar(255) NOT NULL,
-                `path` varchar(255) NOT NULL,
-                `index_id` int(11) unsigned NOT NULL,
-                `form_adapter` varchar(255) NOT NULL,
-                `settings` text,
-                `created` datetime NOT NULL,
-                `modified` datetime DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                FOREIGN KEY (`index_id`) REFERENCES `search_index` (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-        ';
-        $connection->exec($sql);
+        $sqls = array_filter(array_map('trim', explode(';', $sql)));
+        foreach ($sqls as $sql) {
+            $connection->exec($sql);
+        }
     }
 
     public function upgrade($oldVersion, $newVersion,
@@ -121,15 +122,34 @@ class Module extends AbstractModule
                 CHANGE `form` `form_adapter` varchar(255) NOT NULL
             ');
         }
+
+        if (version_compare($oldVersion, '0.5.0', '<')) {
+            $sql = <<<'SQL'
+ALTER TABLE search_page DROP FOREIGN KEY search_page_ibfk_1;
+ALTER TABLE search_index CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE settings settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)';
+ALTER TABLE search_page CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE index_id index_id INT NOT NULL AFTER id, CHANGE settings settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)';
+DROP INDEX index_id ON search_page;
+CREATE INDEX IDX_4F10A34984337261 ON search_page (index_id);
+ALTER TABLE search_page ADD CONSTRAINT search_page_ibfk_1 FOREIGN KEY (index_id) REFERENCES search_index (id);
+SQL;
+            $sqls = array_filter(array_map('trim', explode(';', $sql)));
+            foreach ($sqls as $sql) {
+                $connection->exec($sql);
+            }
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
+        $sql = <<<'SQL'
+DROP TABLE IF EXISTS `search_page`;
+DROP TABLE IF EXISTS `search_index`;
+SQL;
         $connection = $serviceLocator->get('Omeka\Connection');
-        $sql = 'DROP TABLE IF EXISTS `search_page`';
-        $connection->exec($sql);
-        $sql = 'DROP TABLE IF EXISTS `search_index`';
-        $connection->exec($sql);
+        $sqls = array_filter(array_map('trim', explode(';', $sql)));
+        foreach ($sqls as $sql) {
+            $connection->exec($sql);
+        }
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
