@@ -11,7 +11,7 @@ class SearchIndexControllerFactory implements FactoryInterface
     {
         $entityManager = $services->get('Omeka\EntityManager');
         $searchAdapterManager = $services->get('Search\AdapterManager');
-        $jobDispatcher = $services->get('Omeka\JobDispatcher');
+        $jobDispatcher = $services->get('Omeka\Job\Dispatcher');
 
         $controller = new SearchIndexController;
         $controller->setEntityManager($entityManager);

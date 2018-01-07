@@ -126,7 +126,7 @@ class IndexController extends AbstractActionController
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
-            $this->messenger()->addError('Query error: ' . $e->getMessage()); // @translate
+            $this->messenger()->addError(sprintf('Query error: %s', $e->getMessage())); // @translate
             return $view;
         }
 
