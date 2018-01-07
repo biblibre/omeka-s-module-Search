@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,9 +30,10 @@
 
 namespace Search\Querier;
 
+use Search\Api\Representation\SearchIndexRepresentation;
+use Search\Query;
 use Zend\Log\LoggerAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Search\Api\Representation\SearchIndexRepresentation;
 
 abstract class AbstractQuerier implements QuerierInterface
 {
@@ -76,4 +78,6 @@ abstract class AbstractQuerier implements QuerierInterface
 
         return $default;
     }
+
+    abstract public function query(Query $query);
 }
