@@ -30,6 +30,7 @@
 
 namespace Search\Form\Admin;
 
+use Zend\Form\Element\Radio;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
@@ -93,6 +94,23 @@ class SearchPageForm extends Form
             ],
             'attributes' => [
                 'required' => true,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'manage_page',
+            'type' => Radio::class,
+            'options' => [
+                'label' => 'Enable / disable page', // @translate
+                'info' => 'The admin settings are not modified.', // @translate
+                'value_options' => [
+                    'disable' => 'Disable in all sites', // @translate
+                    'let' => 'Don’t modify', // @translate
+                    'enable' => 'Enable in all sites', // @translate
+                ],
+            ],
+            'attributes' => [
+                'value' => 'let',
             ],
         ]);
     }

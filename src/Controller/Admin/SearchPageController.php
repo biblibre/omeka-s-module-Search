@@ -52,11 +52,16 @@ class SearchPageController extends AbstractActionController
         }
         $formData = $form->getData();
         $response = $this->api()->create('search_pages', $formData);
+        $searchPage = $response->getContent();
 
         $this->messenger()->addSuccess('Search page created.'); // @translate
-        $this->messenger()->addWarning('Enable it in your site settings or in admin settings.'); // @translate
 
-        $searchPage = $response->getContent();
+        $this->managePage($searchPage->id(), $formData['manage_page']);
+
+        if (!in_array($formData['manage_page'], ['disable', 'enable'])) {
+            $this->messenger()->addWarning('Enable it in your site settings or in admin settings.'); // @translate
+        }
+
         return $this->redirect()->toUrl($searchPage->url('configure'));
     }
 
@@ -76,9 +81,12 @@ class SearchPageController extends AbstractActionController
 
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
+
         $this->messenger()->addSuccess('Search page saved.'); // @translate
 
-        return $this->redirect()->toUrl($page->url('configure'));
+        $this->managePage($id, $formData['manage_page']);
+
+        return $this->redirect()->toRoute('admin/search');
     }
 
     public function configureAction()
@@ -186,5 +194,38 @@ class SearchPageController extends AbstractActionController
         }
 
         return true;
+    }
+
+    protected function managePage($searchPageId, $managePage)
+    {
+        switch ($managePage) {
+            case 'disable':
+                $managePage = false;
+                $message = 'The page has been disabled in all sites.'; // @translate
+                break;
+            case 'enable':
+                $managePage = true;
+                $message = 'The page has been enabled in all sites.'; // @translate
+                break;
+            default:
+                return;
+        }
+
+        $siteSettings = $this->siteSettings();
+        $sites = $this->api()->search('sites')->getContent();
+        foreach ($sites as $site) {
+            $siteSettings->setTargetId($site->id());
+            $searchPages = $siteSettings->get('search_pages');
+            if ($managePage) {
+                $searchPages[] = $searchPageId;
+            } else {
+                if (($key = array_search($searchPageId, $searchPages)) !== false) {
+                    unset($searchPages[$key]);
+                }
+            }
+            $siteSettings->set('search_pages', $searchPages);
+        }
+
+        $this->messenger()->addSuccess($message);
     }
 }
