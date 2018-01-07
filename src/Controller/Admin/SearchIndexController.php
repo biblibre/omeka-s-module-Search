@@ -57,12 +57,12 @@ class SearchIndexController extends AbstractActionController
             $formData = $form->getData();
             $response = $this->api()->create('search_indexes', $formData);
             $this->messenger()->addSuccess('Search index created.'); // @translate
-            return $this->redirect()->toUrl($response->getContent()->url('configure'));
+            return $this->redirect()->toUrl($response->getContent()->url('edit'));
         }
         return $view;
     }
 
-    public function configureAction()
+    public function editAction()
     {
         $entityManager = $this->getEntityManager();
         $adapterManager = $this->getSearchAdapterManager();
