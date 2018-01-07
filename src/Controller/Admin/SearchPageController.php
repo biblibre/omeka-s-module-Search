@@ -54,6 +54,8 @@ class SearchPageController extends AbstractActionController
         $response = $this->api()->create('search_pages', $formData);
 
         $this->messenger()->addSuccess('Search page created.'); // @translate
+        $this->messenger()->addWarning('Enable it in your site settings or in admin settings.'); // @translate
+
         $searchPage = $response->getContent();
         return $this->redirect()->toUrl($searchPage->url('configure'));
     }
@@ -74,8 +76,8 @@ class SearchPageController extends AbstractActionController
 
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
-
         $this->messenger()->addSuccess('Search page saved.'); // @translate
+
         return $this->redirect()->toUrl($page->url('configure'));
     }
 

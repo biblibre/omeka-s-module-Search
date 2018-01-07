@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,11 +30,11 @@
 
 namespace Search\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
 use Search\Querier\Exception\QuerierException;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
@@ -42,56 +43,65 @@ class IndexController extends AbstractActionController
 
     public function searchAction()
     {
-        $response = $this->api()->read('search_pages', $this->params('id'));
-        $this->page = $response->getContent();
-        $index_id = $this->page->index()->id();
-
-        $form = $this->searchForm($this->page);
+        $pageId = (int) $this->params('id');
+        $isAdmin = $this->params()->fromRoute('__ADMIN__');
+        if ($isAdmin) {
+            $site = null;
+        } else {
+            $site = $this->currentSite();
+            $siteSearchPages = $this->siteSettings()->get('search_pages');
+            if (!in_array($pageId, $siteSearchPages)) {
+                return $this->notFoundAction();
+            }
+        }
 
         $view = new ViewModel;
-        $site = $this->currentSite();
+
         $params = $this->params()->fromQuery();
         if (empty($params)) {
             return $view;
         }
 
+        $api = $this->api();
+        $response = $api->read('search_pages', $pageId);
+        $page = $this->page = $response->getContent();
+
+        $formAdapter = $page->formAdapter();
+        if (!isset($formAdapter)) {
+            $formAdapterName = $page->formAdapterName();
+            $msg = sprintf('Form adapter "%s" not found', $formAdapterName); // @translate
+            throw new RuntimeException($msg);
+        }
+
+        $form = $this->searchForm($page);
         $form->setData($params);
         if (!$form->isValid()) {
             $this->messenger()->addError('There was an error during validation'); // @translate
             return $view;
         }
 
-        $searchPageSettings = $this->page->settings();
+        $searchPageSettings = $page->settings();
         $searchFormSettings = [];
         if (isset($searchPageSettings['form'])) {
             $searchFormSettings = $searchPageSettings['form'];
         }
 
-        $formAdapter = $this->page->formAdapter();
-        if (!isset($formAdapter)) {
-            $formAdapterName = $this->page->formAdapterName();
-            $msg = sprintf("Form adapter '%s' not found", $formAdapterName); // @translate
-            throw new RuntimeException($msg);
-        }
+        $index = $this->index = $page->index();
 
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
-        $response = $this->api()->read('search_indexes', $index_id);
-        $this->index = $response->getContent();
 
-        $querier = $this->index->querier();
-
-        $indexSettings = $this->index->settings();
+        $indexSettings = $index->settings();
         if (array_key_exists('resource_type', $params)) {
-            $resource_type = $params['resource_type'];
-            if (!is_array($resource_type)) {
-                $resource_type = [$resource_type];
+            $resourceType = $params['resource_type'];
+            if (!is_array($resourceType)) {
+                $resourceType = [$resourceType];
             }
-            $query->setResources($resource_type);
+            $query->setResources($resourceType);
         } else {
             $query->setResources($indexSettings['resources']);
         }
 
-        $settings = $this->page->settings();
+        $settings = $page->settings();
         foreach ($settings['facets'] as $name => $facet) {
             if ($facet['enabled']) {
                 $query->addFacetField($name);
@@ -109,7 +119,9 @@ class IndexController extends AbstractActionController
             }
         }
 
-        $query->setSite($this->currentSite());
+        if ($site) {
+            $query->setSite($site);
+        }
 
         $sortOptions = $this->getSortOptions();
 
@@ -121,8 +133,9 @@ class IndexController extends AbstractActionController
         }
 
         $query->setSort($sort);
-        $page_number = isset($params['page']) ? $params['page'] : 1;
-        $this->setPagination($query, $page_number);
+        $querier = $index->querier();
+        $pageNumber = isset($params['page']) ? $params['page'] : 1;
+        $this->setPagination($query, $pageNumber);
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
@@ -136,28 +149,28 @@ class IndexController extends AbstractActionController
         $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
-        $this->paginator(max($totalResults), $page_number);
+        $this->paginator(max($totalResults), $pageNumber);
+
         $view->setVariable('query', $query);
         $view->setVariable('site', $site);
         $view->setVariable('response', $response);
         $view->setVariable('facets', $facets);
         $view->setVariable('sortOptions', $sortOptions);
-
         return $view;
     }
 
     protected function setPagination($query, $page)
     {
-        $per_page = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
-        $query->setLimitPage($page, $per_page);
+        $perPage = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
+        $query->setLimitPage($page, $perPage);
     }
 
-    protected function sortByWeight($fields, $setting_name)
+    protected function sortByWeight($fields, $settingName)
     {
         $settings = $this->page->settings();
-        uksort($fields, function ($a, $b) use ($settings,$setting_name) {
-            $aWeight = $settings[$setting_name][$a]['weight'];
-            $bWeight = $settings[$setting_name][$b]['weight'];
+        uksort($fields, function ($a, $b) use ($settings, $settingName) {
+            $aWeight = $settings[$settingName][$a]['weight'];
+            $bWeight = $settings[$settingName][$b]['weight'];
             return $aWeight - $bWeight;
         });
         return $fields;
@@ -169,11 +182,11 @@ class IndexController extends AbstractActionController
 
         $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         $settings = $this->page->settings();
-        foreach ($settings['sort_fields'] as $name => $sort_field) {
-            if ($sort_field['enabled']) {
-                if (isset($sort_field['display']['label']) && !empty($sort_field['display']['label'])) {
-                    $label = $sort_field['display']['label'];
-                } elseif (isset($sortFields[$name]['label']) && !empty($sortFields[$name]['label'])) {
+        foreach ($settings['sort_fields'] as $name => $sortField) {
+            if ($sortField['enabled']) {
+                if (!empty($sortField['display']['label'])) {
+                    $label = $sortField['display']['label'];
+                } elseif (!empty($sortFields[$name]['label'])) {
                     $label = $sortFields[$name]['label'];
                 } else {
                     $label = $name;

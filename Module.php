@@ -32,7 +32,11 @@ namespace Search;
 
 use Omeka\Module\AbstractModule;
 use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
+use Zend\Form\Element\MultiCheckbox;
+use Zend\Form\Element\Select;
+use Zend\Form\Fieldset;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -109,6 +113,10 @@ SQL;
         foreach ($sqls as $sql) {
             $connection->exec($sql);
         }
+
+        $settings = $serviceLocator->get('Omeka\Settings');
+        $this->manageSettings($settings, 'install', 'settings');
+        $this->manageSiteSettings($serviceLocator, 'install');
     }
 
     public function upgrade($oldVersion, $newVersion,
@@ -148,6 +156,12 @@ SQL;
                 $connection->exec($sql);
             }
         }
+
+        if (version_compare($oldVersion, '0.5.2', '<')) {
+            $settings = $serviceLocator->get('Omeka\Settings');
+            $this->manageSettings($settings, 'install', 'settings');
+            $this->manageSiteSettings($serviceLocator, 'install');
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
@@ -163,8 +177,56 @@ SQL;
         }
     }
 
+    protected function manageSettings($settings, $process, $key = 'config')
+    {
+        $config = require __DIR__ . '/config/module.config.php';
+        $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];
+        foreach ($defaultSettings as $name => $value) {
+            switch ($process) {
+                case 'install':
+                    $settings->set($name, $value);
+                    break;
+                case 'uninstall':
+                    $settings->delete($name);
+                    break;
+            }
+        }
+    }
+
+    protected function manageSiteSettings(ServiceLocatorInterface $serviceLocator, $process)
+    {
+        $siteSettings = $serviceLocator->get('Omeka\Settings\Site');
+        $api = $serviceLocator->get('Omeka\ApiManager');
+        $sites = $api->search('sites')->getContent();
+        foreach ($sites as $site) {
+            $siteSettings->setTargetId($site->id());
+            $this->manageSettings($siteSettings, $process, 'site_settings');
+        }
+    }
+
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
+        $sharedEventManager->attach(
+            // Hacked, because the admin layout doesn't use a partial or a trigger for the search engine.
+            '*',
+            'view.layout',
+            function (EventInterface $event) {
+                $view = $event->getTarget();
+                // TODO How to attach all admin events only?
+                if ($view->params()->fromRoute('__SITE__')) {
+                    return;
+                }
+                $settings = $this->getServiceLocator()->get('Omeka\Settings');
+                $adminSearchPage = $settings->get('search_main_page');
+                if (empty($adminSearchPage)) {
+                    return;
+                }
+                $view->headLink()->appendStylesheet($view->assetUrl('css/search-admin-search.css', 'Search'));
+                $view->headScript()->appendScript(sprintf('var searchUrl = %s;', json_encode($adminSearchPage)));
+                $view->headScript()->appendFile($view->assetUrl('js/search-admin-search.js', 'Search'));
+            }
+        );
+
         $sharedEventManager->attach(
             \Omeka\Api\Adapter\ItemAdapter::class,
             'api.create.post',
@@ -195,6 +257,27 @@ SQL;
             \Omeka\Api\Adapter\ItemSetAdapter::class,
             'api.delete.post',
             [$this, 'updateSearchIndex']
+        );
+
+        $sharedEventManager->attach(
+            \Omeka\Form\SettingForm::class,
+            'form.add_elements',
+            [$this, 'addSettingFormElements']
+        );
+        $sharedEventManager->attach(
+            \Omeka\Form\SettingForm::class,
+            'form.add_input_filters',
+            [$this, 'addSettingsFormFilters']
+        );
+        $sharedEventManager->attach(
+            \Omeka\Form\SiteSettingsForm::class,
+            'form.add_elements',
+            [$this, 'addSiteSettingsFormElements']
+        );
+        $sharedEventManager->attach(
+            \Omeka\Form\SiteSettingsForm::class,
+            'form.add_input_filters',
+            [$this, 'addSettingsFormFilters']
         );
     }
 
@@ -226,31 +309,139 @@ SQL;
 
     protected function addRoutes()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $settings = $serviceLocator->get('Omeka\Settings');
-        $router = $serviceLocator->get('Router');
-        $api = $serviceLocator->get('Omeka\ApiManager');
+        $services = $this->getServiceLocator();
 
+        $router = $services->get('Router');
         if (!$router instanceof \Zend\Router\Http\TreeRouteStack) {
             return;
         }
 
+        $settings = $services->get('Omeka\Settings');
+        $adminSearchPages = $settings->get('search_pages', []);
+
+        $api = $services->get('Omeka\ApiManager');
         $pages = $api->search('search_pages')->getContent();
         foreach ($pages as $page) {
-            $path = $page->path();
-            $router->addRoute('search-page-' . $page->id(), [
+            $pageId = $page->id();
+            $pagePath = $page->path();
+            $router->addRoute('search-page-' . $pageId, [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/s/:site-slug/' . $path,
+                    'route' => '/s/:site-slug/' . $pagePath,
                     'defaults' => [
                         '__NAMESPACE__' => 'Search\Controller',
                         '__SITE__' => true,
                         'controller' => 'Index',
                         'action' => 'search',
-                        'id' => $page->id(),
+                        'id' => $pageId,
                     ],
                 ],
             ]);
+
+            if (in_array($pageId, $adminSearchPages)) {
+                $router->addRoute('search-admin-page-' . $pageId, [
+                    'type' => 'segment',
+                    'options' => [
+                        'route' => '/admin/' . $pagePath,
+                        'defaults' => [
+                            '__NAMESPACE__' => 'Search\Controller',
+                            '__ADMIN__' => true,
+                            'controller' => 'Index',
+                            'action' => 'search',
+                            'id' => $pageId,
+                        ],
+                    ],
+                ]);
+            }
         }
+    }
+
+    public function addSettingFormElements(Event $event)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $this->addSettingsFormElements($event, $settings, true);
+    }
+
+    public function addSiteSettingsFormElements(Event $event)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings\Site');
+        $this->addSettingsFormElements($event, $settings, false);
+    }
+
+    protected function addSettingsFormElements(Event $event, $settings, $isAdmin)
+    {
+        $form = $event->getTarget();
+
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $defaultSettings = $config[strtolower(__NAMESPACE__)]['settings'];
+
+        $fieldset = new Fieldset('search');
+        $fieldset->setLabel('Search'); // @translate
+
+        $api = $services->get('Omeka\ApiManager');
+        $pages = $api->search('search_pages')->getContent();
+        $valueOptions = [];
+        foreach ($pages as $page) {
+            $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
+        }
+
+        $fieldset->add([
+            'name' => 'search_pages',
+            'type' => MultiCheckbox::class,
+            'options' => [
+                'label' => 'Search pages', // @translate
+                'value_options' => $valueOptions,
+            ],
+            'attributes' => [
+                'value' => $settings->get(
+                    'search_pages',
+                    $defaultSettings['search_pages']
+                ),
+            ],
+        ]);
+
+        if ($isAdmin) {
+            $valueOptions = [];
+            $basePath = $services->get('ViewHelperManager')->get('BasePath');
+            $adminBasePath = $basePath('admin/');
+            foreach ($pages as $page) {
+                $valueOptions[$adminBasePath . $page->path()] = sprintf('%s (/%s)', $page->name(), $page->path());
+            }
+            $fieldset->add([
+                'name' => 'search_main_page',
+                'type' => Select::class,
+                'options' => [
+                    'label' => 'Default search page', // @translate
+                    'info' => 'This search engine is used in the admin bar.', // @translate
+                    'value_options' => $valueOptions,
+                    'empty_option' => 'Select the search engine for the admin bar...', // @translate
+                ],
+                'attributes' => [
+                    'value' => $settings->get(
+                        'search_main_page',
+                        $defaultSettings['search_main_page']
+                    ),
+                ],
+            ]);
+        }
+
+        $form->add($fieldset);
+    }
+
+    public function addSettingsFormFilters(Event $event)
+    {
+        $inputFilter = $event->getParam('inputFilter');
+        $searchFilter = $inputFilter->get('search');
+        $searchFilter->add([
+            'name' => 'search_pages',
+            'required' => false,
+        ]);
+        $searchFilter->add([
+            'name' => 'search_main_page',
+            'required' => false,
+        ]);
     }
 }

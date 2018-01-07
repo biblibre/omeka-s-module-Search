@@ -84,7 +84,7 @@ return [
                     'search' => [
                         'type' => 'Literal',
                         'options' => [
-                            'route' => '/search',
+                            'route' => '/search-manager',
                             'defaults' => [
                                 '__NAMESPACE__' => 'Search\Controller\Admin',
                                 'controller' => 'Index',
@@ -168,12 +168,23 @@ return [
     'js_translate_strings' => [
         'Available', // @translate
         'Enabled', // @translate
+        'Find resources...', // @translate
+        'Find', // @translate
     ],
     'search_adapters' => [
     ],
     'search_form_adapters' => [
         'invokables' => [
             'basic' => FormAdapter\BasicFormAdapter::class,
+        ],
+    ],
+    'search' => [
+        'settings' => [
+            'search_pages' => [],
+            'search_main_page' => '',
+        ],
+        'site_settings' => [
+            'search_pages' => [],
         ],
     ],
 ];
