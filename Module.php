@@ -51,14 +51,7 @@ class Module extends AbstractModule
     public function onBootstrap(MvcEvent $event)
     {
         parent::onBootstrap($event);
-
-        $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $acl->allow(null, \Search\Api\Adapter\SearchPageAdapter::class);
-        $acl->allow(null, \Search\Api\Adapter\SearchIndexAdapter::class);
-        $acl->allow(null, \Search\Entity\SearchPage::class, 'read');
-        $acl->allow(null, \Search\Entity\SearchIndex::class, 'read');
-        $acl->allow(null, 'Search\Controller\Index');
-
+        $this->addAclRules();
         $this->addRoutes();
     }
 
@@ -295,6 +288,16 @@ SQL;
             'form.add_input_filters',
             [$this, 'addSettingsFormFilters']
         );
+    }
+
+    protected function addAclRules()
+    {
+        $acl = $this->getServiceLocator()->get('Omeka\Acl');
+        $acl->allow(null, \Search\Api\Adapter\SearchPageAdapter::class);
+        $acl->allow(null, \Search\Api\Adapter\SearchIndexAdapter::class);
+        $acl->allow(null, \Search\Entity\SearchPage::class, 'read');
+        $acl->allow(null, \Search\Entity\SearchIndex::class, 'read');
+        $acl->allow(null, 'Search\Controller\Index');
     }
 
     protected function addRoutes()
