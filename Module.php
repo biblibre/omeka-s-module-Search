@@ -260,6 +260,22 @@ SQL;
         );
 
         $sharedEventManager->attach(
+            \Omeka\Api\Adapter\MediaAdapter::class,
+            'api.update.post',
+            [$this, 'updateSearchIndexMedia']
+        );
+        $sharedEventManager->attach(
+            \Omeka\Api\Adapter\MediaAdapter::class,
+            'api.delete.pre',
+            [$this, 'preUpdateSearchIndexMedia']
+        );
+        $sharedEventManager->attach(
+            \Omeka\Api\Adapter\MediaAdapter::class,
+            'api.delete.post',
+            [$this, 'updateSearchIndexMedia']
+        );
+
+        $sharedEventManager->attach(
             \Omeka\Form\SettingForm::class,
             'form.add_elements',
             [$this, 'addSettingFormElements']
@@ -279,32 +295,6 @@ SQL;
             'form.add_input_filters',
             [$this, 'addSettingsFormFilters']
         );
-    }
-
-    public function updateSearchIndex(Event $event)
-    {
-        $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
-
-        $request = $event->getParam('request');
-        $response = $event->getParam('response');
-        $requestResource = $request->getResource();
-
-        $searchIndexes = $api->search('search_indexes')->getContent();
-        foreach ($searchIndexes as $searchIndex) {
-            $searchIndexSettings = $searchIndex->settings();
-            if (in_array($requestResource, $searchIndexSettings['resources'])) {
-                $indexer = $searchIndex->indexer();
-
-                if ($request->getOperation() == 'delete') {
-                    $id = $request->getId();
-                    $indexer->deleteResource($requestResource, $id);
-                } else {
-                    $resource = $response->getContent();
-                    $indexer->indexResource($resource);
-                }
-            }
-        }
     }
 
     protected function addRoutes()
@@ -352,6 +342,65 @@ SQL;
                         ],
                     ],
                 ]);
+            }
+        }
+    }
+
+    public function preUpdateSearchIndexMedia(Event $event)
+    {
+        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        $request = $event->getParam('request');
+        $media = $api->read('media', $request->getId())->getContent();
+        $data = $request->getContent();
+        $data['itemId'] = $media->item()->id();
+        $request->setContent($data);
+    }
+
+    public function updateSearchIndex(Event $event)
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $api = $serviceLocator->get('Omeka\ApiManager');
+
+        $request = $event->getParam('request');
+        $response = $event->getParam('response');
+        $requestResource = $request->getResource();
+
+        $searchIndexes = $api->search('search_indexes')->getContent();
+        foreach ($searchIndexes as $searchIndex) {
+            $searchIndexSettings = $searchIndex->settings();
+            if (in_array($requestResource, $searchIndexSettings['resources'])) {
+                $indexer = $searchIndex->indexer();
+
+                if ($request->getOperation() == 'delete') {
+                    $id = $request->getId();
+                    $indexer->deleteResource($requestResource, $id);
+                } else {
+                    $resource = $response->getContent();
+                    $indexer->indexResource($resource);
+                }
+            }
+        }
+    }
+
+    public function updateSearchIndexMedia(Event $event)
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $api = $serviceLocator->get('Omeka\ApiManager');
+
+        $request = $event->getParam('request');
+        $response = $event->getParam('response');
+        $requestResource = $request->getResource();
+        $itemId = $request->getValue('itemId');
+        $item = $itemId
+            ? $api->read('items', $itemId, [], ['responseContent' => 'resource'])->getContent()
+            : $response->getContent()->getItem();
+
+        $searchIndexes = $api->search('search_indexes')->getContent();
+        foreach ($searchIndexes as $searchIndex) {
+            $searchIndexSettings = $searchIndex->settings();
+            if (in_array('items', $searchIndexSettings['resources'])) {
+                $indexer = $searchIndex->indexer();
+                $indexer->indexResource($item);
             }
         }
     }
