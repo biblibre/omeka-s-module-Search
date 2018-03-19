@@ -77,7 +77,7 @@ class SearchPageForm extends Form
             'options' => [
                 'label' => 'Index', // @translate
                 'value_options' => $this->getIndexesOptions(),
-                'empty_option' => 'Select an index below...', // @translate
+                'empty_option' => 'Select an index below…', // @translate
             ],
             'attributes' => [
                 'required' => true,
@@ -90,7 +90,7 @@ class SearchPageForm extends Form
             'options' => [
                 'label' => 'Form', // @translate
                 'value_options' => $this->getFormsOptions(),
-                'empty_option' => 'Select a form below...', // @translate
+                'empty_option' => 'Select a form below…', // @translate
             ],
             'attributes' => [
                 'required' => true,

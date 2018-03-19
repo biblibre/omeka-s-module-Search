@@ -64,7 +64,7 @@ class SearchIndexForm extends Form implements TranslatorAwareInterface
             'options' => [
                 'label' => 'Adapter', // @translate
                 'value_options' => $this->getAdaptersOptions(),
-                'empty_option' => 'Select an adapter below...', // @translate
+                'empty_option' => 'Select an adapter below…', // @translate
             ],
             'attributes' => [
                 'id' => 'name',

@@ -168,7 +168,7 @@ return [
     'js_translate_strings' => [
         'Available', // @translate
         'Enabled', // @translate
-        'Find resources...', // @translate
+        'Find resources…', // @translate
         'Find', // @translate
     ],
     'search_adapters' => [

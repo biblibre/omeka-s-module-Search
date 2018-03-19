@@ -469,7 +469,7 @@ SQL;
                     'label' => 'Default search page', // @translate
                     'info' => 'This search engine is used in the admin bar.', // @translate
                     'value_options' => $valueOptions,
-                    'empty_option' => 'Select the search engine for the admin bar...', // @translate
+                    'empty_option' => 'Select the search engine for the admin bar…', // @translate
                 ],
                 'attributes' => [
                     'value' => $settings->get(
