@@ -14,7 +14,6 @@ class SearchForm extends AbstractHelper
     protected $searchPage;
 
     /**
-     *
      * @var Form
      */
     protected $form;

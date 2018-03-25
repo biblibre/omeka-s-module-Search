@@ -40,7 +40,7 @@ class BasicFormAdapter implements FormAdapterInterface
 
     public function getFormClass()
     {
-        return 'Search\Form\BasicForm';
+        return \Search\Form\BasicForm::class;
     }
 
     public function getFormPartial()

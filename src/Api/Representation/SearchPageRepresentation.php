@@ -108,6 +108,9 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $formAdapterManager->get($this->formAdapterName());
     }
 
+    /**
+     * @return \Zend\Form\Form
+     */
     public function form()
     {
         $serviceLocator = $this->getServiceLocator();
