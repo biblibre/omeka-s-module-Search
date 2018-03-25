@@ -29,12 +29,13 @@
 ?>
 
 <?php
-    $escape = $this->plugin('escapeHtml');
-    $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
-    $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
+$escape = $this->plugin('escapeHtml');
+$this->htmlElement('body')->appendAttribute('class', 'search');
+$this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
+$this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
 
-<?php $this->pageTitle($this->translate('Search')); ?>
+<?php echo $this->pageTitle($this->translate('Search')); ?>
 
 <div id="content" role="main">
     <?php echo $this->searchForm(); ?>
