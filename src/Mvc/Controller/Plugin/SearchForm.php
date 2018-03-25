@@ -18,6 +18,10 @@ class SearchForm extends AbstractPlugin
         $this->viewHelpers = $viewHelpers;
     }
 
+    /**
+     * @param SearchPageRepresentation $searchPage
+     * @return Zend\Form\Form;
+     */
     public function __invoke(SearchPageRepresentation $searchPage)
     {
         $searchForm = $this->viewHelpers->get('searchForm');

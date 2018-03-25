@@ -88,6 +88,9 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $this->resource->getPath();
     }
 
+    /**
+     * @return \Search\Api\Representation\SearchIndexRepresentation
+     */
     public function index()
     {
         return $this->getAdapter('search_indexes')->getRepresentation($this->resource->getIndex());

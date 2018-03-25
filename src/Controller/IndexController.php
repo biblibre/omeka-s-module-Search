@@ -32,13 +32,23 @@ namespace Search\Controller;
 
 use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
+use Search\Api\Representation\SearchIndexRepresentation;
+use Search\Api\Representation\SearchPageRepresentation;
 use Search\Querier\Exception\QuerierException;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    /**
+     * @var SearchPageRepresentation
+     */
     protected $page;
+
+    /**
+     *
+     * @var SearchIndexRepresentation
+     */
     protected $index;
 
     public function searchAction()
@@ -57,10 +67,10 @@ class IndexController extends AbstractActionController
 
         $view = new ViewModel;
         $view->setVariable('isPartial', $isAdmin);
-
         $api = $this->api();
         $response = $api->read('search_pages', $pageId);
-        $page = $this->page = $response->getContent();
+        $this->page = $response->getContent();
+        $page = $this->page;
 
         $formAdapter = $page->formAdapter();
         if (!isset($formAdapter)) {
@@ -70,6 +80,7 @@ class IndexController extends AbstractActionController
         }
 
         // FIXME The form should not require to be initialized with a page to use the view helper.
+        /** @var \Zend\Form\Form $form */
         $form = $this->searchForm($page);
 
         $params = $this->params()->fromQuery();
@@ -89,7 +100,8 @@ class IndexController extends AbstractActionController
             $searchFormSettings = $searchPageSettings['form'];
         }
 
-        $index = $this->index = $page->index();
+        $this->index = $page->index();
+        $index = $this->index;
 
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
 
