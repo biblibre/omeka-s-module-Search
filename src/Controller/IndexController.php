@@ -56,6 +56,7 @@ class IndexController extends AbstractActionController
         }
 
         $view = new ViewModel;
+        $view->setVariable('isPartial', $isAdmin);
 
         $api = $this->api();
         $response = $api->read('search_pages', $pageId);

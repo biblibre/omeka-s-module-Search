@@ -37,7 +37,9 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 
 <?php echo $this->pageTitle($this->translate('Search')); ?>
 
+<?php if (empty($isPartial)): ?>
 <div id="content" role="main">
+<?php endif; ?>
     <?php echo $this->searchForm(); ?>
 
     <?php if (isset($response)): ?>
@@ -87,4 +89,6 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
             <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
         </div>
     <?php endif; ?>
+<?php if (empty($isPartial)): ?>
 </div>
+<?php endif; ?>

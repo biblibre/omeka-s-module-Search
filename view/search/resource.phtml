@@ -28,21 +28,26 @@
  */
 ?>
 
-<?php $escape = $this->plugin('escapeHtml'); ?>
+<?php
+$hyperlink = $this->plugin('hyperlink');
+?>
 
 <?php echo sprintf('<%s class="%s resource">', $tag, $resource->resourceName()); ?>
-    <?php if (method_exists($resource, 'primaryMedia') && $primaryMedia = $resource->primaryMedia()): ?>
-        <img
-            src="<?php echo $escape($primaryMedia->thumbnailUrl('medium')); ?>"
-            title="<?php echo $escape($primaryMedia->displayTitle()); ?>"
-            alt="<?php echo $escape($primaryMedia->mediaType()); ?> thumbnail"
-        />
-    <?php endif; ?>
-    <h4><?php echo $resource->link($resource->displayTitle()); ?></h4>
-
-    <?php if ($description = $resource->displayDescription()): ?>
-        <div class="description">
-            <?php echo $description; ?>
-        </div>
-    <?php endif; ?>
+    <div class="resource-thumbnail">
+        <?php $media = $resource->primaryMedia(); ?>
+        <?php if ($media): ?>
+            <?php echo $hyperlink->raw(
+                $this->thumbnail($media, 'square', ['title' => $media->displayTitle(), 'alt' => $media->mediaType() . ' thumbnail']),
+                $resource->url()
+            ); ?>
+        <?php endif; ?>
+    </div>
+    <div class="resource-metadata">
+        <h4><?php echo $resource->link($resource->displayTitle()); ?></h4>
+        <?php if ($description = $resource->displayDescription()): ?>
+            <div class="description">
+                <?php echo $description; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 <?php echo sprintf('</%s>', $tag); ?>

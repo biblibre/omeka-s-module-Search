@@ -72,3 +72,8 @@
 .resource-list.grid .description {
   display: none;
 }
+
+.search-results .resource-thumbnail {
+    min-width: 200px;
+    max-width: 200px;
+}
