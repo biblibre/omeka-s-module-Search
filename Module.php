@@ -30,7 +30,10 @@
 
 namespace Search;
 
+use Omeka\Entity\Resource;
 use Omeka\Module\AbstractModule;
+use Omeka\Stdlib\Message;
+use Search\Indexer\AbstractIndexer;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
@@ -406,13 +409,12 @@ SQL;
             $searchIndexSettings = $searchIndex->settings();
             if (in_array($requestResource, $searchIndexSettings['resources'])) {
                 $indexer = $searchIndex->indexer();
-
                 if ($request->getOperation() == 'delete') {
                     $id = $request->getId();
-                    $indexer->deleteResource($requestResource, $id);
+                    $this->deleteIndexResource($indexer, $requestResource, $id);
                 } else {
                     $resource = $response->getContent();
-                    $indexer->indexResource($resource);
+                    $this->updateIndexResource($indexer, $resource);
                 }
             }
         }
@@ -436,8 +438,51 @@ SQL;
             $searchIndexSettings = $searchIndex->settings();
             if (in_array('items', $searchIndexSettings['resources'])) {
                 $indexer = $searchIndex->indexer();
-                $indexer->indexResource($item);
+                $this->updateIndexResource($indexer, $item);
             }
+        }
+    }
+
+    /**
+     * Delete the search index for a resource.
+     *
+     * @param AbstractIndexer $indexer
+     * @param string $resourceName
+     * @param int $id
+     */
+    protected function deleteIndexResource(AbstractIndexer $indexer, $resourceName, $id)
+    {
+        try {
+            $indexer->deleteResource($resourceName, $id);
+        } catch (\Exception $e) {
+            $services = $this->getServiceLocator();
+            $logger = $services->get('Omeka\Logger');
+            $logger->err(new Message('Unable to delete the search index for resource #%d: %s', // @translate
+                $id, $e->getMessage()));
+            $messenger = $services->get('ControllerPluginManager')->get('messenger');
+            $messenger->addWarning(new Message('Unable to delete the search index for the deleted resource #%d: see log.', // @translate
+                $id));
+        }
+    }
+
+    /**
+     * Update the search index for a resource.
+     *
+     * @param AbstractIndexer $indexer
+     * @param Resource $resource
+     */
+    protected function updateIndexResource(AbstractIndexer $indexer, Resource $resource)
+    {
+        try {
+            $indexer->indexResource($resource);
+        } catch (\Exception $e) {
+            $services = $this->getServiceLocator();
+            $logger = $services->get('Omeka\Logger');
+            $logger->err(new Message('Unable to index metadata of resource #%d for search: %s', // @translate
+                $resource->getId(), $e->getMessage()));
+            $messenger = $services->get('ControllerPluginManager')->get('messenger');
+            $messenger->addWarning(new Message('Unable to update the search index for resource #%d: see log.', // @translate
+                $resource->getId()));
         }
     }
 
