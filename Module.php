@@ -248,7 +248,7 @@ SQL;
                     return;
                 }
                 $view->headLink()->appendStylesheet($view->assetUrl('css/search-admin-search.css', 'Search'));
-                $view->headScript()->appendScript(sprintf('var searchUrl = %s;', json_encode($adminSearchPage)));
+                $view->headScript()->appendScript(sprintf('var searchUrl = %s;', json_encode($adminSearchPage, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)));
                 $view->headScript()->appendFile($view->assetUrl('js/search-admin-search.js', 'Search'));
             }
         );
