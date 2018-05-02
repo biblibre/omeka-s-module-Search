@@ -2,8 +2,8 @@
 namespace Search\Service\Form;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\Form\Admin\SearchIndexForm;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class SearchIndexFormFactory implements FactoryInterface
 {
@@ -11,10 +11,9 @@ class SearchIndexFormFactory implements FactoryInterface
     {
         $searchAdapterManager = $services->get('Search\AdapterManager');
 
-        $form = new SearchIndexForm;
+        $form = new SearchIndexForm(null, $options);
         $form->setTranslator($services->get('MvcTranslator'));
         $form->setSearchAdapterManager($searchAdapterManager);
-
         return $form;
     }
 }
