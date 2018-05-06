@@ -36,6 +36,19 @@ Quick start
 See the readme of the [Solr module].
 
 
+Indexation
+----------
+
+The indexation of items and item sets is automatic and all new metadata can be
+searched in the admin board. Nevertheless, even if the new items and item sets
+are indexed, they won’t be searchable in the public sites, because they are
+currently indexed independantly from the sites.
+
+So when new items or new item sets are created, or when the item pool of a site
+or the item sets attached it are modified, a manual reindexation should be done
+in the Search board. This job can be done via a cron too (see your system cron).
+
+
 Warning
 -------
 
