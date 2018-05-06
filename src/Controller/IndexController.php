@@ -90,7 +90,7 @@ class IndexController extends AbstractActionController
 
         $form->setData($params);
         if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation'); // @translate
+            $this->messenger()->addError('There was an error during validation.'); // @translate
             return $view;
         }
 

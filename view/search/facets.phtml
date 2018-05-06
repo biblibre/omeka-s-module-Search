@@ -33,7 +33,7 @@
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
                 <li class="search-facet">
-                    <h3><?php echo $this->facetLabel($name); ?></h3>
+                    <h3><?php echo $this->translate($this->facetLabel($name)); ?></h3>
                     <ul class="search-facet-items">
                         <?php foreach ($facetValues as $facetValue): ?>
                             <li class="search-facet-item">
