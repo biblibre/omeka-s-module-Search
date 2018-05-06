@@ -85,18 +85,13 @@ class SearchIndexAdapter extends AbstractEntityAdapter
     {
         if (isset($query['name'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".name",
+                $this->getEntityClass() . '.name',
                 $this->createNamedParameter($qb, $query['name']))
             );
         }
         if (isset($query['adapter'])) {
-            $alias = $this->createAlias();
-            $qb->innerJoin(
-                $this->getEntityClass() . '.adapter',
-                $alias
-            );
             $qb->andWhere($qb->expr()->eq(
-                $alias . '.adapter',
+                $this->getEntityClass() . '.adapter',
                 $this->createNamedParameter($qb, $query['adapter']))
             );
         }
