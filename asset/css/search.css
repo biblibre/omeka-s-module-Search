@@ -43,9 +43,9 @@
 
 .search-facet-item a::before {
   display: inline-block;
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
   width: 1.5em;
-  content: "\f096";
+  content: "\f0c8";
 }
 
 .search-facet-item .active a::before {
