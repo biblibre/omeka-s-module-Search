@@ -26,27 +26,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL license and that you accept its terms.
  */
+
+$translate = $this->plugin('translate');
 ?>
 
 <?php $this->htmlElement('body')->appendAttribute('class', 'search browse'); ?>
 <?php $escape = $this->plugin('escapeHtml'); ?>
 
-<?php echo $this->pageTitle($this->translate('Search manager')); ?>
+<?php echo $this->pageTitle($translate('Search manager')); ?>
 
 <div id="page-actions">
-    <a class="button" href="<?php echo $this->url('admin/search/index', ['action' => 'add']); ?>">Add new index</a>
+    <a class="button" href="<?php echo $this->url('admin/search/index', ['action' => 'add']); ?>"><?php echo $translate('Add new index'); ?></a>
     <?php if (!empty($search_indexes)): ?>
-        <a class="button" href="<?php echo $this->url('admin/search/page', ['action' => 'add']); ?>">Add new page</a>
+        <a class="button" href="<?php echo $this->url('admin/search/page', ['action' => 'add']); ?>"><?php echo $translate('Add new page'); ?></a>
     <?php endif; ?>
 </div>
 
-<h2>Indexes</h2>
+<h2><?php echo $translate('Indexes'); ?></h2>
 <?php if (count($search_indexes) > 0): ?>
     <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Adapter</th>
+                <th><?php echo $translate('Name'); ?></th>
+                <th><?php echo $translate('Adapter'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +62,7 @@
                                     <?php
                                         echo $search_index->link('', 'edit', [
                                             'class' => 'o-icon-edit',
-                                            'title' => $this->translate('Edit'),
+                                            'title' => $translate('Edit'),
                                         ]);
                                     ?>
                                 </li>
@@ -68,7 +70,7 @@
                                     <?php
                                         echo $search_index->link('', 'index', [
                                             'class' => 'o-icon- fa fa-refresh fa-sync',
-                                            'title' => $this->translate('Reindex all'),
+                                            'title' => $translate('Reindex all'),
                                         ]);
                                     ?>
                                 </li>
@@ -77,8 +79,8 @@
                                 <a href="#"
                                 data-sidebar-content-url="<?php echo $escape($search_index->url('delete-confirm')); ?>"
                                 class="o-icon-delete sidebar-content"
-                                aria-label="<?php echo $escape($this->translate('Delete')); ?>"
-                                title="<?php echo $escape($this->translate('Delete')); ?>"></a>
+                                aria-label="<?php echo $escape($translate('Delete')); ?>"
+                                title="<?php echo $escape($translate('Delete')); ?>"></a>
                             </li>
                         </ul>
                     </td>
@@ -88,18 +90,18 @@
         </tbody>
     </table>
 <?php else: ?>
-    <p><?php echo $this->translate('No search indexes created yet.'); ?></p>
+    <p><?php echo $translate('No search indexes created yet.'); ?></p>
 <?php endif; ?>
 
-<h2>Pages</h2>
+<h2><?php echo $translate('Pages'); ?></h2>
 <?php if (count($search_pages) > 0): ?>
     <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Path</th>
-                <th>Index</th>
-                <th>Form</th>
+                <th><?php echo $translate('Name'); ?></th>
+                <th><?php echo $translate('Path'); ?></th>
+                    <th><?php echo $translate('Index'); ?></th>
+                <th><?php echo $translate('Form'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -112,7 +114,7 @@
                                 <?php
                                     echo $search_page->link('', 'edit', [
                                         'class' => 'o-icon-edit',
-                                        'title' => $this->translate('Edit'),
+                                        'title' => $translate('Edit'),
                                     ]);
                                 ?>
                             </li>
@@ -120,7 +122,7 @@
                                 <?php
                                     echo $search_page->link('', 'configure', [
                                         'class' => 'o-icon- fa fa-sliders fa-sliders-h',
-                                        'title' => $this->translate('Configure facets and sort fields'),
+                                        'title' => $translate('Configure facets and sort fields'),
                                     ]);
                                 ?>
                             </li>
@@ -128,8 +130,8 @@
                                 <a href="#"
                                 data-sidebar-content-url="<?php echo $escape($search_page->url('delete-confirm')); ?>"
                                 class="o-icon-delete sidebar-content"
-                                aria-label="<?php echo $escape($this->translate('Delete')); ?>"
-                                title="<?php echo $escape($this->translate('Delete')); ?>"></a>
+                                aria-label="<?php echo $escape($translate('Delete')); ?>"
+                                title="<?php echo $escape($translate('Delete')); ?>"></a>
                             </li>
                         </ul>
                     </td>
@@ -150,13 +152,13 @@
         </tbody>
     </table>
 <?php else: ?>
-    <p><?php echo $this->translate('No search pages created yet.'); ?></p>
+    <p><?php echo $translate('No search pages created yet.'); ?></p>
 <?php endif; ?>
 
 <div class="sidebar">
     <a href="#"
         class="sidebar-close o-icon-close"
-        aria-label="<?php echo $escape($this->translate('Close')); ?>"
-        title="<?php echo $escape($this->translate('Close')); ?>"></a>
+        aria-label="<?php echo $escape($translate('Close')); ?>"
+        title="<?php echo $escape($translate('Close')); ?>"></a>
     <div class="sidebar-content"></div>
 </div>
