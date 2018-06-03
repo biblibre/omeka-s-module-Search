@@ -340,11 +340,22 @@ SQL;
     protected function addAclRules()
     {
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $acl->allow(null, \Search\Api\Adapter\SearchPageAdapter::class);
-        $acl->allow(null, \Search\Api\Adapter\SearchIndexAdapter::class);
-        $acl->allow(null, \Search\Entity\SearchPage::class, 'read');
-        $acl->allow(null, \Search\Entity\SearchIndex::class, 'read');
-        $acl->allow(null, 'Search\Controller\Index');
+        $acl->allow(
+            null,
+            [
+                \Search\Controller\IndexController::class,
+                \Search\Api\Adapter\SearchPageAdapter::class,
+                \Search\Api\Adapter\SearchIndexAdapter::class,
+            ]
+        );
+        $acl->allow(
+            null,
+            [
+                \Search\Entity\SearchPage::class,
+                \Search\Entity\SearchIndex::class,
+            ],
+          'read'
+        );
     }
 
     protected function addRoutes()
@@ -371,7 +382,7 @@ SQL;
                     'defaults' => [
                         '__NAMESPACE__' => 'Search\Controller',
                         '__SITE__' => true,
-                        'controller' => 'Index',
+                        'controller' => \Search\Controller\IndexController::class,
                         'action' => 'search',
                         'id' => $pageId,
                     ],
@@ -386,7 +397,7 @@ SQL;
                         'defaults' => [
                             '__NAMESPACE__' => 'Search\Controller',
                             '__ADMIN__' => true,
-                            'controller' => 'Index',
+                            'controller' => \Search\Controller\IndexController::class,
                             'action' => 'search',
                             'id' => $pageId,
                         ],

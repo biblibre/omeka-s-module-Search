@@ -42,12 +42,12 @@ return [
     ],
     'controllers' => [
         'invokables' => [
-            'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
-            'Search\Controller\Index' => Controller\IndexController::class,
+            Controller\Admin\IndexController::class => Controller\Admin\IndexController::class,
+            Controller\IndexController::class => Controller\IndexController::class,
         ],
         'factories' => [
-            'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
-            'Search\Controller\Admin\SearchPage' => Service\Controller\Admin\SearchPageControllerFactory::class,
+            Controller\Admin\SearchIndexController::class => Service\Controller\Admin\SearchIndexControllerFactory::class,
+            Controller\Admin\SearchPageController::class => Service\Controller\Admin\SearchPageControllerFactory::class,
         ],
     ],
     'controller_plugins' => [
@@ -66,7 +66,7 @@ return [
             [
                 'label' => 'Search', // @translate
                 'route' => 'admin/search',
-                'resource' => 'Search\Controller\Admin\Index',
+                'resource' => Controller\Admin\IndexController::class,
                 'privilege' => 'browse',
                 'class' => 'o-icon-search',
             ],
@@ -87,7 +87,7 @@ return [
                             'route' => '/search-manager',
                             'defaults' => [
                                 '__NAMESPACE__' => 'Search\Controller\Admin',
-                                'controller' => 'Index',
+                                'controller' => Controller\Admin\IndexController::class,
                                 'action' => 'browse',
                             ],
                         ],
@@ -102,7 +102,7 @@ return [
                                     ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
-                                        'controller' => 'SearchIndex',
+                                        'controller' => Controller\Admin\SearchIndexController::class,
                                     ],
                                 ],
                             ],
@@ -116,7 +116,7 @@ return [
                                     ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
-                                        'controller' => 'SearchIndex',
+                                        'controller' => Controller\Admin\SearchIndexController::class,
                                         'action' => 'show',
                                     ],
                                 ],
@@ -130,7 +130,7 @@ return [
                                     ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
-                                        'controller' => 'SearchPage',
+                                        'controller' => Controller\Admin\SearchPageController::class,
                                     ],
                                 ],
                             ],
@@ -144,7 +144,7 @@ return [
                                     ],
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Search\Controller\Admin',
-                                        'controller' => 'SearchPage',
+                                        'controller' => Controller\Admin\SearchPageController::class,
                                         'action' => 'show',
                                     ],
                                 ],
