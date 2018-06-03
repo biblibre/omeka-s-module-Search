@@ -83,11 +83,22 @@ class Response
      */
     public function getResourceTotalResults($resourceType)
     {
-        if (!isset($this->resourceTotalResults[$resourceType])) {
-            return 0;
-        }
+        return isset($this->resourceTotalResults[$resourceType])
+            ? $this->resourceTotalResults[$resourceType]
+            : 0;
+    }
 
-        return $this->resourceTotalResults[$resourceType];
+    /**
+     * Store a list of results.
+     *
+     * @param string $resourceType The resource type ("items", "item_sets"…).
+     * @param array $results Each result is an array with "id" as key.
+     */
+    public function addResults($resourceType, $results)
+    {
+        $this->results[$resourceType] = isset($this->results[$resourceType])
+            ? array_merge($this->results[$resourceType], array_values($results))
+            : array_values($results);
     }
 
     /**
