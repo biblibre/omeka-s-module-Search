@@ -1,3 +1,4 @@
+/* Copy from application/asset/sass/_screen.scss */
 #find {
     width: 100%;
     display: inline-block;
@@ -26,7 +27,8 @@
     border-radius: 0 3px 3px 0;
 }
 #find button:after {
-    font-family: "FontAwesome";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     text-indent: 0;
     position: absolute;
     top: 0;
