@@ -39,6 +39,8 @@ class InternalQuerier extends AbstractQuerier
             ];
         }
 
+        // "is_public" is automatically managed by the api.
+
         $indexerResourceTypes = $this->getSetting('resources', []);
         $resourceTypes = $query->getResources() ?: $indexerResourceTypes;
         $resourceTypes = array_intersect($resourceTypes, $indexerResourceTypes);

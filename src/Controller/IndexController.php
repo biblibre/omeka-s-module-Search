@@ -96,16 +96,19 @@ class IndexController extends AbstractActionController
         }
 
         $searchPageSettings = $page->settings();
-        $searchFormSettings = [];
-        if (isset($searchPageSettings['form'])) {
-            $searchFormSettings = $searchPageSettings['form'];
-        }
+        $searchFormSettings = isset($searchPageSettings['form'])
+            ? $searchPageSettings['form']
+            : [];
 
         $this->index = $page->index();
         $index = $this->index;
 
         /** @var \Search\Query $query */
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
+
+        if (!$this->identity()) {
+            $query->setIsPublic(true);
+        }
 
         $indexSettings = $index->settings();
         if (array_key_exists('resource_type', $params)) {
@@ -153,6 +156,7 @@ class IndexController extends AbstractActionController
         $querier = $index->querier();
         $pageNumber = isset($params['page']) ? $params['page'] : 1;
         $this->setPagination($query, $pageNumber);
+
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {

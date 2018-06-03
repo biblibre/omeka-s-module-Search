@@ -32,7 +32,6 @@ use Omeka\Api\Representation\SiteRepresentation;
 
 class Query
 {
-
     /**
      * @var string
      */
@@ -72,6 +71,11 @@ class Query
      * @var int
      */
     protected $limit = 0;
+
+    /**
+     * @var bool
+     */
+    protected $isPublic;
 
     /**
      * @var array
@@ -131,22 +135,6 @@ class Query
     public function getFacetFields()
     {
         return $this->facetFields;
-    }
-
-    /**
-     * @param SiteRepresentation $site
-     */
-    public function setSite(SiteRepresentation $site)
-    {
-        $this->site = $site;
-    }
-
-    /**
-     * @return \Omeka\Api\Representation\SiteRepresentation
-     */
-    public function getSite()
-    {
-        return $this->site;
     }
 
     /**
@@ -234,6 +222,22 @@ class Query
     }
 
     /**
+     * @param array $isPublic
+     */
+    public function setIsPublic($isPublic)
+    {
+        $this->isPublic = $isPublic;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
+    }
+
+    /**
      * @param array $resources The resource types are "items" and "item_sets".
      */
     public function setResources($resources)
@@ -247,5 +251,21 @@ class Query
     public function getResources()
     {
         return $this->resources;
+    }
+
+    /**
+     * @param SiteRepresentation $site
+     */
+    public function setSite(SiteRepresentation $site)
+    {
+        $this->site = $site;
+    }
+
+    /**
+     * @return \Omeka\Api\Representation\SiteRepresentation
+     */
+    public function getSite()
+    {
+        return $this->site;
     }
 }
