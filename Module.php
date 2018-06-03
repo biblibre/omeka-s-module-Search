@@ -404,6 +404,7 @@ SQL;
         $response = $event->getParam('response');
         $requestResource = $request->getResource();
 
+        /** @var \Search\Api\Representation\SearchIndexRepresentation[] $searchIndexes */
         $searchIndexes = $api->search('search_indexes')->getContent();
         foreach ($searchIndexes as $searchIndex) {
             $searchIndexSettings = $searchIndex->settings();
