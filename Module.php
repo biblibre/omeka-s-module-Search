@@ -83,11 +83,11 @@ class Module extends AbstractModule
     {
         $messenger = new Messenger;
         $optionalModule = 'jQueryUI';
-        if (!$this->checkModule($optionalModule, $serviceLocator)) {
+        if (!$this->isModuleEnabled($optionalModule, $serviceLocator)) {
             $messenger->addWarning('The module jQueryUI is required to customize the search pages.'); // @translate
         }
         $optionalModule = 'Reference';
-        if (!$this->checkModule($optionalModule, $serviceLocator)) {
+        if (!$this->isModuleEnabled($optionalModule, $serviceLocator)) {
             $messenger->addWarning('The module Reference s required to use the facets with the default internal adapter.'); // @translate
         }
 
@@ -124,6 +124,29 @@ SQL;
         $settings = $serviceLocator->get('Omeka\Settings');
         $this->manageSettings($settings, 'install', 'settings');
         $this->manageSiteSettings($serviceLocator, 'install');
+
+        // Create the internal adapter.
+        $sql = <<<'SQL'
+INSERT INTO `search_index`
+(`name`, `adapter`, `settings`, `created`)
+VALUES
+('Internal', 'internal', ?, NOW());
+SQL;
+        $sarchIndexSettings = ['resources' => ['items', 'item_sets']];
+        $connection->executeQuery($sql, [
+            json_encode($sarchIndexSettings, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        ]);
+        $sql = <<<'SQL'
+INSERT INTO `search_page`
+(`index_id`, `name`, `path`, `form_adapter`, `settings`, `created`)
+VALUES
+('1', 'Internal', 'find', 'basic', ?, NOW());
+SQL;
+        $sarchPageSettings = require __DIR__ . '/config/adapter_internal.php';
+        $connection->executeQuery($sql, [
+            json_encode($sarchPageSettings, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        ]);
+        $messenger->addNotice('The internal search engine is available. Enable it in the main settings (for admin) and in site settings (for public).'); // @translate
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
@@ -533,11 +556,11 @@ SQL;
      * @param ServiceLocatorInterface $serviceLocator
      * @return bool
      */
-    protected function checkModule($module, ServiceLocatorInterface $serviceLocator)
+    protected function isModuleEnabled($module, ServiceLocatorInterface $serviceLocator)
     {
         $moduleManager = $serviceLocator->get('Omeka\ModuleManager');
         $module = $moduleManager->getModule($module);
         return $module
-            && $module->getState() !== \Omeka\Module\Manager::STATE_ACTIVE;
+            && $module->getState() === \Omeka\Module\Manager::STATE_ACTIVE;
     }
 }
