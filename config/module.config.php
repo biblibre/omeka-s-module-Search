@@ -82,7 +82,7 @@ return [
             'admin' => [
                 'child_routes' => [
                     'search' => [
-                        'type' => 'Literal',
+                        'type' => \Zend\Router\Http\Literal::class,
                         'options' => [
                             'route' => '/search-manager',
                             'defaults' => [
@@ -94,7 +94,7 @@ return [
                         'may_terminate' => true,
                         'child_routes' => [
                             'index' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/index/:action',
                                     'constraints' => [
@@ -107,7 +107,7 @@ return [
                                 ],
                             ],
                             'index-id' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/index/:id[/:action]',
                                     'constraints' => [
@@ -122,7 +122,7 @@ return [
                                 ],
                             ],
                             'page' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/page/:action',
                                     'constraints' => [
@@ -135,7 +135,7 @@ return [
                                 ],
                             ],
                             'page-id' => [
-                                'type' => 'Segment',
+                                'type' => \Zend\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/page/:id[/:action]',
                                     'constraints' => [

@@ -365,7 +365,7 @@ SQL;
             $pageId = $page->id();
             $pagePath = $page->path();
             $router->addRoute('search-page-' . $pageId, [
-                'type' => 'segment',
+                'type' => \Zend\Router\Http\Segment::class,
                 'options' => [
                     'route' => '/s/:site-slug/' . $pagePath,
                     'defaults' => [
@@ -380,7 +380,7 @@ SQL;
 
             if (in_array($pageId, $adminSearchPages)) {
                 $router->addRoute('search-admin-page-' . $pageId, [
-                    'type' => 'segment',
+                    'type' => \Zend\Router\Http\Segment::class,
                     'options' => [
                         'route' => '/admin/' . $pagePath,
                         'defaults' => [

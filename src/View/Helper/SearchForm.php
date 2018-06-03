@@ -49,7 +49,7 @@ class SearchForm extends AbstractHelper
             $view = $this->getView();
             $this->form = $this->searchPage->form();
             $url = $view->params()->fromRoute('__ADMIN__')
-                ? $view->setting('search_main_page')
+                ? $this->searchPage->adminSearchUrl()
                 : $this->searchPage->url();
             $this->form->setAttribute('action', $url);
         }

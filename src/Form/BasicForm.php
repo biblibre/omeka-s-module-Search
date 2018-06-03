@@ -48,7 +48,7 @@ class BasicForm extends Form implements TranslatorAwareInterface
                 'label' => $translator->translate('Search'),
             ],
             'attributes' => [
-                'placeholder' => $translator->translate('Search items'),
+                'placeholder' => $translator->translate('Search resources'),
             ],
         ]);
     }

@@ -65,6 +65,15 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $url('admin/search/page-id', $params, $options);
     }
 
+    public function adminSearchUrl($canonical = false)
+    {
+        $url = $this->getViewHelper('Url');
+        $options = [
+            'force_canonical' => $canonical,
+        ];
+        return $url('search-admin-page-' . $this->id(), [], $options);
+    }
+
     public function siteUrl($siteSlug = null, $canonical = false)
     {
         $url = $this->getViewHelper('Url');
