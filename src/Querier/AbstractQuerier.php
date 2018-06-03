@@ -59,7 +59,10 @@ abstract class AbstractQuerier implements QuerierInterface
         $this->serviceLocator = $serviceLocator;
     }
 
-    public function getServiceLocator()
+    /**
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected function getServiceLocator()
     {
         return $this->serviceLocator;
     }

@@ -34,6 +34,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
+    /**
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     */
     protected $serviceLocator;
 
     public function getAvailableFacetFields(SearchIndexRepresentation $index)
@@ -56,7 +59,10 @@ abstract class AbstractAdapter implements AdapterInterface
         $this->serviceLocator = $serviceLocator;
     }
 
-    public function getServiceLocator()
+    /**
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected function getServiceLocator()
     {
         return $this->serviceLocator;
     }

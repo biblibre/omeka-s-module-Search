@@ -94,9 +94,4 @@ interface AdapterInterface
      * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
-
-    /**
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator();
 }
