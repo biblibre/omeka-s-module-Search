@@ -78,7 +78,7 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
     {
         $name = $this->resource->getAdapter();
         $adapterManager = $this->getServiceLocator()->get('Search\AdapterManager');
-        return $adapterManager->get($name);
+        return $adapterManager->has($name) ? $adapterManager->get($name) : null;
     }
 
     /**
