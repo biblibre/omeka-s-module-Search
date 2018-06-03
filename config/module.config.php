@@ -172,6 +172,9 @@ return [
         'Find', // @translate
     ],
     'search_adapters' => [
+        'factories' => [
+            'internal' => Service\Adapter\InternalAdapterFactory::class,
+        ],
     ],
     'search_form_adapters' => [
         'invokables' => [
