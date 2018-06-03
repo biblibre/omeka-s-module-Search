@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016
+ * Copyright, Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -28,16 +29,19 @@
 ?>
 
 <?php if (!empty($facets)): ?>
+    <?php $translate = $this->plugin('translate'); ?>
+    <?php $facetLabel = $this->plugin('facetLabel'); ?>
+    <?php $facetLink = $this->plugin('facetLink'); ?>
     <aside class="search-facets">
-        <h2><?php echo $this->translate('Filters'); ?></h2>
+        <h2><?php echo $translate('Filters'); ?></h2>
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
                 <li class="search-facet">
-                    <h3><?php echo $this->translate($this->facetLabel($name)); ?></h3>
+                    <h3><?php echo $translate($facetLabel($name)); ?></h3>
                     <ul class="search-facet-items">
                         <?php foreach ($facetValues as $facetValue): ?>
                             <li class="search-facet-item">
-                                <?php echo $this->facetLink($name, $facetValue); ?>
+                                <?php echo $facetLink($name, $facetValue); ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>
