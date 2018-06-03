@@ -2,8 +2,8 @@
 
 namespace Search\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Zend\Mvc\Application;
+use Zend\View\Helper\AbstractHelper;
 
 class FacetLink extends AbstractHelper
 {

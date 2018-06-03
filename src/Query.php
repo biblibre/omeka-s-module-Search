@@ -4,7 +4,7 @@
  * Copyright BibLibre, 2016
  *
  * This software is governed by the CeCILL license under French law and abiding
- * by the rules of distribution of free software.  You can use, modify and/ or
+ * by the rules of distribution of free software. You can use, modify and/ or
  * redistribute the software under the terms of the CeCILL license as circulated
  * by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
  *
@@ -26,107 +26,205 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL license and that you accept its terms.
  */
-
 namespace Search;
 
 use Omeka\Api\Representation\SiteRepresentation;
 
 class Query
 {
-    protected $query;
-    protected $sort;
-    protected $facetLimit;
+
+    /**
+     * @var string
+     */
+    protected $query = '';
+
+    /**
+     * @var string
+     */
+    protected $sort = '';
+
+    /**
+     * @var int
+     */
+    protected $facetLimit = 0;
+
+    /**
+     * @var array
+     */
     protected $facetFields = [];
+
+    /**
+     * @var array
+     */
     protected $filters = [];
+
+    /**
+     * @var array
+     */
     protected $dateRangeFilters = [];
-    protected $offset = 0 ;
+
+    /**
+     * @var int
+     */
+    protected $offset = 0;
+
+    /**
+     * @var int
+     */
     protected $limit = 0;
+
+    /**
+     * @var array
+     */
     protected $resources = [];
+
+    /**
+     * @var SiteRepresentation
+     */
     protected $site;
 
+    /**
+     * @param string $query
+     */
     public function setQuery($query)
     {
         $this->query = $query;
     }
 
+    /**
+     * @return string
+     */
     public function getQuery()
     {
         return $this->query;
     }
 
+    /**
+     * @param int $facetLimit
+     */
     public function setFacetLimit($facetLimit)
     {
-        $this->facetLimit = $facetLimit;
+        $this->facetLimit = (int) $facetLimit;
     }
 
+    /**
+     * @return int
+     */
     public function getFacetLimit()
     {
         return $this->facetLimit;
     }
 
+    /**
+     * @param string $field
+     */
     public function addFacetField($field)
     {
         $this->facetFields[] = $field;
     }
 
+    /**
+     * Get the flat list of fields to use as facet.
+     *
+     * @return array
+     */
     public function getFacetFields()
     {
         return $this->facetFields;
     }
 
+    /**
+     * @param SiteRepresentation $site
+     */
     public function setSite(SiteRepresentation $site)
     {
         $this->site = $site;
     }
 
+    /**
+     * @return \Omeka\Api\Representation\SiteRepresentation
+     */
     public function getSite()
     {
         return $this->site;
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function addFilter($name, $value)
     {
         $this->filters[$name][] = $value;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return $this->filters;
     }
 
+    /**
+     * @param string $name
+     * @param string $start
+     * @param string $end
+     */
     public function addDateRangeFilter($name, $start, $end)
     {
         $this->dateRangeFilters[$name][] = [
             'start' => $start,
-            'end' => $end,
+            'end' => $end
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getDateRangeFilters()
     {
         return $this->dateRangeFilters;
     }
 
+    /**
+     * @param string $sort The field and the direction ("asc" or "desc")
+     * separated by a space.
+     */
     public function setSort($sort)
     {
         $this->sort = $sort;
     }
 
+    /**
+     * @return string The field and the direction ("asc" or "desc") separated by
+     * a space.
+     */
     public function getSort()
     {
         return $this->sort;
     }
 
+    /**
+     * @return int
+     */
     public function getOffset()
     {
         return $this->offset;
     }
 
+    /**
+     * @return int
+     */
     public function getLimit()
     {
         return $this->limit;
     }
 
+    /**
+     * @param int $page
+     * @param int $rowCount
+     */
     public function setLimitPage($page, $rowCount)
     {
         $page = ($page > 0) ? $page : 1;
@@ -135,11 +233,17 @@ class Query
         $this->offset = (int) $rowCount * ($page - 1);
     }
 
+    /**
+     * @param array $resources The resource types are "items" and "item_sets".
+     */
     public function setResources($resources)
     {
         $this->resources = $resources;
     }
 
+    /**
+     * @return array
+     */
     public function getResources()
     {
         return $this->resources;

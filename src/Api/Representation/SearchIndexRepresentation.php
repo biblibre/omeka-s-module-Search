@@ -63,11 +63,17 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         return $url('admin/search/index-id', $params, $options);
     }
 
+    /**
+     * @return string
+     */
     public function name()
     {
         return $this->resource->getName();
     }
 
+    /**
+     * @return \Search\Adapter\AdapterInterface
+     */
     public function adapter()
     {
         $name = $this->resource->getAdapter();
@@ -75,21 +81,33 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         return $adapterManager->get($name);
     }
 
+    /**
+     * @return array
+     */
     public function settings()
     {
         return $this->resource->getSettings();
     }
 
+    /**
+     * @return \DateTime
+     */
     public function created()
     {
         return $this->resource->getCreated();
     }
 
+    /**
+     * @return \Search\Entity\SearchIndex
+     */
     public function getEntity()
     {
         return $this->resource;
     }
 
+    /**
+     * @return string
+     */
     public function adapterLabel()
     {
         $adapter = $this->adapter();
@@ -101,6 +119,9 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         return $adapter->getLabel();
     }
 
+    /**
+     * @return \Search\Indexer\IndexerInterface
+     */
     public function indexer()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -114,6 +135,9 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         return $indexer;
     }
 
+    /**
+     * @return \Search\Querier\QuerierInterface
+     */
     public function querier()
     {
         $serviceLocator = $this->getServiceLocator();

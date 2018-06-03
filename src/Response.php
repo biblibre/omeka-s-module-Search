@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -31,46 +32,95 @@ namespace Search;
 
 class Response
 {
-    protected $totalResults;
+    /**
+     * @var int
+     */
+    protected $totalResults = 0;
+
+    /**
+     * @var array
+     */
     protected $resourceTotalResults = [];
 
+    /**
+     * @var array
+     */
     protected $results = [];
+
+    /**
+     * @var array
+     */
     protected $facetCounts = [];
 
+    /**
+     * @param int $totalResults
+     */
     public function setTotalResults($totalResults)
     {
-        $this->totalResults = $totalResults;
+        $this->totalResults = (int) $totalResults;
     }
 
+    /**
+     * @return int
+     */
     public function getTotalResults()
     {
         return $this->totalResults;
     }
 
-    public function setResourceTotalResults($resource, $totalResults)
+    /**
+     * @param string $resourceType The resource type ("items", "item_sets"…).
+     * @param int $totalResults
+     */
+    public function setResourceTotalResults($resourceType, $totalResults)
     {
-        $this->resourceTotalResults[$resource] = $totalResults;
+        $this->resourceTotalResults[$resourceType] = (int) $totalResults;
     }
 
-    public function getResourceTotalResults($resource)
+    /**
+     * @param string $resourceType The resource type ("items", "item_sets"…).
+     * @return int
+     */
+    public function getResourceTotalResults($resourceType)
     {
-        if (!isset($this->resourceTotalResults[$resource])) {
+        if (!isset($this->resourceTotalResults[$resourceType])) {
             return 0;
         }
 
-        return $this->resourceTotalResults[$resource];
+        return $this->resourceTotalResults[$resourceType];
     }
 
-    public function addResult($resource, $result)
+    /**
+     * Store a result.
+     *
+     * @param string $resourceType The resource type ("items", "item_sets"…).
+     * @param array $result
+     */
+    public function addResult($resourceType, $result)
     {
-        $this->results[$resource][] = $result;
+        $this->results[$resourceType][] = $result;
     }
 
-    public function getResults($resource)
+    /**
+     * Get stored results.
+     *
+     * @param string $resourceType The resource type ("items", "item_sets"…).
+     * @return array
+     */
+    public function getResults($resourceType)
     {
-        return isset($this->results[$resource]) ? $this->results[$resource] : [];
+        return isset($this->results[$resourceType])
+            ? $this->results[$resourceType]
+            : [];
     }
 
+    /**
+     * Store the result for a facet.
+     *
+     * @param string $name
+     * @param string $value
+     * @param int $count
+     */
     public function addFacetCount($name, $value, $count)
     {
         $this->facetCounts[$name][] = [
@@ -79,6 +129,11 @@ class Response
         ];
     }
 
+    /**
+     * Get all the facet counts.
+     *
+     * @return array
+     */
     public function getFacetCounts()
     {
         return $this->facetCounts;

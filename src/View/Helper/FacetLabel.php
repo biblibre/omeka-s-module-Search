@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,16 +30,31 @@
 
 namespace Search\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-use Zend\Mvc\Application;
 use Omeka\Api\Manager as ApiManager;
+use Search\Api\Representation\SearchPageRepresentation;
+use Zend\Mvc\Application;
+use Zend\View\Helper\AbstractHelper;
 
 class FacetLabel extends AbstractHelper
 {
+    /**
+     * @var Application
+     */
     protected $application;
+
+    /**
+     * @var ApiManager
+     */
     protected $api;
 
+    /**
+     * @var array
+     */
     protected $availableFacetFields;
+
+    /**
+     * @var SearchPageRepresentation
+     */
     protected $searchPage;
 
     public function __construct(Application $application, ApiManager $api)
@@ -64,6 +80,9 @@ class FacetLabel extends AbstractHelper
         return $name;
     }
 
+    /**
+     * @return array
+     */
     protected function getAvailableFacetFields()
     {
         if (!isset($this->availableFacetFields)) {
@@ -76,6 +95,9 @@ class FacetLabel extends AbstractHelper
         return $this->availableFacetFields;
     }
 
+    /**
+     * @return \Search\Api\Representation\SearchPageRepresentation
+     */
     protected function getSearchPage()
     {
         if (!isset($this->searchPage)) {

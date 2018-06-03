@@ -27,11 +27,13 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
+/** @var \Search\Api\Representation\SearchIndexRepresentation[] $search_indexes */
+
 $translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
 ?>
 
 <?php $this->htmlElement('body')->appendAttribute('class', 'search browse'); ?>
-<?php $escape = $this->plugin('escapeHtml'); ?>
 
 <?php echo $this->pageTitle($translate('Search manager')); ?>
 

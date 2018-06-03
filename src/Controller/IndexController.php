@@ -72,6 +72,7 @@ class IndexController extends AbstractActionController
         $this->page = $response->getContent();
         $page = $this->page;
 
+        /** @var \Search\FormAdapter\FormAdapterInterface $formAdapter */
         $formAdapter = $page->formAdapter();
         if (!isset($formAdapter)) {
             $formAdapterName = $page->formAdapterName();
@@ -103,6 +104,7 @@ class IndexController extends AbstractActionController
         $this->index = $page->index();
         $index = $this->index;
 
+        /** @var \Search\Query $query */
         $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
 
         $indexSettings = $index->settings();

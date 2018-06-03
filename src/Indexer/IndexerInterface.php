@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,16 +30,49 @@
 
 namespace Search\Indexer;
 
-use Zend\Log\LoggerAwareInterface;
 use Omeka\Entity\Resource;
 use Search\Api\Representation\SearchIndexRepresentation;
+use Zend\Log\LoggerAwareInterface;
 
 interface IndexerInterface extends LoggerAwareInterface
 {
+    /**
+     * @param SearchIndexRepresentation $index
+     */
     public function setSearchIndex(SearchIndexRepresentation $index);
+
+    /**
+     * Inidicate if the resource can be indexed.
+     *
+     * @param string $resourceName The resource type ("items", "item_sets"…).
+     * @return bool
+     */
     public function canIndex($resourceName);
+
+    /**
+     * Reset the index.
+     */
     public function clearIndex();
+
+    /**
+     * Index a resource.
+     *
+     * @param Resource $resource
+     */
     public function indexResource(Resource $resource);
+
+    /**
+     * Index multiple resources.
+     *
+     * @param Resource[] $resources
+     */
     public function indexResources(array $resources);
+
+    /**
+     * Unindex a deleted resource.
+     *
+     * @param string $resourceName The resource type ("items", "item_sets"…).
+     * @param int $id
+     */
     public function deleteResource($resourceName, $id);
 }

@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,15 +30,22 @@
 
 namespace Search\Indexer;
 
+use Search\Api\Representation\SearchIndexRepresentation;
 use Zend\Log\LoggerAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Search\Api\Representation\SearchIndexRepresentation;
 
 abstract class AbstractIndexer implements IndexerInterface
 {
     use LoggerAwareTrait;
 
+    /**
+     * @var SearchIndexRepresentation
+     */
     protected $index;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
     protected $serviceLocator;
 
     public function setSearchIndex(SearchIndexRepresentation $index)
@@ -45,16 +53,29 @@ abstract class AbstractIndexer implements IndexerInterface
         $this->index = $index;
     }
 
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
 
+    /**
+     * @return ServiceLocatorInterface
+     */
     public function getServiceLocator()
     {
         return $this->serviceLocator;
     }
 
+    /**
+     * Get a setting of the search index.
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     protected function getSetting($name, $default = null)
     {
         $settings = $this->index->settings();
@@ -66,6 +87,13 @@ abstract class AbstractIndexer implements IndexerInterface
         return $default;
     }
 
+    /**
+     * Get a setting of the search adapter.
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     protected function getAdapterSetting($name, $default = null)
     {
         $adapterSettings = $this->getSetting('adapter', []);

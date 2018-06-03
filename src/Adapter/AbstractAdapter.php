@@ -30,6 +30,7 @@
 namespace Search\Adapter;
 
 use Search\Api\Representation\SearchIndexRepresentation;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -50,7 +51,7 @@ abstract class AbstractAdapter implements AdapterInterface
         return [];
     }
 
-    public function setServiceLocator($serviceLocator)
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }

@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,16 +30,34 @@
 
 namespace Search\Querier;
 
-use Zend\Log\LoggerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Query;
+use Search\Response;
+use Zend\Log\LoggerAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 interface QuerierInterface extends LoggerAwareInterface
 {
+    /**
+     * @param SearchIndexRepresentation $index
+     */
     public function setIndex(SearchIndexRepresentation $index);
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+
+    /**
+     * @return ServiceLocatorInterface
+     */
     public function getServiceLocator();
 
+    /**
+     * Process a search query.
+     *
+     * @param Query $query
+     * @return Response
+     */
     public function query(Query $query);
 }

@@ -39,7 +39,14 @@ abstract class AbstractQuerier implements QuerierInterface
 {
     use LoggerAwareTrait;
 
+    /**
+     * @param SearchIndexRepresentation $index
+     */
     protected $index;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
     protected $serviceLocator;
 
     public function setIndex(SearchIndexRepresentation $index)
@@ -57,6 +64,13 @@ abstract class AbstractQuerier implements QuerierInterface
         return $this->serviceLocator;
     }
 
+    /**
+     * Get a setting of the search index.
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     protected function getSetting($name, $default = null)
     {
         $settings = $this->index->settings();
@@ -68,6 +82,13 @@ abstract class AbstractQuerier implements QuerierInterface
         return $default;
     }
 
+    /**
+     * Get a setting of the search adapter.
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
     protected function getAdapterSetting($name, $default = null)
     {
         $adapterSettings = $this->getSetting('adapter', []);

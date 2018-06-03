@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -30,17 +31,72 @@
 namespace Search\Adapter;
 
 use Search\Api\Representation\SearchIndexRepresentation;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 interface AdapterInterface
 {
+    /**
+     * Get the name of the adapter.
+     *
+     * @return string
+     */
     public function getLabel();
+
+    /**
+     * Return the form used to managed the config of the adapter, if any.
+     *
+     * @çeturn \Zend\Form\Fieldset|null
+     */
     public function getConfigFieldset();
+
+    /**
+     * Get the fully qualified name of the indexer class used by this adapter.
+     *
+     * @return string
+     */
     public function getIndexerClass();
+
+    /**
+     * Get the fully qualified name of the querier class used by this adapter.
+     *
+     * @return string
+     */
     public function getQuerierClass();
+
+    /**
+     * Get the available facet fields.
+     *
+     * @param SearchIndexRepresentation $index
+     * @return array Associative array with facet name as key and an array with
+     * facet name and facet label as value.
+     */
     public function getAvailableFacetFields(SearchIndexRepresentation $index);
+
+    /**
+     * Get the available sort fields.
+     *
+     * @param SearchIndexRepresentation $index
+     * @return array Associative array with sort name as key and an array with
+     * sort name and sort label as value.
+     */
     public function getAvailableSortFields(SearchIndexRepresentation $index);
+
+    /**
+     * Get the available fields.
+     *
+     * @param SearchIndexRepresentation $index
+     * @return array Associative array with field name as key and an array with
+     * field name and field label as value.
+     */
     public function getAvailableFields(SearchIndexRepresentation $index);
 
-    public function setServiceLocator($serviceLocator);
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+
+    /**
+     * @return ServiceLocatorInterface
+     */
     public function getServiceLocator();
 }
