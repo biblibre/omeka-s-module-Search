@@ -126,6 +126,19 @@ class Response
     }
 
     /**
+     * Store a list of result for a facet.
+     *
+     * @param string $name
+     * @param array $counts List of counts with keys "value" and "count".
+     */
+    public function addFacetCounts($name, $counts)
+    {
+        $this->facetCounts[$name] = isset($this->facetCounts[$name])
+            ? array_merge($this->facetCounts[$name], array_values($counts))
+            : array_values($counts);
+    }
+
+    /**
      * Store the result for a facet.
      *
      * @param string $name

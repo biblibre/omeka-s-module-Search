@@ -18,11 +18,15 @@ class InternalQuerier extends AbstractQuerier
         /** @var \Omeka\Api\Manager $api */
         $api = $services->get('Omeka\ApiManager');
 
+        $plugins = $services->get('ControllerPluginManager');
+        $reference = $plugins->has('reference') ? $plugins->get('reference') : null;
+
         // The data are the ones used to build the query with the standard api.
         // Queries are multiple (one by resource type and by facet).
         // Note: the query is a scalar one, so final events are not triggered.
         // TODO Do a full api reference search or only scalar ids?
         $data = [];
+        $facetData = [];
 
         $q = $query->getQuery();
         $q = trim($q);
@@ -47,16 +51,38 @@ class InternalQuerier extends AbstractQuerier
             $data['site_id'] = $site->id();
         }
 
+        if ($reference) {
+            $facetData = $data;
+            $facetFields = $query->getFacetFields();
+            $facetLimit = $query->getFacetLimit();
+        }
+
+        // TODO FIx the process for facets: all the facets should be displayed, and "or" by group of facets.
+        // TODO Make core search properties groupable ("or" inside a group, "and" between group).
         $filters = $query->getFilters();
         foreach ($filters as $name => $values) {
             foreach ($values as $value) {
-                $data['property'][] = [
-                    'joiner' => 'and',
-                    'property' => $name,
-                    'type' => 'in',
-                    'text' => $value,
-                ];
+                if (is_array($value) && count($value)) {
+                    $data['property'][] = [
+                        'joiner' => 'or',
+                        'property' => $name,
+                        'type' => 'eq',
+                        'text' => $value,
+                    ];
+                } else {
+                    $data['property'][] = [
+                        'joiner' => 'and',
+                        'property' => $name,
+                        'type' => 'eq',
+                        'text' => $value,
+                    ];
+                }
             }
+        }
+
+        // TODO To be removed when the filters will be groupable.
+        if ($reference) {
+            $facetData = $data;
         }
 
         // TODO Manage the date range filters (one or two properties?).
@@ -118,6 +144,19 @@ class InternalQuerier extends AbstractQuerier
                 $result = [];
             }
             $response->addResults($resourceType, $result);
+        }
+
+        if ($reference) {
+            foreach ($resourceTypes as $resourceType) {
+                foreach ($facetFields as $facetField) {
+                    $values = $reference($facetField, 'properties', $resourceType, ['count' => 'DESC'], $facetData, $facetLimit, 1);
+                    foreach ($values as $value => $count) {
+                        if ($count > 0) {
+                            $response->addFacetCount($facetField, $value, $count);
+                        }
+                    }
+                }
+            }
         }
 
         return $response;
