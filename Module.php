@@ -32,6 +32,7 @@ namespace Search;
 
 use Omeka\Entity\Resource;
 use Omeka\Module\AbstractModule;
+use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 use Search\Indexer\AbstractIndexer;
 use Zend\EventManager\Event;
@@ -80,6 +81,16 @@ class Module extends AbstractModule
 
     public function install(ServiceLocatorInterface $serviceLocator)
     {
+        $messenger = new Messenger;
+        $optionalModule = 'jQueryUI';
+        if (!$this->checkModule($optionalModule, $serviceLocator)) {
+            $messenger->addWarning('The module jQueryUI is required to customize the search pages.'); // @translate
+        }
+        $optionalModule = 'Reference';
+        if (!$this->checkModule($optionalModule, $serviceLocator)) {
+            $messenger->addWarning('The module Reference s required to use the facets with the default internal adapter.'); // @translate
+        }
+
         $sql = <<<'SQL'
 CREATE TABLE search_index (
     id INT AUTO_INCREMENT NOT NULL,
@@ -574,5 +585,20 @@ SQL;
             'name' => 'search_main_page',
             'required' => false,
         ]);
+    }
+
+    /**
+     * Check if a module is enabled.
+     *
+     * @param string $module
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return bool
+     */
+    protected function checkModule($module, ServiceLocatorInterface $serviceLocator)
+    {
+        $moduleManager = $serviceLocator->get('Omeka\ModuleManager');
+        $module = $moduleManager->getModule($module);
+        return $module
+            && $module->getState() !== \Omeka\Module\Manager::STATE_ACTIVE;
     }
 }
