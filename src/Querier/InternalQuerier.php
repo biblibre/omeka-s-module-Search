@@ -15,10 +15,13 @@ class InternalQuerier extends AbstractQuerier
         $services = $this->getServiceLocator();
         $settings = $services->get('Omeka\Settings');
 
-        /** @var \Omeka\Api\Manager $api */
-        $api = $services->get('Omeka\ApiManager');
+        // Old versions don't support named properties.
+        $isOldOmeka = version_compare($settings->get('version'), '1.2.0-alpha.2', '<');
 
         $plugins = $services->get('ControllerPluginManager');
+        /** @var \Omeka\Mvc\Controller\Plugin\Api $api */
+        $api = $plugins->get('api');
+        /** @var \Reference\Mvc\Controller\Plugin\Reference $reference */
         $reference = $plugins->has('reference') ? $plugins->get('reference') : null;
 
         // The data are the ones used to build the query with the standard api.
@@ -63,6 +66,9 @@ class InternalQuerier extends AbstractQuerier
         // TODO Make core search properties groupable ("or" inside a group, "and" between group).
         $filters = $query->getFilters();
         foreach ($filters as $name => $values) {
+            if ($isOldOmeka) {
+                $name = $api->searchOne('properties', ['term' => $name], ['returnScalar' => 'id'])->getContent();
+            }
             foreach ($values as $value) {
                 if (is_array($value) && count($value)) {
                     $data['property'][] = [

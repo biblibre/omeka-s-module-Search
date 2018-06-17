@@ -121,7 +121,7 @@ TODO
 ----
 
 - Normalize the url query with a true standard (or the Omeka S one, or at the
-  choice of the admin, or the developper of the forms and queriers).
+  choice of the admin, or the developer of the forms and queriers).
 - Make the search arguments groupable to allow smart facets: always display all
   facets from the original queries, with "or" between facets of the same group,
   and "and" between groups. Require that the core api allows groups.
