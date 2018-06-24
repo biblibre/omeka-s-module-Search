@@ -88,7 +88,7 @@ class Module extends AbstractModule
         }
         $optionalModule = 'Reference';
         if (!$this->isModuleEnabled($optionalModule, $serviceLocator)) {
-            $messenger->addWarning('The module Reference s required to use the facets with the default internal adapter.'); // @translate
+            $messenger->addWarning('The module Reference is required to use the facets with the default internal adapter.'); // @translate
         }
 
         $sql = <<<'SQL'
@@ -279,7 +279,7 @@ SQL;
         $sharedEventManager->attach(
             \Omeka\Form\SiteSettingsForm::class,
             'form.add_elements',
-            [$this, 'addSiteSettingsFormElements']
+            [$this, 'addFormElementsSiteSettings']
         );
         $sharedEventManager->attach(
             \Omeka\Form\SiteSettingsForm::class,
@@ -467,7 +467,7 @@ SQL;
         $this->addSettingsFormElements($event, $settings, true);
     }
 
-    public function addSiteSettingsFormElements(Event $event)
+    public function addFormElementsSiteSettings(Event $event)
     {
         $services = $this->getServiceLocator();
         $settings = $services->get('Omeka\Settings\Site');
