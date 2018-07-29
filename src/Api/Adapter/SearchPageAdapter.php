@@ -35,6 +35,7 @@ use Omeka\Api\Adapter\AbstractEntityAdapter;
 use Omeka\Api\Request;
 use Omeka\Entity\EntityInterface;
 use Omeka\Stdlib\ErrorStore;
+use Search\Entity\SearchIndex;
 
 class SearchPageAdapter extends AbstractEntityAdapter
 {
@@ -96,14 +97,19 @@ class SearchPageAdapter extends AbstractEntityAdapter
     public function buildQuery(QueryBuilder $qb, array $query)
     {
         if (isset($query['index_id'])) {
-            $alias = $this->createAlias();
+            $searchIndexAlias = $this->createAlias();
+            // The join avoids to find a page without index.
             $qb->innerJoin(
-                $this->getEntityClass() . '.job',
-                $alias
-            );
-            $qb->andWhere($qb->expr()->eq(
-                $alias . '.index',
-                $this->createNamedParameter($qb, $query['index_id']))
+                SearchIndex::class,
+                $searchIndexAlias,
+                'WITH',
+                $qb->expr()->andX(
+                    $qb->expr()->eq($searchIndexAlias . '.id', $this->getEntityClass(). '.index'),
+                    $qb->expr()->in(
+                        $searchIndexAlias . '.id',
+                        $this->createNamedParameter($qb, $query['index_id'])
+                    )
+                )
             );
         }
         if (isset($query['name'])) {
