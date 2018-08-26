@@ -30,25 +30,19 @@
 namespace Search\Form;
 
 use Zend\Form\Form;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class BasicForm extends Form implements TranslatorAwareInterface
+class BasicForm extends Form
 {
-    use TranslatorAwareTrait;
-
     public function init()
     {
-        $translator = $this->getTranslator();
-
         $this->add([
             'name' => 'q',
             'type' => 'Text',
             'options' => [
-                'label' => $translator->translate('Search'),
+                'label' => 'Search', // @translate
             ],
             'attributes' => [
-                'placeholder' => $translator->translate('Search resources'),
+                'placeholder' => 'Search resources', // @translate
             ],
         ]);
     }
