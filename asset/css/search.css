@@ -43,7 +43,7 @@
 
 .search-facet-item a::before {
   display: inline-block;
-  font-family: "Font Awesome 5 Free";
+  font-family: 'Font Awesome 5 Free';
   width: 1.5em;
   content: "\f0c8";
 }
