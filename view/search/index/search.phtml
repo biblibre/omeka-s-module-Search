@@ -31,7 +31,7 @@
 <?php
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
-$this->htmlElement('body')->appendAttribute('class', 'search');
+$this->htmlElement('body')->appendAttribute('class', 'search resource browse');
 $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
 $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
