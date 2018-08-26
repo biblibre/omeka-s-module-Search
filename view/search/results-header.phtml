@@ -1,3 +1,6 @@
+<?php
+$translate = $this->plugin('translate');
+?>
 <div class="search-results-header">
     <div class="search-results-count">
         <?php echo $this->pagination(); ?>
@@ -9,7 +12,7 @@
                 $sortOptions = array_map([$this, 'translate'], $sortOptions);
                 $sortSelect->setValueOptions($sortOptions);
                 $sortSelect->setValue($query->getSort());
-                $sortSelect->setLabel($this->translate('Sort by'));
+                $sortSelect->setLabel($translate('Sort by'));
             endif; ?>
             <?php if (!empty($sortSelect)): ?>
             <?php echo $this->formLabel($sortSelect); ?>
