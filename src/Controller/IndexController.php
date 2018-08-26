@@ -46,7 +46,6 @@ class IndexController extends AbstractActionController
     protected $page;
 
     /**
-     *
      * @var SearchIndexRepresentation
      */
     protected $index;

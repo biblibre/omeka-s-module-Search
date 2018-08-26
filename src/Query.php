@@ -163,7 +163,7 @@ class Query
     {
         $this->dateRangeFilters[$name][] = [
             'start' => $start,
-            'end' => $end
+            'end' => $end,
         ];
     }
 
