@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -28,11 +29,11 @@
 ?>
 
 <?php
-    $escape = $this->plugin('escapeHtml');
-    $label = isset($data['label']) ? $data['label'] : null;
-    $search_page_id = isset($data['search_page_id']) ? $data['search_page_id'] : null;
+$escape = $this->plugin('escapeHtml');
+$label = isset($data['label']) ? $data['label'] : null;
+$searchPageId = isset($data['search_page_id']) ? $data['search_page_id'] : null;
 
-    $searchPages = $this->api()->search('search_pages')->getContent();
+$searchPages = $this->api()->search('search_pages')->getContent();
 ?>
 
 <label>Type <input type="text" value="<?php echo $escape($link->getName()); ?>" disabled="disabled"></label>
@@ -41,7 +42,7 @@
     Page
     <select data-name="search_page_id">
         <?php foreach ($searchPages as $searchPage): ?>
-            <?php $selected = ($search_page_id && $search_page_id == $searchPage->id()); ?>
+            <?php $selected = ($searchPageId && $searchPageId == $searchPage->id()); ?>
             <option value="<?php echo $searchPage->id(); ?>" <?php echo ($selected) ? 'selected="selected"' : ''; ?>>
                 <?php echo $searchPage->name(); ?>
             </option>

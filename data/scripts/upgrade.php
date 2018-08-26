@@ -5,7 +5,7 @@ $services = $serviceLocator;
 $settings = $services->get('Omeka\Settings');
 $connection = $services->get('Omeka\Connection');
 $config = require dirname(dirname(__DIR__)) . '/config/module.config.php';
-$translator = $serviceLocator->get('MvcTranslator');
+$translator = $services->get('MvcTranslator');
 
 if (version_compare($oldVersion, '0.1.1', '<')) {
     $connection->exec('
@@ -73,7 +73,27 @@ SQL;
 }
 
 if (version_compare($oldVersion, '0.5.2', '<')) {
-    $settings = $serviceLocator->get('Omeka\Settings');
     $this->manageSettings($settings, 'install', 'settings');
-    $this->manageSiteSettings($serviceLocator, 'install');
+    $this->manageSiteSettings($services, 'install');
+}
+
+if (version_compare($oldVersion, '3.5.7', '<')) {
+    // Ideally, each theme of the site should be checked, but it is useless since only one public theme requried Search.
+    /** @var \Omeka\Site\Theme\Manager $themeManager */
+    // $themeManager = $services->get('Omeka\Site\ThemeManager');
+    $siteSettings = $services->get('Omeka\Settings\Site');
+    $api = $services->get('Omeka\ApiManager');
+    /** @var \Omeka\Api\Representation\SiteRepresentation[] $sites */
+    $sites = $api->search('sites')->getContent();
+    foreach ($sites as $site) {
+        $theme = $site->theme();
+        $siteSettings->setTargetId($site->id());
+        $key = 'theme_settings_' . $theme;
+        $themeSettings = $siteSettings->get($key, []);
+        if (array_key_exists('search_page_id', $themeSettings)) {
+            $siteSettings->set('search_main_page', $themeSettings['search_page_id']);
+            unset($themeSettings['search_page_id']);
+            $siteSettings->set($key, $themeSettings);
+        }
+    }
 }

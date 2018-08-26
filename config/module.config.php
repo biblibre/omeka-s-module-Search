@@ -182,12 +182,15 @@ return [
         ],
     ],
     'search' => [
+        'config' => [
+        ],
         'settings' => [
             'search_pages' => [],
             'search_main_page' => '',
         ],
         'site_settings' => [
             'search_pages' => [],
+            'search_main_page' => '',
         ],
     ],
 ];

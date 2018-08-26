@@ -1,7 +1,7 @@
 <?php
-
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -42,17 +42,17 @@ class SearchPage implements LinkInterface
 
     public function getLabel(array $data, SiteRepresentation $site)
     {
-        return $data['label'] ? $data['label'] : 'Search';
+        return $data['label'] ? $data['label'] : 'Search'; // @translate
     }
 
     public function isValid(array $data, ErrorStore $errorStore)
     {
         if (!isset($data['label'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: browse link missing label');
+            $errorStore->addError('o:navigation', 'Invalid navigation: browse link missing label'); // @translate
             return false;
         }
         if (!isset($data['search_page_id'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: browse link missing search page id');
+            $errorStore->addError('o:navigation', 'Invalid navigation: browse link missing search page id'); // @translate
             return false;
         }
         return true;
@@ -66,7 +66,7 @@ class SearchPage implements LinkInterface
     public function toZend(array $data, SiteRepresentation $site)
     {
         $api = $site->getServiceLocator()->get('Omeka\ApiManager');
-        $page = $api->read('search_pages', $data['search_page_id'])->getContent();
+        $page = $api->read('search_pages', ['id' => $data['search_page_id']])->getContent();
         return [
             'label' => $data['label'],
             'route' => 'search-page-' . $page->id(),

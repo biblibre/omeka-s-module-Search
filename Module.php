@@ -38,8 +38,7 @@ use Search\Indexer\AbstractIndexer;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Form\Element\MultiCheckbox;
-use Zend\Form\Element\Select;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
@@ -493,7 +492,7 @@ SQL;
 
         $fieldset->add([
             'name' => 'search_pages',
-            'type' => MultiCheckbox::class,
+            'type' => Element\MultiCheckbox::class,
             'options' => [
                 'label' => 'Search pages', // @translate
                 'value_options' => $valueOptions,
@@ -515,12 +514,27 @@ SQL;
             }
             $fieldset->add([
                 'name' => 'search_main_page',
-                'type' => Select::class,
+                'type' => Element\Select::class,
                 'options' => [
                     'label' => 'Default search page', // @translate
                     'info' => 'This search engine is used in the admin bar.', // @translate
                     'value_options' => $valueOptions,
                     'empty_option' => 'Select the search engine for the admin bar…', // @translate
+                ],
+                'attributes' => [
+                    'value' => $settings->get(
+                        'search_main_page',
+                        $defaultSettings['search_main_page']
+                    ),
+                ],
+            ]);
+        } else {
+            $fieldset->add([
+                'name' => 'search_main_page',
+                'type' => Element\Select::class,
+                'options' => [
+                    'label' => 'Default search page', // @translate
+                    'value_options' => $valueOptions,
                 ],
                 'attributes' => [
                     'value' => $settings->get(
