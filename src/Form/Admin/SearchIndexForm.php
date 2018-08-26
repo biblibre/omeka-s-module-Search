@@ -33,19 +33,13 @@ namespace Search\Form\Admin;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class SearchIndexForm extends Form implements TranslatorAwareInterface
+class SearchIndexForm extends Form
 {
-    use TranslatorAwareTrait;
-
     protected $searchAdapterManager;
 
     public function init()
     {
-        $translator = $this->getTranslator();
-
         $this->add([
             'name' => 'o:name',
             'type' => Text::class,

@@ -148,7 +148,7 @@ class SearchIndexController extends AbstractActionController
             $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $response = $this->api()->delete('search_indexes', $this->params('id'));
+                $this->api()->delete('search_indexes', $this->params('id'));
                 $this->messenger()->addSuccess('Search index successfully deleted'); // @translate
             } else {
                 $this->messenger()->addError('Search index could not be deleted'); // @translate

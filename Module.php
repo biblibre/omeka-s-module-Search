@@ -401,7 +401,6 @@ SQL;
 
         $request = $event->getParam('request');
         $response = $event->getParam('response');
-        $requestResource = $request->getResource();
         $itemId = $request->getValue('itemId');
         $item = $itemId
             ? $api->read('items', $itemId, [], ['responseContent' => 'resource'])->getContent()

@@ -43,8 +43,6 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
 
     public function init()
     {
-        $translator = $this->getTranslator();
-
         $this->add([
             'name' => 'resources',
             'type' => MultiCheckbox::class,
@@ -68,15 +66,16 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
         return $this->apiManager;
     }
 
+    /**
+     * Get the list of resource types.
+     *
+     * @todo There may be other resources types to index for search: media, external resources types. See git history of this file.
+     *
+     * @return array
+     */
     protected function getResourcesOptions()
     {
-        $api = $this->getApiManager();
         $translator = $this->getTranslator();
-
-        $searchIndexId = $this->getOption('search_index_id');
-        $response = $api->read('search_indexes', $searchIndexId);
-        $searchIndex = $response->getContent();
-        $indexer = $searchIndex->indexer();
 
         $options = [
             'items' => $translator->translate('Items'),

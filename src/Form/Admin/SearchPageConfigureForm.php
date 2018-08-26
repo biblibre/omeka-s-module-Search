@@ -50,7 +50,6 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
-        $settings = $searchPage->settings();
 
         $this->add([
             'name' => 'facet_limit',

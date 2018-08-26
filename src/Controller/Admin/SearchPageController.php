@@ -92,13 +92,9 @@ class SearchPageController extends AbstractActionController
     public function configureAction()
     {
         $entityManager = $this->getEntityManager();
-        $adapterManager = $this->getSearchAdapterManager();
-        $formAdapterManager = $this->getSearchFormAdapterManager();
 
         $id = $this->params('id');
-
         $searchPage = $this->api()->read('search_pages', $id)->getContent();
-        $adapter = $searchPage->index()->adapter();
 
         $form = $this->getForm(SearchPageConfigureForm::class, [
             'search_page' => $searchPage,
@@ -142,7 +138,7 @@ class SearchPageController extends AbstractActionController
             $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $response = $this->api()->delete('search_pages', $this->params('id'));
+                $this->api()->delete('search_pages', $this->params('id'));
                 $this->messenger()->addSuccess('Search page successfully deleted'); // @translate
             } else {
                 $this->messenger()->addError('Search page could not be deleted'); // @translate

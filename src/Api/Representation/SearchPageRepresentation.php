@@ -65,6 +65,9 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $url('admin/search/page-id', $params, $options);
     }
 
+    /**
+     * @return string
+     */
     public function adminSearchUrl($canonical = false)
     {
         $url = $this->getViewHelper('Url');
@@ -87,11 +90,17 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $url('search-page-' . $this->id(), $params, $options);
     }
 
+    /**
+     * @return string
+     */
     public function name()
     {
         return $this->resource->getName();
     }
 
+    /**
+     * @return string
+     */
     public function path()
     {
         return $this->resource->getPath();
@@ -105,11 +114,17 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $this->getAdapter('search_indexes')->getRepresentation($this->resource->getIndex());
     }
 
+    /**
+     * @return string
+     */
     public function formAdapterName()
     {
         return $this->resource->getFormAdapter();
     }
 
+    /**
+     * @return \Search\FormAdapter\FormAdapterInterface
+     */
     public function formAdapter()
     {
         $serviceLocator = $this->getServiceLocator();
@@ -135,16 +150,25 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
         return $form;
     }
 
+    /**
+     * @return array
+     */
     public function settings()
     {
         return $this->resource->getSettings();
     }
 
+    /**
+     * @return \DateTime
+     */
     public function created()
     {
         return $this->resource->getCreated();
     }
 
+    /**
+     * @return \Search\Entity\SearchPage
+     */
     public function getEntity()
     {
         return $this->resource;
