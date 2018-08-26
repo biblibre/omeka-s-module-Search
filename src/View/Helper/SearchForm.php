@@ -24,7 +24,6 @@ class SearchForm extends AbstractHelper
      */
     public function __invoke(SearchPageRepresentation $searchPage = null)
     {
-        // FIXME The view helper should not fail if it has not been initialized.
         if (isset($searchPage)) {
             $this->searchPage = $searchPage;
             $this->form = null;
@@ -34,21 +33,28 @@ class SearchForm extends AbstractHelper
 
     public function __toString()
     {
-        $view = $this->getView();
         $formPartial = $this->getFormPartial();
+        if (empty($formPartial)) {
+            return '';
+        }
         $form = $this->getForm();
-        return $view->partial($formPartial, ['form' => $form]);
+        if (empty($form)) {
+            return '';
+        }
+        return $this->getView()->partial($formPartial, ['form' => $form]);
     }
 
     /**
-     * @return \Zend\Form\Form
+     * @return \Zend\Form\Form|null
      */
     public function getForm()
     {
+        if (empty($this->searchPage)) {
+            return;
+        }
         if (empty($this->form)) {
-            $view = $this->getView();
             $this->form = $this->searchPage->form();
-            $url = $view->params()->fromRoute('__ADMIN__')
+            $url = $this->getView()->params()->fromRoute('__ADMIN__')
                 ? $this->searchPage->adminSearchUrl()
                 : $this->searchPage->url();
             $this->form->setAttribute('action', $url);
@@ -63,6 +69,9 @@ class SearchForm extends AbstractHelper
      */
     protected function getFormPartial()
     {
+        if (empty($this->searchPage)) {
+            return '';
+        }
         $formAdapter = $this->searchPage->formAdapter();
         $formPartial = $formAdapter->getFormPartial() ?: 'search/search-form';
         return $formPartial;

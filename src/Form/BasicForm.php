@@ -29,6 +29,7 @@
 
 namespace Search\Form;
 
+use Zend\Form\Element;
 use Zend\Form\Form;
 
 class BasicForm extends Form
@@ -37,7 +38,7 @@ class BasicForm extends Form
     {
         $this->add([
             'name' => 'q',
-            'type' => 'Text',
+            'type' => Element\Text::class,
             'options' => [
                 'label' => 'Search', // @translate
             ],
