@@ -123,13 +123,15 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
     }
 
     /**
-     * @return \Search\FormAdapter\FormAdapterInterface
+     * @return \Search\FormAdapter\FormAdapterInterface|null
      */
     public function formAdapter()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $formAdapterManager = $serviceLocator->get('Search\FormAdapterManager');
-        return $formAdapterManager->get($this->formAdapterName());
+        $formAdapterName =$this->formAdapterName();
+        $formAdapterManager = $this->getServiceLocator()->get('Search\FormAdapterManager');
+        return $formAdapterManager->has($formAdapterName)
+            ? $formAdapterManager->get($formAdapterName)
+            : null;
     }
 
     /**
