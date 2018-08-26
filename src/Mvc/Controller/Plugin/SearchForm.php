@@ -1,30 +1,32 @@
 <?php
-
 namespace Search\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\View\HelperPluginManager;
 use Search\Api\Representation\SearchPageRepresentation;
+use Search\View\Helper\SearchForm as SearchFormHelper;
+use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class SearchForm extends AbstractPlugin
 {
     /**
-     * @var HelperPluginManager
+     * @var SearchFormHelper
      */
-    protected $viewHelpers;
+    protected $searchFormHelper;
 
-    public function __construct(HelperPluginManager $viewHelpers)
+    /**
+     * @param SearchFormHelper $searchFormHelper
+     */
+    public function __construct(SearchFormHelper $searchFormHelper)
     {
-        $this->viewHelpers = $viewHelpers;
+        $this->searchFormHelper = $searchFormHelper;
     }
 
     /**
-     * @param SearchPageRepresentation $searchPage
-     * @return Zend\Form\Form;
+     * @param SearchPageRepresentation|null $searchPage
+     * @return \Zend\Form\Form;
      */
-    public function __invoke(SearchPageRepresentation $searchPage)
+    public function __invoke(SearchPageRepresentation $searchPage = null)
     {
-        $searchForm = $this->viewHelpers->get('searchForm');
+        $searchForm = $this->searchFormHelper;
         return $searchForm($searchPage)->getForm();
     }
 }

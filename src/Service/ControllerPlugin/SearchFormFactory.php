@@ -1,17 +1,16 @@
 <?php
-
-namespace Search\Service\Mvc\Controller\Plugin;
+namespace Search\Service\ControllerPlugin;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\Mvc\Controller\Plugin\SearchForm;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class SearchFormFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $viewHelpers = $services->get('ViewHelperManager');
-
-        return new SearchForm($viewHelpers);
+        return new SearchForm(
+            $services->get('ViewHelperManager')->get('searchForm')
+        );
     }
 }

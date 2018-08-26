@@ -52,7 +52,7 @@ return [
     ],
     'controller_plugins' => [
         'factories' => [
-            'searchForm' => Service\Mvc\Controller\Plugin\SearchFormFactory::class,
+            'searchForm' => Service\ControllerPlugin\SearchFormFactory::class,
         ],
     ],
     'service_manager' => [
