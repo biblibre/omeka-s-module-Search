@@ -78,11 +78,11 @@ class SearchPage implements LinkInterface
 
     public function toJstree(array $data, SiteRepresentation $site)
     {
-        $label = isset($data['label']) ? $data['label'] : $sitePage->title();
-        $search_page_id = isset($data['search_page_id']) ? $data['search_page_id'] : null;
+        $label = isset($data['label']) ? $data['label'] : $site->title();
+        $searchPageId = isset($data['search_page_id']) ? $data['search_page_id'] : null;
         return [
             'label' => $label,
-            'search_page_id' => $search_page_id,
+            'search_page_id' => $searchPageId,
         ];
     }
 }
