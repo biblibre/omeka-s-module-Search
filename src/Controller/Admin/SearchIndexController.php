@@ -134,6 +134,7 @@ class SearchIndexController extends AbstractActionController
         $response = $this->api()->read('search_indexes', $this->params('id'));
         $index = $response->getContent();
 
+        // TODO Add a warning about the related pages, that will be deleted.
         $view = new ViewModel;
         $view->setTerminal(true);
         $view->setTemplate('common/delete-confirm-details');

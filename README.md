@@ -130,6 +130,8 @@ TODO
   the module [jQueryUI] too. The tabs may be "Filters", "Facets", and "Sort".
 - Create an internal index (see Omeka Classic) and move all related code into
   another module.
+- Allow to remove an index without removing pages.
+- Allow to import/export a mapping via json, for example the default one.
 
 
 Warning

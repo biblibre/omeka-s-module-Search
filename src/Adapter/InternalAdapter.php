@@ -60,7 +60,7 @@ class InternalAdapter extends AbstractAdapter
         // There is no default score sort.
         $sortFields = [];
 
-        $directionLabel = [
+        $directionLabels = [
             'asc' => $this->translator->translate('Asc'),
             'desc' => $this->translator->translate('Desc'),
         ];
@@ -68,7 +68,7 @@ class InternalAdapter extends AbstractAdapter
         foreach ($availableFields as $name => $availableField) {
             $fieldName = $availableField['name'];
             $fieldLabel = $availableField['label'];
-            foreach (['asc' => 'Asc', 'desc' => 'Desc'] as $direction => $labelDirection) {
+            foreach ($directionLabels as $direction => $labelDirection) {
                 $name = $fieldName . ' ' . $direction;
                 $sortFields[$name] = [
                     'name' => $name,
