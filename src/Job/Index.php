@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -30,6 +31,7 @@
 namespace Search\Job;
 
 use Omeka\Job\AbstractJob;
+use Omeka\Stdlib\Message;
 
 class Index extends AbstractJob
 {
@@ -39,11 +41,11 @@ class Index extends AbstractJob
 
     public function perform()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $apiAdapters = $serviceLocator->get('Omeka\ApiAdapterManager');
-        $api = $serviceLocator->get('Omeka\ApiManager');
-        $em = $serviceLocator->get('Omeka\EntityManager');
-        $this->logger = $serviceLocator->get('Omeka\Logger');
+        $services = $this->getServiceLocator();
+        $apiAdapters = $services->get('Omeka\ApiAdapterManager');
+        $api = $services->get('Omeka\ApiManager');
+        $em = $services->get('Omeka\EntityManager');
+        $this->logger = $services->get('Omeka\Logger');
 
         $indexId = $this->getArg('index-id');
         $this->logger->info('Start');
@@ -51,7 +53,7 @@ class Index extends AbstractJob
 
         $searchIndex = $api->read('search_indexes', $indexId)->getContent();
         $indexer = $searchIndex->indexer();
-        $indexer->setServiceLocator($serviceLocator);
+        $indexer->setServiceLocator($services);
         $indexer->setLogger($this->logger);
 
         $indexer->clearIndex();
@@ -68,13 +70,20 @@ class Index extends AbstractJob
             $adapter = $apiAdapters->get($resourceName);
             $entityClass = $adapter->getEntityClass();
             do {
+                if ($this->shouldStop()) {
+                    $this->logger->warn(new Message(
+                        'The job "Search Index" was stopped: %d resources processed.', // @translate
+                        ($data['page'] - 1) * self::BATCH_SIZE
+                    ));
+                    return;
+                }
                 $resources = $api->search($resourceName, $data)->getContent();
                 $entities = [];
                 foreach ($resources as $resource) {
                     $entities[] = $em->find($entityClass, $resource->id());
                 }
                 $indexer->indexResources($entities);
-                $data['page']++;
+                ++$data['page'];
             } while (count($resources) == self::BATCH_SIZE);
         }
 
