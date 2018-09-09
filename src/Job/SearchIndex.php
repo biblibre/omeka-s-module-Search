@@ -131,6 +131,7 @@ class SearchIndex extends AbstractJob
                     }
                     return;
                 }
+                // TODO Use doctrine large iterable data-processing? See https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/batch-processing.html#iterating-large-results-for-data-processing
                 $offset = $batchSize * ($page - 1);
                 $q = $em
                     ->createQuery($dql)
@@ -143,6 +144,7 @@ class SearchIndex extends AbstractJob
 
                 ++$page;
                 $totals[$resourceName] += count($resources);
+                $em->clear();
             } while (count($resources) == $batchSize);
         }
 
