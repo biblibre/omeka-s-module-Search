@@ -205,19 +205,21 @@ class IndexController extends AbstractActionController
 
         $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         foreach ($settings['sort_fields'] as $name => $sortField) {
-            if ($sortField['enabled']) {
-                if (!empty($sortField['display']['label'])) {
-                    $label = $sortField['display']['label'];
-                } elseif (!empty($sortFields[$name]['label'])) {
-                    $label = $sortFields[$name]['label'];
-                } else {
-                    $label = $name;
-                }
-
-                $sortOptions[$name] = $label;
+            if (!$sortField['enabled']) {
+                // A break is possible, because now, the sort fields are ordered
+                // when they are saved.
+                break;
             }
+            if (!empty($sortField['display']['label'])) {
+                $label = $sortField['display']['label'];
+            } elseif (!empty($sortFields[$name]['label'])) {
+                $label = $sortFields[$name]['label'];
+            } else {
+                $label = $name;
+            }
+            $sortOptions[$name] = $label;
         }
-        $sortOptions = $this->sortByWeight($sortOptions, 'sort_fields');
+        // The sort options are sorted one time only, when saved.
 
         return $sortOptions;
     }
@@ -231,10 +233,10 @@ class IndexController extends AbstractActionController
      */
     protected function sortByWeight(array $fields, $settingName)
     {
-        $settings = $this->page->settings();
-        uksort($fields, function ($a, $b) use ($settings, $settingName) {
-            $aWeight = $settings[$settingName][$a]['weight'];
-            $bWeight = $settings[$settingName][$b]['weight'];
+        $settings = $this->page->settings()[$settingName];
+        uksort($fields, function ($a, $b) use ($settings) {
+            $aWeight = $settings[$a]['weight'];
+            $bWeight = $settings[$b]['weight'];
             return $aWeight - $bWeight;
         });
         return $fields;
