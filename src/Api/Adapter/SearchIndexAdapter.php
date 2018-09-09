@@ -83,6 +83,12 @@ class SearchIndexAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query)
     {
+        if (isset($query['id'])) {
+            $qb->andWhere($qb->expr()->eq(
+                $this->getEntityClass() . '.id',
+                $this->createNamedParameter($qb, $query['id']))
+            );
+        }
         if (isset($query['name'])) {
             $qb->andWhere($qb->expr()->eq(
                 $this->getEntityClass() . '.name',
