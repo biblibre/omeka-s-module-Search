@@ -52,7 +52,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
     public function testConfigurePostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm', [
+        $form = $forms->get(\Search\Form\Admin\SearchPageConfigureForm::class, [
             'search_page' => $this->searchPage,
         ]);
 

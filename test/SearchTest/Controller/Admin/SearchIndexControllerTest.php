@@ -23,7 +23,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
     public function testAddPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchIndexForm');
+        $form = $forms->get(\Search\Form\Admin\SearchIndexForm::class);
 
         $this->dispatch('/admin/search-manager/index/add', 'POST', [
             'o:name' => 'TestIndex2',
