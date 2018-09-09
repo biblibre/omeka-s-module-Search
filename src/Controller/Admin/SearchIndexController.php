@@ -119,9 +119,14 @@ class SearchIndexController extends AbstractActionController
     public function indexAction()
     {
         $jobDispatcher = $this->getJobDispatcher();
-        $indexId = $this->params('id');
+        $searchIndexId = (int) $this->params('id');
 
-        $job = $jobDispatcher->dispatch('Search\Job\Index', ['index-id' => $indexId]);
+        $startResourceId = (int) $this->params()->fromPost('start_resource_id');
+
+        $jobArgs = [];
+        $jobArgs['search_index_id'] = $searchIndexId;
+        $jobArgs['start_resource_id'] = $startResourceId;
+        $job = $jobDispatcher->dispatch(\Search\Job\SearchIndex::class, $jobArgs);
 
         $jobUrl = $this->url()->fromRoute('admin/id', [
             'controller' => 'job',

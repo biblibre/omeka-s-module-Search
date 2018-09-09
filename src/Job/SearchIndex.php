@@ -32,7 +32,7 @@ namespace Search\Job;
 use Omeka\Job\AbstractJob;
 use Omeka\Stdlib\Message;
 
-class Index extends AbstractJob
+class SearchIndex extends AbstractJob
 {
     const BATCH_SIZE = 100;
 
@@ -48,7 +48,9 @@ class Index extends AbstractJob
          * @var \Doctrine\ORM\EntityManager $em
          */
         $services = $this->getServiceLocator();
+        $apiAdapters = $services->get('Omeka\ApiAdapterManager');
         $api = $services->get('Omeka\ApiManager');
+        $em = $services->get('Omeka\EntityManager');
         $settings = $services->get('Omeka\Settings');
         $this->logger = $services->get('Omeka\Logger');
 
@@ -57,25 +59,34 @@ class Index extends AbstractJob
             $batchSize = self::BATCH_SIZE;
         }
 
-        $indexId = $this->getArg('index-id');
-        $this->logger->info('Start of indexing');
-        $this->logger->info('Index id: ' . $indexId);
+        $searchIndexId = $this->getArg('search_index_id');
+        $startResourceId = $this->getArg('start_resource_id');
+        $this->logger->info('Start of indexing'); // @translate
 
         /** @var \Search\Api\Representation\SearchIndexRepresentation $searchIndex */
-        $searchIndex = $api->read('search_indexes', $indexId)->getContent();
+        $searchIndex = $api->read('search_indexes', $searchIndexId)->getContent();
         $indexer = $searchIndex->indexer();
         if (!$indexer) {
             $this->logger->warn(new Message(
                 'Job end: there is no indexer for search index #%d.', // @translate
-                $indexId
+                $searchIndexId
             ));
             return;
         }
 
+        $this->logger->info(new Message('Index id: %d', $searchIndexId)); // @translate
+
         $indexer->setServiceLocator($services);
         $indexer->setLogger($this->logger);
 
-        $indexer->clearIndex();
+        if ($startResourceId > 0) {
+            $this->logger->info(new Message(
+                'Index is not cleared: search starts at resource #%d.', // @translate
+                $startResourceId
+            ));
+        } else {
+            $indexer->clearIndex();
+        }
 
         $searchIndexSettings = $searchIndex->settings();
         $resourceNames = $searchIndexSettings['resources'];
@@ -85,22 +96,31 @@ class Index extends AbstractJob
         });
 
         foreach ($resourceNames as $resourceName) {
-            $data = [
-                'page' => 1,
-                'per_page' => $batchSize,
-            ];
+            $page = 1;
+            $entityClass = $apiAdapters->get($resourceName)->getEntityClass();
+            $dql = "SELECT resource FROM $entityClass resource";
+            if ($startResourceId) {
+                $dql .= " WHERE resource.id >= $startResourceId";
+            }
+            $dql .= " ORDER BY resource.id";
+
             do {
                 if ($this->shouldStop()) {
                     $this->logger->warn(new Message(
                         'The job "Search Index" was stopped: %d resources processed (current resource: %s).', // @translate
-                        ($data['page'] - 1) * $batchSize, $resourceName
+                        ($page - 1) * $batchSize, $resourceName
                     ));
                     return;
                 }
-                $entities = $api->search($resourceName, $data, ['responseContent' => 'resource'])->getContent();
-                $indexer->indexResources($entities);
-                ++$data['page'];
-            } while (count($entities) == $batchSize);
+                $offset = $batchSize * ($page - 1);
+                $q = $em
+                    ->createQuery($dql)
+                    ->setFirstResult($offset)
+                    ->setMaxResults($batchSize);
+                $resources = $q->getResult();
+                $indexer->indexResources($resources);
+                ++$page;
+            } while (count($resources) == $batchSize);
         }
 
         $this->logger->info('End of indexing.'); // @translate

@@ -14,6 +14,11 @@ $this->form->setButtonLabel('Confirm reindex'); // @translate
         <?php echo $translate('All the indexes will be cleared first, so the search will be unavailable for a while.'); ?>
         <?php echo $translate('You may redirect the users on a clone of the current index temporary.'); ?>
         </p>
+        <p>
+        <?php echo $translate('You may prefer to keep existing indexes and to start the indexing at the following resource id.'); ?>
+        <?php echo $translate('Set "1" to reindex without clearing the current index.'); ?>
+        <input name="start_resource_id" placeholder="0" value="" type="number" form="confirmform">
+        </p>
         <?php echo $this->form($this->form); ?>
     </div>
 <?php if ($this->wrapSidebar): ?>
