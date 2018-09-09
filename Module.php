@@ -547,6 +547,9 @@ SQL;
         foreach ($pages as $page) {
             $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
         }
+        $pagesOptions = $valueOptions;
+
+        // For admin, the main page is a path.
         if ($isAdmin) {
             $valueOptions = [];
             $basePath = $services->get('ViewHelperManager')->get('BasePath');
@@ -554,45 +557,34 @@ SQL;
             foreach ($pages as $page) {
                 $valueOptions[$adminBasePath . $page->path()] = sprintf('%s (/%s)', $page->name(), $page->path());
             }
-            $fieldset->add([
-                'name' => 'search_main_page',
-                'type' => Element\Select::class,
-                'options' => [
-                    'label' => 'Default search page', // @translate
-                    'info' => 'This search engine is used in the admin bar.', // @translate
-                    'value_options' => $valueOptions,
-                    'empty_option' => 'Select the search engine for the admin bar…', // @translate
-                ],
-                'attributes' => [
-                    'value' => $settings->get(
-                        'search_main_page',
-                        $defaultSettings['search_main_page']
-                    ),
-                ],
-            ]);
-        } else {
-            $fieldset->add([
-                'name' => 'search_main_page',
-                'type' => Element\Select::class,
-                'options' => [
-                    'label' => 'Default search page', // @translate
-                    'value_options' => $valueOptions,
-                ],
-                'attributes' => [
-                    'value' => $settings->get(
-                        'search_main_page',
-                        $defaultSettings['search_main_page']
-                    ),
-                ],
-            ]);
         }
+        $fieldset->add([
+            'name' => 'search_main_page',
+            'type' => Element\Select::class,
+            'options' => [
+                'label' => 'Default search page', // @translate
+                'info' => $isAdmin
+                    ? 'This search engine is used in the admin bar.' // @translate
+                    : '',
+                'value_options' => $valueOptions,
+                'empty_option' => $isAdmin
+                    ? 'Select the search engine for the admin bar…' // @translate
+                    : 'Select the default search engine for the site…', // @translate
+            ],
+            'attributes' => [
+                'value' => $settings->get(
+                    'search_main_page',
+                    $defaultSettings['search_main_page']
+                ),
+            ],
+        ]);
 
         $fieldset->add([
             'name' => 'search_pages',
             'type' => Element\MultiCheckbox::class,
             'options' => [
                 'label' => 'Available search pages', // @translate
-                'value_options' => $valueOptions,
+                'value_options' => $pagesOptions,
             ],
             'attributes' => [
                 'value' => $settings->get(
