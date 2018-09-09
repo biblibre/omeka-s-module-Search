@@ -53,12 +53,12 @@ class BasicFormAdapter implements FormAdapterInterface
         return null;
     }
 
-    public function toQuery($data, $formSettings)
+    public function toQuery(array $request, array $formSettings)
     {
         $query = new Query();
 
-        if (isset($data['q'])) {
-            $query->setQuery($data['q']);
+        if (isset($request['q'])) {
+            $query->setQuery($request['q']);
         }
 
         return $query;

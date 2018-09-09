@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -52,7 +53,14 @@ interface FormAdapterInterface
     public function getConfigFormClass();
 
     /**
-     * @return \Search\Query
+     * Convert a user query from a form into a Search query via a form mapping.
+     *
+     * The mapping between the query arguments that comes from a form and the
+     * fields managed by the index is set via the form settings of the page.
+     *
+     * @param array $request The user query formatted by the form.
+     * @param array $formSettings The specific settings of the form page.
+     * @return \Search\Query The normalized query of the module Search.
      */
-    public function toQuery($data, $formSettings);
+    public function toQuery(array $request, array $formSettings);
 }
