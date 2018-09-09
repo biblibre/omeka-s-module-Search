@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,11 +30,12 @@
 
 namespace Search\Controller\Admin;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
+use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchPageForm;
 use Search\Form\Admin\SearchPageConfigureForm;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class SearchPageController extends AbstractActionController
 {
@@ -54,8 +56,10 @@ class SearchPageController extends AbstractActionController
         $response = $this->api()->create('search_pages', $formData);
         $searchPage = $response->getContent();
 
-        $this->messenger()->addSuccess('Search page created.'); // @translate
-
+        $this->messenger()->addSuccess(new Message(
+            'Search page "%s" created.', // @translate
+            $searchPage->name()
+        ));
         $this->managePageOnSites(
             $searchPage->id(),
             !empty($formData['manage_page_default']),
@@ -87,7 +91,10 @@ class SearchPageController extends AbstractActionController
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
 
-        $this->messenger()->addSuccess('Search page saved.'); // @translate
+        $this->messenger()->addSuccess(new Message(
+            'Search page "%s" saved.', // @translate
+            $page->name()
+        ));
 
         $this->managePageOnSites(
             $id,
@@ -205,15 +212,17 @@ class SearchPageController extends AbstractActionController
         $page->setSettings($params);
         $entityManager->flush();
 
-        $this->messenger()->addSuccess('Configuration saved.'); // @translate
+        $this->messenger()->addSuccess(new Message(
+            'Configuration saved for page "%s".', // @translate
+            $searchPage->name()
+        ));
         return $this->redirect()->toRoute('admin/search');
     }
 
     public function deleteConfirmAction()
     {
         $id = $this->params('id');
-        $response = $this->api()->read('search_pages', $id);
-        $page = $response->getContent();
+        $page = $this->api()->read('search_pages', $id)->getContent();
 
         $view = new ViewModel;
         $view->setTerminal(true);
@@ -228,11 +237,19 @@ class SearchPageController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
+            $id = $this->params('id');
+            $pageName = $this->api()->read('search_pages', $id)->getContent()->name();
             if ($form->isValid()) {
                 $this->api()->delete('search_pages', $this->params('id'));
-                $this->messenger()->addSuccess('Search page successfully deleted'); // @translate
+                $this->messenger()->addSuccess(new Message(
+                    'Search page "%s" successfully deleted', // @translate
+                    $pageName
+                ));
             } else {
-                $this->messenger()->addError('Search page could not be deleted'); // @translate
+                $this->messenger()->addError(new Message(
+                    'Search page "%s" could not be deleted', // @translate
+                    $pageName
+                ));
             }
         }
         return $this->redirect()->toRoute('admin/search');

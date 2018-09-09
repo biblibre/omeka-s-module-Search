@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,12 +30,12 @@
 
 namespace Search\Controller\Admin;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexForm;
 use Search\Form\Admin\SearchIndexConfigureForm;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 class SearchIndexController extends AbstractActionController
 {
@@ -55,9 +56,12 @@ class SearchIndexController extends AbstractActionController
                 return $view;
             }
             $formData = $form->getData();
-            $response = $this->api()->create('search_indexes', $formData);
-            $this->messenger()->addSuccess('Search index created.'); // @translate
-            return $this->redirect()->toUrl($response->getContent()->url('edit'));
+            $index = $this->api()->create('search_indexes', $formData)->getContent();
+            $this->messenger()->addSuccess(new Message(
+                'Search index "%s" created.', // @translate
+                $index->name()
+            ));
+            return $this->redirect()->toUrl($index->url('edit'));
         }
         return $view;
     }
@@ -69,7 +73,7 @@ class SearchIndexController extends AbstractActionController
 
         $id = $this->params('id');
 
-        $searchIndex = $entityManager->find('Search\Entity\SearchIndex', $id);
+        $searchIndex = $entityManager->find(\Search\Entity\SearchIndex::class, $id);
         $adapter = $adapterManager->get($searchIndex->getAdapter());
 
         $form = $this->getForm(SearchIndexConfigureForm::class, [
@@ -96,7 +100,10 @@ class SearchIndexController extends AbstractActionController
             unset($formData['csrf']);
             $searchIndex->setSettings($formData);
             $entityManager->flush();
-            $this->messenger()->addSuccess('Search index successfully configured'); // @translate
+            $this->messenger()->addSuccess(new Message(
+                'Search index "%s" successfully configured.',  // @translate
+                $searchIndex->getName()
+            ));
             return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
         }
 
@@ -105,8 +112,7 @@ class SearchIndexController extends AbstractActionController
 
     public function indexConfirmAction()
     {
-        $response = $this->api()->read('search_indexes', $this->params('id'));
-        $index = $response->getContent();
+        $index = $this->api()->read('search_indexes', $this->params('id'))->getContent();
 
         $view = new ViewModel;
         $view->setTerminal(true);
@@ -119,6 +125,8 @@ class SearchIndexController extends AbstractActionController
     public function indexAction()
     {
         $searchIndexId = (int) $this->params('id');
+        $index = $this->api()->read('search_indexes', $searchIndexId)->getContent();
+
         $startResourceId = (int) $this->params()->fromPost('start_resource_id');
         $resourceNames = $this->params()->fromPost('resource_names') ?: [];
 
@@ -136,7 +144,8 @@ class SearchIndexController extends AbstractActionController
         ]);
 
         $message = new Message(
-            'Indexing started in %sjob %s%s', // @translate
+            'Indexing of "%s" started in %sjob %s%s', // @translate
+            $index->name(),
             sprintf('<a href="%s">', htmlspecialchars($jobUrl)),
             $job->getId(),
             '</a>'
@@ -167,11 +176,19 @@ class SearchIndexController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form = $this->getForm(ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
+            $indexId = $this->params('id');
+            $indexName = $this->api()->read('search_indexes', $indexId)->getContent()->name();
             if ($form->isValid()) {
-                $this->api()->delete('search_indexes', $this->params('id'));
-                $this->messenger()->addSuccess('Search index successfully deleted'); // @translate
+                $this->api()->delete('search_indexes', $indexId);
+                $this->messenger()->addSuccess(new Message(
+                    'Search index "%s" successfully deleted', // @translate
+                    $indexName
+                ));
             } else {
-                $this->messenger()->addError('Search index could not be deleted'); // @translate
+                $this->messenger()->addError(new Message(
+                    'Search index "%s" could not be deleted', // @translate
+                    $indexName
+                ));
             }
         }
         return $this->redirect()->toRoute('admin/search');

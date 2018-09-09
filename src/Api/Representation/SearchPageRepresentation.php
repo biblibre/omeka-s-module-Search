@@ -127,7 +127,7 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
      */
     public function formAdapter()
     {
-        $formAdapterName =$this->formAdapterName();
+        $formAdapterName = $this->formAdapterName();
         $formAdapterManager = $this->getServiceLocator()->get('Search\FormAdapterManager');
         return $formAdapterManager->has($formAdapterName)
             ? $formAdapterManager->get($formAdapterName)
