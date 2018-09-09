@@ -135,15 +135,19 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
     }
 
     /**
-     * @return \Zend\Form\Form
+     * @return \Zend\Form\Form|null
      */
     public function form()
     {
         $serviceLocator = $this->getServiceLocator();
         $formElementManager = $serviceLocator->get('FormElementManager');
         $formAdapter = $this->formAdapter();
+        $formClass = $formAdapter->getFormClass();
+        if (empty($formClass)) {
+            return;
+        }
 
-        $form = $formElementManager->get($formAdapter->getFormClass(), [
+        $form = $formElementManager->get($formClass, [
             'search_page' => $this,
         ]);
         $form->remove('csrf');

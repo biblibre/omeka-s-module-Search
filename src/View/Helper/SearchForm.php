@@ -50,10 +50,13 @@ class SearchForm extends AbstractHelper
     public function getForm()
     {
         if (empty($this->searchPage)) {
-            return;
+            return null;
         }
         if (empty($this->form)) {
             $this->form = $this->searchPage->form();
+            if (empty($this->form)) {
+                return null;
+            }
             $url = $this->getView()->params()->fromRoute('__ADMIN__')
                 ? $this->searchPage->adminSearchUrl()
                 : $this->searchPage->url();

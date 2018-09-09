@@ -142,18 +142,21 @@ class IndexController extends AbstractActionController
         $this->setPagination($query, $pageNumber);
 
         $settings = $page->settings();
-        foreach ($settings['facets'] as $name => $facet) {
-            if ($facet['enabled']) {
-                $query->addFacetField($name);
+        $hasFacets = !empty($settings['facets']);
+        if ($hasFacets) {
+            foreach ($settings['facets'] as $name => $facet) {
+                if ($facet['enabled']) {
+                    $query->addFacetField($name);
+                }
             }
-        }
-        if (isset($settings['facet_limit'])) {
-            $query->setFacetLimit($settings['facet_limit']);
-        }
-        if (isset($request['limit']) && is_array($request['limit'])) {
-            foreach ($request['limit'] as $name => $values) {
-                foreach ($values as $value) {
-                    $query->addFilter($name, $value);
+            if (isset($settings['facet_limit'])) {
+                $query->setFacetLimit($settings['facet_limit']);
+            }
+            if (!empty($request['limit']) && is_array($request['limit'])) {
+                foreach ($request['limit'] as $name => $values) {
+                    foreach ($values as $value) {
+                        $query->addFilter($name, $value);
+                    }
                 }
             }
         }
@@ -167,8 +170,12 @@ class IndexController extends AbstractActionController
             return $view;
         }
 
-        $facets = $response->getFacetCounts();
-        $facets = $this->sortByWeight($facets, 'facets');
+        if ($hasFacets) {
+            $facets = $response->getFacetCounts();
+            $facets = $this->sortByWeight($facets, 'facets');
+        } else {
+            $facets = [];
+        }
 
         $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
@@ -194,8 +201,12 @@ class IndexController extends AbstractActionController
     {
         $sortOptions = [];
 
-        $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         $settings = $this->page->settings();
+        if (empty($settings['sort_fields'])) {
+            return [];
+        }
+
+        $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         foreach ($settings['sort_fields'] as $name => $sortField) {
             if ($sortField['enabled']) {
                 if (!empty($sortField['display']['label'])) {
