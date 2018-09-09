@@ -162,8 +162,44 @@ class SearchPageController extends AbstractActionController
             return $view;
         }
 
+        // TODO Why the fieldset "form" is removed from the the params? Add an intermediate fieldset?
+        $formParams = isset($params['form']) ? $params['form'] : [];
         $params = $form->getData();
+        $params['form'] = $formParams;
         unset($params['csrf']);
+
+        // Sort facets and sort fields to simplify next load.
+        foreach (['facets', 'sort_fields'] as $type) {
+            if (empty($params[$type])) {
+                continue;
+            }
+            // Sort enabled first, then available, else sort by weigth.
+            uasort($params[$type], function ($a, $b) {
+                // Sort by availability.
+                if (isset($a['enabled']) && isset($b['enabled'])) {
+                    if ($a['enabled'] > $b['enabled']) {
+                        return -1;
+                    } elseif ($a['enabled'] < $b['enabled']) {
+                        return 1;
+                    }
+                } elseif (isset($a['enabled'])) {
+                    return -1;
+                } elseif (isset($b['enabled'])) {
+                    return 1;
+                }
+                // In other cases, sort by weight.
+                if (isset($a['weight']) && isset($b['weight'])) {
+                    return $a['weight'] == $b['weight']
+                        ? 0
+                        : ($a['weight'] < $b['weight'] ? -1 : 1);
+                } elseif (isset($a['weight'])) {
+                    return -1;
+                } elseif (isset($b['weight'])) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
 
         $page = $searchPage->getEntity();
         $page->setSettings($params);

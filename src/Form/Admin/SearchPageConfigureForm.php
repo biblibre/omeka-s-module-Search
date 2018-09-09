@@ -74,8 +74,11 @@ class SearchPageConfigureForm extends Form
         $facets = new Fieldset('facets');
         $facets->setLabel('Facets'); // @translate
         $facets->setAttribute('data-sortable', '1');
+        // TODO This attribute of the fieldset is not output for an unknown reason.
+        $facets->setAttribute('data-ordered', '1');
 
         $facetFields = $adapter->getAvailableFacetFields($searchPage->index());
+        $facetFields = $this->sortFields($facetFields, 'facets');
         $weights = range(0, count($facetFields));
         $weightOptions = array_combine($weights, $weights);
         $weight = 0;
@@ -131,8 +134,10 @@ class SearchPageConfigureForm extends Form
         $sortFieldsFieldset = new Fieldset('sort_fields');
         $sortFieldsFieldset->setLabel('Sort fields'); // @translate
         $sortFieldsFieldset->setAttribute('data-sortable', '1');
+        $sortFieldsFieldset->setAttribute('data-ordered', '1');
 
         $sortFields = $adapter->getAvailableSortFields($searchPage->index());
+        $sortFields = $this->sortFields($sortFields, 'sort_fields');
         $weights = range(0, count($sortFields));
         $weightOptions = array_combine($weights, $weights);
         $weight = 0;
@@ -201,6 +206,25 @@ class SearchPageConfigureForm extends Form
         $fieldset->setLabel('Form settings'); // @translate
 
         $this->add($fieldset);
+    }
+
+    /**
+     * @param array $fields
+     * @param string $type
+     * @return array
+     */
+    protected function sortFields(array $fields, $type)
+    {
+        $searchPage = $this->getOption('search_page');
+        $settings = $searchPage->settings();
+        if (empty($settings) || empty($settings[$type])) {
+            return $fields;
+        }
+        // Remove the keys that exists in settings, but not in fields to sort.
+        $order = array_intersect_key($settings[$type], $fields);
+        // Order the fields.
+        $result = array_replace($order, $fields);
+        return $result;
     }
 
     /**

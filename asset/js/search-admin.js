@@ -128,7 +128,23 @@ $(document).ready(function() {
             } else {
                 handles.available.push(handle);
             }
+        });
 
+        // Only some fieldsets are already sorted via the config.
+        // In some cases, the attribute "data-ordered" is not available in the
+        // html, even if the fieldsets are ordered (facets and sort_fields).
+        // So get the first input field, then check if this is a facet or a sort field.
+        // Anyway, the sort is quick.
+        var isOrdered = false;
+        var ordered = $(this).data('ordered');
+        if (ordered === '1') {
+            isOrdered = true
+        } else if (ordered === undefined) {
+            var nameFieldset = String($(this).find('input:first').attr('name'));
+            isOrdered = nameFieldset.substring(0, 7) === 'facets['
+                || nameFieldset.substring(0, 12) === 'sort_fields[';
+        }
+        if (!isOrdered) {
             for (key in handles) {
                 handles[key].sort(function(a, b) {
                     var aWeight = a.find('select[name*="weight"]').val();
@@ -136,10 +152,10 @@ $(document).ready(function() {
                     return aWeight - bWeight;
                 });
             }
+        }
 
-            availableContainer.find('.sortable').append(handles.available);
-            enabledContainer.find('.sortable').append(handles.enabled);
-        });
+        availableContainer.find('.sortable').append(handles.available);
+        enabledContainer.find('.sortable').append(handles.enabled);
 
         container.find('.sortable').sortable({
             "connectWith": container.find('.sortable'),
