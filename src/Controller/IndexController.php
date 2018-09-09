@@ -35,6 +35,7 @@ use Omeka\Stdlib\Paginator;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Api\Representation\SearchPageRepresentation;
 use Search\Querier\Exception\QuerierException;
+use Search\Query;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -73,7 +74,7 @@ class IndexController extends AbstractActionController
 
         /** @var \Search\FormAdapter\FormAdapterInterface $formAdapter */
         $formAdapter = $page->formAdapter();
-        if (!isset($formAdapter)) {
+        if (!$formAdapter) {
             $formAdapterName = $page->formAdapterName();
             $msg = sprintf('Form adapter "%s" not found', $formAdapterName); // @translate
             throw new RuntimeException($msg);
@@ -83,35 +84,43 @@ class IndexController extends AbstractActionController
         /** @var \Zend\Form\Form $form */
         $form = $this->searchForm($page);
 
-        $params = $this->params()->fromQuery();
-        if (empty($params)) {
+        // TODO Don't return empty result when there is no query, but do search, as a default browse.
+        $request = $this->params()->fromQuery();
+        if (empty($request)) {
             return $view;
         }
 
-        $form->setData($params);
+        $form->setData($request);
         if (!$form->isValid()) {
             $this->messenger()->addError('There was an error during validation.'); // @translate
             return $view;
         }
+
+        $request = $form->getData();
 
         $searchPageSettings = $page->settings();
         $searchFormSettings = isset($searchPageSettings['form'])
             ? $searchPageSettings['form']
             : [];
 
-        $this->index = $page->index();
-        $index = $this->index;
-
         /** @var \Search\Query $query */
-        $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
+        $query = $formAdapter->toQuery($request, $searchFormSettings);
+
+        // Add global parameters.
+
+        $index = $this->index = $page->index();
+        $indexSettings = $index->settings();
 
         if (!$this->identity()) {
             $query->setIsPublic(true);
         }
 
-        $indexSettings = $index->settings();
-        if (array_key_exists('resource_type', $params)) {
-            $resourceType = $params['resource_type'];
+        if ($site) {
+            $query->setSite($site);
+        }
+
+        if (array_key_exists('resource_type', $request)) {
+            $resourceType = $request['resource_type'];
             if (!is_array($resourceType)) {
                 $resourceType = [$resourceType];
             }
@@ -119,6 +128,18 @@ class IndexController extends AbstractActionController
         } else {
             $query->setResources($indexSettings['resources']);
         }
+
+        if (isset($request['sort'])) {
+            $sort = $request['sort'];
+        } else {
+            $sortOptions = $this->getSortOptions();
+            reset($sortOptions);
+            $sort = key($sortOptions);
+        }
+        $query->setSort($sort);
+
+        $pageNumber = isset($request['page']) ? $request['page'] : 1;
+        $this->setPagination($query, $pageNumber);
 
         $settings = $page->settings();
         foreach ($settings['facets'] as $name => $facet) {
@@ -129,33 +150,16 @@ class IndexController extends AbstractActionController
         if (isset($settings['facet_limit'])) {
             $query->setFacetLimit($settings['facet_limit']);
         }
-
-        if (isset($params['limit'])) {
-            foreach ($params['limit'] as $name => $values) {
+        if (isset($request['limit']) && is_array($request['limit'])) {
+            foreach ($request['limit'] as $name => $values) {
                 foreach ($values as $value) {
                     $query->addFilter($name, $value);
                 }
             }
         }
 
-        if ($site) {
-            $query->setSite($site);
-        }
-
-        $sortOptions = $this->getSortOptions();
-
-        if (isset($params['sort'])) {
-            $sort = $params['sort'];
-        } else {
-            reset($sortOptions);
-            $sort = key($sortOptions);
-        }
-
-        $query->setSort($sort);
+        // Send the query to the search engine.
         $querier = $index->querier();
-        $pageNumber = isset($params['page']) ? $params['page'] : 1;
-        $this->setPagination($query, $pageNumber);
-
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
@@ -179,23 +183,13 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    protected function setPagination($query, $page)
-    {
-        $perPage = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
-        $query->setLimitPage($page, $perPage);
-    }
-
-    protected function sortByWeight($fields, $settingName)
-    {
-        $settings = $this->page->settings();
-        uksort($fields, function ($a, $b) use ($settings, $settingName) {
-            $aWeight = $settings[$settingName][$a]['weight'];
-            $bWeight = $settings[$settingName][$b]['weight'];
-            return $aWeight - $bWeight;
-        });
-        return $fields;
-    }
-
+    /**
+     * Normalize the sort options of the index.
+     *
+     * @todo Normalize the sort options when the index or page is hydrated.
+     *
+     * @return array
+     */
     protected function getSortOptions()
     {
         $sortOptions = [];
@@ -218,5 +212,35 @@ class IndexController extends AbstractActionController
         $sortOptions = $this->sortByWeight($sortOptions, 'sort_fields');
 
         return $sortOptions;
+    }
+
+    /**
+     * Order the field by weigth.
+     *
+     * @param array $fields
+     * @param string $settingName
+     * @return array
+     */
+    protected function sortByWeight(array $fields, $settingName)
+    {
+        $settings = $this->page->settings();
+        uksort($fields, function ($a, $b) use ($settings, $settingName) {
+            $aWeight = $settings[$settingName][$a]['weight'];
+            $bWeight = $settings[$settingName][$b]['weight'];
+            return $aWeight - $bWeight;
+        });
+        return $fields;
+    }
+
+    /**
+     * Set the limit page to the query
+     *
+     * @param Query $query
+     * @param int $page
+     */
+    protected function setPagination(Query $query, $page)
+    {
+        $perPage = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
+        $query->setLimitPage($page, $perPage);
     }
 }
