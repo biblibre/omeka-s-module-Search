@@ -43,7 +43,8 @@ See general end user documentation for [Installing a module].
 
 ### Optional dependency
 
-- Module [Reference] to display facets in the results.
+- Module [Reference] to display facets in the results with the internal adapter.
+  It is not needed for external search engines.
 
 
 Quick start
@@ -62,16 +63,17 @@ It can be removed too.
 To create a new search engine, follow these steps.
 
 1. Create an index
-    1. Add a new index with name `Default` or whatever you want, using the
+    1. Add a new index with name `Internal` or whatever you want, using the
        `Internal` adapter. The index can be set for items and/or item sets.
     2. The internal adapter doesn’t create any index, so you don’t need to
        launch the indexation by clicking on the "reindex" button (two arrows
        forming a circle).
 2. Create a page
-    1. Add a page with name `Default` or whatever you want, a path to access it,
-       for example `search` or `find`, the index that was created in the
-       previous step (`Default (Internal)` here), and a form (`Basic`). Forms
-       added by modules can manage an advanced input field and/or filters.
+    1. Add a page named `Internal search` or whatever you want, a path to access
+       it, for example `search` or `find`, the index that was created in the
+       previous step (`Internal` here), and a form adapter (`Basic`) that will
+       do the mapping between the form and the index. Forms added by modules can
+       manage an advanced input field and/or filters.
     2. In the page configuration, you can enable/disable facet and sort fields
        by drag-drop. The order of the fields will be the one that will be used
        for display. Note that some indexers may have fields that seem
@@ -112,9 +114,9 @@ The indexation of items and item sets is automatic and all new metadata can be
 searched in the admin board. Note that there may be a cache somewhere, and they
 may be not searchable in the public sites.
 
-So when new items or new item sets are created, or when the item pool of a site
-or the item sets attached it are modified, a manual reindexation should be done
-in the Search board. This job can be done via a cron too (see your system cron).
+So when the item pool of a site or the item sets attached to it are modified, a
+manual reindexation should be done in the Search board. This job can be done via
+a cron too (see your system cron).
 
 
 TODO
