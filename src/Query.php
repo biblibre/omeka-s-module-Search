@@ -59,6 +59,11 @@ class Query
     protected $dateRangeFilters = [];
 
     /**
+     * @var array
+     */
+    protected $filterQueries = [];
+
+    /**
      * @var string
      */
     protected $sort = '';
@@ -177,6 +182,29 @@ class Query
     public function getDateRangeFilters()
     {
         return $this->dateRangeFilters;
+    }
+
+    /**
+     * Add advanced filters, that work similarly to Omeka ones.
+     *
+     * Note: Some types and joiners may not be managed by the querier.
+     *
+     * @param string $name
+     * @param string $value
+     * @param string $type
+     * @param string $joiner
+     */
+    public function addFilterQuery($name, $value, $type = 'in', $joiner = 'and')
+    {
+        $this->filterQueries[$name][] = ['value' => $value, 'type' => $type, 'joiner' => $joiner];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilterQueries()
+    {
+        return $this->filterQueries;
     }
 
     /**

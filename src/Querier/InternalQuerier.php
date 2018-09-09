@@ -70,7 +70,10 @@ class InternalQuerier extends AbstractQuerier
                 $name = $api->searchOne('properties', ['term' => $name], ['returnScalar' => 'id'])->getContent();
             }
             foreach ($values as $value) {
-                if (is_array($value) && count($value)) {
+                if (is_array($value)) {
+                    if (empty($value)) {
+                        continue;
+                    }
                     $data['property'][] = [
                         'joiner' => 'or',
                         'property' => $name,
@@ -86,11 +89,6 @@ class InternalQuerier extends AbstractQuerier
                     ];
                 }
             }
-        }
-
-        // TODO To be removed when the filters will be groupable.
-        if ($reference) {
-            $facetData = $data;
         }
 
         // TODO Manage the date range filters (one or two properties?).
@@ -115,6 +113,26 @@ class InternalQuerier extends AbstractQuerier
             }
         }
         */
+
+        $filters = $query->getFilterQueries();
+        foreach ($filters as $name => $values) {
+            if ($isOldOmeka) {
+                $name = $api->searchOne('properties', ['term' => $name], ['returnScalar' => 'id'])->getContent();
+            }
+            foreach ($values as $value) {
+                $data['property'][] = [
+                    'joiner' => $value['joiner'],
+                    'property' => $name,
+                    'type' => $value['type'],
+                    'text' => $value['value'],
+                ];
+            }
+        }
+
+        // TODO To be removed when the filters will be groupable.
+        if ($reference) {
+            $facetData = $data;
+        }
 
         $sort = $query->getSort();
         if ($sort) {
