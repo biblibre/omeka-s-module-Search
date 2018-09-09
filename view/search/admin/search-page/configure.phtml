@@ -30,15 +30,16 @@
 
 <?php
 $translate = $this->plugin('translate');
-$this->headScript()->appendFile($this->assetUrl('jquery-ui.min.js', 'jQueryUI'));
 $this->headLink()->appendStylesheet($this->assetUrl('jquery-ui.min.css', 'jQueryUI'));
+$this->headScript()->appendFile($this->assetUrl('jquery-ui.min.js', 'jQueryUI'));
 $this->headLink()->appendStylesheet($this->assetUrl('css/search-page-configure.css', 'Search'));
 $this->headScript()->appendFile($this->assetUrl('js/search-admin.js', 'Search'));
 ?>
 
 <?php $form->prepare(); ?>
+<?php $searchPage = $form->getOption('search_page'); ?>
 
-<?php echo $this->pageTitle($translate('Configure search page')); ?>
+<?php echo $this->pageTitle(sprintf($translate('Configure search page "%s"'), $searchPage->name())); ?>
 
 <?php echo $this->form()->openTag($form); ?>
 <div id="page-actions">
