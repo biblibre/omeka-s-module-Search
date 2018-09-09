@@ -42,9 +42,7 @@ class Index extends AbstractJob
     public function perform()
     {
         $services = $this->getServiceLocator();
-        $apiAdapters = $services->get('Omeka\ApiAdapterManager');
         $api = $services->get('Omeka\ApiManager');
-        $em = $services->get('Omeka\EntityManager');
         $this->logger = $services->get('Omeka\Logger');
 
         $indexId = $this->getArg('index-id');
@@ -67,8 +65,6 @@ class Index extends AbstractJob
 
         foreach ($resourceNames as $resourceName) {
             $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
-            $adapter = $apiAdapters->get($resourceName);
-            $entityClass = $adapter->getEntityClass();
             do {
                 if ($this->shouldStop()) {
                     $this->logger->warn(new Message(
@@ -77,14 +73,10 @@ class Index extends AbstractJob
                     ));
                     return;
                 }
-                $resources = $api->search($resourceName, $data)->getContent();
-                $entities = [];
-                foreach ($resources as $resource) {
-                    $entities[] = $em->find($entityClass, $resource->id());
-                }
+                $entities = $api->search($resourceName, $data, ['responseContent' => 'resource'])->getContent();
                 $indexer->indexResources($entities);
                 ++$data['page'];
-            } while (count($resources) == self::BATCH_SIZE);
+            } while (count($entities) == self::BATCH_SIZE);
         }
 
         $this->logger->info('End');
