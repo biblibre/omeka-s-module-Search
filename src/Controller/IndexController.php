@@ -80,15 +80,12 @@ class IndexController extends AbstractActionController
             throw new RuntimeException($msg);
         }
 
+        // An empty query is allowed: the result depends on the search engine.
+        $request = $this->params()->fromQuery();
+
         // FIXME The form should not require to be initialized with a page to use the view helper.
         /** @var \Zend\Form\Form $form */
         $form = $this->searchForm($page);
-
-        // TODO Don't return empty result when there is no query, but do search, as a default browse.
-        $request = $this->params()->fromQuery();
-        if (empty($request)) {
-            return $view;
-        }
 
         $form->setData($request);
         if (!$form->isValid()) {
