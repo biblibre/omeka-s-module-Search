@@ -193,12 +193,17 @@ class SearchPageController extends AbstractActionController
         }
 
         $form->setData($this->params()->fromPost());
-        if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation'); // @translate
-            return false;
+        if ($form->isValid()) {
+            return true;
         }
 
-        return true;
+        $messages = $form->getMessages();
+        if (isset($messages['csrf'])) {
+            $this->messenger()->addError('Invalid or missing CSRF token'); // @translate
+        } else {
+            $this->messenger()->addError('There was an error during validation'); // @translate
+        }
+        return false;
     }
 
     /**
