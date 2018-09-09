@@ -95,7 +95,9 @@ class SearchIndex extends AbstractJob
             return $indexer->canIndex($resourceName);
         });
 
+        $totals = [];
         foreach ($resourceNames as $resourceName) {
+            $totals[$resourceName] = 0;
             $page = 1;
             $entityClass = $apiAdapters->get($resourceName)->getEntityClass();
             $dql = "SELECT resource FROM $entityClass resource";
@@ -106,9 +108,13 @@ class SearchIndex extends AbstractJob
 
             do {
                 if ($this->shouldStop()) {
+                    $totalResults = [];
+                    foreach ($resourceNames as $resourceName) {
+                        $totalResults[] = new Message('%s: %d indexed', $resourceName, $totals[$resourceName]); // @translate
+                    }
                     $this->logger->warn(new Message(
-                        'The job "Search Index" was stopped: %d resources processed (current resource: %s).', // @translate
-                        ($page - 1) * $batchSize, $resourceName
+                        'The job "Search Index" was stopped: (current resource: %s; %s).', // @translate
+                        $resourceName, implode('; ', $totalResults)
                     ));
                     return;
                 }
@@ -118,11 +124,18 @@ class SearchIndex extends AbstractJob
                     ->setFirstResult($offset)
                     ->setMaxResults($batchSize);
                 $resources = $q->getResult();
+
                 $indexer->indexResources($resources);
+
                 ++$page;
+                $totals[$resourceName] += count($resources);
             } while (count($resources) == $batchSize);
         }
 
-        $this->logger->info('End of indexing.'); // @translate
+        $totalResults = [];
+        foreach ($resourceNames as $resourceName) {
+            $totalResults[] = new Message('%s: %d indexed', $resourceName, $totals[$resourceName]); // @translate
+        }
+        $this->logger->info(new Message('End of indexing. %s.', implode('; ', $totalResults))); // @translate
     }
 }
