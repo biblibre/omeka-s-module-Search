@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software. You can use, modify and/ or
@@ -38,19 +39,14 @@ class Query
     protected $query = '';
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $sort = '';
+    protected $resources = [];
 
     /**
-     * @var int
+     * @var bool
      */
-    protected $facetLimit = 0;
-
-    /**
-     * @var array
-     */
-    protected $facetFields = [];
+    protected $isPublic;
 
     /**
      * @var array
@@ -63,6 +59,11 @@ class Query
     protected $dateRangeFilters = [];
 
     /**
+     * @var string
+     */
+    protected $sort = '';
+
+    /**
      * @var int
      */
     protected $offset = 0;
@@ -73,14 +74,14 @@ class Query
     protected $limit = 0;
 
     /**
-     * @var bool
-     */
-    protected $isPublic;
-
-    /**
      * @var array
      */
-    protected $resources = [];
+    protected $facetFields = [];
+
+    /**
+     * @var int
+     */
+    protected $facetLimit = 0;
 
     /**
      * @var SiteRepresentation
@@ -104,37 +105,35 @@ class Query
     }
 
     /**
-     * @param int $facetLimit
+     * @param string[] $resources The resource types are "items" and "item_sets".
      */
-    public function setFacetLimit($facetLimit)
+    public function setResources($resources)
     {
-        $this->facetLimit = (int) $facetLimit;
+        $this->resources = $resources;
     }
 
     /**
-     * @return int
+     * @return string[]
      */
-    public function getFacetLimit()
+    public function getResources()
     {
-        return $this->facetLimit;
+        return $this->resources;
     }
 
     /**
-     * @param string $field
+     * @param array $isPublic
      */
-    public function addFacetField($field)
+    public function setIsPublic($isPublic)
     {
-        $this->facetFields[] = $field;
+        $this->isPublic = $isPublic;
     }
 
     /**
-     * Get the flat list of fields to use as facet.
-     *
-     * @return array
+     * @return bool
      */
-    public function getFacetFields()
+    public function getIsPublic()
     {
-        return $this->facetFields;
+        return $this->isPublic;
     }
 
     /**
@@ -222,35 +221,37 @@ class Query
     }
 
     /**
-     * @param array $isPublic
+     * @param string $field
      */
-    public function setIsPublic($isPublic)
+    public function addFacetField($field)
     {
-        $this->isPublic = $isPublic;
+        $this->facetFields[] = $field;
     }
 
     /**
-     * @return bool
-     */
-    public function getIsPublic()
-    {
-        return $this->isPublic;
-    }
-
-    /**
-     * @param array $resources The resource types are "items" and "item_sets".
-     */
-    public function setResources($resources)
-    {
-        $this->resources = $resources;
-    }
-
-    /**
+     * Get the flat list of fields to use as facet.
+     *
      * @return array
      */
-    public function getResources()
+    public function getFacetFields()
     {
-        return $this->resources;
+        return $this->facetFields;
+    }
+
+    /**
+     * @param int $facetLimit
+     */
+    public function setFacetLimit($facetLimit)
+    {
+        $this->facetLimit = (int) $facetLimit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFacetLimit()
+    {
+        return $this->facetLimit;
     }
 
     /**
