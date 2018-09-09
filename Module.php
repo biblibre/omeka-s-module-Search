@@ -541,27 +541,12 @@ SQL;
         $fieldset->setLabel('Search'); // @translate
 
         $api = $services->get('Omeka\ApiManager');
+
         $pages = $api->search('search_pages')->getContent();
         $valueOptions = [];
         foreach ($pages as $page) {
             $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
         }
-
-        $fieldset->add([
-            'name' => 'search_pages',
-            'type' => Element\MultiCheckbox::class,
-            'options' => [
-                'label' => 'Search pages', // @translate
-                'value_options' => $valueOptions,
-            ],
-            'attributes' => [
-                'value' => $settings->get(
-                    'search_pages',
-                    $defaultSettings['search_pages']
-                ),
-            ],
-        ]);
-
         if ($isAdmin) {
             $valueOptions = [];
             $basePath = $services->get('ViewHelperManager')->get('BasePath');
@@ -601,6 +586,21 @@ SQL;
                 ],
             ]);
         }
+
+        $fieldset->add([
+            'name' => 'search_pages',
+            'type' => Element\MultiCheckbox::class,
+            'options' => [
+                'label' => 'Available search pages', // @translate
+                'value_options' => $valueOptions,
+            ],
+            'attributes' => [
+                'value' => $settings->get(
+                    'search_pages',
+                    $defaultSettings['search_pages']
+                ),
+            ],
+        ]);
 
         $form->add($fieldset);
     }

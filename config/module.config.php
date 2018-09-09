@@ -190,12 +190,12 @@ return [
             'search_batch_size' => 100,
         ],
         'settings' => [
+            'search_main_page' => null,
             'search_pages' => [],
-            'search_main_page' => '',
         ],
         'site_settings' => [
+            'search_main_page' => null,
             'search_pages' => [],
-            'search_main_page' => '',
         ],
     ],
 ];

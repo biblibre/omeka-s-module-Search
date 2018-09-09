@@ -30,9 +30,7 @@
 
 namespace Search\Form\Admin;
 
-use Zend\Form\Element\Radio;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Text;
+use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareTrait;
 
@@ -49,7 +47,7 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:name',
-            'type' => Text::class,
+            'type' => Element\Text::class,
             'options' => [
                 'label' => 'Name', // @translate
             ],
@@ -60,7 +58,7 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:path',
-            'type' => Text::class,
+            'type' => Element\Text::class,
             'options' => [
                 'label' => 'Path', // @translate
                 'info' => $translator->translate('The path to the search form.') // @translate
@@ -73,7 +71,7 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:index_id',
-            'type' => Select::class,
+            'type' => Element\Select::class,
             'options' => [
                 'label' => 'Index', // @translate
                 'value_options' => $this->getIndexesOptions(),
@@ -86,7 +84,7 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'o:form',
-            'type' => Select::class,
+            'type' => Element\Select::class,
             'options' => [
                 'label' => 'Form', // @translate
                 'value_options' => $this->getFormsOptions(),
@@ -98,15 +96,24 @@ class SearchPageForm extends Form
         ]);
 
         $this->add([
-            'name' => 'manage_page',
-            'type' => Radio::class,
+            'name' => 'manage_page_default',
+            'type' => Element\Checkbox::class,
             'options' => [
-                'label' => 'Enable / disable page', // @translate
+                'label' => 'Set as default search page on sites', // @translate
+                'info' => 'The page will be made available on all sites too. The admin settings are not modified.', // @translate
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'manage_page_availability',
+            'type' => Element\Radio::class,
+            'options' => [
+                'label' => 'Availability on sites', // @translate
                 'info' => 'The admin settings are not modified.', // @translate
                 'value_options' => [
-                    'disable' => 'Disable in all sites', // @translate
+                    'disable' => 'Make unavailable in all sites', // @translate
                     'let' => 'Don’t modify', // @translate
-                    'enable' => 'Enable in all sites', // @translate
+                    'enable' => 'Make available in all sites', // @translate
                 ],
             ],
             'attributes' => [
@@ -116,7 +123,7 @@ class SearchPageForm extends Form
 
         $inputFilter = $this->getInputFilter();
         $inputFilter->add([
-            'name' => 'manage_page',
+            'name' => 'manage_page_availability',
             'required' => false,
         ]);
     }

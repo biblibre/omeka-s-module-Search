@@ -56,10 +56,15 @@ class SearchPageController extends AbstractActionController
 
         $this->messenger()->addSuccess('Search page created.'); // @translate
 
-        $this->managePage($searchPage->id(), $formData['manage_page']);
-
-        if (!in_array($formData['manage_page'], ['disable', 'enable'])) {
-            $this->messenger()->addWarning('Enable it in your site settings or in admin settings.'); // @translate
+        $this->managePageOnSites(
+            $searchPage->id(),
+            !empty($formData['manage_page_default']),
+            $formData['manage_page_availability']
+        );
+        if (!in_array($formData['manage_page_availability'], ['disable', 'enable'])
+            && empty($formData['manage_page_default'])
+        ) {
+            $this->messenger()->addWarning('You can enable this page in your site settings or in admin settings.'); // @translate
         }
 
         return $this->redirect()->toUrl($searchPage->url('configure'));
@@ -68,7 +73,7 @@ class SearchPageController extends AbstractActionController
     public function editAction()
     {
         $id = $this->params('id');
-        $page = $this->api()->read('search_pages', $id)->getContent();
+        $page = $this->api()->read('search_pages', ['id' => $id])->getContent();
 
         $form = $this->getForm(SearchPageForm::class);
         $form->setData($page->jsonSerialize());
@@ -84,7 +89,11 @@ class SearchPageController extends AbstractActionController
 
         $this->messenger()->addSuccess('Search page saved.'); // @translate
 
-        $this->managePage($id, $formData['manage_page']);
+        $this->managePageOnSites(
+            $id,
+            !empty($formData['manage_page_default']),
+            $formData['manage_page_availability']
+        );
 
         return $this->redirect()->toRoute('admin/search');
     }
@@ -192,15 +201,28 @@ class SearchPageController extends AbstractActionController
         return true;
     }
 
-    protected function managePage($searchPageId, $managePage)
+    /**
+     * Config the page for all sites.
+     *
+     * @param int $searchPageId
+     * @param bool $default
+     * @param string $availability
+     */
+    protected function managePageOnSites($searchPageId, $default, $availability)
     {
-        switch ($managePage) {
+        if ($default) {
+            $availability = 'enable';
+            $message = 'The page has been set by default in all sites.'; // @translate
+            $this->messenger()->addSuccess($message);
+        }
+
+        switch ($availability) {
             case 'disable':
-                $managePage = false;
+                $available = false;
                 $message = 'The page has been disabled in all sites.'; // @translate
                 break;
             case 'enable':
-                $managePage = true;
+                $available = true;
                 $message = 'The page has been enabled in all sites.'; // @translate
                 break;
             default:
@@ -212,11 +234,17 @@ class SearchPageController extends AbstractActionController
         foreach ($sites as $site) {
             $siteSettings->setTargetId($site->id());
             $searchPages = $siteSettings->get('search_pages');
-            if ($managePage) {
+            if ($default) {
+                $siteSettings->set('search_main_page', $searchPageId);
+            }
+            if ($available) {
                 $searchPages[] = $searchPageId;
             } else {
                 if (($key = array_search($searchPageId, $searchPages)) !== false) {
                     unset($searchPages[$key]);
+                }
+                if ($siteSettings->get('search_main_page') == $searchPageId) {
+                    $siteSettings->set('search_main_page', null);
                 }
             }
             $siteSettings->set('search_pages', $searchPages);
