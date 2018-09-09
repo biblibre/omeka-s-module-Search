@@ -85,11 +85,11 @@ class InternalAdapter extends AbstractAdapter
         $response = $this->api->search('properties');
 
         // TODO Fix the page(create facet and sort tabs + property selector, like other views).
-        // An overload may occur (memory_limit = 128M). Furthermore, there is a
-        // limit for number of fields by request (max_input_vars = 1000).
+        // An overload may occur (memory_limit = 128M). The limit for number of
+        // fields by request (max_input_vars = 1000) is fixed via js.
         // And 3 fields by property, as facet and sort in 2 directions.
         $totalResults = $response->getTotalResults();
-        if ($totalResults > 60) {
+        if ($totalResults > 200) {
             $response = $this->api->search('properties', ['vocabulary_prefix' => 'dcterms']);
         }
         /** @var \Omeka\Api\Representation\PropertyRepresentation[] $properties */

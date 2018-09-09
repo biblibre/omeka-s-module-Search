@@ -103,24 +103,70 @@ class SearchPageController extends AbstractActionController
         $entityManager = $this->getEntityManager();
 
         $id = $this->params('id');
+
+        /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
         $searchPage = $this->api()->read('search_pages', $id)->getContent();
 
         $form = $this->getForm(SearchPageConfigureForm::class, [
             'search_page' => $searchPage,
         ]);
-        $form->setData($searchPage->settings());
+        $settings = $searchPage->settings();
+        $form->setData($settings);
+
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
-        if (!$this->checkPostAndValidForm($form)) {
+        if (!$this->getRequest()->isPost()) {
             return $view;
         }
 
-        $formData = $form->getData();
-        unset($formData['csrf']);
+        // Fix the "max_input_vars" limit in php.ini via js.
+        $params = $this->getRequest()->getPost()->toArray();
+
+        // Recreate the array that was json encoded via js.
+        $fieldsData = [];
+        $fields = isset($params['fieldsets']) ? json_decode($params['fieldsets'], true) : [];
+        foreach ($fields as $type => $typeFields) {
+            foreach ($typeFields as $fieldData) {
+                $type = strtok($fieldData['name'], '[]');
+                $two = strtok('[]');
+                if (!strlen($two)) {
+                    $fieldsData[$type] = $fieldData['value'];
+                } else {
+                    $three = strtok('[]');
+                    if (!strlen($three)) {
+                        $fieldsData[$type][$two] = $fieldData['value'];
+                    } else {
+                        $four = strtok('[]');
+                        if (!strlen($four)) {
+                            $fieldsData[$type][$two][$three] = $fieldData['value'];
+                        } else {
+                            $fieldsData[$type][$two][$three][$four] = $fieldData['value'];
+                        }
+                    }
+                }
+            }
+        }
+
+        $params = array_merge($fieldsData, $params);
+        unset($params['fieldsets']);
+
+        $form->setData($params);
+        if (!$form->isValid()) {
+            $messages = $form->getMessages();
+            if (isset($messages['csrf'])) {
+                $this->messenger()->addError('Invalid or missing CSRF token'); // @translate
+            } else {
+                $this->messenger()->addError('There was an error during validation'); // @translate
+            }
+            return $view;
+        }
+
+        $params = $form->getData();
+        unset($params['csrf']);
 
         $page = $searchPage->getEntity();
-        $page->setSettings($formData);
+        $page->setSettings($params);
         $entityManager->flush();
 
         $this->messenger()->addSuccess('Configuration saved.'); // @translate
