@@ -31,6 +31,9 @@ return [
         ],
     ],
     'form_elements' => [
+        'invokables' => [
+            Form\ConfigForm::class => Form\ConfigForm::class,
+        ],
         'factories' => [
             Form\Admin\SearchIndexConfigureForm::class => Service\Form\SearchIndexConfigureFormFactory::class,
             Form\Admin\SearchIndexForm::class => Service\Form\SearchIndexFormFactory::class,
@@ -183,6 +186,7 @@ return [
     ],
     'search' => [
         'config' => [
+            'search_batch_size' => 100,
         ],
         'settings' => [
             'search_pages' => [],

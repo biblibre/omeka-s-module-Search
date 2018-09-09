@@ -34,6 +34,7 @@ use Omeka\Entity\Resource;
 use Omeka\Module\AbstractModule;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
+use Search\Form\ConfigForm;
 use Search\Indexer\AbstractIndexer;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventInterface;
@@ -41,8 +42,10 @@ use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\ModuleManager\ModuleManager;
+use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Renderer\PhpRenderer;
 
 class Module extends AbstractModule
 {
@@ -121,6 +124,7 @@ SQL;
         }
 
         $settings = $serviceLocator->get('Omeka\Settings');
+        $this->manageSettings($settings, 'install', 'config');
         $this->manageSettings($settings, 'install', 'settings');
         $this->manageSiteSettings($serviceLocator, 'install');
 
@@ -159,6 +163,10 @@ SQL;
         foreach ($sqls as $sql) {
             $connection->exec($sql);
         }
+
+        $settings = $serviceLocator->get('Omeka\Settings');
+        $this->manageSettings($settings, 'uninstall', 'config');
+        $this->manageSettings($settings, 'uninstall', 'settings');
     }
 
     public function upgrade($oldVersion, $newVersion,
@@ -285,6 +293,49 @@ SQL;
             'form.add_input_filters',
             [$this, 'addSettingsFormFilters']
         );
+    }
+
+    public function getConfigForm(PhpRenderer $renderer)
+    {
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $settings = $services->get('Omeka\Settings');
+        $form = $services->get('FormElementManager')->get(ConfigForm::class);
+
+        $data = [];
+        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
+        foreach ($defaultSettings as $name => $value) {
+            $data[$name] = $settings->get($name, $value);
+        }
+
+        $form->init();
+        $form->setData($data);
+        $html = $renderer->formCollection($form);
+        return $html;
+    }
+
+    public function handleConfigForm(AbstractController $controller)
+    {
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $settings = $services->get('Omeka\Settings');
+        $form = $services->get('FormElementManager')->get(ConfigForm::class);
+
+        $params = $controller->getRequest()->getPost();
+
+        $form->init();
+        $form->setData($params);
+        if (!$form->isValid()) {
+            $controller->messenger()->addErrors($form->getMessages());
+            return false;
+        }
+
+        $params = $form->getData();
+        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
+        $params = array_intersect_key($params, $defaultSettings);
+        foreach ($params as $name => $value) {
+            $settings->set($name, $value);
+        }
     }
 
     protected function addAclRules()

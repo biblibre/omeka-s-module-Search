@@ -1,11 +1,22 @@
 <?php
-namespace Solr;
+namespace Search;
 
+/**
+ * @var Module $this
+ * @var \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+ * @var string $oldVersion
+ * @var string $newVersion
+ */
 $services = $serviceLocator;
+
+/**
+ * @var \Omeka\Settings\Settings $settings
+ * @var \Doctrine\DBAL\Connection $connection
+ * @var array $config
+ */
 $settings = $services->get('Omeka\Settings');
 $connection = $services->get('Omeka\Connection');
 $config = require dirname(dirname(__DIR__)) . '/config/module.config.php';
-$translator = $services->get('MvcTranslator');
 
 if (version_compare($oldVersion, '0.1.1', '<')) {
     $connection->exec('
@@ -96,4 +107,12 @@ if (version_compare($oldVersion, '3.5.7', '<')) {
             $siteSettings->set($key, $themeSettings);
         }
     }
+}
+
+if (version_compare($oldVersion, '3.5.8', '<')) {
+    $defaultConfig = $config[strtolower(__NAMESPACE__)]['config'];
+    $settings->set(
+        'search_batch_size',
+        $defaultConfig['search_batch_size']
+    );
 }

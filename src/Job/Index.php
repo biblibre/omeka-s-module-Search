@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright BibLibre, 2016
  * Copyright Daniel Berthereau, 2018
@@ -37,18 +36,32 @@ class Index extends AbstractJob
 {
     const BATCH_SIZE = 100;
 
+    /**
+     * @var \Omeka\Mvc\Controller\Plugin\Logger
+     */
     protected $logger;
 
     public function perform()
     {
+        /**
+         * @var \Omeka\Api\Manager $api
+         * @var \Doctrine\ORM\EntityManager $em
+         */
         $services = $this->getServiceLocator();
         $api = $services->get('Omeka\ApiManager');
+        $settings = $services->get('Omeka\Settings');
         $this->logger = $services->get('Omeka\Logger');
 
+        $batchSize = (int) $settings->get('search_batch_size');
+        if ($batchSize <= 0) {
+            $batchSize = self::BATCH_SIZE;
+        }
+
         $indexId = $this->getArg('index-id');
-        $this->logger->info('Start');
+        $this->logger->info('Start of indexing');
         $this->logger->info('Index id: ' . $indexId);
 
+        /** @var \Search\Api\Representation\SearchIndexRepresentation $searchIndex */
         $searchIndex = $api->read('search_indexes', $indexId)->getContent();
         $indexer = $searchIndex->indexer();
         if (!$indexer) {
@@ -72,21 +85,24 @@ class Index extends AbstractJob
         });
 
         foreach ($resourceNames as $resourceName) {
-            $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
+            $data = [
+                'page' => 1,
+                'per_page' => $batchSize,
+            ];
             do {
                 if ($this->shouldStop()) {
                     $this->logger->warn(new Message(
-                        'The job "Search Index" was stopped: %d resources processed.', // @translate
-                        ($data['page'] - 1) * self::BATCH_SIZE
+                        'The job "Search Index" was stopped: %d resources processed (current resource: %s).', // @translate
+                        ($data['page'] - 1) * $batchSize, $resourceName
                     ));
                     return;
                 }
                 $entities = $api->search($resourceName, $data, ['responseContent' => 'resource'])->getContent();
                 $indexer->indexResources($entities);
                 ++$data['page'];
-            } while (count($entities) == self::BATCH_SIZE);
+            } while (count($entities) == $batchSize);
         }
 
-        $this->logger->info('End');
+        $this->logger->info('End of indexing.'); // @translate
     }
 }
