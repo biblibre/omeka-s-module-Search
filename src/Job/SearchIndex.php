@@ -102,6 +102,7 @@ class SearchIndex extends AbstractJob
             return;
         }
 
+        $resources = [];
         $totals = [];
         foreach ($resourceNames as $resourceName) {
             $totals[$resourceName] = 0;
@@ -119,10 +120,15 @@ class SearchIndex extends AbstractJob
                     foreach ($resourceNames as $resourceName) {
                         $totalResults[] = new Message('%s: %d indexed', $resourceName, $totals[$resourceName]); // @translate
                     }
-                    $this->logger->warn(new Message(
-                        'The job "Search Index" was stopped: (current resource: %s; %s).', // @translate
-                        $resourceName, implode('; ', $totalResults)
-                    ));
+                    if (empty($resources)) {
+                        $this->logger->warn('The job "Search Index" was stopped. Nothing was indexed.'); // @translate
+                    } else {
+                        $resource = array_pop($resources);
+                        $this->logger->warn(new Message(
+                            'The job "Search Index" was stopped. Last indexed resource: %s #%d; %s.', // @translate
+                            $resource->getResourceName(), $resource->getId(), implode('; ', $totalResults)
+                        ));
+                    }
                     return;
                 }
                 $offset = $batchSize * ($page - 1);
@@ -130,6 +136,7 @@ class SearchIndex extends AbstractJob
                     ->createQuery($dql)
                     ->setFirstResult($offset)
                     ->setMaxResults($batchSize);
+                /** @var \Omeka\Entity\Resource[] $resources */
                 $resources = $q->getResult();
 
                 $indexer->indexResources($resources);
