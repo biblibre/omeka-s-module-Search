@@ -51,6 +51,14 @@ class Index extends AbstractJob
 
         $searchIndex = $api->read('search_indexes', $indexId)->getContent();
         $indexer = $searchIndex->indexer();
+        if (!$indexer) {
+            $this->logger->warn(new Message(
+                'Job end: there is no indexer for search index #%d.', // @translate
+                $indexId
+            ));
+            return;
+        }
+
         $indexer->setServiceLocator($services);
         $indexer->setLogger($this->logger);
 

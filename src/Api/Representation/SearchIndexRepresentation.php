@@ -120,12 +120,15 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
     }
 
     /**
-     * @return \Search\Indexer\IndexerInterface
+     * @return \Search\Indexer\IndexerInterface|null
      */
     public function indexer()
     {
         $serviceLocator = $this->getServiceLocator();
         $indexerClass = $this->adapter()->getIndexerClass();
+        if (!$indexerClass) {
+            return null;
+        }
 
         $indexer = new $indexerClass;
         $indexer->setSearchIndex($this);

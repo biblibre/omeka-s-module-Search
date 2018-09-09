@@ -382,12 +382,14 @@ SQL;
             $searchIndexSettings = $searchIndex->settings();
             if (in_array($requestResource, $searchIndexSettings['resources'])) {
                 $indexer = $searchIndex->indexer();
-                if ($request->getOperation() == 'delete') {
-                    $id = $request->getId();
-                    $this->deleteIndexResource($indexer, $requestResource, $id);
-                } else {
-                    $resource = $response->getContent();
-                    $this->updateIndexResource($indexer, $resource);
+                if ($indexer) {
+                    if ($request->getOperation() == 'delete') {
+                        $id = $request->getId();
+                        $this->deleteIndexResource($indexer, $requestResource, $id);
+                    } else {
+                        $resource = $response->getContent();
+                        $this->updateIndexResource($indexer, $resource);
+                    }
                 }
             }
         }
@@ -410,7 +412,9 @@ SQL;
             $searchIndexSettings = $searchIndex->settings();
             if (in_array('items', $searchIndexSettings['resources'])) {
                 $indexer = $searchIndex->indexer();
-                $this->updateIndexResource($indexer, $item);
+                if ($indexer) {
+                    $this->updateIndexResource($indexer, $item);
+                }
             }
         }
     }
