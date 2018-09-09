@@ -1,16 +1,13 @@
 .search-results-wrapper {
   display: flex;
 }
-
 .search-results {
   flex-grow: 1;
 }
-
 .search-results-header {
   display: flex;
   justify-content: space-between;
 }
-
 .search-view-type.active {
   font-weight: bold;
 }
@@ -20,34 +17,27 @@
   order: -1;
   padding: 0 0.5em;
 }
-
 .search-facets > ul {
   padding-left: 0;
 }
-
 .search-facet {
   display: block;
 }
-
 .search-facet > h3 {
   margin-bottom: 0.5em;
 }
-
 .search-facet-items {
   padding-left: 1em;
 }
-
 .search-facet-item {
   display: block;
 }
-
 .search-facet-item a::before {
   display: inline-block;
   font-family: 'Font Awesome 5 Free';
   width: 1.5em;
   content: "\f0c8";
 }
-
 .search-facet-item .active a::before {
   content: "\f14a";
 }
@@ -55,25 +45,21 @@
 .resource-list {
   display: flex;
 }
-
 .resource-list.list {
   flex-direction: column;
 }
-
 .resource-list.grid {
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 .resource-list.grid > * {
   flex-basis: 33%;
 }
-
 .resource-list.grid .description {
   display: none;
 }
 
 .search-results .resource-thumbnail {
-    min-width: 200px;
-    max-width: 200px;
+  min-width: 200px;
+  max-width: 200px;
 }
