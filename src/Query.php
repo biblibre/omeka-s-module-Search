@@ -84,6 +84,11 @@ class Query
     protected $facetLimit = 0;
 
     /**
+     * @var int
+     */
+    protected $siteId;
+
+    /**
      * @var SiteRepresentation
      */
     protected $site;
@@ -255,6 +260,23 @@ class Query
     }
 
     /**
+     * @param int $siteId
+     */
+    public function setSiteId($siteId)
+    {
+        $this->siteId = $siteId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSiteId()
+    {
+        return $this->siteId;
+    }
+
+    /**
+     * @deprecated 3.5.8 Use self::setSiteId() instead. Will be removed in 3.6.
      * @param SiteRepresentation $site
      */
     public function setSite(SiteRepresentation $site)
@@ -263,6 +285,7 @@ class Query
     }
 
     /**
+     * @deprecated 3.5.8 Use self::getSiteId() instead. Will be removed in 3.6.
      * @return \Omeka\Api\Representation\SiteRepresentation
      */
     public function getSite()

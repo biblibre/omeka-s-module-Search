@@ -116,7 +116,7 @@ class IndexController extends AbstractActionController
         }
 
         if ($site) {
-            $query->setSite($site);
+            $query->setSiteId($site->id());
         }
 
         if (array_key_exists('resource_type', $request)) {

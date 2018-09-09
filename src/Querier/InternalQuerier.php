@@ -51,9 +51,9 @@ class InternalQuerier extends AbstractQuerier
             return new Response();
         }
 
-        $site = $query->getSite();
-        if ($site) {
-            $data['site_id'] = $site->id();
+        $siteId = $query->getSiteId();
+        if ($siteId) {
+            $data['site_id'] = $siteId;
         }
 
         if ($reference) {
