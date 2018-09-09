@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2016-2017
+ * Copyright Daniel Berthereau, 2018
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,31 +30,36 @@
 
 namespace Search\Form\Admin;
 
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Number;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Text;
-use Zend\Form\Form;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
+use Zend\Form\Form;
 
-class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
+class SearchPageConfigureForm extends Form
 {
-    use TranslatorAwareTrait;
-
     protected $formElementManager;
 
     public function init()
     {
-        $translator = $this->getTranslator();
+        /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
+        $searchPage = $this->getOption('search_page');
+        $index = $searchPage->index();
+        if (empty($index)) {
+            return;
+        }
+        $this->addFacets();
+        $this->addSortFields();
+        $this->addFormFieldset();
+    }
 
+    protected function addFacets()
+    {
+        /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
 
         $this->add([
             'name' => 'facet_limit',
-            'type' => Number::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Facet limit', // @translate
                 'info' => 'The maximum number of values fetched for each facet', // @translate
@@ -66,12 +72,12 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         ]);
 
         $facets = new Fieldset('facets');
-        $facets->setLabel($translator->translate('Facets'));
+        $facets->setLabel('Facets'); // @translate
         $facets->setAttribute('data-sortable', '1');
 
         $facetFields = $adapter->getAvailableFacetFields($searchPage->index());
         $weights = range(0, count($facetFields));
-        $weight_options = array_combine($weights, $weights);
+        $weightOptions = array_combine($weights, $weights);
         $weight = 0;
         foreach ($facetFields as $field) {
             $fieldset = new Fieldset($field['name']);
@@ -80,9 +86,9 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             $displayFieldset = new Fieldset('display');
             $displayFieldset->add([
                 'name' => 'label',
-                'type' => Text::class,
+                'type' => Element\Text::class,
                 'options' => [
-                    'label' => $translator->translate('Label'),
+                    'label' => 'Label', // @translate
                 ],
                 'attributes' => [
                     'value' => isset($field['label']) ? $field['label'] : '',
@@ -92,18 +98,18 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'enabled',
-                'type' => Checkbox::class,
+                'type' => Element\Checkbox::class,
                 'options' => [
-                    'label' => $translator->translate('Enabled'),
+                    'label' => 'Enabled', // @translate
                 ],
             ]);
 
             $fieldset->add([
                 'name' => 'weight',
-                'type' => Select::class,
+                'type' => Element\Select::class,
                 'options' => [
-                    'label' => $translator->translate('Weight'),
-                    'value_options' => $weight_options,
+                    'label' => 'Weight', // @translate
+                    'value_options' => $weightOptions,
                 ],
                 'attributes' => [
                     'value' => ++$weight,
@@ -114,14 +120,21 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         }
 
         $this->add($facets);
+    }
 
-        $sort_fields_fieldset = new Fieldset('sort_fields');
-        $sort_fields_fieldset->setLabel($translator->translate('Sort fields'));
-        $sort_fields_fieldset->setAttribute('data-sortable', '1');
+    protected function addSortFields()
+    {
+        /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
+        $searchPage = $this->getOption('search_page');
+        $adapter = $searchPage->index()->adapter();
+
+        $sortFieldsFieldset = new Fieldset('sort_fields');
+        $sortFieldsFieldset->setLabel('Sort fields'); // @translate
+        $sortFieldsFieldset->setAttribute('data-sortable', '1');
 
         $sortFields = $adapter->getAvailableSortFields($searchPage->index());
         $weights = range(0, count($sortFields));
-        $weight_options = array_combine($weights, $weights);
+        $weightOptions = array_combine($weights, $weights);
         $weight = 0;
         foreach ($sortFields as $field) {
             $fieldset = new Fieldset($field['name']);
@@ -130,9 +143,9 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             $displayFieldset = new Fieldset('display');
             $displayFieldset->add([
                 'name' => 'label',
-                'type' => Text::class,
+                'type' => Element\Text::class,
                 'options' => [
-                    'label' => $translator->translate('Label'),
+                    'label' => 'Label', // @translate
                 ],
                 'attributes' => [
                     'value' => isset($field['label']) ? $field['label'] : '',
@@ -142,69 +155,59 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
             $fieldset->add([
                 'name' => 'enabled',
-                'type' => Checkbox::class,
+                'type' => Element\Checkbox::class,
                 'options' => [
-                    'label' => $translator->translate('Enabled'),
+                    'label' => 'Enabled', // @translate
                 ],
             ]);
 
             $fieldset->add([
                 'name' => 'weight',
-                'type' => Select::class,
+                'type' => Element\Select::class,
                 'options' => [
-                    'label' => $translator->translate('Weight'),
-                    'value_options' => $weight_options,
+                    'label' => 'Weight', // @translate
+                    'value_options' => $weightOptions,
                 ],
                 'attributes' => [
                     'value' => ++$weight,
                 ],
             ]);
 
-            $sort_fields_fieldset->add($fieldset);
+            $sortFieldsFieldset->add($fieldset);
         }
 
-        $this->add($sort_fields_fieldset);
-
-        $formFieldset = $this->getFormFieldset();
-        if ($formFieldset) {
-            $this->add($formFieldset);
-        }
+        $this->add($sortFieldsFieldset);
     }
 
-    public function setFormElementManager($formElementManager)
-    {
-        $this->formElementManager = $formElementManager;
-    }
-
-    public function getFormElementManager()
-    {
-        return $this->formElementManager;
-    }
-
-    protected function getFormFieldset()
+    protected function addFormFieldset()
     {
         $formElementManager = $this->getFormElementManager();
         $searchPage = $this->getOption('search_page');
 
         $formAdapter = $searchPage->formAdapter();
         if (!isset($formAdapter)) {
-            return null;
+            return;
         }
 
         $configFormClass = $formAdapter->getConfigFormClass();
         if (!isset($configFormClass)) {
-            return null;
+            return;
         }
 
         $fieldset = $formElementManager->get($formAdapter->getConfigFormClass(), [
             'search_page' => $searchPage,
         ]);
         $fieldset->setName('form');
-        $fieldset->setLabel($this->getTranslator()->translate('Form settings'));
+        $fieldset->setLabel('Form settings'); // @translate
 
-        return $fieldset;
+        $this->add($fieldset);
     }
 
+    /**
+     * @param string $field
+     * @param string $settingsKey
+     * @return string
+     */
     protected function getFieldLabel($field, $settingsKey)
     {
         $searchPage = $this->getOption('search_page');
@@ -222,13 +225,31 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         return $label;
     }
 
+    /**
+     * @param string $field
+     * @return string
+     */
+    protected function getFacetFieldLabel($field)
+    {
+        return $this->getFieldLabel($field, 'facets');
+    }
+
+    /**
+     * @param string $field
+     * @return string
+     */
     protected function getSortFieldLabel($field)
     {
         return $this->getFieldLabel($field, 'sort_fields');
     }
 
-    protected function getFacetFieldLabel($field)
+    public function setFormElementManager($formElementManager)
     {
-        return $this->getFieldLabel($field, 'facets');
+        $this->formElementManager = $formElementManager;
+    }
+
+    public function getFormElementManager()
+    {
+        return $this->formElementManager;
     }
 }

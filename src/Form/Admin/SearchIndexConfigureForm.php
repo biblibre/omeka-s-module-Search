@@ -30,7 +30,7 @@
 
 namespace Search\Form\Admin;
 
-use Zend\Form\Element\MultiCheckbox;
+use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
 use Zend\I18n\Translator\TranslatorAwareTrait;
@@ -45,7 +45,7 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
     {
         $this->add([
             'name' => 'resources',
-            'type' => MultiCheckbox::class,
+            'type' => Element\MultiCheckbox::class,
             'options' => [
                 'label' => 'Resources indexed', // @translate
                 'value_options' => $this->getResourcesOptions(),
