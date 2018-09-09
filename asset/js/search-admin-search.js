@@ -27,7 +27,7 @@
 
 $(document).ready(function() {
     var searchHtml = '<form id="find" method="GET" action="' + searchUrl + '">'
-        + '<input name="q" placeholder="' + Omeka.jsTranslate('Find resources...') + '" value="" type="text">'
+        + '<input name="q" placeholder="' + Omeka.jsTranslate('Find resources…') + '" value="" type="text">'
         + '<button type="submit">' + Omeka.jsTranslate('Find') + '</button>'
         + '</form>';
     $('#search').after(searchHtml);

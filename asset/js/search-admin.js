@@ -42,7 +42,9 @@ $(document).ready(function() {
             .addClass('enabled')
             .append('<h3>' + Omeka.jsTranslate('Enabled') + '</h3>')
             .append('<div class="sortable"></div>');
-        container.append(availableContainer).append(enabledContainer);
+        container
+            .append(availableContainer)
+            .append(enabledContainer);
 
         var availableHandles = [];
         var enabledHandles = [];
@@ -61,7 +63,7 @@ $(document).ready(function() {
             if ($(this).children('fieldset').length > 0) {
                 var configButton = $('<a></a>')
                     .attr('href', '#')
-                    .html('<i class="fa fa-cog"></i>')
+                    .html('<i class="fas fa-cog"></i>')
                     .on('click', function(e) {
                         e.preventDefault();
                         var f = $(this).siblings('fieldset').children('fieldset');
