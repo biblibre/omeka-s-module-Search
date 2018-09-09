@@ -90,10 +90,17 @@ class SearchIndex extends AbstractJob
 
         $searchIndexSettings = $searchIndex->settings();
         $resourceNames = $searchIndexSettings['resources'];
-
+        $selectedResourceNames = $this->getArg('resource_names', []);
+        if ($selectedResourceNames) {
+            $resourceNames = array_intersect($resourceNames, $selectedResourceNames);
+        }
         $resourceNames = array_filter($resourceNames, function ($resourceName) use ($indexer) {
             return $indexer->canIndex($resourceName);
         });
+        if (empty($resourceNames)) {
+            $this->logger->warn('The job "Search Index" ended: there is no resource type to index.'); // @translate
+            return;
+        }
 
         $totals = [];
         foreach ($resourceNames as $resourceName) {

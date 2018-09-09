@@ -19,6 +19,12 @@ $this->form->setButtonLabel('Confirm reindex'); // @translate
         <?php echo $translate('Set "1" to reindex without clearing the current index.'); ?>
         <input name="start_resource_id" placeholder="0" value="" type="number" form="confirmform">
         </p>
+        <p>
+        <?php echo $translate('You may want to limit the reindexing to a resource type.'); ?>
+        <?php foreach ($resource->settings()['resources'] as $resourceName): ?>
+        <input name="resource_names[]" value="<?php echo $resourceName; ?>" type="checkbox" checked="checked" form="confirmform"><?php echo $resourceName; ?>
+        <?php endforeach; ?>
+        </p>
         <?php echo $this->form($this->form); ?>
     </div>
 <?php if ($this->wrapSidebar): ?>
