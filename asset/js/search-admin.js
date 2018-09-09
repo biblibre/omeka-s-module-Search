@@ -43,6 +43,10 @@ $(document).ready(function() {
                 return;
             }
             var name = element.name.slice(0, posChar);
+            // There is a issue with external forms and requirements.
+            if (name === 'form') {
+                return;
+            }
             if (fieldsets[name] === undefined) {
                 fieldsets[name] = [];
             }
@@ -80,6 +84,7 @@ $(document).ready(function() {
             "available": [],
             "enabled": [],
         };
+
         fieldsets.each(function() {
             var enabled = $(this).find('input[name*="enabled"]:checkbox').prop('checked');
 
