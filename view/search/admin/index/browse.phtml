@@ -64,17 +64,17 @@ $escape = $this->plugin('escapeHtml');
                                     <?php
                                         echo $search_index->link('', 'edit', [
                                             'class' => 'o-icon-edit',
+                                            'aria-label' => $translate('Edit'),
                                             'title' => $translate('Edit'),
                                         ]);
                                     ?>
                                 </li>
                                 <li>
-                                    <?php
-                                        echo $search_index->link('', 'index', [
-                                            'class' => 'o-icon- fa fa-refresh fa-sync',
-                                            'title' => $translate('Reindex all'),
-                                        ]);
-                                    ?>
+                                    <a href="#"
+                                    data-sidebar-content-url="<?php echo $escape($search_index->url('index-confirm')); ?>"
+                                    class="o-icon- fa fa-refresh fa-sync sidebar-content"
+                                    aria-label="<?php echo $escape($translate('Reindex all')); ?>"
+                                    title="<?php echo $escape($translate('Reindex all')); ?>"></a>
                                 </li>
                             <?php endif; ?>
                             <li>

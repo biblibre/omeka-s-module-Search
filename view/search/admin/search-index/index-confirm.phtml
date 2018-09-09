@@ -1,0 +1,21 @@
+<?php
+$translate = $this->plugin('translate');
+$this->form->setAttribute('action', $resource->url('index'));
+$this->form->setButtonLabel('Confirm reindex'); // @translate
+?>
+<?php if ($this->wrapSidebar): ?>
+<div id="index" class="sidebar">
+    <?php echo $this->hyperlink('', '#', ['class' => 'sidebar-close o-icon-close', 'title' => $translate('Close')]); ?>
+<?php endif; ?>
+    <div id="sidebar-confirm">
+        <h3><?php echo sprintf($translate('Reindex "%s"'), $resource->name()); ?></h3>
+        <p><?php echo $translate('Are you sure you would like to reindex this index?'); ?></p>
+        <p>
+        <?php echo $translate('All the indexes will be cleared first, so the search will be unavailable for a while.'); ?>
+        <?php echo $translate('You may redirect the users on a clone of the current index temporary.'); ?>
+        </p>
+        <?php echo $this->form($this->form); ?>
+    </div>
+<?php if ($this->wrapSidebar): ?>
+</div>
+<?php endif; ?>

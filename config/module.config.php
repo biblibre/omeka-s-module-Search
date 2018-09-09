@@ -22,12 +22,13 @@ return [
         ],
     ],
     'view_helpers' => [
+        'invokables' => [
+            'searchForm' => View\Helper\SearchForm::class,
+        ],
         'factories' => [
             'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
             'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
-        ],
-        'invokables' => [
-            'searchForm' => View\Helper\SearchForm::class,
+            'searchIndexConfirm' => Service\ViewHelper\SearchIndexConfirmFactory::class,
         ],
     ],
     'form_elements' => [

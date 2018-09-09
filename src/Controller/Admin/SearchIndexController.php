@@ -103,6 +103,19 @@ class SearchIndexController extends AbstractActionController
         return $view;
     }
 
+    public function indexConfirmAction()
+    {
+        $response = $this->api()->read('search_indexes', $this->params('id'));
+        $index = $response->getContent();
+
+        $view = new ViewModel;
+        $view->setTerminal(true);
+        $view->setTemplate('search/admin/search-index/index-confirm-details');
+        $view->setVariable('resourceLabel', 'search index');
+        $view->setVariable('resource', $index);
+        return $view;
+    }
+
     public function indexAction()
     {
         $jobDispatcher = $this->getJobDispatcher();
