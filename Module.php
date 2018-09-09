@@ -533,7 +533,9 @@ SQL;
 
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
-        $defaultSettings = $config[strtolower(__NAMESPACE__)]['settings'];
+        $defaultSettings = $isAdmin
+            ? $config[strtolower(__NAMESPACE__)]['settings']
+            : $config[strtolower(__NAMESPACE__)]['site_settings'];
 
         $fieldset = new Fieldset('search');
         $fieldset->setLabel('Search'); // @translate
