@@ -106,6 +106,10 @@ the results as grid or as list. The page can be themed.
 The Search module  does not replace the default search page neither the default
 search engine. So the theme should be updated.
 
+The form `Api` is not a true form, but it may be used to search quickly in the
+base with the same query format than the api. A page should be created to map
+the Omeka metadata and the name of the indexed fields.
+
 
 Indexation
 ----------

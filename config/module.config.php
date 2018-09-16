@@ -36,6 +36,7 @@ return [
             Form\ConfigForm::class => Form\ConfigForm::class,
         ],
         'factories' => [
+            Form\Admin\ApiFormConfigFieldset::class => Service\Form\ApiFormConfigFieldsetFactory::class,
             Form\Admin\SearchIndexConfigureForm::class => Service\Form\SearchIndexConfigureFormFactory::class,
             Form\Admin\SearchIndexForm::class => Service\Form\SearchIndexFormFactory::class,
             Form\Admin\SearchPageConfigureForm::class => Service\Form\SearchPageConfigureFormFactory::class,
@@ -56,6 +57,7 @@ return [
     ],
     'controller_plugins' => [
         'factories' => [
+            'apiSearch' => Service\ControllerPlugin\ApiSearchFactory::class,
             'searchForm' => Service\ControllerPlugin\SearchFormFactory::class,
         ],
     ],
@@ -182,6 +184,7 @@ return [
     ],
     'search_form_adapters' => [
         'invokables' => [
+            'api' => FormAdapter\ApiFormAdapter::class,
             'basic' => FormAdapter\BasicFormAdapter::class,
         ],
     ],
@@ -192,6 +195,7 @@ return [
         'settings' => [
             'search_main_page' => '',
             'search_pages' => [],
+            'search_api_index' => null,
         ],
         'site_settings' => [
             'search_main_page' => null,

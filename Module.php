@@ -590,6 +590,30 @@ SQL;
             ],
         ]);
 
+        if ($isAdmin) {
+            $indexes = $api->search('search_indexes')->getContent();
+            $valueOptions = [];
+            foreach ($indexes as $index) {
+                $valueOptions[$index->id()] = sprintf('%s (%s)', $index->name(), $index->adapterLabel());
+            }
+            $fieldset->add([
+                'name' => 'search_api_index',
+                'type' => Element\Select::class,
+                'options' => [
+                    'label' => 'Index used for apiSearch', // @translate
+                    'info' => 'The controller plugin apiSearch() may be used in some cases to do a quick search via an external engine (experimental).', // @translate
+                    'value_options' => $valueOptions,
+                    'empty_option' => 'Select the index for apiSearch()…', // @translate
+                ],
+                'attributes' => [
+                    'value' => $settings->get(
+                        'search_api_index',
+                        $defaultSettings['search_api_index']
+                    ),
+                ],
+            ]);
+        }
+
         $form->add($fieldset);
     }
 
@@ -603,6 +627,10 @@ SQL;
         ]);
         $searchFilter->add([
             'name' => 'search_main_page',
+            'required' => false,
+        ]);
+        $searchFilter->add([
+            'name' => 'search_api_index',
             'required' => false,
         ]);
     }
