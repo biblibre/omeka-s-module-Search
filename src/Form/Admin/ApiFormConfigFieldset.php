@@ -64,6 +64,34 @@ class ApiFormConfigFieldset extends Fieldset
         ]);
 
         $metadataFieldset->add([
+            'name' => 'created',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Created', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'modified',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Modified', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
             'name' => 'resource_class_label',
             'type' => OptionalSelect::class,
             'options' => [

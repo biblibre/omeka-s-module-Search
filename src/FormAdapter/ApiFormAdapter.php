@@ -75,6 +75,14 @@ class ApiFormAdapter implements FormAdapterInterface
             $this->addIntegersFilterToQuery($query, $metadata['owner_id'], $request['owner_id']);
         }
 
+        if (isset($metadata['created']) && !empty($request['created'])) {
+            $this->addIntegersFilterToQuery($query, $metadata['created'], $request['created']);
+        }
+
+        if (isset($metadata['modified']) && !empty($request['modified'])) {
+            $this->addIntegersFilterToQuery($query, $metadata['modified'], $request['modified']);
+        }
+
         if (isset($metadata['resource_class_label']) && !empty($request['resource_class_label'])) {
             $this->addTextsFilterToQuery($query, $metadata['resource_class_label'], $request['resource_class_label']);
         }

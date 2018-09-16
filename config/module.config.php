@@ -173,11 +173,12 @@ return [
         ],
     ],
     'js_translate_strings' => [
+        'Automatic mapping of empty values', // @translate
         'Available', // @translate
-        'Map empty mapping', // @translate
         'Enabled', // @translate
-        'Find resources…', // @translate
         'Find', // @translate
+        'Find resources…', // @translate
+        'Try to map automatically the metadata and the properties that are not mapped yet with the fields of the index', // @translate
     ],
     'search_adapters' => [
         'factories' => [
