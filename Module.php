@@ -456,6 +456,7 @@ SQL;
             ? $api->read('items', $itemId, [], ['responseContent' => 'resource'])->getContent()
             : $response->getContent()->getItem();
 
+        /** @var \Search\Api\Representation\SearchIndexRepresentation[] $searchIndexes */
         $searchIndexes = $api->search('search_indexes')->getContent();
         foreach ($searchIndexes as $searchIndex) {
             $searchIndexSettings = $searchIndex->settings();
@@ -591,10 +592,13 @@ SQL;
         ]);
 
         if ($isAdmin) {
-            $indexes = $api->search('search_indexes')->getContent();
+            /** @var \Search\Api\Representation\SearchPageRepresentation[] $pages */
+            $pages = $api->search('search_pages')->getContent();
             $valueOptions = [];
-            foreach ($indexes as $index) {
-                $valueOptions[$index->id()] = sprintf('%s (%s)', $index->name(), $index->adapterLabel());
+            foreach ($pages as $page) {
+                if ($page->formAdapter() instanceof \Search\FormAdapter\ApiFormAdapter) {
+                    $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
+                }
             }
             $fieldset->add([
                 'name' => 'search_api_page',
@@ -602,8 +606,8 @@ SQL;
                 'options' => [
                     'label' => 'Page used for quick api search', // @translate
                     'info' => 'The method apiSearch() allows to do a quick search in some cases. It requires a mapping done with the Omeka api and the selected index.', // @translate
-                    'value_options' => $pagesOptions,
-                    'empty_option' => 'Select the page for apiSearch()…', // @translate
+                    'value_options' => $valueOptions,
+                    'empty_option' => 'Select the page for quick api search…', // @translate
                 ],
                 'attributes' => [
                     'value' => $settings->get(

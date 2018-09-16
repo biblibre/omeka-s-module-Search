@@ -71,6 +71,12 @@ class SearchPageController extends AbstractActionController
             $this->messenger()->addWarning('You can enable this page in your site settings or in admin settings.'); // @translate
         }
 
+        if ($searchPage->formAdapter() instanceof \Search\FormAdapter\ApiFormAdapter) {
+            $this->messenger()->addWarning(
+                'The api adapter should be selected in the main settings.' // @translate
+            );
+        }
+
         return $this->redirect()->toUrl($searchPage->url('configure'));
     }
 
@@ -216,6 +222,7 @@ class SearchPageController extends AbstractActionController
             'Configuration saved for page "%s".', // @translate
             $searchPage->name()
         ));
+
         return $this->redirect()->toRoute('admin/search');
     }
 
