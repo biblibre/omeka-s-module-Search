@@ -64,6 +64,9 @@ return [
         ],
     ],
     'service_manager' => [
+        'delegators' => [
+           'Omeka\ApiManager' => [Service\ApiManagerDelegatorFactory::class],
+        ],
         'factories' => [
             'Search\AdapterManager' => Service\AdapterManagerFactory::class,
             'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
