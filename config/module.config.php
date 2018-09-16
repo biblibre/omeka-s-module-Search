@@ -174,6 +174,7 @@ return [
     ],
     'js_translate_strings' => [
         'Available', // @translate
+        'Map empty mapping', // @translate
         'Enabled', // @translate
         'Find resources…', // @translate
         'Find', // @translate
