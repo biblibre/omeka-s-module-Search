@@ -93,7 +93,9 @@ class IndexController extends AbstractActionController
             return $view;
         }
 
-        $request = $form->getData();
+        // Get the filtered request, but keep the pagination and sort params,
+        // that are not managed by the form.
+        $request = $form->getData() + $this->filterExtraParams($request);
 
         $searchPageSettings = $page->settings();
         $searchFormSettings = isset($searchPageSettings['form'])
@@ -185,6 +187,34 @@ class IndexController extends AbstractActionController
         $view->setVariable('facets', $facets);
         $view->setVariable('sortOptions', $sortOptions);
         return $view;
+    }
+
+    /**
+     * Filter the pagination and sort params from the request.
+     *
+     * @param array $request
+     * @return array
+     */
+    protected function filterExtraParams(array $request)
+    {
+        $paginationRequest = array_map('intval', array_filter(array_intersect_key(
+            $request,
+            // @see \Omeka\Api\Adapter\AbstractEntityAdapter::limitQuery().
+            ['page' => null, 'per_page' => null, 'limit' => null, 'offset' => null]
+        )));
+
+        // No filter neither cast here, but checked after.
+        $sortRequest = array_intersect_key(
+            $request,
+            [
+                // @see \Omeka\Api\Adapter\AbstractEntityAdapter::search().
+                'sort_by' => null, 'sort_order' => null,
+                // Used by Search.
+                'resource-type' => null, 'sort' => null,
+            ]
+        );
+
+        return $paginationRequest + $sortRequest;
     }
 
     /**
