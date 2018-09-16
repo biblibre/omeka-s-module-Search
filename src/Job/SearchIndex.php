@@ -61,20 +61,13 @@ class SearchIndex extends AbstractJob
 
         $searchIndexId = $this->getArg('search_index_id');
         $startResourceId = $this->getArg('start_resource_id');
-        $this->logger->info('Start of indexing'); // @translate
 
         /** @var \Search\Api\Representation\SearchIndexRepresentation $searchIndex */
         $searchIndex = $api->read('search_indexes', $searchIndexId)->getContent();
         $indexer = $searchIndex->indexer();
-        if (!$indexer) {
-            $this->logger->warn(new Message(
-                'Job end: there is no indexer for search index #%d.', // @translate
-                $searchIndexId
-            ));
-            return;
-        }
 
-        $this->logger->info(new Message('Index id: %d', $searchIndexId)); // @translate
+        $this->logger->info('Start of indexing'); // @translate
+        $this->logger->info(new Message('Index: #%d "%s"', $searchIndex->id(), $searchIndex->name())); // @translate
 
         $indexer->setServiceLocator($services);
         $indexer->setLogger($this->logger);
@@ -98,7 +91,10 @@ class SearchIndex extends AbstractJob
             return $indexer->canIndex($resourceName);
         });
         if (empty($resourceNames)) {
-            $this->logger->warn('The job "Search Index" ended: there is no resource type to index.'); // @translate
+            $this->logger->warn(new Message(
+                'The job "Search Index" (#%d "%s") ended: there is no resource type to index.', // @translate
+                $searchIndex->id(), $searchIndex->name()
+            ));
             return;
         }
 
@@ -152,6 +148,7 @@ class SearchIndex extends AbstractJob
         foreach ($resourceNames as $resourceName) {
             $totalResults[] = new Message('%s: %d indexed', $resourceName, $totals[$resourceName]); // @translate
         }
-        $this->logger->info(new Message('End of indexing. %s.', implode('; ', $totalResults))); // @translate
+        $this->logger->info(new Message('End of indexing (#%d "%s"). %s.', // @translate
+            $searchIndex->id(), $searchIndex->name(), implode('; ', $totalResults)));
     }
 }

@@ -39,19 +39,14 @@ abstract class AbstractIndexer implements IndexerInterface
     use LoggerAwareTrait;
 
     /**
-     * @var SearchIndexRepresentation
-     */
-    protected $index;
-
-    /**
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
 
-    public function setSearchIndex(SearchIndexRepresentation $index)
-    {
-        $this->index = $index;
-    }
+    /**
+     * @var SearchIndexRepresentation
+     */
+    protected $index;
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
@@ -67,6 +62,11 @@ abstract class AbstractIndexer implements IndexerInterface
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+    public function setSearchIndex(SearchIndexRepresentation $index)
+    {
+        $this->index = $index;
     }
 
     /**

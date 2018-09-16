@@ -124,6 +124,7 @@ $escape = $this->plugin('escapeHtml');
                                     ]);
                                 ?>
                             </li>
+                            <?php if ($search_page->index()->adapter()): ?>
                             <li>
                                 <?php
                                     echo $search_page->link('', 'configure', [
@@ -132,6 +133,7 @@ $escape = $this->plugin('escapeHtml');
                                     ]);
                                 ?>
                             </li>
+                            <?php endif; ?>
                             <li>
                                 <a href="#"
                                 data-sidebar-content-url="<?php echo $escape($search_page->url('delete-confirm')); ?>"

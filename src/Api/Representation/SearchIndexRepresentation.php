@@ -119,42 +119,46 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
                 $this->resource->getAdapter()
             );
         }
-
         return $adapter->getLabel();
     }
 
     /**
-     * @return \Search\Indexer\IndexerInterface|null
+     * @return \Search\Indexer\IndexerInterface NoopIndexer is returned when
+     * the indexer is not available.
      */
     public function indexer()
     {
         $serviceLocator = $this->getServiceLocator();
-        $indexerClass = $this->adapter()->getIndexerClass();
-        if (!$indexerClass) {
-            return null;
+        $adapter = $this->adapter();
+        if ($adapter) {
+            $indexerClass = $adapter->getIndexerClass()?: \Search\Indexer\NoopIndexer::class;
+        } else {
+            $indexerClass = \Search\Indexer\NoopIndexer::class;
         }
-
         $indexer = new $indexerClass;
-        $indexer->setSearchIndex($this);
         $indexer->setServiceLocator($serviceLocator);
+        $indexer->setSearchIndex($this);
         $indexer->setLogger($serviceLocator->get('Omeka\Logger'));
-
         return $indexer;
     }
 
     /**
-     * @return \Search\Querier\QuerierInterface
+     * @return \Search\Querier\QuerierInterface NoopQuerier is returned when
+     * the indexer is not available.
      */
     public function querier()
     {
         $serviceLocator = $this->getServiceLocator();
-        $querierClass = $this->adapter()->getQuerierClass();
-
+        $adapter = $this->adapter();
+        if ($adapter) {
+            $querierClass = $adapter->getQuerierClass()?: \Search\Querier\NoopQuerier::class;
+        } else {
+            $querierClass = \Search\Querier\NoopQuerier::class;
+        }
         $querier = new $querierClass;
         $querier->setServiceLocator($serviceLocator);
+        $querier->setSearchIndex($this);
         $querier->setLogger($serviceLocator->get('Omeka\Logger'));
-        $querier->setIndex($this);
-
         return $querier;
     }
 }

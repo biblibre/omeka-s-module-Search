@@ -39,14 +39,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 interface QuerierInterface extends LoggerAwareInterface
 {
     /**
-     * @param SearchIndexRepresentation $index
-     */
-    public function setIndex(SearchIndexRepresentation $index);
-
-    /**
      * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+
+    /**
+     * @param SearchIndexRepresentation $index
+     */
+    public function setSearchIndex(SearchIndexRepresentation $index);
 
     /**
      * Process a search query.
