@@ -106,9 +106,36 @@ the results as grid or as list. The page can be themed.
 The Search module  does not replace the default search page neither the default
 search engine. So the theme should be updated.
 
-The form `Api` is not a true form, but it may be used to search quickly in the
-base with the same query format than the api. A page should be created to map
-the Omeka metadata and the name of the indexed fields.
+
+Search api
+----------
+
+The search engine can be used not only for the classical search page, but for
+any other views too where you the search of items need to be done quickly, for
+example the block layouts with a big database (more than 10000 to 100000 items,
+according to your server and your collections).
+
+To use this feature, a page should be created with the form `Api`. This form is
+not a true form, but it allows to map the Omeka metadata and properties with the
+fields indexed by the search engine. It allows to define a max number of results
+too, that is used when no paginator is enable. The argument `limit` cannot go
+further.
+
+When ready, the api search is available via multiple means.
+- Add `index=1` as query in the block layouts that use it, like [Browse preview].
+- Do a standard search with `$this->api()->search()` with the value `'index' => true`
+  appended to the argument `$data` or `$options` (recommended when possible to
+  avoid to mix the query and the parameters).
+- Do a standard search in the theme with the view helpers `$this->apiSearch()`,
+  and `$this->apiSearchOne()`, that have the same arguments than `$this->api()->search()`
+  and `$this->api()->searchOne()`. The result is an Omeka Response.
+- Use the controller plugins `$this->apiSearch()` and `$this->apiSearchOne()`.
+- The main api manager understand these arguments too.
+- If the api page form is made available on a site, it will be a quick access to
+  the results at `/s/mysite/api_search_page`.
+
+Note that some features may be not available in the external search engine. In
+particular, some events are not triggered.
 
 
 Indexation
@@ -138,7 +165,7 @@ TODO
   another module.
 - Allow to remove an index without removing pages.
 - Allow to import/export a mapping via json, for example the default one.
-- Add an option to use the search api by default (and an option `'quickSearch' = false`).
+- Add an option to use the search api by default (and an option `'index' => false`).
 - Set one api page by site and a quick set in the pages settings.
 
 

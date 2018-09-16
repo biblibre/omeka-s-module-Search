@@ -17,13 +17,11 @@ class ManagerDelegator extends \Omeka\Api\Manager
     /**
      * Execute a search API request with an option to do a quick search.
      *
-     * The quick search is enabled when the argument "quickSearch" is true in
-     * the options or the argument "quick-search" is t rue in the data.
-     *
-     * It would be better to use the argument "options", but it is not available
-     * in the admin user interface, for example in block layouts, neither in the
-     * view helper api().
-     * @todo Remove "quick-search" from the display if any.
+     * The quick search is enabled when the argument "index" is true in the
+     * options or in the data. It would be better to use the argument "options",
+     * but it is not available in the admin user interface, for example in block
+     * layouts, neither in the view helper api().
+     * @todo Remove "index" from the display if any.
      *
      * {@inheritDoc}
      * @see \Omeka\Api\Manager::search()
@@ -33,7 +31,7 @@ class ManagerDelegator extends \Omeka\Api\Manager
         // ApiSearch is set static to avoid a loop during init of Api Manager.
         /** @var \Search\Mvc\Controller\Plugin\ApiSearch $apiSearch */
         static $apiSearch;
-        if (empty($options['quickSearch']) && empty($data['quick-search'])) {
+        if (empty($options['index']) && empty($data['index'])) {
             return parent::search($resource, $data, $options);
         }
         if (is_null($apiSearch)) {
