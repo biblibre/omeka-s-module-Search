@@ -48,9 +48,33 @@ class InternalAdapter extends AbstractAdapter
         return \Search\Querier\InternalQuerier::class;
     }
 
-    public function getAvailableFacetFields(SearchIndexRepresentation $index)
+    public function getAvailableFields(SearchIndexRepresentation $index)
     {
-        return $this->getAvailableFields($index);
+        $response = $this->api->search('properties');
+
+        // TODO Fix the page(create facet and sort tabs + property selector, like other views).
+        // An overload may occur (memory_limit = 128M). The limit for number of
+        // fields by request (max_input_vars = 1000) is fixed via js.
+        // And 3 fields by property, as facet and sort in 2 directions.
+        $totalResults = $response->getTotalResults();
+        if ($totalResults > 200) {
+            $response = $this->api->search('properties', ['vocabulary_prefix' => 'dcterms']);
+        }
+        /** @var \Omeka\Api\Representation\PropertyRepresentation[] $properties */
+        $properties = $response->getContent();
+
+        $fields = [];
+        foreach ($properties as $property) {
+            $name = $property->term();
+            // TODO Use an alternative label for the facets?
+            $label = $property->label();
+            $fields[$name] = [
+                'name' => $name,
+                'label' => $label,
+            ];
+        }
+
+        return $fields;
     }
 
     public function getAvailableSortFields(SearchIndexRepresentation $index)
@@ -80,32 +104,8 @@ class InternalAdapter extends AbstractAdapter
         return $sortFields;
     }
 
-    public function getAvailableFields(SearchIndexRepresentation $index)
+    public function getAvailableFacetFields(SearchIndexRepresentation $index)
     {
-        $response = $this->api->search('properties');
-
-        // TODO Fix the page(create facet and sort tabs + property selector, like other views).
-        // An overload may occur (memory_limit = 128M). The limit for number of
-        // fields by request (max_input_vars = 1000) is fixed via js.
-        // And 3 fields by property, as facet and sort in 2 directions.
-        $totalResults = $response->getTotalResults();
-        if ($totalResults > 200) {
-            $response = $this->api->search('properties', ['vocabulary_prefix' => 'dcterms']);
-        }
-        /** @var \Omeka\Api\Representation\PropertyRepresentation[] $properties */
-        $properties = $response->getContent();
-
-        $fields = [];
-        foreach ($properties as $property) {
-            $name = $property->term();
-            // TODO Use an alternative label for the facets?
-            $label = $property->label();
-            $fields[$name] = [
-                'name' => $name,
-                'label' => $label,
-            ];
-        }
-
-        return $fields;
+        return $this->getAvailableFields($index);
     }
 }

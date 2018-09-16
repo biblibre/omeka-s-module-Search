@@ -36,6 +36,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 interface AdapterInterface
 {
     /**
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+
+    /**
      * Get the name of the adapter.
      *
      * @return string
@@ -64,13 +69,13 @@ interface AdapterInterface
     public function getQuerierClass();
 
     /**
-     * Get the available facet fields.
+     * Get the available fields.
      *
      * @param SearchIndexRepresentation $index
-     * @return array Associative array with facet name as key and an array with
-     * facet name and facet label as value.
+     * @return array Associative array with field name as key and an array with
+     * field name and field label as value.
      */
-    public function getAvailableFacetFields(SearchIndexRepresentation $index);
+    public function getAvailableFields(SearchIndexRepresentation $index);
 
     /**
      * Get the available sort fields.
@@ -82,16 +87,11 @@ interface AdapterInterface
     public function getAvailableSortFields(SearchIndexRepresentation $index);
 
     /**
-     * Get the available fields.
+     * Get the available facet fields.
      *
      * @param SearchIndexRepresentation $index
-     * @return array Associative array with field name as key and an array with
-     * field name and field label as value.
+     * @return array Associative array with facet name as key and an array with
+     * facet name and facet label as value.
      */
-    public function getAvailableFields(SearchIndexRepresentation $index);
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
+    public function getAvailableFacetFields(SearchIndexRepresentation $index);
 }

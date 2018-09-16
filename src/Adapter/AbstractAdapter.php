@@ -39,6 +39,16 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected $serviceLocator;
 
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    public function getAvailableFields(SearchIndexRepresentation $index)
+    {
+        return [];
+    }
+
     public function getAvailableFacetFields(SearchIndexRepresentation $index)
     {
         return [];
@@ -47,16 +57,6 @@ abstract class AbstractAdapter implements AdapterInterface
     public function getAvailableSortFields(SearchIndexRepresentation $index)
     {
         return [];
-    }
-
-    public function getAvailableFields(SearchIndexRepresentation $index)
-    {
-        return [];
-    }
-
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
     }
 
     /**
