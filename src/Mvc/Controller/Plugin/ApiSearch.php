@@ -131,12 +131,18 @@ class ApiSearch extends AbstractPlugin
     public function __invoke($resource, array $data = [], array $options = [])
     {
         if (!$this->index) {
+            // Unset the "index" option to avoid a loop.
+            unset($data['index']);
+            unset($options['index']);
             return $this->api->search($resource, $data, $options);
         }
 
         // Check it the resource is managed by this index.
         $searchIndexSettings = $this->index->settings();
         if (!in_array($resource, $searchIndexSettings['resources'])) {
+            // Unset the "index" option to avoid a loop.
+            unset($data['index']);
+            unset($options['index']);
             return $this->api->search($resource, $data, $options);
         }
 

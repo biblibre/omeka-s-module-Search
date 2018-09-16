@@ -19,8 +19,12 @@ class ApiManagerDelegatorFactory implements DelegatorFactoryInterface
         $logger = $serviceLocator->get('Omeka\Logger');
         $translator = $serviceLocator->get('MvcTranslator');
         $manager = new ManagerDelegator($adapterManager, $acl, $logger, $translator);
-        $apiSearch = $serviceLocator->get('ControllerPluginManager')->get('apiSearch');
-        $manager->setApiSearch($apiSearch);
+        // The plugin apiSearch cannot be set directly to avoid a loop during
+        // the initialization.
+        // $apiSearch = $serviceLocator->get('ControllerPluginManager')->get('apiSearch');
+        // $manager->setApiSearch($apiSearch);
+        $controllerPlugins = $serviceLocator->get('ControllerPluginManager');
+        $manager->setControllerPlugins($controllerPlugins);
         return $manager;
     }
 }

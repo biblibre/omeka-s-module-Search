@@ -1,7 +1,8 @@
 <?php
 namespace Search\Api;
 
-use Search\Mvc\Controller\Plugin\ApiSearch;
+// use Search\Mvc\Controller\Plugin\ApiSearch;
+use Zend\Mvc\Controller\PluginManager as ControllerPluginManager;
 
 /**
  * API manager service (delegator).
@@ -9,9 +10,9 @@ use Search\Mvc\Controller\Plugin\ApiSearch;
 class ManagerDelegator extends \Omeka\Api\Manager
 {
     /**
-     * @var ApiSearch
+     * @var ControllerPluginManager
      */
-    protected $apiSearch;
+    protected $controllerPlugins;
 
     /**
      * Execute a search API request with an option to do a quick search.
@@ -29,18 +30,23 @@ class ManagerDelegator extends \Omeka\Api\Manager
      */
     public function search($resource, array $data = [], array $options = [])
     {
-        if (!empty($options['quickSearch']) || !empty($data['quick-search'])) {
-            $apiSearch = $this->apiSearch;
-            return $apiSearch($resource, $data, $options);
+        // ApiSearch is set static to avoid a loop during init of Api Manager.
+        /** @var \Search\Mvc\Controller\Plugin\ApiSearch $apiSearch */
+        static $apiSearch;
+        if (empty($options['quickSearch']) && empty($data['quick-search'])) {
+            return parent::search($resource, $data, $options);
         }
-        return parent::search($resource, $data, $options);
+        if (is_null($apiSearch)) {
+            $apiSearch = $this->controllerPlugins->get('apiSearch');
+        }
+        return $apiSearch($resource, $data, $options);
     }
 
     /**
-     * @param ApiSearch $apiSearch
+     * @param ControllerPluginManager $controllerPlugins
      */
-    public function setApiSearch(ApiSearch $apiSearch)
+    public function setControllerPlugins(ControllerPluginManager $controllerPlugins)
     {
-        $this->apiSearch = $apiSearch;
+        $this->controllerPlugins = $controllerPlugins;
     }
 }
