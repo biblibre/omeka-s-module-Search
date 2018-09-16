@@ -597,18 +597,18 @@ SQL;
                 $valueOptions[$index->id()] = sprintf('%s (%s)', $index->name(), $index->adapterLabel());
             }
             $fieldset->add([
-                'name' => 'search_api_index',
+                'name' => 'search_api_page',
                 'type' => Element\Select::class,
                 'options' => [
-                    'label' => 'Index used for apiSearch', // @translate
-                    'info' => 'The controller plugin apiSearch() may be used in some cases to do a quick search via an external engine (experimental).', // @translate
-                    'value_options' => $valueOptions,
-                    'empty_option' => 'Select the index for apiSearch()…', // @translate
+                    'label' => 'Page used for quick api search', // @translate
+                    'info' => 'The method apiSearch() allows to do a quick search in some cases. It requires a mapping done with the Omeka api and the selected index.', // @translate
+                    'value_options' => $pagesOptions,
+                    'empty_option' => 'Select the page for apiSearch()…', // @translate
                 ],
                 'attributes' => [
                     'value' => $settings->get(
-                        'search_api_index',
-                        $defaultSettings['search_api_index']
+                        'search_api_page',
+                        $defaultSettings['search_api_page']
                     ),
                 ],
             ]);
@@ -630,7 +630,7 @@ SQL;
             'required' => false,
         ]);
         $searchFilter->add([
-            'name' => 'search_api_index',
+            'name' => 'search_api_page',
             'required' => false,
         ]);
     }

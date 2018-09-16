@@ -138,6 +138,8 @@ TODO
   another module.
 - Allow to remove an index without removing pages.
 - Allow to import/export a mapping via json, for example the default one.
+- Add an option to use the search api by default (and an option `'quickSearch' = false`).
+- Set one api page by site and a quick set in the pages settings.
 
 
 Warning

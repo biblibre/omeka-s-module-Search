@@ -12,48 +12,36 @@ class ApiSearchFactory implements FactoryInterface
         $api = $services->get('Omeka\ApiManager');
 
         $settings = $services->get('Omeka\Settings');
-        $apiIndex = $settings->get('search_api_index');
-        if ($apiIndex) {
+        $apiPage = $settings->get('search_api_page');
+        if ($apiPage) {
             try {
-                $index = $api->read('search_indexes', ['id' => $apiIndex])->getContent();
-                $adapterManager = $services->get('Omeka\ApiAdapterManager');
-                $formAdapter = $services->get('Search\FormAdapterManager')->get('api');
-                $acl = $services->get('Omeka\Acl');
-                $logger = $services->get('Omeka\Logger');
-                $translator = $services->get('MvcTranslator');
-                $entityManager = $services->get('Omeka\EntityManager');
-                $paginator = $services->get('Omeka\Paginator');
+                /** @var \Search\Api\Representation\SearchPageRepresentation $page */
+                $page = $api->read('search_pages', ['id' => $apiPage])->getContent();
+                $index = $page->index();
+                if ($index) {
+                    $adapterManager = $services->get('Omeka\ApiAdapterManager');
+                    $formAdapter = $services->get('Search\FormAdapterManager')->get('api');
+                    $acl = $services->get('Omeka\Acl');
+                    $logger = $services->get('Omeka\Logger');
+                    $translator = $services->get('MvcTranslator');
+                    $entityManager = $services->get('Omeka\EntityManager');
+                    $paginator = $services->get('Omeka\Paginator');
+                    return new ApiSearch(
+                        $api,
+                        $page,
+                        $index,
+                        $adapterManager,
+                        $formAdapter,
+                        $acl,
+                        $logger,
+                        $translator,
+                        $entityManager,
+                        $paginator
+                    );
+                }
             } catch (\Omeka\Api\Exception\NotFoundException $e) {
-                $index = null;
-                $adapterManager = null;
-                $formAdapter = null;
-                $acl = null;
-                $logger = null;
-                $translator = null;
-                $entityManager = null;
-                $paginator = null;
             }
-        } else {
-            $index = null;
-            $adapterManager = null;
-            $formAdapter = null;
-            $acl = null;
-            $logger = null;
-            $translator = null;
-            $entityManager = null;
-            $paginator = null;
         }
-
-        return new ApiSearch(
-            $api,
-            $index,
-            $adapterManager,
-            $formAdapter,
-            $acl,
-            $logger,
-            $translator,
-            $entityManager,
-            $paginator
-        );
+        return new ApiSearch($api);
     }
 }

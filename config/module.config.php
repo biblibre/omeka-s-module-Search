@@ -204,7 +204,7 @@ return [
         'settings' => [
             'search_main_page' => '',
             'search_pages' => [],
-            'search_api_index' => null,
+            'search_api_page' => '',
         ],
         'site_settings' => [
             'search_main_page' => null,

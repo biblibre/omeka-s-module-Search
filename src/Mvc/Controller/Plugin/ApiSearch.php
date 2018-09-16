@@ -11,6 +11,7 @@ use Omeka\Api\ResourceInterface;
 use Omeka\Stdlib\Paginator;
 use Omeka\Permissions\Acl;
 use Search\Api\Representation\SearchIndexRepresentation;
+use Search\Api\Representation\SearchPageRepresentation;
 use Search\FormAdapter\ApiFormAdapter;
 use Search\Querier\Exception\QuerierException;
 use Search\Query;
@@ -41,6 +42,11 @@ class ApiSearch extends AbstractPlugin
      * @var Manager
      */
     protected $api;
+
+    /**
+     * @var SearchPageRepresentation
+     */
+    protected $page;
 
     /**
      * @var SearchIndexRepresentation
@@ -83,8 +89,8 @@ class ApiSearch extends AbstractPlugin
     protected $paginator;
 
     /**
-     *
      * @param Manager $api
+     * @param SearchPageRepresentation $page
      * @param SearchIndexRepresentation $index
      * @param AdapterManager $adapterManager
      * @param ApiFormAdapter $apiFormAdapter
@@ -96,6 +102,7 @@ class ApiSearch extends AbstractPlugin
      */
     public function __construct(
         Manager $api,
+        SearchPageRepresentation $page = null,
         SearchIndexRepresentation $index = null,
         AdapterManager $adapterManager = null,
         ApiFormAdapter $apiFormAdapter = null,
@@ -106,6 +113,7 @@ class ApiSearch extends AbstractPlugin
         Paginator $paginator = null
     ) {
         $this->api = $api;
+        $this->page = $page;
         $this->index = $index;
         $this->adapterManager = $adapterManager;
         $this->apiFormAdapter = $apiFormAdapter;
@@ -266,9 +274,11 @@ class ApiSearch extends AbstractPlugin
 
         // Begin building the search query.
         $resource = $request->getResource();
-        $searchFormSettings = [
-            'resource' => $resource,
-        ];
+        $searchPageSettings = $this->page->settings();
+        $searchFormSettings = isset($searchPageSettings['form'])
+            ? $searchPageSettings['form']
+            : [];
+        $searchFormSettings['resource'] = $resource;
         $searchQuery = $this->apiFormAdapter->toQuery($query, $searchFormSettings);
         $searchQuery->setResources([$resource]);
 
