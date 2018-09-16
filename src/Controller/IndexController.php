@@ -35,7 +35,6 @@ use Omeka\Stdlib\Paginator;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Api\Representation\SearchPageRepresentation;
 use Search\Querier\Exception\QuerierException;
-use Search\Query;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -141,8 +140,12 @@ class IndexController extends AbstractActionController
         }
         $query->setSort($sort);
 
-        $pageNumber = isset($request['page']) ? $request['page'] : 1;
-        $this->setPagination($query, $pageNumber);
+        // Note: the global limit is managed via the pagination.
+        $pageNumber = isset($request['page']) && $request['page'] > 0 ? (int) $request['page'] : 1;
+        $perPage = isset($request['per_page']) && $request['per_page'] > 0
+            ? (int) $request['per_page']
+            : (int) $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
+        $query->setLimitPage($pageNumber, $perPage);
 
         $settings = $page->settings();
         $hasFacets = !empty($settings['facets']);
@@ -179,7 +182,7 @@ class IndexController extends AbstractActionController
 
         if ($hasFacets) {
             $facets = $response->getFacetCounts();
-            $facets = $this->sortByWeight($facets, 'facets');
+            $facets = $this->sortFieldsByWeight($facets, 'facets');
         } else {
             $facets = [];
         }
@@ -281,7 +284,7 @@ class IndexController extends AbstractActionController
      * @param string $settingName
      * @return array
      */
-    protected function sortByWeight(array $fields, $settingName)
+    protected function sortFieldsByWeight(array $fields, $settingName)
     {
         $settings = $this->page->settings()[$settingName];
         uksort($fields, function ($a, $b) use ($settings) {
@@ -290,17 +293,5 @@ class IndexController extends AbstractActionController
             return $aWeight - $bWeight;
         });
         return $fields;
-    }
-
-    /**
-     * Set the limit page to the query
-     *
-     * @param Query $query
-     * @param int $page
-     */
-    protected function setPagination(Query $query, $page)
-    {
-        $perPage = $this->settings()->get('pagination_per_page', Paginator::PER_PAGE);
-        $query->setLimitPage($page, $perPage);
     }
 }

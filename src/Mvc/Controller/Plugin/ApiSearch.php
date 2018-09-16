@@ -8,10 +8,12 @@ use Omeka\Api\Manager;
 use Omeka\Api\Request;
 use Omeka\Api\Response;
 use Omeka\Api\ResourceInterface;
+use Omeka\Stdlib\Paginator;
 use Omeka\Permissions\Acl;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\FormAdapter\ApiFormAdapter;
 use Search\Querier\Exception\QuerierException;
+use Search\Query;
 use Search\Response as SearchResponse;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Log\LoggerInterface;
@@ -76,11 +78,12 @@ class ApiSearch extends AbstractPlugin
     protected $entityManager;
 
     /**
-     * @var int
+     * @var Paginator
      */
-    protected $perPage;
+    protected $paginator;
 
     /**
+     *
      * @param Manager $api
      * @param SearchIndexRepresentation $index
      * @param AdapterManager $adapterManager
@@ -89,7 +92,7 @@ class ApiSearch extends AbstractPlugin
      * @param LoggerInterface $logger
      * @param TranslatorInterface $translator
      * @param EntityManager $entityManager
-     * @param int $perPage
+     * @param Paginator $paginator
      */
     public function __construct(
         Manager $api,
@@ -100,7 +103,7 @@ class ApiSearch extends AbstractPlugin
         LoggerInterface $logger = null,
         TranslatorInterface $translator = null,
         EntityManager $entityManager = null,
-        $perPage = null
+        Paginator $paginator = null
     ) {
         $this->api = $api;
         $this->index = $index;
@@ -110,7 +113,7 @@ class ApiSearch extends AbstractPlugin
         $this->logger = $logger;
         $this->translator = $translator;
         $this->entityManager = $entityManager;
-        $this->perPage = $perPage;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -154,7 +157,6 @@ class ApiSearch extends AbstractPlugin
     protected function execute(Request $request)
     {
         // Copy of ApiManager, with adaptations and simplifications.
-
         $t = $this->translator;
 
         // Get the adapter.
@@ -162,7 +164,7 @@ class ApiSearch extends AbstractPlugin
             $adapter = $this->adapterManager->get($request->getResource());
         } catch (ServiceNotFoundException $e) {
             throw new Exception\BadRequestException(sprintf(
-                $t->translate('The API does not support the "%s" resource.'),
+                $t->translate('The API does not support the "%s" resource.'), // @translate
                 $request->getResource()
             ));
         }
@@ -170,7 +172,7 @@ class ApiSearch extends AbstractPlugin
         // Verify that the current user has general access to this resource.
         if (!$this->acl->userIsAllowed($adapter, $request->getOperation())) {
             throw new Exception\PermissionDeniedException(sprintf(
-                $t->translate('Permission denied for the current user to %s the %s resource.'),
+                $t->translate('Permission denied for the current user to %s the %s resource.'), // @translate
                 $request->getOperation(),
                 $adapter->getResourceId()
             ));
@@ -227,73 +229,71 @@ class ApiSearch extends AbstractPlugin
         // See \Search\Controller\IndexController::searchAction() for process.
         // Currently, only manage simple search and common params.
         // This corresponds to the search page form, but for the api.
+        $query = $request->getContent();
 
-        $params = $request->getContent();
+        // Set default query parameters
+        if (! isset($query['page'])) {
+            $query['page'] = null;
+        }
+        if (! isset($query['per_page'])) {
+            $query['per_page'] = null;
+        }
+        if (! isset($query['limit'])) {
+            $query['limit'] = null;
+        }
+        if (! isset($query['offset'])) {
+            $query['offset'] = null;
+        }
+        if (! isset($query['sort_by'])) {
+            $query['sort_by'] = null;
+        }
+        if (isset($query['sort_order'])
+            && in_array(strtoupper($query['sort_order']), ['ASC', 'DESC'])
+        ) {
+            $query['sort_order'] = strtoupper($query['sort_order']);
+        } else {
+            // Sort order is not forced because it may be the inverse for score.
+            $query['sort_order'] = null;
+        }
 
         // There is no form validation/filter.
 
-        // Prepare the query.
+        // Begin building the search query.
         $resource = $request->getResource();
-        $searchFormSettings = ['resource' => $resource];
-        $query = $this->apiFormAdapter->toQuery($params, $searchFormSettings);
+        $searchFormSettings = [
+            'resource' => $resource,
+        ];
+        $searchQuery = $this->apiFormAdapter->toQuery($query, $searchFormSettings);
+        $searchQuery->setResources([$resource]);
 
-        // Add global parameters to the query.
-        $index = $this->index;
-        $indexSettings = $index->settings();
+        // Note: the event search.query is not triggered.
 
+        // Nevertheless, the "is public" is automatically forced for visitors.
         if (!$this->acl->getAuthenticationService()->hasIdentity()) {
-            $query->setIsPublic(true);
+            $searchQuery->setIsPublic(true);
         }
 
         // No site by default for the api (added by controller only).
 
-        $query->setResources([$resource]);
-
-        if (!empty($params['sort_by'])) {
-            if (isset($params['sort_order'])) {
-                $sortOrder = strtolower($params['sort_order']);
-                $sortOrder = $sortOrder === 'desc' ? 'desc' : 'asc';
-            } else {
-                $sortOrder = 'asc';
-            }
-            $sort = $params['sort_by'];
-            $property = $this->normalizeProperty($sort);
-            if ($property) {
-                $query->setSort($property . ' ' . $sortOrder);
-            } elseif (in_array($sort, ['resource_class_label', 'owner_name'])) {
-                $query->setSort($sort . ' ' . $sortOrder);
-            } elseif (in_array($sort, ['id', 'is_public', 'created', 'modified'])) {
-                $query->setSort($sort . ' ' . $sortOrder);
-            }
-            // TODO Sort order is not managed.
-            // TODO Sort randomly is not managed.
-            // TODO Sort by item count is not managed.
-        }
-        // Else sort by relevance.
+        // Finish building the search query.
+        // The default sort is the one of the search engine, so it is not added,
+        // except if it is specifically set.
+        $this->sortQuery($searchQuery, $query);
+        $this->limitQuery($searchQuery, $query);
+        // $searchQuery->addOrderBy("$entityClass.id", $query['sort_order']);
 
         // No filter for specific limits.
-
-        // For pagination, params "limit" and "offset" are not managed.
-        if (!empty($params['page']) && (int) $params['page']) {
-            $pageNumber = (int) $params['page'];
-            // $this->paginator->setCurrentPage($pageNumber);
-            // TODO "per_page" is currently not managed (add a limit).
-            // if (!empty($params['per_page']) && (int) $params['per_page']) {
-            //     $perPage = (int) $params['per_page'];
-            //     $this->paginator->setPerPage($perPage);
-            // }
-        } else {
-            $pageNumber = 1;
-        }
-        $query->setLimitPage($pageNumber, $this->perPage);
 
         // No facets for the api.
 
         // Send the query to the search engine.
+        $index = $this->index;
+        $indexSettings = $index->settings();
+
         /** @var \Search\Querier\QuerierInterface $querier */
         $querier = $index->querier();
         try {
-            $searchResponse = $querier->query($query);
+            $searchResponse = $querier->query($searchQuery);
         } catch (QuerierException $e) {
             throw new Exception\BadResponseException($e->getMessage(), $e->getCode(), $e);
         }
@@ -308,7 +308,7 @@ class ApiSearch extends AbstractPlugin
         $ids = $this->extractIdsFromResponse($searchResponse, $resource);
         $mapClasses = [
             'items' => \Omeka\Entity\Item::class,
-            'item_sets' => \Omeka\Entity\ItemSet::class,
+            'item_sets' => \Omeka\Entity\ItemSet::class
         ];
         $entityClass = $mapClasses[$resource];
         $repository = $this->entityManager->getRepository($entityClass);
@@ -319,6 +319,83 @@ class ApiSearch extends AbstractPlugin
         $response = new Response($entities);
         $response->setTotalResults($totalResults);
         return $response;
+    }
+
+    /**
+     * Set sort_by and sort_order conditions to the query builder.
+     *
+     * @see \Omeka\Api\Adapter\AbstractResourceEntityAdapter::sortQuery()
+     * @see \Omeka\Api\Adapter\AbstractEntityAdapter::sortQuery()
+     *
+     * @param Query $searchQuery
+     * @param array $query
+     */
+    protected function sortQuery(Query $searchQuery, array $query)
+    {
+        if (!is_string($query['sort_by'])) {
+            return;
+        }
+        $sort = $query['sort_by'];
+
+        if (isset($query['sort_order'])) {
+            $sortOrder = strtolower($query['sort_order']);
+            $sortOrder = $sortOrder === 'desc' ? 'desc' : 'asc';
+        } else {
+            $sortOrder = null;
+        }
+
+        $property = $this->normalizeProperty($sort);
+        if ($property) {
+            $searchQuery->setSort($property . ' ' . $sortOrder);
+        } elseif (in_array($sort, ['resource_class_label', 'owner_name'])) {
+            $searchQuery->setSort($sort . ' ' . $sortOrder);
+        } elseif (in_array($sort, ['id', 'is_public', 'created', 'modified'])) {
+            $searchQuery->setSort($sort . ' ' . $sortOrder);
+        }
+
+        // TODO Sort order is not managed.
+        // TODO Sort randomly is not managed (can be done partially in the view).
+        // TODO Sort by item count is not managed.
+        // Else sort by relevance (score).
+
+        // TODO Check with the mapping between sort and indexed fields.
+    }
+
+    /**
+     * Set page, limit (max results) and offset (first result) conditions to the
+     * query builder.
+     *
+     * @see \Omeka\Api\Adapter\AbstractEntityAdapter::limitQuery()
+     *
+     * @param Query $searchQuery
+     * @param array $query
+     */
+    protected function limitQuery(Query $searchQuery, array $query)
+    {
+        if (is_numeric($query['page'])) {
+            $page = $query['page'] > 0 ? (int) $query['page'] : 1;
+            if (is_numeric($query['per_page']) && $query['per_page'] > 0) {
+                $perPage = (int) $query['per_page'];
+                $this->paginator->setPerPage($perPage);
+            } else {
+                $perPage = $this->paginator->getPerPage();
+            }
+            $searchQuery->setLimitPage($page, $perPage);
+            return;
+        }
+
+        // TODO Offset is not really managed in apiSearch (but rarely used).
+        $limit = $query['limit'] > 0 ? (int) $query['limit'] : null;
+        $offset = $query['offset'] > 0 ? (int) $query['offset'] : null;
+        if ($limit && $offset) {
+            // TODO Check the formule to convert offset and limit to page and per page (rarely used).
+            $page = $offset > $limit ? 1 + (int) (($offset - 1) / $limit) : 1;
+            $searchQuery->setLimitPage($page, $limit);
+        } elseif ($limit) {
+            $searchQuery->setLimitPage(1, $limit);
+        } elseif ($offset) {
+            $searchQuery->setLimitPage($offset, 1);
+        }
     }
 
     /**

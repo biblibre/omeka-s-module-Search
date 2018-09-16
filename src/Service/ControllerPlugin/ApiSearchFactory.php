@@ -22,7 +22,7 @@ class ApiSearchFactory implements FactoryInterface
                 $logger = $services->get('Omeka\Logger');
                 $translator = $services->get('MvcTranslator');
                 $entityManager = $services->get('Omeka\EntityManager');
-                $perPage = $settings->get('pagination_per_page', \Omeka\Stdlib\Paginator::PER_PAGE);
+                $paginator = $services->get('Omeka\Paginator');
             } catch (\Omeka\Api\Exception\NotFoundException $e) {
                 $index = null;
                 $adapterManager = null;
@@ -31,7 +31,7 @@ class ApiSearchFactory implements FactoryInterface
                 $logger = null;
                 $translator = null;
                 $entityManager = null;
-                $perPage = null;
+                $paginator = null;
             }
         } else {
             $index = null;
@@ -41,7 +41,7 @@ class ApiSearchFactory implements FactoryInterface
             $logger = null;
             $translator = null;
             $entityManager = null;
-            $perPage = null;
+            $paginator = null;
         }
 
         return new ApiSearch(
@@ -53,7 +53,7 @@ class ApiSearchFactory implements FactoryInterface
             $logger,
             $translator,
             $entityManager,
-            $perPage
+            $paginator
         );
     }
 }
