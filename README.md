@@ -149,6 +149,10 @@ So when the item pool of a site or the item sets attached to it are modified, a
 manual reindexation should be done in the Search board. This job can be done via
 a cron too (see your system cron).
 
+Furthermore, there may be an indexation delay between the moment when a resource
+is saved and the moment when it is fully available in the search engine (it may
+be some minutes with Solr, according to your configuration).
+
 
 TODO
 ----
@@ -167,6 +171,9 @@ TODO
 - Allow to import/export a mapping via json, for example the default one.
 - Add an option to use the search api by default (and an option `'index' => false`).
 - Set one api page by site and a quick set in the pages settings.
+- Option to forbid default search and advanced search in public front-end.
+- Update index when item pool of a site change.
+- Genericize and move the value extractor from module Solr to module Search.
 
 
 Warning
@@ -240,6 +247,7 @@ See commits for full list of contributors.
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [jQueryUI]: https://github.com/biblibre/omeka-s-module-jQueryUI
 [Reference]: https://github.com/Daniel-KM/Omeka-S-module-Reference
+[Browse preview]: https://omeka.org/s/docs/user-manual/sites/site_pages/#browse-preview
 [module issues]: https://github.com/BibLibre/Omeka-S-module-Search/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
