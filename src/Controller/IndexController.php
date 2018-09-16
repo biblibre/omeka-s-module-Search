@@ -80,7 +80,6 @@ class IndexController extends AbstractActionController
             throw new RuntimeException($msg);
         }
 
-        // An empty query is allowed: the result depends on the search engine.
         $request = $this->params()->fromQuery();
 
         // FIXME The form should not require to be initialized with a page to use the view helper.
@@ -90,8 +89,14 @@ class IndexController extends AbstractActionController
         // No form in case of an api search.
         $jsonQuery = empty($form);
 
-        // TODO Don't return empty result when there is no query, but do search, as a default browse.
+        // Here, an empty query is not allowed. To allow it, add a useless arg.
         if (empty($request)) {
+            if ($jsonQuery) {
+                return new JsonModel([
+                    'status' => 'error',
+                    'message' => 'No query.', // @translate
+                ]);
+            }
             return $view;
         }
 
