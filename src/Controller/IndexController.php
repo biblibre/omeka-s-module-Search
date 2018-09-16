@@ -233,6 +233,10 @@ class IndexController extends AbstractActionController
             return [];
         }
 
+        $indexAdapter = $this->index->adapter();
+        if (empty($indexAdapter)) {
+            return [];
+        }
         $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
         foreach ($settings['sort_fields'] as $name => $sortField) {
             if (!$sortField['enabled']) {

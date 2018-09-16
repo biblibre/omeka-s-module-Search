@@ -72,13 +72,15 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
     }
 
     /**
-     * @return \Search\Adapter\AdapterInterface
+     * @return \Search\Adapter\AdapterInterface|null
      */
     public function adapter()
     {
         $name = $this->resource->getAdapter();
         $adapterManager = $this->getServiceLocator()->get('Search\AdapterManager');
-        return $adapterManager->has($name) ? $adapterManager->get($name) : null;
+        return $adapterManager->has($name)
+            ? $adapterManager->get($name)
+            : null;
     }
 
     /**
@@ -113,7 +115,9 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         $adapter = $this->adapter();
         if (!$adapter) {
             $translator = $this->getServiceLocator()->get('MvcTranslator');
-            return $translator->translate('[No adapter]');
+            return sprintf($translator->translate('[Missing adapter "%s"]'), // @translate
+                $this->resource->getAdapter()
+            );
         }
 
         return $adapter->getLabel();

@@ -73,8 +73,16 @@ class SearchIndexController extends AbstractActionController
 
         $id = $this->params('id');
 
+        /** @var \Search\Entity\SearchIndex $searchIndex */
         $searchIndex = $entityManager->find(\Search\Entity\SearchIndex::class, $id);
-        $adapter = $adapterManager->get($searchIndex->getAdapter());
+        $searchIndexAdapterName = $searchIndex->getAdapter();
+        if (!$adapterManager->has($searchIndexAdapterName)) {
+            $this->messenger()->addError(new Message('The adapter "%s" is not available.', // @translate
+                $searchIndexAdapterName
+            ));
+            return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
+        }
+        $adapter = $adapterManager->get($searchIndexAdapterName);
 
         $form = $this->getForm(SearchIndexConfigureForm::class, [
             'search_index_id' => $id,
