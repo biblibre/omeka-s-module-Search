@@ -66,6 +66,7 @@ class SearchIndex extends AbstractJob
         $searchIndex = $api->read('search_indexes', $searchIndexId)->getContent();
         $indexer = $searchIndex->indexer();
 
+        $timeStart = microtime(true);
         $this->logger->info('Start of indexing'); // @translate
         $this->logger->info(new Message('Index: #%d "%s"', $searchIndex->id(), $searchIndex->name())); // @translate
 
@@ -121,8 +122,8 @@ class SearchIndex extends AbstractJob
                     } else {
                         $resource = array_pop($resources);
                         $this->logger->warn(new Message(
-                            'The job "Search Index" was stopped. Last indexed resource: %s #%d; %s.', // @translate
-                            $resource->getResourceName(), $resource->getId(), implode('; ', $totalResults)
+                            'The job "Search Index" was stopped. Last indexed resource: %s #%d; %s. Execution time: %d seconds.', // @translate
+                            $resource->getResourceName(), $resource->getId(), implode('; ', $totalResults), (int) (microtime(true) - $timeStart)
                         ));
                     }
                     return;
@@ -148,7 +149,8 @@ class SearchIndex extends AbstractJob
         foreach ($resourceNames as $resourceName) {
             $totalResults[] = new Message('%s: %d indexed', $resourceName, $totals[$resourceName]); // @translate
         }
-        $this->logger->info(new Message('End of indexing (#%d "%s"). %s.', // @translate
-            $searchIndex->id(), $searchIndex->name(), implode('; ', $totalResults)));
+        $this->logger->info(new Message('End of indexing (#%d "%s"). %s. Execution time: %s seconds.', // @translate
+            $searchIndex->id(), $searchIndex->name(), implode('; ', $totalResults), (int) (microtime(true) - $timeStart)
+        ));
     }
 }
