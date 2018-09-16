@@ -244,7 +244,7 @@ class ApiSearch extends AbstractPlugin
             $query->setIsPublic(true);
         }
 
-        // No site by default for the api.
+        // No site by default for the api (added by controller only).
 
         $query->setResources([$resource]);
 

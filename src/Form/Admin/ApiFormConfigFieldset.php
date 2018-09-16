@@ -17,6 +17,138 @@ class ApiFormConfigFieldset extends Fieldset
     {
         $fieldOptions = $this->getFieldsOptions();
 
+        $metadataFieldset = new Fieldset('metadata');
+        $metadataFieldset->setLabel('Mapping metadata to search fields'); // @translate
+        $metadataFieldset->setAttribute('id', 'metadata');
+
+        $metadataFieldset->add([
+            'name' => 'id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Internal identifier', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'is_public',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Is Public', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'owner_id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Owner id', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'resource_class_label',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Resource class label', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'resource_class_id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Resource class id', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'resource_template_id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Resource template id', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'item_set_id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Item set id', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'site_id',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Site id', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $metadataFieldset->add([
+            'name' => 'is_open',
+            'type' => OptionalSelect::class,
+            'options' => [
+                'label' => 'Is open', // @translate
+                'value_options' => $fieldOptions,
+                'empty_option' => 'None', // @translate
+            ],
+            'attributes' => [
+                'required' => false,
+                'class' => 'chosen-select',
+            ],
+        ]);
+
+        $this->add($metadataFieldset);
+
         $propertiesFieldset = new Fieldset('properties');
         $propertiesFieldset->setLabel('Mapping properties to search fields'); // @translate
         $propertiesFieldset->setAttribute('id', 'properties');

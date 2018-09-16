@@ -179,16 +179,16 @@ $(document).ready(function() {
     });
 
     /**
-     * Add a button to do an automapping for the api mapping.
+     * Add a button to automap the closest field name for the api mapping.
      */
-    $('#properties')
-        .prepend('<button id="api_mapping_auto">' + Omeka.jsTranslate('Map empty mapping') + '</button>')
+    $('#metadata')
+        .before('<button id="api_mapping_auto">' + Omeka.jsTranslate('Map empty mapping') + '</button>')
     $('#api_mapping_auto').on('click', function(event) {
         event.preventDefault();
-        $('#properties select:has(option[value=""]:selected)').each(function() {
-            var term = $(this).prop('name').replace('form[api_mapping][', '').replace(']', '');
+        $('#metadata select:has(option[value=""]:selected), #properties select:has(option[value=""]:selected)').each(function() {
+            var term = $(this).prop('name').replace('form[' + $(this).closest('fieldset').prop('id') + '][', '').replace(']', '');
             var normTerm = term.replace(':', '_') + '_';
-            $(this).find("> option").each(function() {
+            $(this).find('> option').each(function() {
                 if (this.value.startsWith(normTerm)) {
                     $(this).prop('selected', true);
                     $(this).parent().trigger('chosen:updated');
