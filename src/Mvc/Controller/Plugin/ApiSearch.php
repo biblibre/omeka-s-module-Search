@@ -262,9 +262,9 @@ class ApiSearch extends AbstractPlugin
             $query['sort_by'] = null;
         }
         if (isset($query['sort_order'])
-            && in_array(strtoupper($query['sort_order']), ['ASC', 'DESC'])
+            && in_array(strtolower($query['sort_order']), ['asc', 'desc'])
         ) {
-            $query['sort_order'] = strtoupper($query['sort_order']);
+            $query['sort_order'] = strtolower($query['sort_order']);
         } else {
             // Sort order is not forced because it may be the inverse for score.
             $query['sort_order'] = null;
@@ -277,7 +277,7 @@ class ApiSearch extends AbstractPlugin
         $searchPageSettings = $this->page->settings();
         $searchFormSettings = isset($searchPageSettings['form'])
             ? $searchPageSettings['form']
-            : ['options' => [], 'metadata' => [], 'properties' => []];
+            : ['options' => [], 'metadata' => [], 'properties' => [], 'sort_fields' => []];
         $searchFormSettings['resource'] = $resource;
         $searchQuery = $this->apiFormAdapter->toQuery($query, $searchFormSettings);
         $searchQuery->setResources([$resource]);
@@ -294,7 +294,7 @@ class ApiSearch extends AbstractPlugin
         // Finish building the search query.
         // The default sort is the one of the search engine, so it is not added,
         // except if it is specifically set.
-        $this->sortQuery($searchQuery, $query);
+        $this->sortQuery($searchQuery, $query, $searchFormSettings['metadata'], $searchFormSettings['sort_fields']);
         $this->limitQuery($searchQuery, $query, $searchFormSettings['options']);
         // $searchQuery->addOrderBy("$entityClass.id", $query['sort_order']);
 
@@ -332,6 +332,13 @@ class ApiSearch extends AbstractPlugin
             'id' => $ids,
         ]);
 
+        // The original order of the ids must be kept.
+        $orderedEntities = array_fill_keys($ids, null);
+        foreach ($entities as $entity) {
+            $orderedEntities[$entity->getId()] = $entity;
+        }
+        $entities = array_values(array_filter($orderedEntities));
+
         $response = new Response($entities);
         $response->setTotalResults($totalResults);
         return $response;
@@ -345,13 +352,21 @@ class ApiSearch extends AbstractPlugin
      *
      * @param Query $searchQuery
      * @param array $query
+     * @param array $metadata
+     * @param array $sortFields
      */
-    protected function sortQuery(Query $searchQuery, array $query)
+    protected function sortQuery(Query $searchQuery, array $query, array $metadata, array $sortFields)
     {
+        if (empty($metadata) || empty($sortFields)) {
+            return;
+        }
         if (!is_string($query['sort_by'])) {
             return;
         }
-        $sort = $query['sort_by'];
+        if (empty($metadata[$query['sort_by']])) {
+            return;
+        }
+        $sortBy = $metadata[$query['sort_by']];
 
         if (isset($query['sort_order'])) {
             $sortOrder = strtolower($query['sort_order']);
@@ -360,21 +375,27 @@ class ApiSearch extends AbstractPlugin
             $sortOrder = null;
         }
 
-        $property = $this->normalizeProperty($sort);
+        $property = $this->normalizeProperty($sortBy);
         if ($property) {
-            $searchQuery->setSort($property . ' ' . $sortOrder);
-        } elseif (in_array($sort, ['resource_class_label', 'owner_name'])) {
-            $searchQuery->setSort($sort . ' ' . $sortOrder);
-        } elseif (in_array($sort, ['id', 'is_public', 'created', 'modified'])) {
-            $searchQuery->setSort($sort . ' ' . $sortOrder);
+            $sort = $sortOrder ? $property . ' ' . $sortOrder : $property;
+        } elseif (in_array($sortBy, ['resource_class_label', 'owner_name'])) {
+            $sort = $sortOrder ? $sortBy . ' ' . $sortOrder : $sortBy;
+        } elseif (in_array($sortBy, ['id', 'is_public', 'created', 'modified'])) {
+            $sort = $sortOrder ? $sortBy . ' ' . $sortOrder : $sortBy;
+        } else {
+            // Indicate that the sort is checked and that it will be default.
+            $searchQuery->setSort(null);
+            return;
         }
 
-        // TODO Sort order is not managed.
+        // Check if the sort order is managed.
+        if (in_array($sort, $sortFields)) {
+            $searchQuery->setSort($sort);
+        }
+
         // TODO Sort randomly is not managed (can be done partially in the view).
         // TODO Sort by item count is not managed.
-        // Else sort by relevance (score).
-
-        // TODO Check with the mapping between sort and indexed fields.
+        // Else sort by relevance (score) or by id?
     }
 
     /**

@@ -32,7 +32,6 @@ class ApiFormConfigFieldset extends Fieldset
                 'required' => true,
             ],
         ]);
-
         $this->add($generalFieldset);
 
         $metadataFieldset = new Fieldset('metadata');
@@ -222,6 +221,23 @@ class ApiFormConfigFieldset extends Fieldset
         }
 
         $this->add($propertiesFieldset);
+
+        // Quick hack to get the available sort fields inside the form settings
+        // The sort fields may be different from the indexed fields in some
+        // search engine, so they should be checked when the api is used, since
+        // there is no user form validation.
+        $sortFieldset = new Fieldset('sort_fields');
+        $sortFields = $this->getAvailableSortFields();
+        foreach (array_keys($sortFields) as $key => $sortField) {
+            $sortFieldset->add([
+                'name' => $key,
+                'type' => Element\Hidden::class,
+                'attributes' => [
+                    'value' => $sortField,
+                ],
+            ]);
+        }
+        $this->add($sortFieldset);
     }
 
     protected function getAvailableFields()
@@ -230,6 +246,14 @@ class ApiFormConfigFieldset extends Fieldset
         $searchIndex = $searchPage->index();
         $searchAdapter = $searchIndex->adapter();
         return $searchAdapter->getAvailableFields($searchIndex);
+    }
+
+    protected function getAvailableSortFields()
+    {
+        $searchPage = $this->getOption('search_page');
+        $searchIndex = $searchPage->index();
+        $searchAdapter = $searchIndex->adapter();
+        return $searchAdapter->getAvailableSortFields($searchIndex);
     }
 
     protected function getFieldsOptions()

@@ -64,7 +64,7 @@ class Query
     protected $filterQueries = [];
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $sort = '';
 
@@ -208,8 +208,8 @@ class Query
     }
 
     /**
-     * @param string $sort The field and the direction ("asc" or "desc")
-     * separated by a space.
+     * @param string|null $sort The field and the direction ("asc" or "desc")
+     * separated by a space. Null means no sort (default of the search engine).
      */
     public function setSort($sort)
     {
@@ -217,8 +217,8 @@ class Query
     }
 
     /**
-     * @return string The field and the direction ("asc" or "desc") separated by
-     * a space.
+     * @return string|null The field and the direction ("asc" or "desc")
+     * separated by a space. Null means no sort (default of the search engine).
      */
     public function getSort()
     {

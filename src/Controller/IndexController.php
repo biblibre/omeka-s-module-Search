@@ -131,14 +131,18 @@ class IndexController extends AbstractActionController
             $query->setResources($indexSettings['resources']);
         }
 
-        if (isset($request['sort'])) {
-            $sort = $request['sort'];
-        } else {
-            $sortOptions = $this->getSortOptions();
-            reset($sortOptions);
-            $sort = key($sortOptions);
+        // Don't sort if it's already managed by the form, like the api form.
+        $sort = $query->getSort();
+        if (!is_null($sort)) {
+            if (isset($request['sort'])) {
+                $sort = $request['sort'];
+            } else {
+                $sortOptions = $this->getSortOptions();
+                reset($sortOptions);
+                $sort = key($sortOptions);
+            }
+            $query->setSort($sort);
         }
-        $query->setSort($sort);
 
         // Note: the global limit is managed via the pagination.
         $pageNumber = isset($request['page']) && $request['page'] > 0 ? (int) $request['page'] : 1;
