@@ -25,14 +25,17 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $form = $forms->get(\Search\Form\Admin\SearchPageForm::class);
 
         $this->dispatch('/admin/search-manager/page/add', 'POST', [
-            'o:name' => 'TestPage2',
+            'o:name' => 'TestPage [testAddPostAction]',
             'o:path' => 'search/test2',
             'o:index_id' => $this->searchIndex->id(),
             'o:form' => 'basic',
+            'manage_page_default' => '0',
+            'manage_page_availability' => 'let',
             'csrf' => $form->get('csrf')->getValue(),
         ]);
+        $this->assertResponseStatusCode(302);
         $response = $this->api()->search('search_pages', [
-            'name' => 'TestPage2',
+            'name' => 'TestPage [testAddPostAction]',
         ]);
         $searchPages = $response->getContent();
         $this->assertNotEmpty($searchPages);

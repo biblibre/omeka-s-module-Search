@@ -70,6 +70,6 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $messages = $messenger->get();
         $message = $messages[Messenger::SUCCESS][0];
         $this->assertInstanceOf(Message::class, $message);
-        $this->assertEquals('Indexing started in %sjob %s%s', $message->getMessage());
+        $this->assertEquals('Indexing of "%s" started in %sjob %s%s', $message->getMessage());
     }
 }
