@@ -37,6 +37,7 @@ use Search\Api\Representation\SearchPageRepresentation;
 use Search\Querier\Exception\QuerierException;
 use Search\Query;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -87,15 +88,18 @@ class IndexController extends AbstractActionController
         /** @var \Zend\Form\Form $form */
         $form = $this->searchForm($page);
 
-        $form->setData($request);
-        if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation.'); // @translate
-            return $view;
+        // No form in case of an api search.
+        $jsonQuery = empty($form);
+        if (!$jsonQuery) {
+            $form->setData($request);
+            if (!$form->isValid()) {
+                $this->messenger()->addError('There was an error during validation.'); // @translate
+                return $view;
+            }
+            // Get the filtered request, but keep the pagination and sort params,
+            // that are not managed by the form.
+            $request = $form->getData() + $this->filterExtraParams($request);
         }
-
-        // Get the filtered request, but keep the pagination and sort params,
-        // that are not managed by the form.
-        $request = $form->getData() + $this->filterExtraParams($request);
 
         $searchPageSettings = $page->settings();
         $searchFormSettings = isset($searchPageSettings['form'])
@@ -165,7 +169,11 @@ class IndexController extends AbstractActionController
         try {
             $response = $querier->query($query);
         } catch (QuerierException $e) {
-            $this->messenger()->addError(sprintf('Query error: %s', $e->getMessage())); // @translate
+            $message = sprintf('Query error: %s', $e->getMessage()); // @translate
+            if ($jsonQuery) {
+                return new JsonModel(['status' => 'error', 'message' => $message]);
+            }
+            $this->messenger()->addError($message);
             return $view;
         }
 
@@ -180,6 +188,14 @@ class IndexController extends AbstractActionController
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
         $this->paginator(max($totalResults), $pageNumber);
+
+        if ($jsonQuery) {
+            $result = [];
+            foreach ($indexSettings['resources'] as $resource) {
+                $result[$resource] = $response->getResults($resource);
+            }
+            return new JsonModel($result);
+        }
 
         $view->setVariable('query', $query);
         $view->setVariable('site', $site);
