@@ -89,6 +89,12 @@ class IndexController extends AbstractActionController
 
         // No form in case of an api search.
         $jsonQuery = empty($form);
+
+        // TODO Don't return empty result when there is no query, but do search, as a default browse.
+        if (empty($request)) {
+            return $view;
+        }
+
         if (!$jsonQuery) {
             $form->setData($request);
             if (!$form->isValid()) {
