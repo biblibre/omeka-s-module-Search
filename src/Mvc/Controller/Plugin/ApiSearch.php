@@ -117,6 +117,7 @@ class ApiSearch extends AbstractPlugin
      * Execute a search API request via a querier if available, else the api.
      *
      * The arguments are the same than \Omeka\Mvc\Controller\Plugin\Api::search().
+     * Some features of the Omeka api may not be available.
      *
      * @see \Omeka\Api\Manager::search()
      *

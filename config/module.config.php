@@ -26,6 +26,7 @@ return [
             'searchForm' => View\Helper\SearchForm::class,
         ],
         'factories' => [
+            'apiSearch' => Service\ViewHelper\ApiSearchFactory::class,
             'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
             'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
             'searchIndexConfirm' => Service\ViewHelper\SearchIndexConfirmFactory::class,
