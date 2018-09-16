@@ -34,6 +34,7 @@ return [
     'form_elements' => [
         'invokables' => [
             Form\ConfigForm::class => Form\ConfigForm::class,
+            Form\Element\OptionalSelect::class => Form\Element\OptionalSelect::class,
         ],
         'factories' => [
             Form\Admin\ApiFormConfigFieldset::class => Service\Form\ApiFormConfigFieldsetFactory::class,

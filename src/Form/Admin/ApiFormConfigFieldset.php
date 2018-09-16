@@ -2,7 +2,8 @@
 namespace Search\Form\Admin;
 
 use Omeka\Api\Manager as ApiManager;
-use Zend\Form\Element;
+use Search\Form\Element\OptionalSelect;
+// use Zend\Form\Element;
 use Zend\Form\Fieldset;
 
 class ApiFormConfigFieldset extends Fieldset
@@ -22,16 +23,16 @@ class ApiFormConfigFieldset extends Fieldset
 
         /** @var \Omeka\Api\Representation\PropertyRepresentation[] $properties */
         $properties = $this->getApiManager()->search('properties')->getContent();
-        // Input filter is available only by the form, not the fieldset.
-        // $inputFilter = $this->getInputFilter();
 
         foreach ($properties as $property) {
             $propertiesFieldset->add([
                 'name' => $property->term(),
-                'type' => Element\Select::class,
+                // Input filter is available only by the form, not the fieldset.
+                // It creates validation issues, so use an optional select.
+                // 'type' => Element\Select::class,
+                'type' => OptionalSelect::class,
                 'options' => [
-                    'label' => 'Field' // @translate
-                        . ' ' . $property->term(),
+                    'label' => $property->term(),
                     'value_options' => $fieldOptions,
                     'empty_option' => 'None', // @translate
                 ],
@@ -40,10 +41,6 @@ class ApiFormConfigFieldset extends Fieldset
                     'class' => 'chosen-select',
                 ],
             ]);
-            // $inputFilter->add([
-            //     'name' => $property->term(),
-            //     'required' => false,
-            // ]);
         }
 
         $this->add($propertiesFieldset);
