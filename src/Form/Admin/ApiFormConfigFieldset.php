@@ -3,7 +3,7 @@ namespace Search\Form\Admin;
 
 use Omeka\Api\Manager as ApiManager;
 use Search\Form\Element\OptionalSelect;
-// use Zend\Form\Element;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 
 class ApiFormConfigFieldset extends Fieldset
@@ -16,6 +16,24 @@ class ApiFormConfigFieldset extends Fieldset
     public function init()
     {
         $fieldOptions = $this->getFieldsOptions();
+
+        $generalFieldset = new Fieldset('options');
+        $generalFieldset->setLabel('Main options'); // @translate
+        $generalFieldset->setAttribute('id', 'options');
+
+        $generalFieldset->add([
+            'name' => 'max_results',
+            'type' => Element\Number::class,
+            'options' => [
+                'label' => 'Maximum number of results by response', // @translate
+                'info' => 'It is recommended to keep the value low (under 100 or 1000) to avoid overload of the server, or to use a paginator.', // @translate
+            ],
+            'attributes' => [
+                'required' => true,
+            ],
+        ]);
+
+        $this->add($generalFieldset);
 
         $metadataFieldset = new Fieldset('metadata');
         $metadataFieldset->setLabel('Mapping metadata to search fields'); // @translate

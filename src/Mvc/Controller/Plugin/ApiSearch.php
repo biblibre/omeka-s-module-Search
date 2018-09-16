@@ -277,7 +277,7 @@ class ApiSearch extends AbstractPlugin
         $searchPageSettings = $this->page->settings();
         $searchFormSettings = isset($searchPageSettings['form'])
             ? $searchPageSettings['form']
-            : [];
+            : ['options' => [], 'metadata' => [], 'properties' => []];
         $searchFormSettings['resource'] = $resource;
         $searchQuery = $this->apiFormAdapter->toQuery($query, $searchFormSettings);
         $searchQuery->setResources([$resource]);
@@ -295,7 +295,7 @@ class ApiSearch extends AbstractPlugin
         // The default sort is the one of the search engine, so it is not added,
         // except if it is specifically set.
         $this->sortQuery($searchQuery, $query);
-        $this->limitQuery($searchQuery, $query);
+        $this->limitQuery($searchQuery, $query, $searchFormSettings['options']);
         // $searchQuery->addOrderBy("$entityClass.id", $query['sort_order']);
 
         // No filter for specific limits.
@@ -385,8 +385,9 @@ class ApiSearch extends AbstractPlugin
      *
      * @param Query $searchQuery
      * @param array $query
+     * @param array $options
      */
-    protected function limitQuery(Query $searchQuery, array $query)
+    protected function limitQuery(Query $searchQuery, array $query, array $options)
     {
         if (is_numeric($query['page'])) {
             $page = $query['page'] > 0 ? (int) $query['page'] : 1;
@@ -400,8 +401,11 @@ class ApiSearch extends AbstractPlugin
             return;
         }
 
+        // Set the max limit.
+        $maxResults = empty($options['max_results']) ? 1 : (int) $options['max_results'];
+
         // TODO Offset is not really managed in apiSearch (but rarely used).
-        $limit = $query['limit'] > 0 ? (int) $query['limit'] : null;
+        $limit = $query['limit'] > 0 ? min((int) $query['limit'], $maxResults) : $maxResults;
         $offset = $query['offset'] > 0 ? (int) $query['offset'] : null;
         if ($limit && $offset) {
             // TODO Check the formule to convert offset and limit to page and per page (rarely used).
