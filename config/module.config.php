@@ -27,6 +27,7 @@ return [
         ],
         'factories' => [
             'apiSearch' => Service\ViewHelper\ApiSearchFactory::class,
+            'apiSearchOne' => Service\ViewHelper\ApiSearchOneFactory::class,
             'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
             'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
             'searchIndexConfirm' => Service\ViewHelper\SearchIndexConfirmFactory::class,
@@ -60,6 +61,7 @@ return [
     'controller_plugins' => [
         'factories' => [
             'apiSearch' => Service\ControllerPlugin\ApiSearchFactory::class,
+            'apiSearchOne' => Service\ControllerPlugin\ApiSearchOneFactory::class,
             'searchForm' => Service\ControllerPlugin\SearchFormFactory::class,
         ],
     ],
