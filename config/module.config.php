@@ -184,6 +184,7 @@ return [
         'Enabled', // @translate
         'Find', // @translate
         'Find resources…', // @translate
+        'Processing…', // @translate
         'Try to map automatically the metadata and the properties that are not mapped yet with the fields of the index', // @translate
     ],
     'search_adapters' => [
