@@ -35,7 +35,7 @@ use Omeka\Module\AbstractModule;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 use Search\Form\ConfigForm;
-use Search\Indexer\AbstractIndexer;
+use Search\Indexer\IndexerInterface;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
@@ -470,11 +470,11 @@ SQL;
     /**
      * Delete the search index for a resource.
      *
-     * @param AbstractIndexer $indexer
+     * @param IndexerInterface $indexer
      * @param string $resourceName
      * @param int $id
      */
-    protected function deleteIndexResource(AbstractIndexer $indexer, $resourceName, $id)
+    protected function deleteIndexResource(IndexerInterface $indexer, $resourceName, $id)
     {
         try {
             $indexer->deleteResource($resourceName, $id);
@@ -492,10 +492,10 @@ SQL;
     /**
      * Update the search index for a resource.
      *
-     * @param AbstractIndexer $indexer
+     * @param IndexerInterface $indexer
      * @param Resource $resource
      */
-    protected function updateIndexResource(AbstractIndexer $indexer, Resource $resource)
+    protected function updateIndexResource(IndexerInterface $indexer, Resource $resource)
     {
         try {
             $indexer->indexResource($resource);
