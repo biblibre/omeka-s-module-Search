@@ -194,8 +194,10 @@ return [
     ],
     'search_form_adapters' => [
         'invokables' => [
-            'api' => FormAdapter\ApiFormAdapter::class,
             'basic' => FormAdapter\BasicFormAdapter::class,
+        ],
+        'factories' => [
+            'api' => Service\FormAdapter\ApiFormAdapterFactory::class,
         ],
     ],
     'search' => [

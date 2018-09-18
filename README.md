@@ -174,6 +174,7 @@ TODO
 - Option to forbid default search and advanced search in public front-end.
 - Update index when item pool of a site change.
 - Genericize and move the value extractor from module Solr to module Search.
+- Improve the check of presence of an item in sites for real time indexation.
 
 
 Warning

@@ -1,6 +1,7 @@
 <?php
 namespace Search\FormAdapter;
 
+use Doctrine\DBAL\Connection;
 use Search\Query;
 
 /**
@@ -10,6 +11,19 @@ use Search\Query;
  */
 class ApiFormAdapter implements FormAdapterInterface
 {
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @param Connection $connection
+     */
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
     public function getLabel()
     {
         return 'Api'; // @translate
@@ -210,20 +224,27 @@ class ApiFormAdapter implements FormAdapterInterface
      */
     protected function normalizeProperty($property)
     {
-        if ($property) {
-            if (is_numeric($property)) {
-                try {
-                    /** @var \Omeka\Api\Representation\PropertyRepresentation $property */
-                    $property = $this->api->read('properties', ['id' => $property])->getContent();
-                    return $property->term();
-                } catch (\Omeka\Api\Exception\NotFoundException $e) {
-                    return '';
-                }
-            }
-            // TODO Check the property name of a request.
-            return (string) $property;
+        static $properties;
+
+        if (!$property) {
+            return '';
         }
-        return '';
+
+        if (is_null($properties)) {
+            $sql = <<<'SQL'
+SELECT property.id, CONCAT(vocabulary.prefix, ":", property.local_name)
+FROM property
+JOIN vocabulary ON vocabulary.id = property.vocabulary_id
+SQL;
+            $properties = $this->connection
+                ->query($sql)->fetchAll(\PDO::FETCH_KEY_PAIR);
+        }
+        if (is_numeric($property)) {
+            $property = (int) $property;
+            return isset($properties[$property]) ? $properties[$property] : '';
+        }
+        $property = (string) $property;
+        return in_array($property, $properties) ? $property : '';
     }
 
     /**
