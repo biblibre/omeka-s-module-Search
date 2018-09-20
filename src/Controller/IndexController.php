@@ -226,11 +226,18 @@ class IndexController extends AbstractActionController
     /**
      * Filter the pagination and sort params from the request.
      *
+     * @todo Warning: "limit" is used as limit (int) of results and as filter for facets (array).
+     *
      * @param array $request
      * @return array
      */
     protected function filterExtraParams(array $request)
     {
+        $limitFacetRequest = [];
+        if (!empty($request['limit']) && is_array($request['limit'])) {
+            $limitFacetRequest['limit'] = $request['limit'];
+        }
+
         $paginationRequest = array_map('intval', array_filter(array_intersect_key(
             $request,
             // @see \Omeka\Api\Adapter\AbstractEntityAdapter::limitQuery().
@@ -248,7 +255,7 @@ class IndexController extends AbstractActionController
             ]
         );
 
-        return $paginationRequest + $sortRequest;
+        return $limitFacetRequest + $paginationRequest + $sortRequest;
     }
 
     /**
