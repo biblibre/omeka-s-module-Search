@@ -143,12 +143,12 @@ class IndexController extends AbstractActionController
         }
 
         // Don't sort if it's already managed by the form, like the api form.
+        $sortOptions = $this->getSortOptions();
         $sort = $query->getSort();
         if (!is_null($sort)) {
-            if (isset($request['sort'])) {
+            if (isset($request['sort']) && isset($sortOptions[$request['sort']])) {
                 $sort = $request['sort'];
             } else {
-                $sortOptions = $this->getSortOptions();
                 reset($sortOptions);
                 $sort = key($sortOptions);
             }
