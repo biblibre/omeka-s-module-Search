@@ -103,7 +103,12 @@ class IndexController extends AbstractActionController
         if (!$jsonQuery) {
             $form->setData($request);
             if (!$form->isValid()) {
-                $this->messenger()->addError('There was an error during validation.'); // @translate
+                $messages = $form->getMessages();
+                if (isset($messages['csrf'])) {
+                    $this->messenger()->addError('Invalid or missing CSRF token'); // @translate
+                } else {
+                    $this->messenger()->addError('There was an error during validation'); // @translate
+                }
                 return $view;
             }
             // Get the filtered request, but keep the pagination and sort params,
