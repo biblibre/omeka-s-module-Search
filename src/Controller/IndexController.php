@@ -35,6 +35,7 @@ use Omeka\Stdlib\Paginator;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Api\Representation\SearchPageRepresentation;
 use Search\Querier\Exception\QuerierException;
+use Zend\EventManager\Event;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -186,6 +187,16 @@ class IndexController extends AbstractActionController
                 }
             }
         }
+
+        // TODO Use a generic querier as target for the event?
+        $eventManager = $this->getEventManager();
+        $eventArgs = $eventManager->prepareArgs([
+            'search_page' => $page,
+            'request' => $request,
+            'query' => $query,
+        ]);
+        $eventManager->triggerEvent(new Event('search.query.pre', $this, $eventArgs));
+        $query = $eventArgs['query'];
 
         // Send the query to the search engine.
         $querier = $index->querier();
