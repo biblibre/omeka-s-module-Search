@@ -61,7 +61,6 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
                         'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
                         'response' => $response,
                         'resourceName' => 'item_sets',
-                        'site' => $site,
                     ]);
                     ?>
 
@@ -71,7 +70,6 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
                         'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                         'response' => $response,
                         'resourceName' => 'items',
-                        'site' => $site,
                     ]);
                     ?>
 
