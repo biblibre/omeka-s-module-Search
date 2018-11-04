@@ -133,13 +133,13 @@ class SearchIndexController extends AbstractActionController
     public function indexAction()
     {
         $searchIndexId = (int) $this->params('id');
-        $index = $this->api()->read('search_indexes', $searchIndexId)->getContent();
+        $searchIndex = $this->api()->read('search_indexes', $searchIndexId)->getContent();
 
         $startResourceId = (int) $this->params()->fromPost('start_resource_id');
         $resourceNames = $this->params()->fromPost('resource_names') ?: [];
 
         $jobArgs = [];
-        $jobArgs['search_index_id'] = $searchIndexId;
+        $jobArgs['search_index_id'] = $searchIndex->id();
         $jobArgs['start_resource_id'] = $startResourceId;
         $jobArgs['resource_names'] = $resourceNames;
         $jobDispatcher = $this->getJobDispatcher();
@@ -153,7 +153,7 @@ class SearchIndexController extends AbstractActionController
 
         $message = new Message(
             'Indexing of "%s" started in %sjob %s%s', // @translate
-            $index->name(),
+            $searchIndex->name(),
             sprintf('<a href="%s">', htmlspecialchars($jobUrl)),
             $job->getId(),
             '</a>'

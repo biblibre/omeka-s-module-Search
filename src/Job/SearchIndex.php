@@ -60,7 +60,7 @@ class SearchIndex extends AbstractJob
         }
 
         $searchIndexId = $this->getArg('search_index_id');
-        $startResourceId = $this->getArg('start_resource_id');
+        $startResourceId = (int) $this->getArg('start_resource_id');
 
         /** @var \Search\Api\Representation\SearchIndexRepresentation $searchIndex */
         $searchIndex = $api->read('search_indexes', $searchIndexId)->getContent();

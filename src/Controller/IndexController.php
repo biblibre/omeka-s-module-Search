@@ -83,11 +83,9 @@ class IndexController extends AbstractActionController
 
         $request = $this->params()->fromQuery();
 
-        // FIXME The form should not require to be initialized with a page to use the view helper.
+        // If the page is empty (json api request), there is no form.
         /** @var \Zend\Form\Form $form */
         $form = $this->searchForm($page);
-
-        // No form in case of an api search.
         $jsonQuery = empty($form);
 
         // Here, an empty query is not allowed. To allow it, add a useless arg.
@@ -101,6 +99,7 @@ class IndexController extends AbstractActionController
             return $view;
         }
 
+        // TODO Validate api query too.
         if (!$jsonQuery) {
             $form->setData($request);
             if (!$form->isValid()) {
@@ -231,6 +230,8 @@ class IndexController extends AbstractActionController
             return new JsonModel($result);
         }
 
+        // Form is not set in the view.
+        // $view->setVariable('form', $form);
         $view->setVariable('query', $query);
         $view->setVariable('site', $site);
         $view->setVariable('response', $response);

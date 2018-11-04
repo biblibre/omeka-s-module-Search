@@ -43,6 +43,7 @@ class BasicForm extends Form
                 'label' => 'Search', // @translate
             ],
             'attributes' => [
+                'id' => 'q',
                 'placeholder' => 'Search resources', // @translate
             ],
         ]);
