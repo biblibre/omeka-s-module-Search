@@ -76,7 +76,7 @@ return [
     ],
     'navigation' => [
         'AdminGlobal' => [
-            [
+            'search' => [
                 'label' => 'Search', // @translate
                 'route' => 'admin/search',
                 'resource' => Controller\Admin\IndexController::class,
