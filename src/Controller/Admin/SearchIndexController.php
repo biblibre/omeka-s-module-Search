@@ -41,7 +41,6 @@ class SearchIndexController extends AbstractActionController
 {
     protected $entityManager;
     protected $searchAdapterManager;
-    protected $jobDispatcher;
 
     public function addAction()
     {
@@ -142,8 +141,7 @@ class SearchIndexController extends AbstractActionController
         $jobArgs['search_index_id'] = $searchIndex->id();
         $jobArgs['start_resource_id'] = $startResourceId;
         $jobArgs['resource_names'] = $resourceNames;
-        $jobDispatcher = $this->getJobDispatcher();
-        $job = $jobDispatcher->dispatch(\Search\Job\SearchIndex::class, $jobArgs);
+        $job = $this->jobDispatcher()->dispatch(\Search\Job\SearchIndex::class, $jobArgs);
 
         $jobUrl = $this->url()->fromRoute('admin/id', [
             'controller' => 'job',
@@ -220,15 +218,5 @@ class SearchIndexController extends AbstractActionController
     public function getSearchAdapterManager()
     {
         return $this->searchAdapterManager;
-    }
-
-    public function setJobDispatcher($jobDispatcher)
-    {
-        $this->jobDispatcher = $jobDispatcher;
-    }
-
-    public function getJobDispatcher()
-    {
-        return $this->jobDispatcher;
     }
 }
