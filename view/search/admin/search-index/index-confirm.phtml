@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Search\Api\Representation\SearchIndexRepresentation $resource
+ */
+
 $translate = $this->plugin('translate');
 $this->form->setAttribute('action', $resource->url('index'));
 $this->form->setButtonLabel('Confirm reindex'); // @translate

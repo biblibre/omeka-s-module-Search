@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Search\Api\Representation\SearchIndexRepresentation $resource
+ * @var string $resourceLabel
+ * @var string $partialPath
+ */
+
+?>
 <?php echo $this->searchIndexConfirm($this->resource, $this->resourceLabel, false); ?>
 <?php if (isset($this->partialPath)): ?>
     <?php echo $this->partial($this->partialPath); ?>
