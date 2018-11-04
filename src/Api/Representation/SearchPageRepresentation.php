@@ -139,20 +139,19 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
      */
     public function form()
     {
-        $serviceLocator = $this->getServiceLocator();
-        $formElementManager = $serviceLocator->get('FormElementManager');
         $formAdapter = $this->formAdapter();
         $formClass = $formAdapter->getFormClass();
         if (empty($formClass)) {
             return;
         }
 
+        $services = $this->getServiceLocator();
+        $formElementManager = $services->get('FormElementManager');
+
         $form = $formElementManager->get($formClass, [
             'search_page' => $this,
         ]);
-        $form->remove('csrf');
         $form->setAttribute('method', 'GET');
-
         return $form;
     }
 

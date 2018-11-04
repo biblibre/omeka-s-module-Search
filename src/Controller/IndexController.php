@@ -105,11 +105,18 @@ class IndexController extends AbstractActionController
             if (!$form->isValid()) {
                 $messages = $form->getMessages();
                 if (isset($messages['csrf'])) {
-                    $this->messenger()->addError('Invalid or missing CSRF token'); // @translate
+                    // The search engine is used to display item sets too via
+                    // the mvc redirection. In that case, there is no csrf
+                    // element, so no check to do.
+                    // TODO Add a csrf check in the mvc redirection of item sets to search page.
+                    if (array_key_exists('csrf', $request)) {
+                        $this->messenger()->addError('Invalid or missing CSRF token'); // @translate
+                        return $view;
+                    }
                 } else {
                     $this->messenger()->addError('There was an error during validation'); // @translate
+                    return $view;
                 }
-                return $view;
             }
             // Get the filtered request, but keep the pagination and sort params,
             // that are not managed by the form.
