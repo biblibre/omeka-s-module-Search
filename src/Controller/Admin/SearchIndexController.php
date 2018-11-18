@@ -142,11 +142,14 @@ class SearchIndexController extends AbstractActionController
     {
         $index = $this->api()->read('search_indexes', $this->params('id'))->getContent();
 
+        $totalJobs = $this->totalJobs(\Search\Job\SearchIndex::class, true);
+
         $view = new ViewModel;
         $view->setTerminal(true);
         $view->setTemplate('search/admin/search-index/index-confirm-details');
         $view->setVariable('resourceLabel', 'search index');
         $view->setVariable('resource', $index);
+        $view->setVariable('totalJobs', $totalJobs);
         return $view;
     }
 
@@ -157,11 +160,13 @@ class SearchIndexController extends AbstractActionController
 
         $startResourceId = (int) $this->params()->fromPost('start_resource_id');
         $resourceNames = $this->params()->fromPost('resource_names') ?: [];
+        $force = (bool) $this->params()->fromPost('force');
 
         $jobArgs = [];
         $jobArgs['search_index_id'] = $searchIndex->id();
         $jobArgs['start_resource_id'] = $startResourceId;
         $jobArgs['resource_names'] = $resourceNames;
+        $jobArgs['force'] = $force;
         $job = $this->jobDispatcher()->dispatch(\Search\Job\SearchIndex::class, $jobArgs);
 
         $jobUrl = $this->url()->fromRoute('admin/id', [

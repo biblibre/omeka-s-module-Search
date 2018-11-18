@@ -63,6 +63,7 @@ return [
             'apiSearch' => Service\ControllerPlugin\ApiSearchFactory::class,
             'apiSearchOne' => Service\ControllerPlugin\ApiSearchOneFactory::class,
             'searchForm' => Service\ControllerPlugin\SearchFormFactory::class,
+            'totalJobs' => Service\ControllerPlugin\TotalJobsFactory::class,
         ],
     ],
     'service_manager' => [

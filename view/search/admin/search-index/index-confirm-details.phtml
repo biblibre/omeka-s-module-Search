@@ -3,11 +3,12 @@
  * @var \Zend\View\Renderer\PhpRenderer $this
  * @var \Search\Api\Representation\SearchIndexRepresentation $resource
  * @var string $resourceLabel
+ * @var int $totalJobs
  * @var string $partialPath
  */
 
 ?>
-<?php echo $this->searchIndexConfirm($this->resource, $this->resourceLabel, false); ?>
+<?php echo $this->searchIndexConfirm($this->resource, $this->resourceLabel, false, $totalJobs); ?>
 <?php if (isset($this->partialPath)): ?>
     <?php echo $this->partial($this->partialPath); ?>
 <?php endif; ?>

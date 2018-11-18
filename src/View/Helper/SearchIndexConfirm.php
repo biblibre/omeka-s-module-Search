@@ -32,9 +32,10 @@ class SearchIndexConfirm extends AbstractHelper
      * @param \Omeka\Api\Representation\RepresentationInterface $resource
      * @param string $resourceLabel
      * @param bool $wrapSidebar
+     * @param int $totalJobs
      * @return string
      */
-    public function __invoke($resource, $resourceLabel = null, $wrapSidebar = true)
+    public function __invoke($resource, $resourceLabel = null, $wrapSidebar = true, $totalJobs = 0)
     {
         $form = $this->formElementManager->get(ConfirmForm::class);
         $form->setAttribute('action', $resource->url('index'));
@@ -46,6 +47,7 @@ class SearchIndexConfirm extends AbstractHelper
                 'resource' => $resource,
                 'resourceLabel' => $resourceLabel,
                 'form' => $form,
+                'totalJobs' => $totalJobs,
             ]
         );
     }
