@@ -32,7 +32,7 @@ namespace Search\Job;
 use Omeka\Job\AbstractJob;
 use Omeka\Stdlib\Message;
 
-class SearchIndex extends AbstractJob
+class Indexing extends AbstractJob
 {
     const BATCH_SIZE = 100;
 
@@ -79,7 +79,7 @@ class SearchIndex extends AbstractJob
             $force = $this->getArg('force');
             if ($force) {
                 $this->logger->warn(new Message(
-                    'There are already %d other jobs "Search Index". Slowdowns may occur on the site.', // @translate
+                    'There are already %d other jobs "Indexing". Slowdowns may occur on the site.', // @translate
                     $totalJobs - 1
                 ));
             } else {
