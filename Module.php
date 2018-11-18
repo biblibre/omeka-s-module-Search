@@ -33,14 +33,13 @@ namespace Search;
 use Omeka\Entity\Resource;
 use Omeka\Module\AbstractModule;
 use Omeka\Mvc\Controller\Plugin\Messenger;
+use Omeka\Settings\SettingsInterface;
 use Omeka\Stdlib\Message;
 use Search\Form\ConfigForm;
 use Search\Indexer\IndexerInterface;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Form\Element;
-use Zend\Form\Fieldset;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\Mvc\MvcEvent;
@@ -83,52 +82,27 @@ class Module extends AbstractModule
 
     public function install(ServiceLocatorInterface $serviceLocator)
     {
+        $this->setServiceLocator($serviceLocator);
+
         $messenger = new Messenger;
         $optionalModule = 'jQueryUI';
-        if (!$this->isModuleEnabled($optionalModule, $serviceLocator)) {
+        if (!$this->isModuleActive($optionalModule)) {
             $messenger->addWarning('The module jQueryUI is required to customize the search pages.'); // @translate
         }
         $optionalModule = 'Reference';
-        if (!$this->isModuleEnabled($optionalModule, $serviceLocator)) {
+        if (!$this->isModuleActive($optionalModule)) {
             $messenger->addWarning('The module Reference is required to use the facets with the default internal adapter.'); // @translate
         }
 
-        $sql = <<<'SQL'
-CREATE TABLE search_index (
-    id INT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    adapter VARCHAR(255) NOT NULL,
-    settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)',
-    created DATETIME NOT NULL,
-    modified DATETIME DEFAULT NULL,
-    PRIMARY KEY(id)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE search_page (
-    id INT AUTO_INCREMENT NOT NULL,
-    index_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    path VARCHAR(255) NOT NULL,
-    form_adapter VARCHAR(255) NOT NULL,
-    settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json_array)',
-    created DATETIME NOT NULL,
-    modified DATETIME DEFAULT NULL,
-    INDEX IDX_4F10A34984337261 (index_id),
-    PRIMARY KEY(id)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id) ON DELETE CASCADE;
-SQL;
-        $connection = $serviceLocator->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
-        foreach ($sqls as $sql) {
-            $connection->exec($sql);
-        }
+        $this->execSqlFromFile(__DIR__ . '/data/install/schema.sql');
 
-        $settings = $serviceLocator->get('Omeka\Settings');
-        $this->manageSettings($settings, 'install', 'config');
-        $this->manageSettings($settings, 'install', 'settings');
-        $this->manageSiteSettings($serviceLocator, 'install');
+        $this->manageConfig('install');
+        $this->manageMainSettings('install');
+        $this->manageSiteSettings('install');
 
+        // TODO Move internal adapter in another module.
         // Create the internal adapter.
+        $connection = $serviceLocator->get('Omeka\Connection');
         $sql = <<<'SQL'
 INSERT INTO `search_index`
 (`name`, `adapter`, `settings`, `created`)
@@ -154,52 +128,19 @@ SQL;
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
-        $sql = <<<'SQL'
-DROP TABLE IF EXISTS `search_page`;
-DROP TABLE IF EXISTS `search_index`;
-SQL;
-        $connection = $serviceLocator->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
-        foreach ($sqls as $sql) {
-            $connection->exec($sql);
-        }
+        $this->setServiceLocator($serviceLocator);
+        $this->execSqlFromFile(__DIR__ . '/data/install/uninstall.sql');
 
-        $settings = $serviceLocator->get('Omeka\Settings');
-        $this->manageSettings($settings, 'uninstall', 'config');
-        $this->manageSettings($settings, 'uninstall', 'settings');
+        $this->manageConfig('uninstall');
+        $this->manageMainSettings('uninstall');
+        $this->manageSiteSettings('uninstall');
     }
 
     public function upgrade($oldVersion, $newVersion,
         ServiceLocatorInterface $serviceLocator)
     {
+        $this->setServiceLocator($serviceLocator);
         require_once 'data/scripts/upgrade.php';
-    }
-
-    protected function manageSettings($settings, $process, $key = 'config')
-    {
-        $config = require __DIR__ . '/config/module.config.php';
-        $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];
-        foreach ($defaultSettings as $name => $value) {
-            switch ($process) {
-                case 'install':
-                    $settings->set($name, $value);
-                    break;
-                case 'uninstall':
-                    $settings->delete($name);
-                    break;
-            }
-        }
-    }
-
-    protected function manageSiteSettings(ServiceLocatorInterface $serviceLocator, $process)
-    {
-        $siteSettings = $serviceLocator->get('Omeka\Settings\Site');
-        $api = $serviceLocator->get('Omeka\ApiManager');
-        $sites = $api->search('sites')->getContent();
-        foreach ($sites as $site) {
-            $siteSettings->setTargetId($site->id());
-            $this->manageSettings($siteSettings, $process, 'site_settings');
-        }
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -276,22 +217,22 @@ SQL;
         $sharedEventManager->attach(
             \Omeka\Form\SettingForm::class,
             'form.add_elements',
-            [$this, 'addSettingFormElements']
+            [$this, 'handleMainSettings']
         );
         $sharedEventManager->attach(
             \Omeka\Form\SettingForm::class,
             'form.add_input_filters',
-            [$this, 'addSettingsFormFilters']
+            [$this, 'handleMainSettingsFilters']
         );
         $sharedEventManager->attach(
             \Omeka\Form\SiteSettingsForm::class,
             'form.add_elements',
-            [$this, 'addFormElementsSiteSettings']
+            [$this, 'handleSiteSettings']
         );
         $sharedEventManager->attach(
             \Omeka\Form\SiteSettingsForm::class,
             'form.add_input_filters',
-            [$this, 'addSettingsFormFilters']
+            [$this, 'handleSiteSettingsFilters']
         );
     }
 
@@ -318,6 +259,7 @@ SQL;
     {
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
+        $space = strtolower(__NAMESPACE__);
         $settings = $services->get('Omeka\Settings');
         $form = $services->get('FormElementManager')->get(ConfigForm::class);
 
@@ -331,7 +273,7 @@ SQL;
         }
 
         $params = $form->getData();
-        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
+        $defaultSettings = $config[$space]['config'];
         $params = array_intersect_key($params, $defaultSettings);
         foreach ($params as $name => $value) {
             $settings->set($name, $value);
@@ -510,118 +452,17 @@ SQL;
         }
     }
 
-    public function addSettingFormElements(Event $event)
+    public function handleMainSettings(Event $event)
     {
-        $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings');
-        $this->addSettingsFormElements($event, $settings, true);
+        $this->handleAnySettings($event, 'settings');
     }
 
-    public function addFormElementsSiteSettings(Event $event)
+    public function handleSiteSettings(Event $event)
     {
-        $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings\Site');
-        $this->addSettingsFormElements($event, $settings, false);
+        $this->handleAnySettings($event, 'site_settings');
     }
 
-    protected function addSettingsFormElements(Event $event, $settings, $isAdmin)
-    {
-        $form = $event->getTarget();
-
-        $services = $this->getServiceLocator();
-        $config = $services->get('Config');
-        $defaultSettings = $isAdmin
-            ? $config[strtolower(__NAMESPACE__)]['settings']
-            : $config[strtolower(__NAMESPACE__)]['site_settings'];
-
-        $fieldset = new Fieldset('search');
-        $fieldset->setLabel('Search'); // @translate
-
-        $api = $services->get('Omeka\ApiManager');
-
-        $pages = $api->search('search_pages')->getContent();
-        $valueOptions = [];
-        foreach ($pages as $page) {
-            $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
-        }
-        $pagesOptions = $valueOptions;
-
-        // For admin, the main page is a path.
-        if ($isAdmin) {
-            $valueOptions = [];
-            $basePath = $services->get('ViewHelperManager')->get('BasePath');
-            $adminBasePath = $basePath('admin/');
-            foreach ($pages as $page) {
-                $valueOptions[$adminBasePath . $page->path()] = sprintf('%s (/%s)', $page->name(), $page->path());
-            }
-        }
-        $fieldset->add([
-            'name' => 'search_main_page',
-            'type' => Element\Select::class,
-            'options' => [
-                'label' => 'Default search page', // @translate
-                'info' => $isAdmin
-                    ? 'This search engine is used in the admin bar.' // @translate
-                    : '',
-                'value_options' => $valueOptions,
-                'empty_option' => $isAdmin
-                    ? 'Select the search engine for the admin bar…' // @translate
-                    : 'Select the default search engine for the site…', // @translate
-            ],
-            'attributes' => [
-                'value' => $settings->get(
-                    'search_main_page',
-                    $defaultSettings['search_main_page']
-                ),
-            ],
-        ]);
-
-        $fieldset->add([
-            'name' => 'search_pages',
-            'type' => Element\MultiCheckbox::class,
-            'options' => [
-                'label' => 'Available search pages', // @translate
-                'value_options' => $pagesOptions,
-            ],
-            'attributes' => [
-                'value' => $settings->get(
-                    'search_pages',
-                    $defaultSettings['search_pages']
-                ),
-            ],
-        ]);
-
-        if ($isAdmin) {
-            /** @var \Search\Api\Representation\SearchPageRepresentation[] $pages */
-            $pages = $api->search('search_pages')->getContent();
-            $valueOptions = [];
-            foreach ($pages as $page) {
-                if ($page->formAdapter() instanceof \Search\FormAdapter\ApiFormAdapter) {
-                    $valueOptions[$page->id()] = sprintf('%s (/%s)', $page->name(), $page->path());
-                }
-            }
-            $fieldset->add([
-                'name' => 'search_api_page',
-                'type' => Element\Select::class,
-                'options' => [
-                    'label' => 'Page used for quick api search', // @translate
-                    'info' => 'The method apiSearch() allows to do a quick search in some cases. It requires a mapping done with the Omeka api and the selected index.', // @translate
-                    'value_options' => $valueOptions,
-                    'empty_option' => 'Select the page for quick api search…', // @translate
-                ],
-                'attributes' => [
-                    'value' => $settings->get(
-                        'search_api_page',
-                        $defaultSettings['search_api_page']
-                    ),
-                ],
-            ]);
-        }
-
-        $form->add($fieldset);
-    }
-
-    public function addSettingsFormFilters(Event $event)
+    public function handleMainSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
         $searchFilter = $inputFilter->get('search');
@@ -639,17 +480,198 @@ SQL;
         ]);
     }
 
+    public function handleSiteSettingsFilters(Event $event)
+    {
+        $inputFilter = $event->getParam('inputFilter');
+        $searchFilter = $inputFilter->get('search');
+        $searchFilter->add([
+            'name' => 'search_pages',
+            'required' => false,
+        ]);
+        $searchFilter->add([
+            'name' => 'search_main_page',
+            'required' => false,
+        ]);
+    }
+
     /**
-     * Check if a module is enabled.
+     * Execute a sql from a file.
      *
-     * @param string $module
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param string $filepath
+     * @return mixed
+     */
+    protected function execSqlFromFile($filepath)
+    {
+        if (!file_exists($filepath) || !filesize($filepath) || !is_readable($filepath)) {
+            return;
+        }
+        $services = $this->getServiceLocator();
+        $connection = $services->get('Omeka\Connection');
+        $sql = file_get_contents($filepath);
+        return $connection->exec($sql);
+    }
+
+    /**
+     * Set or delete settings of the config of a module.
+     *
+     * @param string $process
+     */
+    protected function manageConfig($process)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $this->manageAnySettings($settings, 'config', $process);
+    }
+
+    /**
+     * Set or delete main settings.
+     *
+     * @param string $process
+     */
+    protected function manageMainSettings($process)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $this->manageAnySettings($settings, 'settings', $process);
+    }
+
+    /**
+     * Set or delete settings of all sites.
+     *
+     * @param string $process
+     */
+    protected function manageSiteSettings($process)
+    {
+        $settingsType = 'site_settings';
+        $config = require __DIR__ . '/config/module.config.php';
+        $space = strtolower(__NAMESPACE__);
+        if (empty($config[$space][$settingsType])) {
+            return;
+        }
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings\Site');
+        $api = $services->get('Omeka\ApiManager');
+        $sites = $api->search('sites')->getContent();
+        foreach ($sites as $site) {
+            $settings->setTargetId($site->id());
+            $this->manageAnySettings($settings, $settingsType, $process);
+        }
+    }
+
+    /**
+     * Set or delete all settings of a specific type.
+     *
+     * @param SettingsInterface $settings
+     * @param string $settingsType
+     * @param string $process
+     */
+    protected function manageAnySettings(SettingsInterface $settings, $settingsType, $process)
+    {
+        $config = require __DIR__ . '/config/module.config.php';
+        $space = strtolower(__NAMESPACE__);
+        if (empty($config[$space][$settingsType])) {
+            return;
+        }
+        $defaultSettings = $config[$space][$settingsType];
+        foreach ($defaultSettings as $name => $value) {
+            switch ($process) {
+                case 'install':
+                    $settings->set($name, $value);
+                    break;
+                case 'uninstall':
+                    $settings->delete($name);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Prepare a settings fieldset.
+     *
+     * @param Event $event
+     * @param string $settingsType
+     */
+    protected function handleAnySettings(Event $event, $settingsType)
+    {
+        $services = $this->getServiceLocator();
+
+        $settingsTypes = [
+            // 'config' => 'Omeka\Settings',
+            'settings' => 'Omeka\Settings',
+            'site_settings' => 'Omeka\Settings\Site',
+            // 'user_settings' => 'Omeka\Settings\User',
+        ];
+        if (!isset($settingsTypes[$settingsType])) {
+            return;
+        }
+
+        // TODO Check fieldsets in the config of the module.
+        $settingFieldsets = [
+            // 'config' => Form\ConfigForm::class,
+            'settings' => Form\SettingsFieldset::class,
+            'site_settings' => Form\SiteSettingsFieldset::class,
+            // 'user_settings' => Form\UserSettingsFieldset::class,
+        ];
+        if (!isset($settingFieldsets[$settingsType])) {
+            return;
+        }
+
+        $settings = $services->get($settingsTypes[$settingsType]);
+        $data = $this->prepareDataToPopulate($settings, $settingsType);
+        if (empty($data)) {
+            return;
+        }
+
+        $space = strtolower(__NAMESPACE__);
+
+        $fieldset = $services->get('FormElementManager')->get($settingFieldsets[$settingsType]);
+        $fieldset->setName($space);
+        $form = $event->getTarget();
+        $form->add($fieldset);
+        $form->get($space)->populateValues($data);
+    }
+
+    /**
+     * Prepare data for a form or a fieldset.
+     *
+     * To be overridden by module for specific keys.
+     *
+     * @todo Use form methods to populate.
+     * @param SettingsInterface $settings
+     * @param string $settingsType
+     * @return array
+     */
+    protected function prepareDataToPopulate(SettingsInterface $settings, $settingsType)
+    {
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $space = strtolower(__NAMESPACE__);
+        if (empty($config[$space][$settingsType])) {
+            return;
+        }
+
+        $defaultSettings = $config[$space][$settingsType];
+
+        $data = [];
+        foreach ($defaultSettings as $name => $value) {
+            $val = $settings->get($name, $value);
+            $data[$name] = $val;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Check if a module is active.
+     *
+     * @param string $moduleClass
      * @return bool
      */
-    protected function isModuleEnabled($module, ServiceLocatorInterface $serviceLocator)
+    protected function isModuleActive($moduleClass)
     {
-        $moduleManager = $serviceLocator->get('Omeka\ModuleManager');
-        $module = $moduleManager->getModule($module);
+        $services = $this->getServiceLocator();
+        $moduleManager = $services->get('Omeka\ModuleManager');
+        $module = $moduleManager->getModule($moduleClass);
         return $module
             && $module->getState() === \Omeka\Module\Manager::STATE_ACTIVE;
     }

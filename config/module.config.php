@@ -46,6 +46,8 @@ return [
             Form\Admin\SearchPageForm::class => Service\Form\SearchPageFormFactory::class,
             Form\BasicForm::class => Service\Form\BasicFormFactory::class,
             Form\Element\SearchPageSelect::class => Service\Form\Element\SearchPageSelectFactory::class,
+            Form\SettingsFieldset::class => Service\Form\SettingsFieldsetFactory::class,
+            Form\SiteSettingsFieldset::class => Service\Form\SiteSettingsFieldsetFactory::class,
         ],
     ],
     'controllers' => [
