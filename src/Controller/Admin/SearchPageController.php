@@ -30,18 +30,47 @@
 
 namespace Search\Controller\Admin;
 
+use Doctrine\ORM\EntityManager;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
+use Search\Adapter\Manager as SearchAdapterManager;
 use Search\Form\Admin\SearchPageForm;
 use Search\Form\Admin\SearchPageConfigureForm;
+use Search\FormAdapter\Manager as SearchFormAdapterManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class SearchPageController extends AbstractActionController
 {
+    /**
+     * @var EntityManager
+     */
     protected $entityManager;
+
+    /**
+     * @var SearchAdapterManager
+     */
     protected $searchAdapterManager;
+
+    /**
+     * @var SearchFormAdapterManager
+     */
     protected $searchFormAdapterManager;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param SearchAdapterManager $searchAdapterManager
+     * @param SearchFormAdapterManager $searchFormAdapterManager
+     */
+    public function __construct(
+        EntityManager $entityManager,
+        SearchAdapterManager $searchAdapterManager,
+        SearchFormAdapterManager $searchFormAdapterManager
+    ) {
+        $this->entityManager = $entityManager;
+        $this->searchAdapterManager = $searchAdapterManager;
+        $this->searchFormAdapterManager = $searchFormAdapterManager;
+    }
 
     public function addAction()
     {
@@ -262,36 +291,6 @@ class SearchPageController extends AbstractActionController
         return $this->redirect()->toRoute('admin/search');
     }
 
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    public function setSearchAdapterManager($searchAdapterManager)
-    {
-        $this->searchAdapterManager = $searchAdapterManager;
-    }
-
-    public function getSearchAdapterManager()
-    {
-        return $this->searchAdapterManager;
-    }
-
-    public function setSearchFormAdapterManager($searchFormAdapterManager)
-    {
-        $this->searchFormAdapterManager = $searchFormAdapterManager;
-    }
-
-    public function getSearchFormAdapterManager()
-    {
-        return $this->searchFormAdapterManager;
-    }
-
     protected function checkPostAndValidForm($form)
     {
         if (!$this->getRequest()->isPost()) {
@@ -362,5 +361,20 @@ class SearchPageController extends AbstractActionController
         }
 
         $this->messenger()->addSuccess($message);
+    }
+
+    protected function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    protected function getSearchAdapterManager()
+    {
+        return $this->searchAdapterManager;
+    }
+
+    protected function getSearchFormAdapterManager()
+    {
+        return $this->searchFormAdapterManager;
     }
 }

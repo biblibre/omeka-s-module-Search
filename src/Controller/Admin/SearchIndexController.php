@@ -30,8 +30,10 @@
 
 namespace Search\Controller\Admin;
 
+use Doctrine\ORM\EntityManager;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
+use Search\Adapter\Manager as SearchAdapterManager;
 use Search\Form\Admin\SearchIndexForm;
 use Search\Form\Admin\SearchIndexConfigureForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -39,8 +41,27 @@ use Zend\View\Model\ViewModel;
 
 class SearchIndexController extends AbstractActionController
 {
+    /**
+     * @var EntityManager
+     */
     protected $entityManager;
+
+    /**
+     * @var SearchAdapterManager
+     */
     protected $searchAdapterManager;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param SearchAdapterManager $searchAdapterManager
+     */
+    public function __construct(
+        EntityManager $entityManager,
+        SearchAdapterManager $searchAdapterManager
+    ) {
+        $this->entityManager = $entityManager;
+        $this->searchAdapterManager = $searchAdapterManager;
+    }
 
     public function addAction()
     {
@@ -200,22 +221,12 @@ class SearchIndexController extends AbstractActionController
         return $this->redirect()->toRoute('admin/search');
     }
 
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function getEntityManager()
+    protected function getEntityManager()
     {
         return $this->entityManager;
     }
 
-    public function setSearchAdapterManager($searchAdapterManager)
-    {
-        $this->searchAdapterManager = $searchAdapterManager;
-    }
-
-    public function getSearchAdapterManager()
+    protected function getSearchAdapterManager()
     {
         return $this->searchAdapterManager;
     }

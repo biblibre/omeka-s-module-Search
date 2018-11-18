@@ -9,15 +9,10 @@ class SearchPageControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $entityManager = $services->get('Omeka\EntityManager');
-        $searchAdapterManager = $services->get('Search\AdapterManager');
-        $searchFormAdapterManager = $services->get('Search\FormAdapterManager');
-
-        $controller = new SearchPageController;
-        $controller->setEntityManager($entityManager);
-        $controller->setSearchAdapterManager($searchAdapterManager);
-        $controller->setSearchFormAdapterManager($searchFormAdapterManager);
-
-        return $controller;
+        return new SearchPageController(
+            $services->get('Omeka\EntityManager'),
+            $services->get('Search\AdapterManager'),
+            $services->get('Search\FormAdapterManager')
+        );
     }
 }
