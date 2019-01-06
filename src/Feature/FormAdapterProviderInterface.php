@@ -31,5 +31,8 @@ namespace Search\Feature;
 
 interface FormAdapterProviderInterface
 {
+    /**
+     * @return array
+     */
     public function getSearchFormAdapterConfig();
 }

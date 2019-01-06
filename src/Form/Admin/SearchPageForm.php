@@ -30,6 +30,7 @@
 
 namespace Search\Form\Admin;
 
+use Omeka\Api\Manager as ApiManager;
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareTrait;
@@ -38,7 +39,11 @@ class SearchPageForm extends Form
 {
     use TranslatorAwareTrait;
 
+    /**
+     * @var ApiManager
+     */
     protected $apiManager;
+
     protected $formAdapterManager;
 
     public function init()
@@ -128,7 +133,10 @@ class SearchPageForm extends Form
         ]);
     }
 
-    public function setApiManager($apiManager)
+    /**
+     * @param ApiManager $apiManager
+     */
+    public function setApiManager(ApiManager $apiManager)
     {
         $this->apiManager = $apiManager;
     }
@@ -150,10 +158,11 @@ class SearchPageForm extends Form
 
     protected function getIndexesOptions()
     {
+        $options = [];
+
         $api = $this->getApiManager();
 
         $indexes = $api->search('search_indexes')->getContent();
-        $options = [];
         foreach ($indexes as $index) {
             $options[$index->id()] =
                 sprintf('%s (%s)', $index->name(), $index->adapterLabel());
@@ -164,10 +173,11 @@ class SearchPageForm extends Form
 
     protected function getFormsOptions()
     {
+        $options = [];
+
         $formAdapterManager = $this->getFormAdapterManager();
         $formAdapterNames = $formAdapterManager->getRegisteredNames();
 
-        $options = [];
         foreach ($formAdapterNames as $name) {
             $formAdapter = $formAdapterManager->get($name);
             $options[$name] = $formAdapter->getLabel();

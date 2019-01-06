@@ -31,5 +31,8 @@ namespace Search\Feature;
 
 interface AdapterProviderInterface
 {
+    /**
+     * @return array
+     */
     public function getSearchAdapterConfig();
 }

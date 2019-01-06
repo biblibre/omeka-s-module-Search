@@ -38,7 +38,6 @@ use Omeka\Stdlib\Message;
 use Search\Form\ConfigForm;
 use Search\Indexer\IndexerInterface;
 use Zend\EventManager\Event;
-use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Controller\AbstractController;
@@ -62,9 +61,9 @@ class Module extends AbstractModule
 
     public function init(ModuleManager $moduleManager)
     {
-        $event = $moduleManager->getEvent();
-        $container = $event->getParam('ServiceManager');
-        $serviceListener = $container->get('ServiceListener');
+        /** @var \Zend\ModuleManager\Listener\ServiceListenerInterface $serviceListerner */
+        $serviceListener = $moduleManager->getEvent()->getParam('ServiceManager')
+            ->get('ServiceListener');
 
         $serviceListener->addServiceManager(
             'Search\AdapterManager',
@@ -236,7 +235,7 @@ SQL;
 
         $form->init();
         $form->setData($data);
-        $html = $renderer->formCollection($form);
+        $html = $renderer->formCollection($form, false);
         return $html;
     }
 
