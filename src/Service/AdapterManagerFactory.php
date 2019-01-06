@@ -29,8 +29,8 @@
 
 namespace Search\Service;
 
-use Zend\Mvc\Service\AbstractPluginManagerFactory;
 use Search\Adapter\Manager;
+use Zend\Mvc\Service\AbstractPluginManagerFactory;
 
 class AdapterManagerFactory extends AbstractPluginManagerFactory
 {

@@ -60,27 +60,6 @@ class SearchIndexAdapter extends AbstractEntityAdapter
         return \Search\Entity\SearchIndex::class;
     }
 
-    public function hydrate(Request $request, EntityInterface $entity,
-        ErrorStore $errorStore
-    ) {
-        if ($this->shouldHydrate($request, 'o:name')) {
-            $entity->setName($request->getValue('o:name'));
-        }
-        if ($this->shouldHydrate($request, 'o:adapter')) {
-            $entity->setAdapter($request->getValue('o:adapter'));
-        }
-        if ($this->shouldHydrate($request, 'o:settings')) {
-            $entity->setSettings($request->getValue('o:settings'));
-        }
-    }
-
-    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
-    {
-        if (false == $entity->getName()) {
-            $errorStore->addError('o:name', 'The name cannot be empty.');
-        }
-    }
-
     public function buildQuery(QueryBuilder $qb, array $query)
     {
         if (isset($query['id'])) {
@@ -100,6 +79,27 @@ class SearchIndexAdapter extends AbstractEntityAdapter
                 $this->getEntityClass() . '.adapter',
                 $this->createNamedParameter($qb, $query['adapter']))
             );
+        }
+    }
+
+    public function hydrate(Request $request, EntityInterface $entity,
+        ErrorStore $errorStore
+    ) {
+        if ($this->shouldHydrate($request, 'o:name')) {
+            $entity->setName($request->getValue('o:name'));
+        }
+        if ($this->shouldHydrate($request, 'o:adapter')) {
+            $entity->setAdapter($request->getValue('o:adapter'));
+        }
+        if ($this->shouldHydrate($request, 'o:settings')) {
+            $entity->setSettings($request->getValue('o:settings'));
+        }
+    }
+
+    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
+    {
+        if (false == $entity->getName()) {
+            $errorStore->addError('o:name', 'The name cannot be empty.');
         }
     }
 }

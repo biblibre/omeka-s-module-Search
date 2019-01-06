@@ -61,39 +61,6 @@ class SearchPageAdapter extends AbstractEntityAdapter
         return \Search\Entity\SearchPage::class;
     }
 
-    public function hydrate(Request $request, EntityInterface $entity,
-        ErrorStore $errorStore
-    ) {
-        if ($this->shouldHydrate($request, 'o:name')) {
-            $entity->setName($request->getValue('o:name'));
-        }
-        if ($this->shouldHydrate($request, 'o:path')) {
-            $entity->setPath($request->getValue('o:path'));
-        }
-        if ($this->shouldHydrate($request, 'o:index_id')) {
-            $indexId = $request->getValue('o:index_id');
-            $entity->setIndex($this->getAdapter('search_indexes')->findEntity($indexId));
-        }
-        if ($this->shouldHydrate($request, 'o:form')) {
-            $entity->setFormAdapter($request->getValue('o:form'));
-        }
-        if ($this->shouldHydrate($request, 'o:settings')) {
-            $entity->setSettings($request->getValue('o:settings'));
-        }
-    }
-
-    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
-    {
-        if (false == $entity->getName()) {
-            $errorStore->addError('o:name', 'The name cannot be empty.');
-        }
-
-        $path = $entity->getPath();
-        if (!$this->isUnique($entity, ['path' => $path])) {
-            $errorStore->addError('o:path', sprintf('The path "%s" is already taken.', $path));
-        }
-    }
-
     public function buildQuery(QueryBuilder $qb, array $query)
     {
         if (isset($query['id'])) {
@@ -135,6 +102,39 @@ class SearchPageAdapter extends AbstractEntityAdapter
                 $this->getEntityClass() . ".formAdapter",
                 $this->createNamedParameter($qb, $query['form']))
             );
+        }
+    }
+
+    public function hydrate(Request $request, EntityInterface $entity,
+        ErrorStore $errorStore
+    ) {
+        if ($this->shouldHydrate($request, 'o:name')) {
+            $entity->setName($request->getValue('o:name'));
+        }
+        if ($this->shouldHydrate($request, 'o:path')) {
+            $entity->setPath($request->getValue('o:path'));
+        }
+        if ($this->shouldHydrate($request, 'o:index_id')) {
+            $indexId = $request->getValue('o:index_id');
+            $entity->setIndex($this->getAdapter('search_indexes')->findEntity($indexId));
+        }
+        if ($this->shouldHydrate($request, 'o:form')) {
+            $entity->setFormAdapter($request->getValue('o:form'));
+        }
+        if ($this->shouldHydrate($request, 'o:settings')) {
+            $entity->setSettings($request->getValue('o:settings'));
+        }
+    }
+
+    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
+    {
+        if (false == $entity->getName()) {
+            $errorStore->addError('o:name', 'The name cannot be empty.');
+        }
+
+        $path = $entity->getPath();
+        if (!$this->isUnique($entity, ['path' => $path])) {
+            $errorStore->addError('o:path', sprintf('The path "%s" is already taken.', $path));
         }
     }
 }

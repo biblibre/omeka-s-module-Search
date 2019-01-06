@@ -146,24 +146,9 @@ SQL;
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
-            // Hacked, because the admin layout doesn't use a partial or a trigger for the search engine.
             '*',
             'view.layout',
-            function (EventInterface $event) {
-                $view = $event->getTarget();
-                // TODO How to attach all admin events only?
-                if ($view->params()->fromRoute('__SITE__')) {
-                    return;
-                }
-                $settings = $this->getServiceLocator()->get('Omeka\Settings');
-                $adminSearchPage = $settings->get('search_main_page');
-                if (empty($adminSearchPage)) {
-                    return;
-                }
-                $view->headLink()->appendStylesheet($view->assetUrl('css/search-admin-search.css', 'Search'));
-                $view->headScript()->appendScript(sprintf('var searchUrl = %s;', json_encode($adminSearchPage, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)));
-                $view->headScript()->appendFile($view->assetUrl('js/search-admin-search.js', 'Search'));
-            }
+            [$this, 'addHeadersAdmin']
         );
 
         $sharedEventManager->attach(
@@ -492,6 +477,30 @@ SQL;
             'name' => 'search_main_page',
             'required' => false,
         ]);
+    }
+
+    /**
+     * Add the headers for admin management.
+     *
+     * @param Event $event
+     */
+    public function addHeadersAdmin(Event $event)
+    {
+        // Hacked, because the admin layout doesn't use a partial or a trigger
+        // for the search engine.
+        $view = $event->getTarget();
+        // TODO How to attach all admin events only before 1.3?
+        if ($view->params()->fromRoute('__SITE__')) {
+            return;
+        }
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        $adminSearchPage = $settings->get('search_main_page');
+        if (empty($adminSearchPage)) {
+            return;
+        }
+        $view->headLink()->appendStylesheet($view->assetUrl('css/search-admin-search.css', 'Search'));
+        $view->headScript()->appendScript(sprintf('var searchUrl = %s;', json_encode($adminSearchPage, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)));
+        $view->headScript()->appendFile($view->assetUrl('js/search-admin-search.js', 'Search'));
     }
 
     /**
