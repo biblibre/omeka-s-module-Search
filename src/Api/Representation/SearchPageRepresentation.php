@@ -33,6 +33,11 @@ use Omeka\Api\Representation\AbstractEntityRepresentation;
 
 class SearchPageRepresentation extends AbstractEntityRepresentation
 {
+    /**
+     * @var \Search\FormAdapter\FormAdapterInterface
+     */
+    protected $formAdapter;
+
     public function getJsonLdType()
     {
         return 'o:SearchPage';
@@ -127,11 +132,17 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
      */
     public function formAdapter()
     {
+        if ($this->formAdapter) {
+            return $this->formAdapter;
+        }
+
         $formAdapterName = $this->formAdapterName();
         $formAdapterManager = $this->getServiceLocator()->get('Search\FormAdapterManager');
-        return $formAdapterManager->has($formAdapterName)
-            ? $formAdapterManager->get($formAdapterName)
-            : null;
+        if ($formAdapterManager->has($formAdapterName)) {
+            $this->formAdapter = $formAdapterManager->get($formAdapterName);
+        }
+
+        return $this->formAdapter;
     }
 
     /**
