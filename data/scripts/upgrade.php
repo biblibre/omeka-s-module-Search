@@ -86,8 +86,9 @@ SQL;
 }
 
 if (version_compare($oldVersion, '0.5.2', '<')) {
-    $this->manageSettings($settings, 'install', 'settings');
-    $this->manageSiteSettings($services, 'install');
+    $this->manageConfig('install');
+    $this->manageMainSettings('install');
+    $this->manageSiteSettings('install');
 }
 
 if (version_compare($oldVersion, '3.5.7', '<')) {
