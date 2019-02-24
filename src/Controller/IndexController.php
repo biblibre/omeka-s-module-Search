@@ -30,7 +30,6 @@
 
 namespace Search\Controller;
 
-use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Api\Representation\SearchPageRepresentation;
@@ -77,8 +76,10 @@ class IndexController extends AbstractActionController
         $formAdapter = $page->formAdapter();
         if (!$formAdapter) {
             $formAdapterName = $page->formAdapterName();
-            $msg = sprintf('Form adapter "%s" not found', $formAdapterName); // @translate
-            throw new RuntimeException($msg);
+            $message = sprintf('Form adapter "%s" not found.', $formAdapterName); // @translate
+            $this->messenger()->addError($message);
+            $this->logger()->err($message);
+            return $view;
         }
 
         $request = $this->params()->fromQuery();
