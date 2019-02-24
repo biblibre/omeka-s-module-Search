@@ -151,9 +151,13 @@ class SearchPageRepresentation extends AbstractEntityRepresentation
     public function form()
     {
         $formAdapter = $this->formAdapter();
+        if (empty($formAdapter)) {
+            return null;
+        }
+
         $formClass = $formAdapter->getFormClass();
         if (empty($formClass)) {
-            return;
+            return null;
         }
 
         $services = $this->getServiceLocator();
