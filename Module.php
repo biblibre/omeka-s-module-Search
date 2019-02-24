@@ -289,47 +289,63 @@ SQL;
     {
         $services = $this->getServiceLocator();
 
+        /** @var \Omeka\Mvc\Status $status */
+        $status = $services->get('Omeka\Status');
+        if ($status->isApiRequest()) {
+            return;
+        }
+
         $router = $services->get('Router');
         if (!$router instanceof \Zend\Router\Http\TreeRouteStack) {
             return;
         }
 
-        $settings = $services->get('Omeka\Settings');
-        $adminSearchPages = $settings->get('search_pages', []);
-
         $api = $services->get('Omeka\ApiManager');
         $pages = $api->search('search_pages')->getContent();
-        foreach ($pages as $page) {
-            $pageId = $page->id();
-            $pagePath = $page->path();
-            $router->addRoute('search-page-' . $pageId, [
-                'type' => \Zend\Router\Http\Segment::class,
-                'options' => [
-                    'route' => '/s/:site-slug/' . $pagePath,
-                    'defaults' => [
-                        '__NAMESPACE__' => 'Search\Controller',
-                        '__SITE__' => true,
-                        'controller' => \Search\Controller\IndexController::class,
-                        'action' => 'search',
-                        'id' => $pageId,
-                    ],
-                ],
-            ]);
 
-            if (in_array($pageId, $adminSearchPages)) {
-                $router->addRoute('search-admin-page-' . $pageId, [
-                    'type' => \Zend\Router\Http\Segment::class,
-                    'options' => [
-                        'route' => '/admin/' . $pagePath,
-                        'defaults' => [
-                            '__NAMESPACE__' => 'Search\Controller',
-                            '__ADMIN__' => true,
-                            'controller' => \Search\Controller\IndexController::class,
-                            'action' => 'search',
-                            'id' => $pageId,
+        if ($status->isSiteRequest()) {
+            foreach ($pages as $page) {
+                $pageId = $page->id();
+                $router->addRoute(
+                    'search-page-' . $pageId,
+                    [
+                        'type' => \Zend\Router\Http\Segment::class,
+                        'options' => [
+                            'route' => '/s/:site-slug/' . $page->path(),
+                            'defaults' => [
+                                '__NAMESPACE__' => 'Search\Controller',
+                                '__SITE__' => true,
+                                'controller' => \Search\Controller\IndexController::class,
+                                'action' => 'search',
+                                'id' => $pageId,
+                            ],
                         ],
-                    ],
-                ]);
+                    ]
+                );
+            }
+        } else {
+            $settings = $services->get('Omeka\Settings');
+            $adminSearchPages = $settings->get('search_pages', []);
+            foreach ($pages as $page) {
+                $pageId = $page->id();
+                if (in_array($pageId, $adminSearchPages)) {
+                    $router->addRoute(
+                        'search-admin-page-' . $pageId,
+                        [
+                            'type' => \Zend\Router\Http\Segment::class,
+                            'options' => [
+                                'route' => '/admin/' . $page->path(),
+                                'defaults' => [
+                                    '__NAMESPACE__' => 'Search\Controller',
+                                    '__ADMIN__' => true,
+                                    'controller' => \Search\Controller\IndexController::class,
+                                    'action' => 'search',
+                                    'id' => $pageId,
+                                ],
+                            ],
+                        ]
+                    );
+                }
             }
         }
     }
