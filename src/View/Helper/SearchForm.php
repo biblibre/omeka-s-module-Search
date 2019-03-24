@@ -76,7 +76,8 @@ class SearchForm extends AbstractHelper
             return '';
         }
         $formAdapter = $this->searchPage->formAdapter();
-        $formPartial = $formAdapter && $formAdapter->getFormPartial() ?: 'search/search-form';
-        return $formPartial;
+        return $formAdapter && ($formPartial = $formAdapter->getFormPartial())
+            ? $formPartial
+            : 'search/search-form';
     }
 }
