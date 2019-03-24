@@ -303,7 +303,11 @@ SQL;
         $api = $services->get('Omeka\ApiManager');
         $pages = $api->search('search_pages')->getContent();
 
-        if ($status->isSiteRequest()) {
+        $isOldOmeka = version_compare(\Omeka\Module::VERSION, '1.3.0', '<');
+        $isSiteRequest = $isOldOmeka
+            ? strpos($_SERVER['REQUEST_URI'], '/s/') !== false
+            : $status->isSiteRequest();
+        if ($isSiteRequest) {
             foreach ($pages as $page) {
                 $pageId = $page->id();
                 $router->addRoute(
