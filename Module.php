@@ -304,30 +304,10 @@ SQL;
         $pages = $api->search('search_pages')->getContent();
 
         $isOldOmeka = version_compare(\Omeka\Module::VERSION, '1.3.0', '<');
-        $isSiteRequest = $isOldOmeka
-            ? strpos($_SERVER['REQUEST_URI'], '/s/') !== false
-            : $status->isSiteRequest();
-        if ($isSiteRequest) {
-            foreach ($pages as $page) {
-                $pageId = $page->id();
-                $router->addRoute(
-                    'search-page-' . $pageId,
-                    [
-                        'type' => \Zend\Router\Http\Segment::class,
-                        'options' => [
-                            'route' => '/s/:site-slug/' . $page->path(),
-                            'defaults' => [
-                                '__NAMESPACE__' => 'Search\Controller',
-                                '__SITE__' => true,
-                                'controller' => \Search\Controller\IndexController::class,
-                                'action' => 'search',
-                                'id' => $pageId,
-                            ],
-                        ],
-                    ]
-                );
-            }
-        } else {
+        $isAdminRequest = $isOldOmeka
+            ? strpos($_SERVER['REQUEST_URI'], '/admin/') !== false
+            : $status->isAdminRequest();
+        if ($isAdminRequest) {
             $settings = $services->get('Omeka\Settings');
             $adminSearchPages = $settings->get('search_pages', []);
             foreach ($pages as $page) {
@@ -350,6 +330,26 @@ SQL;
                         ]
                     );
                 }
+            }
+        } else {
+            foreach ($pages as $page) {
+                $pageId = $page->id();
+                $router->addRoute(
+                    'search-page-' . $pageId,
+                    [
+                        'type' => \Zend\Router\Http\Segment::class,
+                        'options' => [
+                            'route' => '/s/:site-slug/' . $page->path(),
+                            'defaults' => [
+                                '__NAMESPACE__' => 'Search\Controller',
+                                '__SITE__' => true,
+                                'controller' => \Search\Controller\IndexController::class,
+                                'action' => 'search',
+                                'id' => $pageId,
+                            ],
+                        ],
+                    ]
+                );
             }
         }
     }
