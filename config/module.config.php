@@ -34,6 +34,11 @@ return [
             'searchIndexConfirm' => Service\ViewHelper\SearchIndexConfirmFactory::class,
         ],
     ],
+    'block_layouts' => [
+        'invokables' => [
+            'search' => Site\BlockLayout\Search::class,
+        ],
+    ],
     'form_elements' => [
         'invokables' => [
             Form\ConfigForm::class => Form\ConfigForm::class,
