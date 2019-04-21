@@ -24,6 +24,7 @@ return [
     'view_helpers' => [
         'invokables' => [
             'searchForm' => View\Helper\SearchForm::class,
+            'searchingForm' => View\Helper\SearchingForm::class,
         ],
         'factories' => [
             'apiSearch' => Service\ViewHelper\ApiSearchFactory::class,
