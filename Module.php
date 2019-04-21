@@ -331,26 +331,27 @@ SQL;
                     );
                 }
             }
-        } else {
-            foreach ($pages as $page) {
-                $pageId = $page->id();
-                $router->addRoute(
-                    'search-page-' . $pageId,
-                    [
-                        'type' => \Zend\Router\Http\Segment::class,
-                        'options' => [
-                            'route' => '/s/:site-slug/' . $page->path(),
-                            'defaults' => [
-                                '__NAMESPACE__' => 'Search\Controller',
-                                '__SITE__' => true,
-                                'controller' => \Search\Controller\IndexController::class,
-                                'action' => 'search',
-                                'id' => $pageId,
-                            ],
+        }
+
+        // Public search pages are required to manage them at site level.
+        foreach ($pages as $page) {
+            $pageId = $page->id();
+            $router->addRoute(
+                'search-page-' . $pageId,
+                [
+                    'type' => \Zend\Router\Http\Segment::class,
+                    'options' => [
+                        'route' => '/s/:site-slug/' . $page->path(),
+                        'defaults' => [
+                            '__NAMESPACE__' => 'Search\Controller',
+                            '__SITE__' => true,
+                            'controller' => \Search\Controller\IndexController::class,
+                            'action' => 'search',
+                            'id' => $pageId,
                         ],
-                    ]
-                );
-            }
+                    ],
+                ]
+            );
         }
     }
 
