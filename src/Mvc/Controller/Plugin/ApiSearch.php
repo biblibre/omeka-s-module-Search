@@ -324,7 +324,7 @@ class ApiSearch extends AbstractPlugin
         $ids = $this->extractIdsFromResponse($searchResponse, $resource);
         $mapClasses = [
             'items' => \Omeka\Entity\Item::class,
-            'item_sets' => \Omeka\Entity\ItemSet::class
+            'item_sets' => \Omeka\Entity\ItemSet::class,
         ];
         $entityClass = $mapClasses[$resource];
         $repository = $this->entityManager->getRepository($entityClass);

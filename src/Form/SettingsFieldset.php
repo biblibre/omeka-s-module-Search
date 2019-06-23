@@ -48,7 +48,7 @@ class SettingsFieldset extends Fieldset
                 'label' => 'Default search page (admin)', // @translate
                 'info' => 'This search engine is used in the admin bar.', // @translate
                 'value_options' => $valueOptions,
-                'empty_option' => 'Select the search engine for the admin bar…' // @translate
+                'empty_option' => 'Select the search engine for the admin bar…', // @translate
             ],
             'attributes' => [
                 'id' => 'search_main_page',

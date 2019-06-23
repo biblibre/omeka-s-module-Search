@@ -25,6 +25,6 @@ class Search extends AbstractBlockLayout
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
-       return $view->partial('common/block-layout/search');
+        return $view->partial('common/block-layout/search');
     }
 }
