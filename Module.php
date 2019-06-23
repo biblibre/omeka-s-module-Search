@@ -52,13 +52,6 @@ class Module extends AbstractModule
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap(MvcEvent $event)
-    {
-        parent::onBootstrap($event);
-        $this->addAclRules();
-        $this->addRoutes();
-    }
-
     public function init(ModuleManager $moduleManager)
     {
         /** @var \Zend\ModuleManager\Listener\ServiceListenerInterface $serviceListerner */
@@ -77,6 +70,13 @@ class Module extends AbstractModule
             Feature\FormAdapterProviderInterface::class,
             'getSearchFormAdapterConfig'
         );
+    }
+
+    public function onBootstrap(MvcEvent $event)
+    {
+        parent::onBootstrap($event);
+        $this->addAclRules();
+        $this->addRoutes();
     }
 
     public function install(ServiceLocatorInterface $serviceLocator)
@@ -464,7 +464,9 @@ SQL;
 
     public function handleSiteSettings(Event $event)
     {
-        $this->handleAnySettings($event, 'site_settings');
+        // This is an exception, because there is already a fieldset named
+        // "search" in the core.
+        $this->handleAnySettings($event, 'site_settings', true);
     }
 
     public function handleMainSettingsFilters(Event $event)
@@ -620,7 +622,7 @@ SQL;
      * @param Event $event
      * @param string $settingsType
      */
-    protected function handleAnySettings(Event $event, $settingsType)
+    protected function handleAnySettings(Event $event, $settingsType, $isSpecialSpace = false)
     {
         $services = $this->getServiceLocator();
 
@@ -646,12 +648,13 @@ SQL;
         }
 
         $settings = $services->get($settingsTypes[$settingsType]);
+
         $data = $this->prepareDataToPopulate($settings, $settingsType);
         if (empty($data)) {
             return;
         }
 
-        $space = strtolower(__NAMESPACE__);
+        $space = $isSpecialSpace ? 'search_module' : strtolower(__NAMESPACE__);
 
         $fieldset = $services->get('FormElementManager')->get($settingFieldsets[$settingsType]);
         $fieldset->setName($space);
