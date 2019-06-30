@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016
- * Copyright Daniel Berthereau, 2017-2018
+ * Copyright Daniel Berthereau, 2017-2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -37,9 +37,13 @@
  */
 
 $translate = $this->plugin('translate');
+$translatePlural = $this->plugin('translatePlural');
+$assetUrl = $this->plugin('assetUrl');
+$partial = $this->plugin('partial');
+
+$this->headLink()->appendStylesheet($assetUrl('css/search.css', 'Search'));
+$this->headScript()->appendFile($assetUrl('js/search.js', 'Search'));
 $this->htmlElement('body')->appendAttribute('class', 'search-page resource browse');
-$this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
-$this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
 
 <?php echo $this->pageTitle($translate('Search')); ?>
@@ -54,7 +58,7 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
             <div class="search-results">
                 <?php if ($response->getTotalResults() > 0): ?>
                     <?php
-                        echo $this->partial('search/results-header', [
+                        echo $partial('search/results-header', [
                             'query' => $query,
                             'response' => $response,
                             'sortOptions' => $sortOptions,
@@ -63,8 +67,8 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 
                     <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
                     <?php
-                    echo $this->partial('search/resource-list', [
-                        'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
+                    echo $partial('search/resource-list', [
+                        'title' => sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
                         'response' => $response,
                         'resourceName' => 'item_sets',
                     ]);
@@ -72,15 +76,15 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 
                     <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
                     <?php
-                    echo $this->partial('search/resource-list', [
-                        'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
+                    echo $partial('search/resource-list', [
+                        'title' => sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                         'response' => $response,
                         'resourceName' => 'items',
                     ]);
                     ?>
 
                     <?php
-                        echo $this->partial('search/results-footer', [
+                        echo $partial('search/results-footer', [
                             'query' => $query,
                             'response' => $response,
                             'sortOptions' => $sortOptions,
@@ -91,7 +95,7 @@ $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
                 <?php endif; ?>
             </div>
 
-            <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
+            <?php echo $partial('search/facets', ['facets' => $facets]); ?>
         </div>
     <?php endif; ?>
 <?php if (empty($isPartial)): ?>

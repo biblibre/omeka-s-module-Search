@@ -32,14 +32,17 @@
  * @var string $resourceName
  * @var string $title
  */
+
+$partial = $this->plugin('partial');
+$api = $this->api();
 ?>
 <?php $results = $response->getResults($resourceName); ?>
 <?php if (count($results)): ?>
     <h3><?php echo $title; ?></h3>
     <div class="resource-list">
         <?php foreach ($results as $result): ?>
-            <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
-            <?php echo $this->partial('search/resource', [
+            <?php $resource = $api->read($resourceName, $result['id'])->getContent(); ?>
+            <?php echo $partial('search/resource', [
                 'resource' => $resource,
                 'tag' => 'div',
             ]); ?>

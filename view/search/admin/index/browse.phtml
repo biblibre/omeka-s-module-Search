@@ -35,6 +35,7 @@
 
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
+$url = $this->plugin('url');
 ?>
 
 <?php $this->htmlElement('body')->appendAttribute('class', 'search-admin resource browse'); ?>
@@ -42,9 +43,9 @@ $escape = $this->plugin('escapeHtml');
 <?php echo $this->pageTitle($translate('Search manager')); ?>
 
 <div id="page-actions">
-    <a class="button" href="<?php echo $this->url('admin/search/index', ['action' => 'add']); ?>"><?php echo $translate('Add new index'); ?></a>
+    <a class="button" href="<?php echo $url('admin/search/index', ['action' => 'add']); ?>"><?php echo $translate('Add new index'); ?></a>
     <?php if (!empty($search_indexes)): ?>
-        <a class="button" href="<?php echo $this->url('admin/search/page', ['action' => 'add']); ?>"><?php echo $translate('Add new page'); ?></a>
+        <a class="button" href="<?php echo $url('admin/search/page', ['action' => 'add']); ?>"><?php echo $translate('Add new page'); ?></a>
     <?php endif; ?>
 </div>
 
