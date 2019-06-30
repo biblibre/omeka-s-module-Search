@@ -339,24 +339,36 @@ class SearchPageController extends AbstractActionController
         $adapter = $index->adapter();
 
         $data = '';
-        $currentFields = empty($settings['facets']) ? [] : $settings['facets'];
-        $fields = $currentFields + $adapter->getAvailableFacetFields($index);
+        $fields = empty($settings['facets']) ? [] : $settings['facets'];
         foreach ($fields as $name => $field) {
-            $data .= isset($field['display'])
-                ? $name . ' | ' . $field['display']['label'] . ($field['enabled'] ? ' | enabled' : '') . "\n"
-                :  $field['name'] . ' | ' . $field['label'] . "\n";
+            if (!empty($field['enabled'])) {
+                $data .= $name . ' | ' . $field['display']['label'] . "\n";
+            }
         }
         $settings['facets'] = $data;
 
         $data = '';
-        $currentFields = empty($settings['sort_fields']) ? [] : $settings['sort_fields'];
-        $fields = $currentFields + $adapter->getAvailableSortFields($index);;
+        $fields = $adapter->getAvailableFacetFields($index);
         foreach ($fields as $name => $field) {
-            $data .= isset($field['display'])
-                ? $name . ' | ' . $field['display']['label'] . ($field['enabled'] ? ' | enabled' : '') . "\n"
-                :  $field['name'] . ' | ' . $field['label'] . "\n";
+            $data .= $name . ' | ' . $field['label'] . "\n";
+        }
+        $settings['available_facets'] = $data;
+
+        $data = '';
+        $fields = empty($settings['sort_fields']) ? [] : $settings['sort_fields'];
+        foreach ($fields as $name => $field) {
+            if (!empty($field['enabled'])) {
+                $data .= $name . ' | ' . $field['display']['label'] . "\n";
+            }
         }
         $settings['sort_fields'] = $data;
+
+        $data = '';
+        $fields = $adapter->getAvailableSortFields($index);;
+        foreach ($fields as $name => $field) {
+            $data .= $name . ' | ' . $field['label'] . "\n";
+        }
+        $settings['available_sort_fields'] = $data;
 
         return $settings;
     }
@@ -367,34 +379,32 @@ class SearchPageController extends AbstractActionController
 
         $data = $params['facets'] ?: '';
         unset($params['facets']);
+        unset($params['available_facets']);
         $data = $this->stringToList($data);
         foreach ($data as $key => $value) {
-            list($term, $label, $enabled) = array_map('trim', explode('|', $value . '|false'));
-            if (in_array($enabled, ['enabled', 'true', '1', 1, true], true)) {
-                $params['facets'][$term] = [
-                    'enabled' => true,
-                    'weight' => $key + 1,
-                    'display' => [
-                        'label' => $label,
-                    ],
-                ];
-            }
+            list($term, $label) = array_map('trim', explode('|', $value));
+            $params['facets'][$term] = [
+                'enabled' => true,
+                'weight' => $key + 1,
+                'display' => [
+                    'label' => $label,
+                ],
+            ];
         }
 
         $data = $params['sort_fields'] ?: '';
         unset($params['sort_fields']);
+        unset($params['available_sort_fields']);
         $data = $this->stringToList($data);
         foreach ($data as $key => $value) {
-            list($term, $label, $enabled) = array_map('trim', explode('|', $value . '|false'));
-            if (in_array($enabled, ['enabled', 'true', '1', 1, true], true)) {
-                $params['sort_fields'][$term] = [
-                    'enabled' => true,
-                    'weight' => $key + 1,
-                    'display' => [
-                        'label' => $label,
-                    ],
-                ];
-            }
+            list($term, $label) = array_map('trim', explode('|', $value));
+            $params['sort_fields'][$term] = [
+                'enabled' => true,
+                'weight' => $key + 1,
+                'display' => [
+                    'label' => $label,
+                ],
+            ];
         }
 
         return $params;

@@ -37,34 +37,60 @@ class SearchPageConfigureSimpleForm extends SearchPageConfigureForm
     {
         $this->addFacetLimit();
 
-        // field (term) | label | enabled (order means weight).
+        // field (term) | label (order means weight).
         $this->add([
             'name' => 'facets',
             'type' => Element\Textarea::class,
             'options' => [
                 'label' => 'Facets', // @translate
-                'info' => 'List of facets that will be displayed in the search page. Format is "term | Label | enabled".', // @translate
+                'info' => 'List of facets that will be displayed in the search page. Format is "term | Label".', // @translate
             ],
             'attributes' => [
                 'id' => 'facets',
-                'placeholder' => 'dcterms:subject | Subject (asc) | enabled',
+                'placeholder' => 'dcterms:subject | Subject (asc)',
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'available_facets',
+            'type' => Element\Textarea::class,
+            'options' => [
+                'label' => 'Available facets', // @translate
+                'info' => 'List of all available facets, among which some can be copied above.', // @translate
+            ],
+            'attributes' => [
+                'id' => 'available_facets',
+                'placeholder' => 'dcterms:subject | Subject (asc)',
             ],
         ]);
     }
 
     protected function addSortFields()
     {
-        // field (term + asc/desc) | label (+ asc/desc) | enabled (order means weight).
+        // field (term + asc/desc) | label (+ asc/desc) (order means weight).
         $this->add([
             'name' => 'sort_fields',
             'type' => Element\Textarea::class,
             'options' => [
                 'label' => 'Sort fields', // @translate
-                'info' => 'List of sort fields that will be displayed in the search page. Format is "term dir | Label | enabled".', // @translate
+                'info' => 'List of sort fields that will be displayed in the search page. Format is "term dir | Label".', // @translate
             ],
             'attributes' => [
                 'id' => 'sort_fields',
-                'placeholder' => 'dcterms:subject asc | Subject (asc) | enabled',
+                'placeholder' => 'dcterms:subject asc | Subject (asc)',
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'available_sort_fields',
+            'type' => Element\Textarea::class,
+            'options' => [
+                'label' => 'Available sort fields', // @translate
+                'info' => 'List of all available sort fields, among which some can be copied above.', // @translate
+            ],
+            'attributes' => [
+                'id' => 'available_sort_fields',
+                'placeholder' => 'dcterms:subject asc | Subject (asc)',
             ],
         ]);
     }
