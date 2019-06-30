@@ -49,6 +49,15 @@ class SearchPageConfigureForm extends Form
         $this->addFacets();
         $this->addSortFields();
         $this->addFormFieldset();
+
+        // Allow to manage the simple and visual form differently.
+        $this->add([
+            'name' => 'form_class',
+            'type' => Element\Hidden::class,
+            'attributes' => [
+                'value' =>  get_class($this),
+            ],
+        ]);
     }
 
     protected function addFacets()

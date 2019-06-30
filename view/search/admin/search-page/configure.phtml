@@ -29,12 +29,15 @@
 
 /**
  * @var \Zend\View\Renderer\PhpRenderer $this
- * @var \Search\Form\Admin\SearchPageConfigureForm $form
+ * @var \Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var \Search\Form\Admin\SearchPageConfigureForm|\Search\Form\Admin\SearchPageConfigureSimpleForm $form
  */
 
 $translate = $this->plugin('translate');
 $formCollection = $this->plugin('formCollection');
 $formRow = $this->plugin('formRow');
+
+$isSimple = $form instanceof \Search\Form\Admin\SearchPageConfigureSimpleForm;
 
 $assetUrl = $this->plugin('assetUrl');
 $this->headLink()
@@ -43,10 +46,17 @@ $this->headLink()
 $this->headScript()
     ->appendFile($assetUrl('jquery-ui.min.js', 'jQueryUI'))
     ->appendFile($assetUrl('js/search-admin.js', 'Search'));
-?>
 
-<?php $form->prepare(); ?>
-<?php $searchPage = $form->getOption('search_page'); ?>
+$index = $searchPage->index();
+$adapter = $index ? $index->adapter() : null;
+if (empty($adapter)) {
+    return;
+}
+
+$availableFields = $adapter->getAvailableFields($index);
+
+$form->prepare();
+?>
 
 <?php echo $this->pageTitle(sprintf($translate('Configure search page "%s"'), $searchPage->name())); ?>
 
@@ -54,6 +64,17 @@ $this->headScript()
 <div id="page-actions">
     <button><?php echo $translate('Save configuration'); ?></button>
 </div>
+
+<p>
+<?php if ($isSimple): ?>
+    <?= $this->hyperlink($translate('Use visual form.'), $this->url('admin/search/page-id', [], ['query' => ['form' => 'visual']], true)) ?>
+    <?php if (count($availableFields) > 200): ?>
+    <?= $translate('Warning: you have more than 200 properties, the form will be slow to load.') ?>
+    <?php endif; ?>
+<?php else: ?>
+    <?= $this->hyperlink($translate('Use simple form.'), $this->url('admin/search/page-id', [], ['query' => ['form' => 'simple']], true)) ?>
+<?php endif; ?>
+</p>
 
 <?php foreach ($form->getElements() as $element): ?>
     <?php echo $formRow($element); ?>

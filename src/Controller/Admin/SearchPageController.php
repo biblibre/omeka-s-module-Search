@@ -159,8 +159,10 @@ class SearchPageController extends AbstractActionController
 
         /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
         $searchPage = $this->api()->read('search_pages', $id)->getContent();
+        $view->setVariable('searchPage', $searchPage);
+
         $index = $searchPage->index();
-        $adapter = $index->adapter();
+        $adapter = $index ? $index->adapter() : null;
         if (empty($adapter)) {
             $message = new Message(
                 'The index adapter "%s" is unavailable', // @translate
@@ -170,30 +172,11 @@ class SearchPageController extends AbstractActionController
             return $view;
         }
 
-        // The form is different when the number of fields is too big.
-        // This is generally needed for the internal adapter when there are many
-        // specific vocabularies. Unlike other adapters, it uses all properties
-        // by default. So the number of properties may be greater than 200, so a
-        // memory overload may occur (memory_limit = 128MB).
-        // For the full form, the issue about the limit for the for number of
-        // fields by request (max_input_vars = 1000) is fixed via js.
-        // Each property has 3 fields, and as facet and sort in 2 directions, so
-        // the limit to use the full form or the simple form is set to 200.
-        $availableFields = $adapter->getAvailableFields($index);
-        $isSimple = count($availableFields) > 200;
-        if ($isSimple) {
-            /** @var \Search\Form\Admin\SearchPageConfigureSimpleForm $form */
-            $form = $this->getForm(SearchPageConfigureSimpleForm::class, [
-                'search_page' => $searchPage,
-            ]);
-        } else {
-            /** @var \Search\Form\Admin\SearchPageConfigureForm $form */
-            $form = $this->getForm(SearchPageConfigureForm::class, [
-                'search_page' => $searchPage,
-            ]);
-        }
+        $form = $this->getConfigureForm($searchPage);
+        $isSimple = $form instanceof SearchPageConfigureSimpleForm;
 
         $settings = $searchPage->settings();
+
         if ($isSimple) {
             $settings = $this->prepareSettingsForSimpleForm($searchPage, $settings);
         }
@@ -219,7 +202,7 @@ class SearchPageController extends AbstractActionController
             return $view;
         }
 
-        // TODO Why the fieldset "form" is removed from the the params? Add an intermediate fieldset?
+        // TODO Why the fieldset "form" is removed from the params? Add an intermediate fieldset?
         $formParams = isset($params['form']) ? $params['form'] : [];
         $params = $form->getData();
         $params['form'] = $formParams;
@@ -327,6 +310,44 @@ class SearchPageController extends AbstractActionController
     }
 
     /**
+     * Check if the configuration should use simple or visual form and get it.
+     *
+     * The form is different when the number of fields is too big. This is
+     * generally needed for the internal adapter when there are many specific
+     * vocabularies. Unlike other adapters, it uses all properties by default.
+     * So the number of properties may be greater than 200, so a memory overload
+     * may occur (memory_limit = 128MB).
+     * For the full form, the issue about the limit for the for number of fields
+     * by request (max_input_vars = 1000) is fixed via js. Each property has 3
+     * fields, and as facet and sort in 2 directions, so the limit to use the
+     * full form or the simple form is set to 200.
+     *
+     * @param SearchPageRepresentation $searchPage
+     * @return \Search\Form\Admin\SearchPageConfigureForm|\Search\Form\Admin\SearchPageConfigureSimpleForm
+     */
+    protected function getConfigureForm(SearchPageRepresentation $searchPage)
+    {
+        $index = $searchPage->index();
+        $adapter = $index ? $index->adapter() : null;
+        $availableFields = $adapter->getAvailableFields($index);
+
+        $isPostSimple = $this->getRequest()->isPost()
+            && $this->params()->fromPost('form_class') === SearchPageConfigureSimpleForm::class;
+        $forceForm = $this->params()->fromQuery('form');
+        $isSimple = $isPostSimple
+            || (count($availableFields) > 200 && $forceForm !== 'visual')
+            || $forceForm === 'simple';
+
+        $form = $isSimple
+            /** @var \Search\Form\Admin\SearchPageConfigureSimpleForm $form */
+            ? $this->getForm(SearchPageConfigureSimpleForm::class, ['search_page' => $searchPage])
+            /** @var \Search\Form\Admin\SearchPageConfigureForm $form */
+            : $this->getForm(SearchPageConfigureForm::class, ['search_page' => $searchPage]);
+
+        return $form;
+    }
+
+    /**
      * Convert settings into strings in ordeer to manage many fields.
      *
      * @param SearchPageRepresentation $searchPage
@@ -407,17 +428,23 @@ class SearchPageController extends AbstractActionController
             ];
         }
 
+        unset($params['form_class']);
+
         return $params;
     }
 
     protected function extractFullFields()
     {
         $params = $this->getRequest()->getPost()->toArray();
+
         $fields = isset($params['fieldsets']) ? $params['fieldsets'] : [];
         unset($params['fieldsets']);
         $fieldsData = $this->extractJsonEncodedFields($fields);
         $params = array_merge($fieldsData, $params);
         unset($fields);
+
+        unset($params['form_class']);
+
         return $params;
     }
 
