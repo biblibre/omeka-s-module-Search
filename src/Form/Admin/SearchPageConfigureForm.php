@@ -55,7 +55,7 @@ class SearchPageConfigureForm extends Form
             'name' => 'form_class',
             'type' => Element\Hidden::class,
             'attributes' => [
-                'value' =>  get_class($this),
+                'value' => get_class($this),
             ],
         ]);
     }

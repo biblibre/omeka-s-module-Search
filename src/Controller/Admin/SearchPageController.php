@@ -339,9 +339,9 @@ class SearchPageController extends AbstractActionController
             || $forceForm === 'simple';
 
         $form = $isSimple
-            /** @var \Search\Form\Admin\SearchPageConfigureSimpleForm $form */
+            /* @var \Search\Form\Admin\SearchPageConfigureSimpleForm $form */
             ? $this->getForm(SearchPageConfigureSimpleForm::class, ['search_page' => $searchPage])
-            /** @var \Search\Form\Admin\SearchPageConfigureForm $form */
+            /* @var \Search\Form\Admin\SearchPageConfigureForm $form */
             : $this->getForm(SearchPageConfigureForm::class, ['search_page' => $searchPage]);
 
         return $form;
@@ -385,7 +385,7 @@ class SearchPageController extends AbstractActionController
         $settings['sort_fields'] = $data;
 
         $data = '';
-        $fields = $adapter->getAvailableSortFields($index);;
+        $fields = $adapter->getAvailableSortFields($index);
         foreach ($fields as $name => $field) {
             $data .= $name . ' | ' . $field['label'] . "\n";
         }
