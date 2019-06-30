@@ -31,6 +31,7 @@
 namespace Search\Form\Admin;
 
 use Omeka\Api\Manager as ApiManager;
+use Omeka\Form\Element\SiteSelect;
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareTrait;
@@ -102,10 +103,21 @@ class SearchPageForm extends Form
 
         $this->add([
             'name' => 'manage_page_default',
-            'type' => Element\Checkbox::class,
+            'type' => SiteSelect::class,
             'options' => [
-                'label' => 'Set as default search page on sites', // @translate
-                'info' => 'The page will be made available on all sites too. The admin settings are not modified.', // @translate
+                'label' => 'Set as default search page for sites', // @translate
+                'empty_option' => '[No change]', // @translate
+                'info' => 'The page will be made available on all selected sites. This param can be set in each site settings too.', // @translate
+                'prepend_value_options' => [
+                    'all' => '[All sites]', // @translate
+                    'admin' => 'Admin', // @translate
+                ],
+            ],
+            'attributes' => [
+                'id' => 'manage_page_default',
+                'class' => 'chosen-select',
+                'multiple' => true,
+                'data-placeholder' => 'Select sites…', // @translate
             ],
         ]);
 

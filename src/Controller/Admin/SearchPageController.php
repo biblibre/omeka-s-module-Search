@@ -34,6 +34,7 @@ use Doctrine\ORM\EntityManager;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
 use Search\Adapter\Manager as SearchAdapterManager;
+use Search\Api\Representation\SearchPageRepresentation;
 use Search\Form\Admin\SearchPageForm;
 use Search\Form\Admin\SearchPageConfigureForm;
 use Search\FormAdapter\Manager as SearchFormAdapterManager;
@@ -89,9 +90,9 @@ class SearchPageController extends AbstractActionController
             'Search page "%s" created.', // @translate
             $searchPage->name()
         ));
-        $this->managePageOnSites(
-            $searchPage->id(),
-            !empty($formData['manage_page_default']),
+        $this->manageSearchPageOnSites(
+            $searchPage,
+            $formData['manage_page_default'],
             $formData['manage_page_availability']
         );
         if (!in_array($formData['manage_page_availability'], ['disable', 'enable'])
@@ -111,11 +112,16 @@ class SearchPageController extends AbstractActionController
 
     public function editAction()
     {
+        /** @var \Search\Api\Representation\SearchPageRepresentation $page */
         $id = $this->params('id');
         $page = $this->api()->read('search_pages', ['id' => $id])->getContent();
 
+        $data = $page->jsonSerialize();
+        $data['manage_page_default'] = $this->sitesWithSearchPage($page);
+
         $form = $this->getForm(SearchPageForm::class);
-        $form->setData($page->jsonSerialize());
+        $form->setData($data);
+
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
@@ -124,16 +130,18 @@ class SearchPageController extends AbstractActionController
         }
 
         $formData = $form->getData();
-        $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
+        $searchPage = $this->api()
+            ->update('search_pages', $id, $formData, [], ['isPartial' => true])
+            ->getContent();
 
         $this->messenger()->addSuccess(new Message(
             'Search page "%s" saved.', // @translate
-            $page->name()
+            $searchPage->name()
         ));
 
-        $this->managePageOnSites(
-            $id,
-            !empty($formData['manage_page_default']),
+        $this->manageSearchPageOnSites(
+            $searchPage,
+            $formData['manage_page_default'],
             $formData['manage_page_availability']
         );
 
@@ -311,53 +319,123 @@ class SearchPageController extends AbstractActionController
         return false;
     }
 
+    protected function sitesWithSearchPage(SearchPageRepresentation $searchPage)
+    {
+        $result = [];
+
+        // Check admin.
+        $adminSearchUrl = $this->settings()->get('search_main_page');
+        if ($adminSearchUrl) {
+            $basePath = $this->viewHelpers()->get('basePath');
+            $adminBasePath = $basePath('admin/');
+            if ($adminSearchUrl === ($adminBasePath . $searchPage->path())) {
+                $result[] = 'admin';
+            }
+        }
+
+        // Check all sites.
+        $searchPageId = $searchPage->id();
+        $settings = $this->siteSettings();
+        $sites = $this->api()->search('sites')->getContent();
+        foreach ($sites as $site) {
+            $settings->setTargetId($site->id());
+            if ($settings->get('search_main_page') == $searchPageId) {
+                $result[] = $site->id();
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Config the page for all sites.
      *
-     * @param int $searchPageId
-     * @param bool $default
+     * @param SearchPageRepresentation $searchPage
+     * @param array $mainSearchPageForSites
      * @param string $availability
      */
-    protected function managePageOnSites($searchPageId, $default, $availability)
-    {
-        if ($default) {
-            $availability = 'enable';
-            $message = 'The page has been set by default in all sites.'; // @translate
+    protected function manageSearchPageOnSites(
+        SearchPageRepresentation $searchPage,
+        array $newMainSearchPageForSites,
+        $availability
+    ) {
+        $searchPageId = $searchPage->id();
+        $currentMainSearchPageForSites = $this->sitesWithSearchPage($searchPage);
+
+        // Manage admin settings.
+        $current = in_array('admin', $currentMainSearchPageForSites);
+        $new = in_array('admin', $newMainSearchPageForSites);
+        if ($current !== $new) {
+            $settings = $this->settings();
+            if ($new) {
+                $basePath = $this->viewHelpers()->get('basePath');
+                $adminBasePath = $basePath('admin/');
+                $settings->set('search_main_page', $adminBasePath . $searchPage->path());
+
+                $searchPages = $settings->get('search_pages', []);
+                $searchPages[] = $searchPageId;
+                array_unique(array_filter($searchPages));
+                sort($searchPages);
+                $settings->set('search_pages', $searchPages);
+
+                $message = 'The page has been set by default in admin board.'; // @translate
+            } else {
+                $settings->set('search_main_page', null);
+
+                $message = 'The page has been unset in admin board.'; // @translate
+            }
             $this->messenger()->addSuccess($message);
         }
 
+        $allSites = in_array('all', $newMainSearchPageForSites);
         switch ($availability) {
             case 'disable':
                 $available = false;
-                $message = 'The page has been disabled in all sites.'; // @translate
+                $message = 'The page has been disabled in all specified sites.'; // @translate
                 break;
             case 'enable':
                 $available = true;
-                $message = 'The page has been enabled in all sites.'; // @translate
+                $message = 'The page has been made available in all specified sites.'; // @translate
                 break;
             default:
-                return;
+                $available = null;
         }
 
-        $siteSettings = $this->siteSettings();
+        // Manage site settings.
+        $settings = $this->siteSettings();
         $sites = $this->api()->search('sites')->getContent();
         foreach ($sites as $site) {
-            $siteSettings->setTargetId($site->id());
-            $searchPages = $siteSettings->get('search_pages');
-            if ($default) {
-                $siteSettings->set('search_main_page', $searchPageId);
+            $siteId = $site->id();
+            $settings->setTargetId($siteId);
+            $searchPages = $settings->get('search_pages', []);
+            $current = in_array($siteId, $currentMainSearchPageForSites);
+            $new = $allSites || in_array($siteId, $newMainSearchPageForSites);
+            if ($current !== $new) {
+                if ($new) {
+                    $settings->set('search_main_page', $siteId);
+
+                    $searchPages[] = $searchPageId;
+                    array_unique(array_filter($searchPages));
+                    sort($searchPages);
+                    $settings->set('search_pages', $searchPages);
+                } else {
+                    $settings->set('search_main_page', null);
+                }
+                $this->messenger()->addSuccess($message);
             }
-            if ($available) {
+
+            if ($new || $available) {
                 $searchPages[] = $searchPageId;
+                array_unique(array_filter($searchPages));
+                sort($searchPages);
             } else {
-                if (($key = array_search($searchPageId, $searchPages)) !== false) {
-                    unset($searchPages[$key]);
+                $key = array_search($searchPageId, $searchPages);
+                if ($key === false) {
+                    continue;
                 }
-                if ($siteSettings->get('search_main_page') == $searchPageId) {
-                    $siteSettings->set('search_main_page', null);
-                }
+                unset($searchPages[$key]);
             }
-            $siteSettings->set('search_pages', $searchPages);
+            $settings->set('search_pages', $searchPages);
         }
 
         $this->messenger()->addSuccess($message);
