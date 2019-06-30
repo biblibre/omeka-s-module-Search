@@ -9,9 +9,8 @@ class InternalAdapterFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $api = $services->get('Omeka\ApiManager');
-        $translator = $services->get('MvcTranslator');
-        $adapter = new InternalAdapter($api, $translator);
+        $adapter = new InternalAdapter();
+        $adapter->setServiceLocator($services);
         return $adapter;
     }
 }

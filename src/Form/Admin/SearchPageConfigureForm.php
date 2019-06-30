@@ -53,23 +53,11 @@ class SearchPageConfigureForm extends Form
 
     protected function addFacets()
     {
+        $this->addFacetLimit();
+
         /** @var \Search\Api\Representation\SearchPageRepresentation $searchPage */
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
-
-        $this->add([
-            'name' => 'facet_limit',
-            'type' => Element\Number::class,
-            'options' => [
-                'label' => 'Facet limit', // @translate
-                'info' => 'The maximum number of values fetched for each facet', // @translate
-            ],
-            'attributes' => [
-                'value' => 10,
-                'min' => 1,
-                'required' => true,
-            ],
-        ]);
 
         $facets = new Fieldset('facets');
         $facets->setLabel('Facets'); // @translate
@@ -123,6 +111,23 @@ class SearchPageConfigureForm extends Form
         }
 
         $this->add($facets);
+    }
+
+    protected function addFacetLimit()
+    {
+        $this->add([
+            'name' => 'facet_limit',
+            'type' => Element\Number::class,
+            'options' => [
+                'label' => 'Facet limit', // @translate
+                'info' => 'The maximum number of values fetched for each facet', // @translate
+            ],
+            'attributes' => [
+                'value' => 10,
+                'min' => 1,
+                'required' => true,
+            ],
+        ]);
     }
 
     protected function addSortFields()

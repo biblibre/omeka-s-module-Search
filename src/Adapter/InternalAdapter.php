@@ -2,32 +2,10 @@
 
 namespace Search\Adapter;
 
-use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchIndexRepresentation;
-use Zend\I18n\Translator\TranslatorInterface;
 
 class InternalAdapter extends AbstractAdapter
 {
-    /**
-     * @param ApiManager $api
-     */
-    protected $api;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    protected $translator;
-
-    /**
-     * @param ApiManager $api
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(ApiManager $api, TranslatorInterface $translator)
-    {
-        $this->api = $api;
-        $this->translator = $translator;
-    }
-
     public function getLabel()
     {
         return 'Internal'; // @translate
@@ -50,28 +28,28 @@ class InternalAdapter extends AbstractAdapter
 
     public function getAvailableFields(SearchIndexRepresentation $index)
     {
-        $response = $this->api->search('properties');
+        // Use a direct query to avoid a memory overload when there are many
+        // vocabularies.
+        /* @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->getServiceLocator()->get('Omeka\Connection');
 
-        // TODO Fix the page(create facet and sort tabs + property selector, like other views).
-        // An overload may occur (memory_limit = 128M). The limit for number of
-        // fields by request (max_input_vars = 1000) is fixed via js.
-        // And 3 fields by property, as facet and sort in 2 directions.
-        $totalResults = $response->getTotalResults();
-        if ($totalResults > 200) {
-            $response = $this->api->search('properties', ['vocabulary_prefix' => 'dcterms']);
-        }
-        /** @var \Omeka\Api\Representation\PropertyRepresentation[] $properties */
-        $properties = $response->getContent();
+        $qb = $connection->createQueryBuilder();
+        $qb
+            ->select(
+                'CONCAT(vocabulary.prefix, ":", property.local_name) AS "name"',
+                'property.label AS "label"'
+            )
+            ->from('property', 'property')
+            ->innerJoin('property', 'vocabulary', 'vocabulary', 'property.vocabulary_id = vocabulary.id')
+            ->addOrderBy('vocabulary.id', 'ASC')
+            ->addOrderBy('property.local_name', 'ASC');
+
+        $stmt = $connection->executeQuery($qb);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         $fields = [];
-        foreach ($properties as $property) {
-            $name = $property->term();
-            // TODO Use an alternative label for the facets?
-            $label = $property->label();
-            $fields[$name] = [
-                'name' => $name,
-                'label' => $label,
-            ];
+        foreach ($result as $field) {
+            $fields[$field['name']] = $field;
         }
 
         return $fields;
@@ -84,9 +62,11 @@ class InternalAdapter extends AbstractAdapter
         // There is no default score sort.
         $sortFields = [];
 
+        $translator = $this->getServiceLocator()->get('MvcTranslator');
+
         $directionLabels = [
-            'asc' => $this->translator->translate('Asc'),
-            'desc' => $this->translator->translate('Desc'),
+            'asc' => $translator->translate('Asc'),
+            'desc' => $translator->translate('Desc'),
         ];
 
         foreach ($availableFields as $name => $availableField) {

@@ -49,6 +49,7 @@ return [
             Form\Admin\SearchIndexConfigureForm::class => Service\Form\SearchIndexConfigureFormFactory::class,
             Form\Admin\SearchIndexForm::class => Service\Form\SearchIndexFormFactory::class,
             Form\Admin\SearchPageConfigureForm::class => Service\Form\SearchPageConfigureFormFactory::class,
+            Form\Admin\SearchPageConfigureSimpleForm::class => Service\Form\SearchPageConfigureSimpleFormFactory::class,
             Form\Admin\SearchPageForm::class => Service\Form\SearchPageFormFactory::class,
             Form\BasicForm::class => Service\Form\BasicFormFactory::class,
             Form\Element\SearchPageSelect::class => Service\Form\Element\SearchPageSelectFactory::class,
