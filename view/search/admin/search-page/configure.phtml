@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016-2017
- * Copyright Daniel Berthereau, 2017-2018
+ * Copyright Daniel Berthereau, 2017-2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,14 +29,20 @@
 
 /**
  * @var \Zend\View\Renderer\PhpRenderer $this
- * @var \Search\Form\Admin\SearchPageForm $form
+ * @var \Search\Form\Admin\SearchPageConfigureForm $form
  */
 
 $translate = $this->plugin('translate');
-$this->headLink()->appendStylesheet($this->assetUrl('jquery-ui.min.css', 'jQueryUI'));
-$this->headScript()->appendFile($this->assetUrl('jquery-ui.min.js', 'jQueryUI'));
-$this->headLink()->appendStylesheet($this->assetUrl('css/search-page-configure.css', 'Search'));
-$this->headScript()->appendFile($this->assetUrl('js/search-admin.js', 'Search'));
+$formCollection = $this->plugin('formCollection');
+$formRow = $this->plugin('formRow');
+
+$assetUrl = $this->plugin('assetUrl');
+$this->headLink()
+    ->appendStylesheet($assetUrl('jquery-ui.min.css', 'jQueryUI'))
+    ->appendStylesheet($assetUrl('css/search-page-configure.css', 'Search'));
+$this->headScript()
+    ->appendFile($assetUrl('jquery-ui.min.js', 'jQueryUI'))
+    ->appendFile($assetUrl('js/search-admin.js', 'Search'));
 ?>
 
 <?php $form->prepare(); ?>
@@ -50,18 +56,18 @@ $this->headScript()->appendFile($this->assetUrl('js/search-admin.js', 'Search'))
 </div>
 
 <?php foreach ($form->getElements() as $element): ?>
-    <?php echo $this->formRow($element); ?>
+    <?php echo $formRow($element); ?>
 <?php endforeach; ?>
 
 <?php foreach ($form->getFieldsets() as $fieldset): ?>
     <div data-sortable="<?php echo $fieldset->getAttribute('data-sortable'); ?>">
         <h2><?php echo $fieldset->getLabel() ?></h2>
         <?php foreach ($fieldset->getFieldsets() as $subfieldset): ?>
-            <?php echo $this->formCollection($subfieldset); ?>
+            <?php echo $formCollection($subfieldset); ?>
         <?php endforeach; ?>
 
         <?php foreach ($fieldset->getElements() as $element): ?>
-            <?php echo $this->formRow($element); ?>
+            <?php echo $formRow($element); ?>
         <?php endforeach; ?>
     </div>
 <?php endforeach; ?>

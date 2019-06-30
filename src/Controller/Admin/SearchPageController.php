@@ -170,36 +170,13 @@ class SearchPageController extends AbstractActionController
             return $view;
         }
 
-        // Fix the "max_input_vars" limit in php.ini via js.
+        // Fix the "max_input_vars" limit (default to 1000 in php.ini) via js.
         $params = $this->getRequest()->getPost()->toArray();
-
-        // Recreate the array that was json encoded via js.
-        $fieldsData = [];
-        $fields = isset($params['fieldsets']) ? json_decode($params['fieldsets'], true) : [];
-        foreach ($fields as $type => $typeFields) {
-            foreach ($typeFields as $fieldData) {
-                $type = strtok($fieldData['name'], '[]');
-                $two = strtok('[]');
-                if (!strlen($two)) {
-                    $fieldsData[$type] = $fieldData['value'];
-                } else {
-                    $three = strtok('[]');
-                    if (!strlen($three)) {
-                        $fieldsData[$type][$two] = $fieldData['value'];
-                    } else {
-                        $four = strtok('[]');
-                        if (!strlen($four)) {
-                            $fieldsData[$type][$two][$three] = $fieldData['value'];
-                        } else {
-                            $fieldsData[$type][$two][$three][$four] = $fieldData['value'];
-                        }
-                    }
-                }
-            }
-        }
-
-        $params = array_merge($fieldsData, $params);
+        $fields = isset($params['fieldsets']) ? $params['fieldsets'] : [];
         unset($params['fieldsets']);
+        $fieldsData = $this->extractJsonEncodedFields($fields);
+        $params = array_merge($fieldsData, $params);
+        unset($fields);
 
         $form->setData($params);
         if (!$form->isValid()) {
@@ -317,6 +294,50 @@ class SearchPageController extends AbstractActionController
             $this->messenger()->addError('There was an error during validation'); // @translate
         }
         return false;
+    }
+
+    /**
+     * To bypass the limit to 1000 fields posted, post is json encoded, so it
+     * should be decoded.
+     *
+     * @param string $jsonEncodedFields
+     * @return array
+     */
+    protected function extractJsonEncodedFields($jsonEncodedFields)
+    {
+        if (empty($jsonEncodedFields)) {
+            return [];
+        }
+        $fields = json_decode($jsonEncodedFields, true);
+        if (empty($jsonEncodedFields)) {
+            return [];
+        }
+
+        // Recreate the array that was json encoded via js.
+        $fieldsData = [];
+        foreach ($fields as $type => $typeFields) {
+            foreach ($typeFields as $fieldData) {
+                $type = strtok($fieldData['name'], '[]');
+                $two = strtok('[]');
+                if (!strlen($two)) {
+                    $fieldsData[$type] = $fieldData['value'];
+                } else {
+                    $three = strtok('[]');
+                    if (!strlen($three)) {
+                        $fieldsData[$type][$two] = $fieldData['value'];
+                    } else {
+                        $four = strtok('[]');
+                        if (!strlen($four)) {
+                            $fieldsData[$type][$two][$three] = $fieldData['value'];
+                        } else {
+                            $fieldsData[$type][$two][$three][$four] = $fieldData['value'];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fieldsData;
     }
 
     protected function sitesWithSearchPage(SearchPageRepresentation $searchPage)
