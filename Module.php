@@ -267,22 +267,23 @@ SQL;
     protected function addAclRules()
     {
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $acl->allow(
-            null,
-            [
-                \Search\Controller\IndexController::class,
-                \Search\Api\Adapter\SearchPageAdapter::class,
-                \Search\Api\Adapter\SearchIndexAdapter::class,
-            ]
-        );
-        $acl->allow(
-            null,
-            [
-                \Search\Entity\SearchPage::class,
-                \Search\Entity\SearchIndex::class,
-            ],
-          'read'
-        );
+        $acl
+            ->allow(
+                null,
+                [
+                    \Search\Controller\IndexController::class,
+                    \Search\Api\Adapter\SearchPageAdapter::class,
+                    \Search\Api\Adapter\SearchIndexAdapter::class,
+                ]
+            )
+            ->allow(
+                null,
+                [
+                    \Search\Entity\SearchPage::class,
+                    \Search\Entity\SearchIndex::class,
+                ],
+                'read'
+            );
     }
 
     protected function addRoutes()
