@@ -628,14 +628,14 @@ class SearchPageController extends AbstractActionController
     /**
      * Clean the text area from end of lines.
      *
-     * This method fixes Apple copy/paste from a textarea input.
+     * This method fixes Windows and Apple copy/paste from a textarea input.
      *
      * @param string $string
      * @return string
      */
     protected function fixEndOfLine($string)
     {
-        return str_replace(["\r\n", "\n\r", "\r", "\n"], "\n", $string);
+        return str_replace(["\r\n", "\n\r", "\r"], ["\n", "\n", "\n"], $string);
     }
 
     protected function getEntityManager()
