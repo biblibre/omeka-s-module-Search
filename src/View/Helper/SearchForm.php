@@ -14,19 +14,29 @@ class SearchForm extends AbstractHelper
     protected $searchPage;
 
     /**
+     * @var string
+     */
+    protected $bypassPartial;
+
+    /**
      * @var Form
      */
     protected $form;
 
     /**
      * @param SearchPageRepresentation $searchPage
+     * @param string $bypassPartial Allow to use a specific partial for the
+     * search form.
      * @return \Search\View\Helper\SearchForm
      */
-    public function __invoke(SearchPageRepresentation $searchPage = null)
+    public function __invoke(SearchPageRepresentation $searchPage = null, $bypassPartial = null)
     {
         if (isset($searchPage)) {
             $this->searchPage = $searchPage;
             $this->form = null;
+        }
+        if (isset($bypassPartial)) {
+            $this->bypassPartial = $bypassPartial;
         }
         return $this;
     }
@@ -74,6 +84,9 @@ class SearchForm extends AbstractHelper
     {
         if (empty($this->searchPage)) {
             return '';
+        }
+        if ($this->bypassPartial) {
+            return $this->bypassPartial;
         }
         $formAdapter = $this->searchPage->formAdapter();
         return $formAdapter && ($formPartial = $formAdapter->getFormPartial())
