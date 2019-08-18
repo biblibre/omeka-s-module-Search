@@ -1,14 +1,16 @@
 <?php
 /**
  * @var \Zend\View\Renderer\PhpRenderer $this
- * @var string $url
+ * @var string $name
  * @var string $value
+ * @var string $url
  * @var int $count
  * @var bool $active
+ * @var \Zend\View\Helper\EscapeHtml $escapeHtml
  */
-$escapeHtml = $this->plugin('escapeHtml');
 ?>
-<span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-    <a href="<?php echo $escapeHtml($url); ?>"><?php echo $escapeHtml($value); ?></a>
-    (<?php echo $count; ?>)
+
+<span class="<?= $active ? 'active' : 'inactive' ?>">
+    <a href="<?= $escapeHtml($url) ?>"><?= $escapeHtml($value) ?></a>
+    (<span class="count"><?= $count ?></span>)
 </span>
