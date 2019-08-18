@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-01 00:00+0200\n"
+"POT-Creation-Date: 2019-08-19 00:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,52 +38,69 @@ msgstr ""
 msgid "The site path will be automatically prepended."
 msgstr ""
 
+#: src/Generic/AbstractModule.php:486
+#, php-format
+msgid "This module requires the module \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:506
+#, php-format
+msgid "This module requires modules \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:574
+#, php-format
+msgid ""
+"The module \"%s\" was automatically deactivated because the dependencies are "
+"unavailable."
+msgstr ""
+
 #: src/Site/BlockLayout/Search.php:23
 msgid "Insert a themable search form."
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:42
+#: view/search/admin/index/browse.phtml:43
 msgid "Search manager"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:45
+#: view/search/admin/index/browse.phtml:46
 msgid "Add new index"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:51
+#: view/search/admin/index/browse.phtml:52
 msgid "Indexes"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:57
+#: view/search/admin/index/browse.phtml:58
 msgid "Adapter"
 msgstr ""
 
+#: view/search/admin/index/browse.phtml:79
 #: view/search/admin/index/browse.phtml:80
-#: view/search/admin/index/browse.phtml:81
 msgid "Reindex all"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:99
+#: view/search/admin/index/browse.phtml:98
 msgid "No search indexes created yet."
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:108
+#: view/search/admin/index/browse.phtml:107
 msgid "Path"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:109
+#: view/search/admin/index/browse.phtml:108
 msgid "Index"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:110
+#: view/search/admin/index/browse.phtml:109
 msgid "Form"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:132
+#: view/search/admin/index/browse.phtml:128
 msgid "Configure facets and sort fields"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:163
+#: view/search/admin/index/browse.phtml:158
 msgid "No search pages created yet."
 msgstr ""
 
@@ -100,53 +117,53 @@ msgstr ""
 msgid "Edit search index"
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:13
+#: view/search/admin/search-index/index-confirm.phtml:14
 msgid "Confirm reindex"
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:20
+#: view/search/admin/search-index/index-confirm.phtml:22
 #, php-format
 msgid "Reindex \"%s\""
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:21
+#: view/search/admin/search-index/index-confirm.phtml:23
 msgid "Are you sure you would like to reindex this index?"
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:23
+#: view/search/admin/search-index/index-confirm.phtml:25
 msgid ""
 "All the indexes will be cleared first, so the search will be unavailable for "
 "a while."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:24
+#: view/search/admin/search-index/index-confirm.phtml:26
 msgid "You may redirect the users on a clone of the current index temporary."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:27
+#: view/search/admin/search-index/index-confirm.phtml:29
 msgid ""
 "You may prefer to keep existing indexes and to start the indexing at the "
 "following resource id."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:28
+#: view/search/admin/search-index/index-confirm.phtml:30
 msgid "Set \"1\" to reindex all resources without clearing the current index."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:32
+#: view/search/admin/search-index/index-confirm.phtml:34
 msgid "You may want to limit the reindexing to a resource type."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:39
+#: view/search/admin/search-index/index-confirm.phtml:41
 #, php-format
 msgid "%d running indexings."
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:40
+#: view/search/admin/search-index/index-confirm.phtml:42
 msgid "Force indexing"
 msgstr ""
 
-#: view/search/admin/search-index/index-confirm.phtml:42
+#: view/search/admin/search-index/index-confirm.phtml:44
 msgid "No running indexing: process can be launched."
 msgstr ""
 
@@ -180,47 +197,55 @@ msgstr ""
 msgid "Edit search page"
 msgstr ""
 
-#: view/search/facets.phtml:41
+#: view/search/facets.phtml:43
 msgid "Filters"
 msgstr ""
 
-#: view/search/index/search.phtml:90
+#: view/search/index/search.phtml:93
 msgid "Your query returned no results"
 msgstr ""
 
-#: Module.php:89
+#: view/search/results-header.phtml:32
+msgid "list"
+msgstr ""
+
+#: view/search/results-header.phtml:34
+msgid "grid"
+msgstr ""
+
+#: Module.php:88
 msgid "The module jQueryUI is required to customize the search pages."
 msgstr ""
 
-#: Module.php:93
+#: Module.php:92
 msgid ""
 "The module Reference is required to use the facets with the default internal "
 "adapter."
 msgstr ""
 
-#: Module.php:125
+#: Module.php:118
 msgid ""
 "The internal search engine is available. Enable it in the main settings (for "
 "admin) and in site settings (for public)."
 msgstr ""
 
-#: Module.php:431
+#: Module.php:364
 #, php-format
 msgid "Unable to delete the search index for resource #%d: %s"
 msgstr ""
 
-#: Module.php:434
+#: Module.php:367
 #, php-format
 msgid ""
 "Unable to delete the search index for the deleted resource #%d: see log."
 msgstr ""
 
-#: Module.php:452
+#: Module.php:385
 #, php-format
 msgid "Unable to index metadata of resource #%d for search: %s"
 msgstr ""
 
-#: Module.php:455
+#: Module.php:388
 #, php-format
 msgid "Unable to update the search index for resource #%d: see log."
 msgstr ""
@@ -287,7 +312,7 @@ msgid "Facets"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:103
-#: src/Form/Admin/SearchPageConfigureForm.php:179 config/module.config.php:194
+#: src/Form/Admin/SearchPageConfigureForm.php:179 config/module.config.php:195
 msgid "Enabled"
 msgstr ""
 
@@ -305,7 +330,7 @@ msgid "The maximum number of values fetched for each facet"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:149
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:75
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:77
 msgid "Sort fields"
 msgstr ""
 
@@ -323,25 +348,25 @@ msgid ""
 "Label\"."
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:58
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:59
 msgid "Available facets"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:59
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:60
 msgid "List of all available facets, among which some can be copied above."
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:76
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:78
 msgid ""
 "List of sort fields that will be displayed in the search page. Format is "
 "\"term dir | Label\"."
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:88
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:91
 msgid "Available sort fields"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureSimpleForm.php:89
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:92
 msgid ""
 "List of all available sort fields, among which some can be copied above."
 msgstr ""
@@ -639,27 +664,27 @@ msgstr ""
 msgid "Invalid navigation: browse link missing search page id"
 msgstr ""
 
-#: config/module.config.php:192
+#: config/module.config.php:193
 msgid "Automatic mapping of empty values"
 msgstr ""
 
-#: config/module.config.php:193
+#: config/module.config.php:194
 msgid "Available"
 msgstr ""
 
-#: config/module.config.php:195
+#: config/module.config.php:196
 msgid "Find"
 msgstr ""
 
-#: config/module.config.php:196
+#: config/module.config.php:197
 msgid "Find resources…"
 msgstr ""
 
-#: config/module.config.php:197
+#: config/module.config.php:198
 msgid "Processing…"
 msgstr ""
 
-#: config/module.config.php:198
+#: config/module.config.php:199
 msgid ""
 "Try to map automatically the metadata and the properties that are not mapped "
 "yet with the fields of the index"
