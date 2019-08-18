@@ -192,7 +192,7 @@ class ApiFormAdapter implements FormAdapterInterface
                         continue 2;
                     }
                     $value = $list;
-                    // No break;
+                    // no break;
                 case 'neq':
                 case 'nin':
                 case 'in':
