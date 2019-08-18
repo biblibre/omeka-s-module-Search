@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Zend\Form\Form $form
+ */
+
+// This quick form displays only the first field (the main one) and the required or hidden elements.
+
+$form->prepare();
+
+$main = null;
+foreach ($form->getElements() as $element):
+    if ($element instanceof \Zend\Form\Element\Csrf || $element instanceof \Zend\Form\Element\Hidden):
+        continue;
+    endif;
+    if ($main):
+        if (!$element->getOption('required')):
+            $form->remove($element->getName());
+        endif;
+    else:
+        $main = $element;
+    endif;
+endforeach;
+?>
+
+<?= $this->form($form) ?>
