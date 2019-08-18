@@ -473,33 +473,33 @@ SQL;
     public function handleMainSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $searchFilter = $inputFilter->get('search');
-        $searchFilter->add([
-            'name' => 'search_pages',
-            'required' => false,
-        ]);
-        $searchFilter->add([
-            'name' => 'search_main_page',
-            'required' => false,
-        ]);
-        $searchFilter->add([
-            'name' => 'search_api_page',
-            'required' => false,
-        ]);
+        $inputFilter->get('search')
+            ->add([
+                'name' => 'search_pages',
+                'required' => false,
+            ])
+            ->add([
+                'name' => 'search_main_page',
+                'required' => false,
+            ])
+            ->add([
+                'name' => 'search_api_page',
+                'required' => false,
+            ]);
     }
 
     public function handleSiteSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $searchFilter = $inputFilter->get('search');
-        $searchFilter->add([
-            'name' => 'search_pages',
-            'required' => false,
-        ]);
-        $searchFilter->add([
-            'name' => 'search_main_page',
-            'required' => false,
-        ]);
+        $inputFilter->get('search')
+            ->add([
+                'name' => 'search_pages',
+                'required' => false,
+            ])
+            ->add([
+                'name' => 'search_main_page',
+                'required' => false,
+            ]);
     }
 
     /**

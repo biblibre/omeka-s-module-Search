@@ -8,9 +8,10 @@
 
 $translate = $this->plugin('translate');
 ?>
+
 <div class="search-results-header">
     <div class="search-results-count">
-        <?php echo $this->pagination(); ?>
+        <?= $this->pagination() ?>
     </div>
     <div class="search-results-sort">
         <form>
@@ -22,14 +23,14 @@ $translate = $this->plugin('translate');
                 $sortSelect->setLabel($translate('Sort by'));
             endif; ?>
             <?php if (!empty($sortSelect)): ?>
-            <?php echo $this->formLabel($sortSelect); ?>
-            <?php echo $this->formSelect($sortSelect); ?>
+            <?= $this->formLabel($sortSelect) ?>
+            <?= $this->formSelect($sortSelect) ?>
             <?php endif; ?>
         </form>
     </div>
     <div>
-        <a class="search-view-type search-view-type-list" href="#"><?php echo $translate('list'); ?></a>
+        <a class="search-view-type search-view-type-list" href="#"><?= $translate('list') ?></a>
         |
-        <a class="search-view-type search-view-type-grid" href="#"><?php echo $translate('grid'); ?></a>
+        <a class="search-view-type search-view-type-grid" href="#"><?= $translate('grid') ?></a>
     </div>
 </div>

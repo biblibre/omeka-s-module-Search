@@ -4,8 +4,7 @@
  * @var \Zend\Form\Form $form
  */
 
+$form->prepare();
 ?>
-<?php $form->prepare(); ?>
-<?php echo $this->form()->openTag($form); ?>
-<?php echo $this->formCollection($form, false); ?>
-<?php echo $this->form()->closeTag(); ?>
+
+<?= $this->form($form) ?>

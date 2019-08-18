@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright BibLibre, 2016
- * Copyright Daniel Berthereau, 2017-2018
+ * Copyright Daniel Berthereau, 2017-2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -40,112 +40,106 @@ $url = $this->plugin('url');
 
 <?php $this->htmlElement('body')->appendAttribute('class', 'search-admin resource browse'); ?>
 
-<?php echo $this->pageTitle($translate('Search manager')); ?>
+<?= $this->pageTitle($translate('Search manager')) ?>
 
 <div id="page-actions">
-    <a class="button" href="<?php echo $url('admin/search/index', ['action' => 'add']); ?>"><?php echo $translate('Add new index'); ?></a>
+    <a class="button" href="<?= $url('admin/search/index', ['action' => 'add']) ?>"><?= $translate('Add new index') ?></a>
     <?php if (!empty($search_indexes)): ?>
-        <a class="button" href="<?php echo $url('admin/search/page', ['action' => 'add']); ?>"><?php echo $translate('Add new page'); ?></a>
+        <a class="button" href="<?= $url('admin/search/page', ['action' => 'add']) ?>"><?= $translate('Add new page') ?></a>
     <?php endif; ?>
 </div>
 
-<h2><?php echo $translate('Indexes'); ?></h2>
+<h2><?= $translate('Indexes') ?></h2>
 <?php if (count($search_indexes) > 0): ?>
     <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
-                <th><?php echo $translate('Name'); ?></th>
-                <th><?php echo $translate('Adapter'); ?></th>
+                <th><?= $translate('Name') ?></th>
+                <th><?= $translate('Adapter') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($search_indexes as $search_index): ?>
                 <tr>
                     <td>
-                        <span><?php echo $search_index->name(); ?></span>
+                        <span><?= $search_index->name() ?></span>
                         <ul class="actions">
                             <?php if ($search_index->adapter()): ?>
                                 <li>
-                                    <?php
-                                        echo $search_index->link('', 'edit', [
-                                            'class' => 'o-icon-edit',
-                                            'aria-label' => $translate('Edit'),
-                                            'title' => $translate('Edit'),
-                                        ]);
-                                    ?>
+                                    <?= $search_index->link('', 'edit', [
+                                        'class' => 'o-icon-edit',
+                                        'aria-label' => $translate('Edit'),
+                                        'title' => $translate('Edit'),
+                                    ]) ?>
                                 </li>
                                 <li>
                                     <a href="#"
-                                    data-sidebar-content-url="<?php echo $escape($search_index->url('index-confirm')); ?>"
+                                    data-sidebar-content-url="<?= $escape($search_index->url('index-confirm')) ?>"
                                     class="o-icon- fa fa-refresh fa-sync sidebar-content"
-                                    aria-label="<?php echo $escape($translate('Reindex all')); ?>"
-                                    title="<?php echo $escape($translate('Reindex all')); ?>"></a>
+                                    aria-label="<?= $escape($translate('Reindex all')) ?>"
+                                    title="<?= $escape($translate('Reindex all')) ?>"></a>
                                 </li>
                             <?php endif; ?>
                             <li>
                                 <a href="#"
-                                data-sidebar-content-url="<?php echo $escape($search_index->url('delete-confirm')); ?>"
+                                data-sidebar-content-url="<?= $escape($search_index->url('delete-confirm')) ?>"
                                 class="o-icon-delete sidebar-content"
-                                aria-label="<?php echo $escape($translate('Delete')); ?>"
-                                title="<?php echo $escape($translate('Delete')); ?>"></a>
+                                aria-label="<?= $escape($translate('Delete')) ?>"
+                                title="<?= $escape($translate('Delete')) ?>"></a>
                             </li>
                         </ul>
                     </td>
-                    <td><?php echo $search_index->adapterLabel(); ?></td>
+                    <td><?= $search_index->adapterLabel() ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 <?php else: ?>
-    <p><?php echo $translate('No search indexes created yet.'); ?></p>
+    <p><?= $translate('No search indexes created yet.') ?></p>
 <?php endif; ?>
 
-<h2><?php echo $translate('Pages'); ?></h2>
+<h2><?= $translate('Pages') ?></h2>
 <?php if (count($search_pages) > 0): ?>
     <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
-                <th><?php echo $translate('Name'); ?></th>
-                <th><?php echo $translate('Path'); ?></th>
-                    <th><?php echo $translate('Index'); ?></th>
-                <th><?php echo $translate('Form'); ?></th>
+                <th><?= $translate('Name') ?></th>
+                <th><?= $translate('Path') ?></th>
+                    <th><?= $translate('Index') ?></th>
+                <th><?= $translate('Form') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($search_pages as $search_page): ?>
                 <tr>
                     <td>
-                        <span><?php echo $search_page->name(); ?></span>
+                        <span><?= $search_page->name() ?></span>
                         <ul class="actions">
                             <li>
-                                <?php
-                                    echo $search_page->link('', 'edit', [
-                                        'class' => 'o-icon-edit',
-                                        'title' => $translate('Edit'),
-                                    ]);
-                                ?>
+                                <?= $search_page->link('', 'edit', [
+                                    'class' => 'o-icon-edit',
+                                    'title' => $translate('Edit'),
+                                ]) ?>
                             </li>
                             <?php if ($search_page->index()->adapter()): ?>
                             <li>
-                                <?php
-                                    echo $search_page->link('', 'configure', [
-                                        'class' => 'o-icon- fa fa-sliders fa-sliders-h',
-                                        'title' => $translate('Configure facets and sort fields'),
-                                    ]);
-                                ?>
+                                <?= $search_page->link('', 'configure', [
+                                    'class' => 'o-icon- fa fa-sliders fa-sliders-h',
+                                    'title' => $translate('Configure facets and sort fields'),
+                                ]) ?>
                             </li>
                             <?php endif; ?>
                             <li>
                                 <a href="#"
-                                data-sidebar-content-url="<?php echo $escape($search_page->url('delete-confirm')); ?>"
+                                data-sidebar-content-url="<?= $escape($search_page->url('delete-confirm')) ?>"
                                 class="o-icon-delete sidebar-content"
-                                aria-label="<?php echo $escape($translate('Delete')); ?>"
-                                title="<?php echo $escape($translate('Delete')); ?>"></a>
+                                aria-label="<?= $escape($translate('Delete')) ?>"
+                                title="<?= $escape($translate('Delete')) ?>"></a>
                             </li>
                         </ul>
                     </td>
-                    <td><?php echo $search_page->path(); ?></td>
-                    <td><?php echo $search_page->index()->name(); ?></td>
+                    <td><?= $search_page->path() ?></td>
+                    <td><?= $search_page->index()->name() ?></td>
                     <td>
                         <?php
                             $formAdapter = $search_page->formAdapter();
@@ -161,13 +155,13 @@ $url = $this->plugin('url');
         </tbody>
     </table>
 <?php else: ?>
-    <p><?php echo $translate('No search pages created yet.'); ?></p>
+    <p><?= $translate('No search pages created yet.') ?></p>
 <?php endif; ?>
 
 <div class="sidebar">
     <a href="#"
         class="sidebar-close o-icon-close"
-        aria-label="<?php echo $escape($translate('Close')); ?>"
-        title="<?php echo $escape($translate('Close')); ?>"></a>
+        aria-label="<?= $escape($translate('Close')) ?>"
+        title="<?= $escape($translate('Close')) ?>"></a>
     <div class="sidebar-content"></div>
 </div>

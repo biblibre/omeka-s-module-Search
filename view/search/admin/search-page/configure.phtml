@@ -58,11 +58,11 @@ $availableFields = $adapter->getAvailableFields($index);
 $form->prepare();
 ?>
 
-<?php echo $this->pageTitle(sprintf($translate('Configure search page "%s"'), $searchPage->name())); ?>
+<?= $this->pageTitle(sprintf($translate('Configure search page "%s"'), $searchPage->name())) ?>
 
-<?php echo $this->form()->openTag($form); ?>
+<?= $this->form()->openTag($form) ?>
 <div id="page-actions">
-    <button><?php echo $translate('Save configuration'); ?></button>
+    <button><?= $translate('Save configuration') ?></button>
 </div>
 
 <p>
@@ -77,20 +77,20 @@ $form->prepare();
 </p>
 
 <?php foreach ($form->getElements() as $element): ?>
-    <?php echo $formRow($element); ?>
+    <?= $formRow($element); ?>
 <?php endforeach; ?>
 
 <?php foreach ($form->getFieldsets() as $fieldset): ?>
-    <div data-sortable="<?php echo $fieldset->getAttribute('data-sortable'); ?>">
-        <h2><?php echo $fieldset->getLabel() ?></h2>
+    <div data-sortable="<?= $fieldset->getAttribute('data-sortable') ?>">
+        <h2><?= $fieldset->getLabel() ?></h2>
         <?php foreach ($fieldset->getFieldsets() as $subfieldset): ?>
-            <?php echo $formCollection($subfieldset); ?>
+            <?= $formCollection($subfieldset) ?>
         <?php endforeach; ?>
 
         <?php foreach ($fieldset->getElements() as $element): ?>
-            <?php echo $formRow($element); ?>
+            <?= $formRow($element) ?>
         <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
 
-<?php echo $this->form()->closeTag(); ?>
+<?= $this->form()->closeTag() ?>

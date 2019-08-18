@@ -33,7 +33,7 @@
  * @var \Search\Response $response
  * @var array $sortOptions
  * @var array $facets
- * @var bool $isPartial
+ * @var bool $isPartial Allow to use this partial in admin board when true.
  */
 
 $translate = $this->plugin('translate');
@@ -46,58 +46,57 @@ $this->headScript()->appendFile($assetUrl('js/search.js', 'Search'));
 $this->htmlElement('body')->appendAttribute('class', 'search-page resource browse');
 ?>
 
-<?php echo $this->pageTitle($translate('Search')); ?>
+<?= $this->pageTitle($translate('Search')) ?>
 
 <?php if (empty($isPartial)): ?>
 <div id="content" role="main">
 <?php endif; ?>
-    <?php echo $this->searchForm(); ?>
 
-    <?php if (isset($response)): ?>
-        <div class="search-results-wrapper">
-            <div class="search-results">
-                <?php if ($response->getTotalResults() > 0): ?>
-                    <?php
-                        echo $partial('search/results-header', [
-                            'query' => $query,
-                            'response' => $response,
-                            'sortOptions' => $sortOptions,
-                        ]);
-                    ?>
+<?= $this->searchForm() ?>
 
-                    <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
-                    <?php
-                    echo $partial('search/resource-list', [
-                        'title' => sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
-                        'response' => $response,
-                        'resourceName' => 'item_sets',
-                    ]);
-                    ?>
+<?php if (isset($response)): ?>
+<div class="search-results-wrapper">
+    <div class="search-results">
 
-                    <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
-                    <?php
-                    echo $partial('search/resource-list', [
-                        'title' => sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
-                        'response' => $response,
-                        'resourceName' => 'items',
-                    ]);
-                    ?>
+        <?php if ($response->getTotalResults()): ?>
+            <?= $partial('search/results-header', [
+                'query' => $query,
+                'response' => $response,
+                'sortOptions' => $sortOptions,
+            ]) ?>
 
-                    <?php
-                        echo $partial('search/results-footer', [
-                            'query' => $query,
-                            'response' => $response,
-                            'sortOptions' => $sortOptions,
-                        ]);
-                    ?>
-                <?php else: ?>
-                    <div class="noresults"><?php echo $translate('Your query returned no results'); ?></div>
-                <?php endif; ?>
-            </div>
+            <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
+            <?= $partial('search/resource-list', [
+                'title' => sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
+                'response' => $response,
+                'resourceName' => 'item_sets',
+            ]) ?>
 
-            <?php echo $partial('search/facets', ['facets' => $facets]); ?>
-        </div>
-    <?php endif; ?>
+            <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
+            <?= $partial('search/resource-list', [
+                'title' => sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
+                'response' => $response,
+                'resourceName' => 'items',
+            ]) ?>
+
+            <?= $partial('search/results-footer', [
+                'query' => $query,
+                'response' => $response,
+                'sortOptions' => $sortOptions,
+            ]) ?>
+
+        <?php else: ?>
+
+            <div class="noresults"><?= $translate('Your query returned no results') ?></div>
+
+        <?php endif; ?>
+
+    </div>
+
+    <?= $partial('search/facets', ['facets' => $facets]) ?>
+</div>
+<?php endif; ?>
+
 <?php if (empty($isPartial)): ?>
 </div>
 <?php endif; ?>

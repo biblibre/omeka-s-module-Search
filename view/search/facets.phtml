@@ -33,20 +33,21 @@
  */
 ?>
 
-<?php if (!empty($facets)): ?>
-    <?php $translate = $this->plugin('translate'); ?>
-    <?php $facetLabel = $this->plugin('facetLabel'); ?>
-    <?php $facetLink = $this->plugin('facetLink'); ?>
+<?php if (!empty($facets)):
+    $translate = $this->plugin('translate');
+    $facetLabel = $this->plugin('facetLabel');
+    $facetLink = $this->plugin('facetLink');
+    ?>
     <aside class="search-facets">
-        <h2><?php echo $translate('Filters'); ?></h2>
+        <h2><?= $translate('Filters') ?></h2>
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
                 <li class="search-facet">
-                    <h3><?php echo $translate($facetLabel($name)); ?></h3>
+                    <h3><?= $translate($facetLabel($name)) ?></h3>
                     <ul class="search-facet-items">
                         <?php foreach ($facetValues as $facetValue): ?>
                             <li class="search-facet-item">
-                                <?php echo $facetLink($name, $facetValue); ?>
+                                <?= $facetLink($name, $facetValue) ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>

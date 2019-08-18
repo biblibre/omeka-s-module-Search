@@ -8,7 +8,8 @@
  */
 
 ?>
-<?php echo $this->searchIndexConfirm($this->resource, $this->resourceLabel, false, $totalJobs); ?>
+
+<?= $this->searchIndexConfirm($this->resource, $this->resourceLabel, false, $totalJobs) ?>
 <?php if (isset($this->partialPath)): ?>
-    <?php echo $this->partial($this->partialPath); ?>
+    <?= $this->partial($this->partialPath) ?>
 <?php endif; ?>

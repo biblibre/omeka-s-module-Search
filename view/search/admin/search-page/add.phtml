@@ -36,13 +36,13 @@ $translate = $this->plugin('translate');
 $form->prepare();
 ?>
 
-<?php echo $this->pageTitle($translate('Add search page')); ?>
+<?= $this->pageTitle($translate('Add search page')) ?>
 
-<?php echo $this->form()->openTag($form); ?>
+<?= $this->form()->openTag($form) ?>
 <div id="page-actions">
-    <button><?php echo $translate('Add and configure'); ?></button>
+    <button><?= $translate('Add and configure') ?></button>
 </div>
-<?php echo $this->formCollection($form, false); ?>
+<?= $this->formCollection($form, false) ?>
 <?php $this->trigger('view.add.form.after'); ?>
-<?php echo $this->form()->closeTag(); ?>
+<?= $this->form()->closeTag() ?>
 <?php $this->trigger('view.add.after'); ?>

@@ -13,37 +13,38 @@ $translate = $this->plugin('translate');
 $this->form->setAttribute('action', $resource->url('index'));
 $this->form->setButtonLabel($translate('Confirm reindex'));
 ?>
+
 <?php if ($this->wrapSidebar): ?>
 <div id="index" class="sidebar">
-    <?php echo $this->hyperlink('', '#', ['class' => 'sidebar-close o-icon-close', 'title' => $translate('Close')]); ?>
+    <?= $this->hyperlink('', '#', ['class' => 'sidebar-close o-icon-close', 'title' => $translate('Close')]) ?>
 <?php endif; ?>
     <div id="sidebar-confirm">
-        <h3><?php echo sprintf($translate('Reindex "%s"'), $resource->name()); ?></h3>
-        <p><?php echo $translate('Are you sure you would like to reindex this index?'); ?></p>
+        <h3><?= sprintf($translate('Reindex "%s"'), $resource->name()) ?></h3>
+        <p><?= $translate('Are you sure you would like to reindex this index?') ?></p>
         <p>
-        <?php echo $translate('All the indexes will be cleared first, so the search will be unavailable for a while.'); ?>
-        <?php echo $translate('You may redirect the users on a clone of the current index temporary.'); ?>
+        <?= $translate('All the indexes will be cleared first, so the search will be unavailable for a while.') ?>
+        <?= $translate('You may redirect the users on a clone of the current index temporary.') ?>
         </p>
         <p>
-        <?php echo $translate('You may prefer to keep existing indexes and to start the indexing at the following resource id.'); ?>
-        <?php echo $translate('Set "1" to reindex all resources without clearing the current index.'); ?>
+        <?= $translate('You may prefer to keep existing indexes and to start the indexing at the following resource id.') ?>
+        <?= $translate('Set "1" to reindex all resources without clearing the current index.') ?>
         <input name="start_resource_id" placeholder="0" value="" type="number" form="confirmform" />
         </p>
         <p>
-        <?php echo $translate('You may want to limit the reindexing to a resource type.'); ?>
+        <?= $translate('You may want to limit the reindexing to a resource type.') ?>
         <?php foreach ($resource->settings()['resources'] as $resourceName): ?>
-        <input name="resource_names[]" value="<?php echo $resourceName; ?>" type="checkbox" checked="checked" form="confirmform" /><?php echo $resourceName; ?>
+        <input name="resource_names[]" value="<?= $resourceName ?>" type="checkbox" checked="checked" form="confirmform" /><?= $resourceName ?>
         <?php endforeach; ?>
         </p>
         <p>
         <?php if ($totalJobs): ?>
-        <?php echo sprintf($translate('%d running indexings.'), $totalJobs); ?><br />
-         <input name="force" type="checkbox" /><?php echo $translate('Force indexing'); ?><br />
+        <?= sprintf($translate('%d running indexings.'), $totalJobs) ?><br />
+         <input name="force" type="checkbox" /><?= $translate('Force indexing') ?><br />
         <?php else: ?>
-        <?php echo $translate('No running indexing: process can be launched.'); ?>
+        <?= $translate('No running indexing: process can be launched.') ?>
         <?php endif; ?>
         </p>
-        <?php echo $this->form($this->form); ?>
+        <?= $this->form($this->form) ?>
     </div>
 <?php if ($this->wrapSidebar): ?>
 </div>
