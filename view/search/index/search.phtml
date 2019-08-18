@@ -29,6 +29,7 @@
 
 /**
  * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Search\Query $query
  * @var \Search\Response $response
  * @var array $sortOptions
@@ -67,6 +68,7 @@ $this->htmlElement('body')->appendAttribute('class', 'search-page resource brows
 
             <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
             <?= $partial('search/resource-list', [
+                'site' => $site,
                 'title' => sprintf($translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
                 'response' => $response,
                 'resourceName' => 'item_sets',
@@ -74,6 +76,7 @@ $this->htmlElement('body')->appendAttribute('class', 'search-page resource brows
 
             <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
             <?= $partial('search/resource-list', [
+                'site' => $site,
                 'title' => sprintf($translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                 'response' => $response,
                 'resourceName' => 'items',
