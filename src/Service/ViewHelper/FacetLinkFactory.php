@@ -2,6 +2,7 @@
 
 /*
  * Copyright BibLibre, 2017
+ * Copyright Daniel Berthereau, 2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -30,17 +31,15 @@
 namespace Search\Service\ViewHelper;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
 use Search\View\Helper\FacetLink;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class FacetLinkFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $application = $container->get('Application');
-
-        $viewHelper = new FacetLink($application);
-
-        return $viewHelper;
+        return new FacetLink(
+            $container->get('Application')
+        );
     }
 }

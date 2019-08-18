@@ -1,6 +1,6 @@
 /*
  * Copyright BibLibre, 2016
- * Copyright Daniel Berthereau, 2017-2018
+ * Copyright Daniel Berthereau, 2017-2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -69,6 +69,10 @@ var Search = (function() {
         window.location.search = '?' + Search.queryStringFromObject(params);
     };
 
+    self.facetFor = function(url) {
+        window.location = url;
+    };
+
     self.setViewType = function(viewType) {
         var resourceLists = document.querySelectorAll('div.resource-list');
         for (var i = 0; i < resourceLists.length; i++) {
@@ -84,6 +88,10 @@ var Search = (function() {
 $(document).ready(function() {
     $('.search-results-sort select').on('change', function() {
         Search.sortBy($(this).val());
+    });
+
+    $('.search-facets').on('change', 'input[type=checkbox]', function() {
+        Search.facetFor($(this).data('url'));
     });
 
     $('.search-view-type-list').on('click', function(e) {

@@ -1,7 +1,8 @@
 <?php
+
 /*
- * Copyright BibLibre, 2016
- * Copyright, Daniel Berthereau, 2018
+ * Copyright BibLibre, 2017
+ * Copyright Daniel Berthereau, 2019
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,33 +28,18 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-/**
- * @var \Zend\View\Renderer\PhpRenderer $this
- * @var array $facets
- */
-?>
+namespace Search\Service\ViewHelper;
 
-<?php if (!empty($facets)):
-    $translate = $this->plugin('translate');
-    $facetLabel = $this->plugin('facetLabel');
-    // facetCheckbox can be used instead (may require js).
-    $facetLink = $this->plugin('facetLink');
-    ?>
-    <aside class="search-facets">
-        <h2><?= $translate('Filters') ?></h2>
-        <ul>
-            <?php foreach ($facets as $name => $facetValues): ?>
-                <li class="search-facet">
-                    <h3><?= $translate($facetLabel($name)) ?></h3>
-                    <ul class="search-facet-items">
-                        <?php foreach ($facetValues as $facetValue): ?>
-                            <li class="search-facet-item">
-                                <?= $facetLink($name, $facetValue) ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </aside>
-<?php endif; ?>
+use Interop\Container\ContainerInterface;
+use Search\View\Helper\FacetCheckbox;
+use Zend\ServiceManager\Factory\FactoryInterface;
+
+class FacetCheckboxFactory implements FactoryInterface
+{
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return new FacetCheckbox(
+            $container->get('Application')
+        );
+    }
+}
