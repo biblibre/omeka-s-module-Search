@@ -572,6 +572,7 @@ class SearchPageController extends AbstractActionController
                 break;
             default:
                 $available = null;
+                $message = 'The availability of pages of sites was let unmodified.'; // @translate
         }
 
         // Manage site settings.
@@ -586,15 +587,13 @@ class SearchPageController extends AbstractActionController
             if ($current !== $new) {
                 if ($new) {
                     $settings->set('search_main_page', $siteId);
-
                     $searchPages[] = $searchPageId;
-                    array_unique(array_filter($searchPages));
+                    $searchPages = array_unique(array_filter($searchPages));
                     sort($searchPages);
                     $settings->set('search_pages', $searchPages);
                 } else {
                     $settings->set('search_main_page', null);
                 }
-                $this->messenger()->addSuccess($message);
             }
 
             if ($new || $available) {
