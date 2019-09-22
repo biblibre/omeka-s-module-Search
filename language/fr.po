@@ -7,190 +7,771 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-29 15:13+0100\n"
-"PO-Revision-Date: 2016-11-29 15:16+0100\n"
-"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
+"POT-Creation-Date: 2019-09-23 00:00+0200\n"
+"PO-Revision-Date: 2019-09-23 00:00+0200\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:101
-msgid "[No adapter]"
-msgstr "[Aucun adaptateur]"
+#: src/Adapter/InternalAdapter.php:68
+msgid "Asc"
+msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:51
-msgid "Resources indexed"
-msgstr "Ressources indexées"
+#: src/Adapter/InternalAdapter.php:69
+msgid "Desc"
+msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:81
-msgid "Items"
-msgstr "Contenus"
+#: src/Api/Representation/SearchIndexRepresentation.php:118
+#, php-format
+msgid "[Missing adapter \"%s\"]"
+msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:82
-msgid "Item sets"
-msgstr "Collections"
+#: src/Form/Admin/SearchPageForm.php:70
+msgid "The path to the search form."
+msgstr ""
 
-#: src/Form/Admin/SearchIndexForm.php:50 src/Form/Admin/SearchPageForm.php:51
-msgid "Name"
-msgstr "Nom"
+#: src/Form/Admin/SearchPageForm.php:71
+msgid "The site path will be automatically prepended."
+msgstr ""
 
-#: src/Form/Admin/SearchIndexForm.php:63
+#: src/Generic/AbstractModule.php:494
+#, php-format
+msgid "This module requires the module \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:514
+#, php-format
+msgid "This module requires modules \"%s\"."
+msgstr ""
+
+#: src/Generic/AbstractModule.php:582
+#, php-format
+msgid ""
+"The module \"%s\" was automatically deactivated because the dependencies are "
+"unavailable."
+msgstr ""
+
+#: src/Site/BlockLayout/Search.php:23
+msgid "Insert a themable search form."
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:43
+#, fuzzy
+#| msgid "Add search page"
+msgid "Search manager"
+msgstr "Ajouter une page de recherche"
+
+#: view/search/admin/index/browse.phtml:46
+#, fuzzy
+#| msgid "Add search index"
+msgid "Add new index"
+msgstr "Ajouter un index de recherche"
+
+#: view/search/admin/index/browse.phtml:52
+#, fuzzy
+#| msgid "Index"
+msgid "Indexes"
+msgstr "Index"
+
+#: view/search/admin/index/browse.phtml:58
 msgid "Adapter"
 msgstr "Adaptateur"
 
-#: src/Form/Admin/SearchIndexForm.php:89 src/Form/Admin/SearchPageForm.php:120
-#: src/Form/Admin/SearchPageForm.php:136
-msgid "None"
-msgstr "Aucun"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:55
-msgid "Facet limit"
-msgstr "Limite de facette"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:56
-msgid "The maximum number of values fetched for each facet"
-msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:65
-msgid "Facets"
-msgstr "Facettes"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:80
-#: src/Form/Admin/SearchPageConfigureForm.php:118
-msgid "Enabled"
-msgstr "Activé"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:88
-#: src/Form/Admin/SearchPageConfigureForm.php:126
-msgid "Weight"
-msgstr "Poids"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:103
-msgid "Sort fields"
-msgstr "Champs de tri"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:174
-msgid "Form settings"
-msgstr "Paramètres du formulaire"
-
-#: src/Form/Admin/SearchPageForm.php:62
-msgid "Path"
-msgstr "Chemin"
-
-#: src/Form/Admin/SearchPageForm.php:73
-msgid "Index"
-msgstr "Index"
-
-#: src/Form/Admin/SearchPageForm.php:85
-msgid "Form"
-msgstr "Formulaire"
-
-#: src/Form/BasicForm.php:48 view/search/index/search.phtml:37
-msgid "Search"
-msgstr "Recherche"
-
-#: src/Form/BasicForm.php:51
-msgid "Search items"
-msgstr "Recherche de contenus"
-
-#: view/search/admin/index/browse.phtml:32
-msgid "Search configuration"
-msgstr "Configuration de la recherche"
-
-#: view/search/admin/index/browse.phtml:60
-#: view/search/admin/index/browse.phtml:120
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Configure"
-msgstr "Configurer"
-
-#: view/search/admin/index/browse.phtml:68
+#: view/search/admin/index/browse.phtml:79
+#: view/search/admin/index/browse.phtml:80
 msgid "Reindex all"
 msgstr "Tout réindexer"
 
-#: view/search/admin/index/browse.phtml:77
-#: view/search/admin/index/browse.phtml:78
-#: view/search/admin/index/browse.phtml:128
-#: view/search/admin/index/browse.phtml:129
-msgid "Delete"
-msgstr "Supprimer"
-
-#: view/search/admin/index/browse.phtml:89
+#: view/search/admin/index/browse.phtml:98
 msgid "No search indexes created yet."
 msgstr "Aucun index créé pour l'instant"
 
-#: view/search/admin/index/browse.phtml:112
-#: view/search/admin/search-page/edit.phtml:36
-msgid "Edit"
-msgstr "Modifier"
+#: view/search/admin/index/browse.phtml:107
+msgid "Path"
+msgstr "Chemin"
 
-#: view/search/admin/index/browse.phtml:151
+#: view/search/admin/index/browse.phtml:108
+msgid "Index"
+msgstr "Index"
+
+#: view/search/admin/index/browse.phtml:109
+msgid "Form"
+msgstr "Formulaire"
+
+#: view/search/admin/index/browse.phtml:128
+msgid "Configure facets and sort fields"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:158
 msgid "No search pages created yet."
 msgstr "Aucune page de recherche créée pour l'instant"
 
-#: view/search/admin/index/browse.phtml:157
-#: view/search/admin/index/browse.phtml:158
-msgid "Close"
-msgstr "Fermer"
-
-#: view/search/admin/search-index/add.phtml:32
+#: view/search/admin/search-index/add.phtml:39
 msgid "Add search index"
 msgstr "Ajouter un index de recherche"
 
-#: view/search/admin/search-index/add.phtml:36
-#: view/search/admin/search-page/add.phtml:36
-msgid "Add"
-msgstr "Ajouter"
+#: view/search/admin/search-index/add.phtml:43
+#: view/search/admin/search-page/add.phtml:43
+#, fuzzy
+#| msgid "Configure"
+msgid "Add and configure"
+msgstr "Configurer"
 
-#: view/search/admin/search-index/configure.phtml:32
-msgid "Configure search index"
+#: view/search/admin/search-index/edit.phtml:39
+#, fuzzy
+#| msgid "Add search index"
+msgid "Edit search index"
+msgstr "Ajouter un index de recherche"
+
+#: view/search/admin/search-index/index-confirm.phtml:14
+#, fuzzy
+#| msgid "Configure search index"
+msgid "Confirm reindex"
 msgstr "Configure l'index de recherche"
 
-#: view/search/admin/search-index/configure.phtml:36
-msgid "Save configuration"
-msgstr "Enregistrer la configuration"
+#: view/search/admin/search-index/index-confirm.phtml:22
+#, fuzzy, php-format
+#| msgid "Reindex all"
+msgid "Reindex \"%s\""
+msgstr "Tout réindexer"
 
-#: view/search/admin/search-page/add.phtml:32
+#: view/search/admin/search-index/index-confirm.phtml:23
+msgid "Are you sure you would like to reindex this index?"
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:25
+msgid ""
+"All the indexes will be cleared first, so the search will be unavailable for "
+"a while."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:26
+msgid "You may redirect the users on a clone of the current index temporary."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:29
+msgid ""
+"You may prefer to keep existing indexes and to start the indexing at the "
+"following resource id."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:30
+msgid "Set \"1\" to reindex all resources without clearing the current index."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:34
+msgid "You may want to limit the reindexing to a resource type."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:41
+#, php-format
+msgid "%d running indexings."
+msgstr ""
+
+#: view/search/admin/search-index/index-confirm.phtml:42
+#, fuzzy
+#| msgid "Resources indexed"
+msgid "Force indexing"
+msgstr "Ressources indexées"
+
+#: view/search/admin/search-index/index-confirm.phtml:44
+msgid "No running indexing: process can be launched."
+msgstr ""
+
+#: view/search/admin/search-page/add.phtml:39
 msgid "Add search page"
 msgstr "Ajouter une page de recherche"
 
-#: view/search/admin/search-page/configure.phtml:38
-msgid "Configure search page"
+#: view/search/admin/search-page/configure.phtml:61
+#, fuzzy, php-format
+#| msgid "Configure search page"
+msgid "Configure search page \"%s\""
 msgstr "Configurer la page de recherche"
 
-#: view/search/admin/search-page/edit.phtml:32
+#: view/search/admin/search-page/configure.phtml:65
+msgid "Save configuration"
+msgstr "Enregistrer la configuration"
+
+#: view/search/admin/search-page/configure.phtml:70
+msgid "Use visual form."
+msgstr ""
+
+#: view/search/admin/search-page/configure.phtml:72
+msgid ""
+"Warning: you have more than 200 properties, the form will be slow to load."
+msgstr ""
+
+#: view/search/admin/search-page/configure.phtml:75
+msgid "Use simple form."
+msgstr ""
+
+#: view/search/admin/search-page/edit.phtml:38
 msgid "Edit search page"
 msgstr "Modifier la page de recherche"
 
-#: view/search/facets.phtml:32
+#: view/search/facets.phtml:43
 msgid "Filters"
 msgstr "Filtres"
 
-#: view/search/index/search.phtml:56
-#, php-format
-msgid "%s item set"
-msgid_plural "%s item sets"
-msgstr[0] "%s collection"
-msgstr[1] "%s collections"
-
-#: view/search/index/search.phtml:63
-#, php-format
-msgid "%s item"
-msgid_plural "%s items"
-msgstr[0] "%s contenu"
-msgstr[1] "%s contenus"
-
-#: view/search/index/search.phtml:77
+#: view/search/index/search.phtml:93
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
 
-#: view/search/results-header.phtml:11
-msgid "Sort by"
-msgstr "Trier par"
+#: view/search/results-header.phtml:32
+#, fuzzy
+msgid "list"
+msgstr ""
+"La plupart des options pour la liste et l’arborescence peuvent être "
+"surpassées dans le thème."
 
-#: src/Controller/Admin/SearchIndexController.php:122
+#: view/search/results-header.phtml:34
+msgid "grid"
+msgstr ""
+
+#: Module.php:88
+msgid "The module jQueryUI is required to customize the search pages."
+msgstr ""
+
+#: Module.php:92
+msgid ""
+"The module Reference is required to use the facets with the default internal "
+"adapter."
+msgstr ""
+
+#: Module.php:118
+msgid ""
+"The internal search engine is available. Enable it in the main settings (for "
+"admin) and in site settings (for public)."
+msgstr ""
+
+#: Module.php:364
 #, php-format
-msgid "Indexing started in %sjob %s%s"
+msgid "Unable to delete the search index for resource #%d: %s"
+msgstr ""
+
+#: Module.php:367
+#, php-format
+msgid ""
+"Unable to delete the search index for the deleted resource #%d: see log."
+msgstr ""
+
+#: Module.php:385
+#, php-format
+msgid "Unable to index metadata of resource #%d for search: %s"
+msgstr ""
+
+#: Module.php:388
+#, php-format
+msgid "Unable to update the search index for resource #%d: see log."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:21
+msgid "Search (admin board)"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:48
+#, fuzzy
+#| msgid "Edit search page"
+msgid "Default search page (admin)"
+msgstr "Modifier la page de recherche"
+
+#: src/Form/SettingsFieldset.php:49
+msgid "This search engine is used in the admin bar."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:51
+msgid "Select the search engine for the admin bar…"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:62 src/Form/SiteSettingsFieldset.php:46
+#, fuzzy
+#| msgid "Add search page"
+msgid "Available search pages"
+msgstr "Ajouter une page de recherche"
+
+#: src/Form/SettingsFieldset.php:74
+msgid "Page used for quick api search"
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:75
+msgid ""
+"The method apiSearch() allows to do a quick search in some cases. It "
+"requires a mapping done with the Omeka api and the selected index."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:77
+msgid "Select the page for quick api search…"
+msgstr ""
+
+#: src/Form/ConfigForm.php:15
+msgid "Search batch size for reindexation"
+msgstr ""
+
+#: src/Form/ConfigForm.php:16
+msgid ""
+"Default is 100, but it can be adapted according to your resource average "
+"size, your mapping and your architecture."
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:33
+#, fuzzy
+#| msgid "Edit search page"
+msgid "Default search page"
+msgstr "Modifier la page de recherche"
+
+#: src/Form/SiteSettingsFieldset.php:35
+msgid "Select the default search engine for the site…"
+msgstr ""
+
+#: src/Form/BasicForm.php:47
+#, fuzzy
+#| msgid "Search items"
+msgid "Search resources"
+msgstr "Recherche de contenus"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:72
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:45
+msgid "Facets"
+msgstr "Facettes"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:103
+#: src/Form/Admin/SearchPageConfigureForm.php:179 config/module.config.php:195
+msgid "Enabled"
+msgstr "Activé"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:111
+#: src/Form/Admin/SearchPageConfigureForm.php:187
+msgid "Weight"
+msgstr "Poids"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:131
+msgid "Facet limit"
+msgstr "Limite de facette"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:132
+msgid "The maximum number of values fetched for each facet"
+msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:149
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:77
+msgid "Sort fields"
+msgstr "Champs de tri"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:220
+msgid "Form settings"
+msgstr "Paramètres du formulaire"
+
+#: src/Form/Admin/SearchIndexForm.php:61
+msgid "Select an adapter below…"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:46
+msgid ""
+"List of facets that will be displayed in the search page. Format is \"term | "
+"Label\"."
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:59
+msgid "Available facets"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:60
+msgid "List of all available facets, among which some can be copied above."
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:78
+msgid ""
+"List of sort fields that will be displayed in the search page. Format is "
+"\"term dir | Label\"."
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:91
+#, fuzzy
+#| msgid "Sort fields"
+msgid "Available sort fields"
+msgstr "Champs de tri"
+
+#: src/Form/Admin/SearchPageConfigureSimpleForm.php:92
+msgid ""
+"List of all available sort fields, among which some can be copied above."
+msgstr ""
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:50
+msgid "Resources indexed"
+msgstr "Ressources indexées"
+
+#: src/Form/Admin/SearchPageForm.php:84
+msgid "Select an index below…"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:97
+msgid "Select a form below…"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:108
+msgid "Set as default search page for sites"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:110
+msgid ""
+"The page will be made available on all selected sites. This param can be set "
+"in each site settings too."
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:128
+msgid "Availability on sites"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:129
+msgid "The admin settings are not modified."
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:131
+msgid "Make unavailable in all sites"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:132
+msgid "Don’t modify"
+msgstr ""
+
+#: src/Form/Admin/SearchPageForm.php:133
+msgid "Make available in all sites"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:21
+msgid "Main options"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:28
+msgid "Maximum number of results by response"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:29
+msgid ""
+"It is recommended to keep the value low (under 100 or 1000) to avoid "
+"overload of the server, or to use a paginator."
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:38
+msgid "Mapping metadata to search fields"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:45
+msgid "Internal identifier"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:59
+msgid "Is Public"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:73
+msgid "Owner id"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:101
+msgid "Modified"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:115
+msgid "Resource class label"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:129
+#, fuzzy
+#| msgid "Resources indexed"
+msgid "Resource class id"
+msgstr "Ressources indexées"
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:143
+#, fuzzy
+#| msgid "Resources indexed"
+msgid "Resource template id"
+msgstr "Ressources indexées"
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:157
+#, fuzzy
+#| msgid "Item sets"
+msgid "Item set id"
+msgstr "Collections"
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:171
+msgid "Site id"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:185
+msgid "Is open"
+msgstr ""
+
+#: src/Form/Admin/ApiFormConfigFieldset.php:198
+msgid "Mapping properties to search fields"
+msgstr ""
+
+#: src/Controller/IndexController.php:79
+#, php-format
+msgid "Form adapter \"%s\" not found."
+msgstr ""
+
+#: src/Controller/IndexController.php:97
+#, fuzzy
+msgid "No query."
+msgstr "Type de requête"
+
+#: src/Controller/IndexController.php:118
+#: src/Controller/Admin/SearchPageController.php:200
+#: src/Controller/Admin/SearchPageController.php:307
+#: src/Controller/Admin/SearchIndexController.php:75
+#: src/Controller/Admin/SearchIndexController.php:124
+msgid "There was an error during validation"
+msgstr ""
+
+#: src/Controller/IndexController.php:213
+#, php-format
+msgid "Query error: %s"
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:91
+#, fuzzy, php-format
+#| msgid "No search pages created yet."
+msgid "Search page \"%s\" created."
+msgstr "Aucune page de recherche créée pour l'instant"
+
+#: src/Controller/Admin/SearchPageController.php:102
+msgid "You can enable this page in your site settings or in admin settings."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:107
+msgid "The api adapter should be selected in the main settings."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:139
+#, fuzzy, php-format
+#| msgid "No search pages created yet."
+msgid "Search page \"%s\" saved."
+msgstr "Aucune page de recherche créée pour l'instant"
+
+#: src/Controller/Admin/SearchPageController.php:168
+#, php-format
+msgid "The index adapter \"%s\" is unavailable"
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:249
+#, fuzzy, php-format
+#| msgid "Configure search page"
+msgid "Configuration saved for page \"%s\"."
+msgstr "Configurer la page de recherche"
+
+#: src/Controller/Admin/SearchPageController.php:279
+#, php-format
+msgid "Search page \"%s\" successfully deleted"
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:284
+#, php-format
+msgid "Search page \"%s\" could not be deleted"
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:554
+msgid "The page has been set by default in admin board."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:558
+msgid "The page has been unset in admin board."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:567
+msgid "The page has been disabled in all specified sites."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:571
+msgid "The page has been made available in all specified sites."
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:81
+#, fuzzy, php-format
+#| msgid "No search indexes created yet."
+msgid "Search index \"%s\" created."
+msgstr "Aucun index créé pour l'instant"
+
+#: src/Controller/Admin/SearchIndexController.php:100
+#, php-format
+msgid "The adapter \"%s\" is not available."
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:113
+#, fuzzy
+#| msgid "Form settings"
+msgid "Adapter settings"
+msgstr "Paramètres du formulaire"
+
+#: src/Controller/Admin/SearchIndexController.php:132
+#, php-format
+msgid "Search index \"%s\" successfully configured."
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:179
+#, fuzzy, php-format
+#| msgid "Indexing started in %sjob %s%s"
+msgid "Indexing of \"%s\" started in %sjob %s%s"
 msgstr "L'indexation a commencé dans %sla tâche %s%s"
+
+#: src/Controller/Admin/SearchIndexController.php:216
+#, php-format
+msgid "Search index \"%s\" successfully deleted"
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:221
+#, php-format
+msgid "Search index \"%s\" could not be deleted"
+msgstr ""
+
+#: src/FormAdapter/BasicFormAdapter.php:39
+msgid "Basic"
+msgstr ""
+
+#: src/FormAdapter/ApiFormAdapter.php:29
+msgid "Api"
+msgstr ""
+
+#: src/Job/Indexing.php:70
+#, php-format
+msgid "Search index #%d (\"%s\"): start of indexing"
+msgstr ""
+
+#: src/Job/Indexing.php:82
+#, php-format
+msgid ""
+"There are already %d other jobs \"Indexing\". Slowdowns may occur on the "
+"site."
+msgstr ""
+
+#: src/Job/Indexing.php:87
+#, php-format
+msgid ""
+"Search index #%d (\"%s\"): end of indexing: there are already %d other jobs "
+"\"Search Index\" and the current one is not forced."
+msgstr ""
+
+#: src/Job/Indexing.php:96
+#, php-format
+msgid "Search index is not cleared: search starts at resource #%d."
+msgstr ""
+
+#: src/Job/Indexing.php:114
+#, php-format
+msgid ""
+"Search index #%d (\"%s\"): the indexing ended: there is no resource type to "
+"index."
+msgstr ""
+
+#: src/Job/Indexing.php:135
+#, php-format
+msgid ""
+"Search index #%d (\"%s\"): the indexing was stopped. Nothing was indexed."
+msgstr ""
+
+#: src/Job/Indexing.php:140 src/Job/Indexing.php:174
+#, php-format
+msgid "%s: %d indexed"
+msgstr ""
+
+#: src/Job/Indexing.php:144
+#, php-format
+msgid ""
+"Search index #%d (\"%s\"): the indexing was stopped. Last indexed resource: "
+"%s #%d; %s. Execution time: %d seconds."
+msgstr ""
+
+#: src/Job/Indexing.php:176
+#, php-format
+msgid ""
+"Search index #%d (\"%s\"): end of indexing. %s. Execution time: %s seconds."
+msgstr ""
+
+#: src/Adapter/InternalAdapter.php:11
+msgid "Internal"
+msgstr ""
+
+#: src/Site/BlockLayout/Search.php:14
+#, fuzzy
+#| msgid "Search"
+msgid "Search form"
+msgstr "Recherche"
+
+#: src/Site/Navigation/Link/SearchPage.php:51
+msgid "Invalid navigation: browse link missing label"
+msgstr ""
+
+#: src/Site/Navigation/Link/SearchPage.php:55
+msgid "Invalid navigation: browse link missing search page id"
+msgstr ""
+
+#: config/module.config.php:193
+msgid "Automatic mapping of empty values"
+msgstr ""
+
+#: config/module.config.php:194
+msgid "Available"
+msgstr ""
+
+#: config/module.config.php:196
+msgid "Find"
+msgstr ""
+
+#: config/module.config.php:197
+msgid "Find resources…"
+msgstr ""
+
+#: config/module.config.php:198
+msgid "Processing…"
+msgstr ""
+
+#: config/module.config.php:199
+msgid ""
+"Try to map automatically the metadata and the properties that are not mapped "
+"yet with the fields of the index"
+msgstr ""
+
+#~ msgid "[No adapter]"
+#~ msgstr "[Aucun adaptateur]"
+
+#~ msgid "Items"
+#~ msgstr "Contenus"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "None"
+#~ msgstr "Aucun"
+
+#~ msgid "Search configuration"
+#~ msgstr "Configuration de la recherche"
+
+#~ msgid "Delete"
+#~ msgstr "Supprimer"
+
+#~ msgid "Edit"
+#~ msgstr "Modifier"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "Add"
+#~ msgstr "Ajouter"
+
+#~ msgid "%s item set"
+#~ msgid_plural "%s item sets"
+#~ msgstr[0] "%s collection"
+#~ msgstr[1] "%s collections"
+
+#~ msgid "%s item"
+#~ msgid_plural "%s items"
+#~ msgstr[0] "%s contenu"
+#~ msgstr[1] "%s contenus"
+
+#~ msgid "Sort by"
+#~ msgstr "Trier par"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-19 00:00+0200\n"
+"POT-Creation-Date: 2019-09-23 00:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,17 +38,17 @@ msgstr ""
 msgid "The site path will be automatically prepended."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:486
+#: src/Generic/AbstractModule.php:494
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:506
+#: src/Generic/AbstractModule.php:514
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:574
+#: src/Generic/AbstractModule.php:582
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
