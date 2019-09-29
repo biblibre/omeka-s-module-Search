@@ -200,6 +200,16 @@ SQL;
     {
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl
+            // This first rule duplicates the second, but is needed for a site.
+            ->allow(
+                null,
+                [
+                    \Search\Controller\IndexController::class,
+                    \Search\Api\Adapter\SearchPageAdapter::class,
+                    \Search\Api\Adapter\SearchIndexAdapter::class,
+                ],
+                ['read', 'search']
+            )
             ->allow(
                 null,
                 [
@@ -214,7 +224,7 @@ SQL;
                     \Search\Entity\SearchPage::class,
                     \Search\Entity\SearchIndex::class,
                 ],
-                'read'
+                ['read']
             );
     }
 
