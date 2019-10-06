@@ -379,6 +379,10 @@ abstract class AbstractModule extends \Omeka\Module\AbstractModule
             return;
         }
 
+        // Simplify config of settings.
+        $ckEditorHelper = $services->get('ViewHelperManager')->get('ckEditor');
+        $ckEditorHelper();
+
         $space = strtolower(static::NAMESPACE);
 
         $fieldset = $services->get('FormElementManager')->get($settingFieldsets[$settingsType]);
