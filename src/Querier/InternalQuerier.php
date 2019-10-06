@@ -61,6 +61,19 @@ class InternalQuerier extends AbstractQuerier
         // TODO Make core search properties groupable ("or" inside a group, "and" between group).
         $filters = $query->getFilters();
         foreach ($filters as $name => $values) {
+            // "creation_date_year_field" should be a property.
+            // "date_range_field" is managed below.
+            // "is_public" is automatically managed by this adapter.
+            if ($name === 'is_public_field') {
+                continue;
+            }
+            if ($name === 'item_set_id_field') {
+                if (!is_array($values)) {
+                    $values = [$values];
+                }
+                $data['item_set_id'] = array_map('intval', $values);
+                continue;
+            }
             foreach ($values as $value) {
                 if (is_array($value)) {
                     if (empty($value)) {
