@@ -11,7 +11,7 @@ class Search extends AbstractBlockLayout
 {
     public function getLabel()
     {
-        return 'Search form'; // @translate
+        return 'Search form (module Search)'; // @translate
     }
 
     public function form(
@@ -20,7 +20,7 @@ class Search extends AbstractBlockLayout
         SitePageRepresentation $page = null,
         SitePageBlockRepresentation $block = null
     ) {
-        return $view->translate('Insert a themable search form.'); // @translate
+        return $view->translate('Insert a themable search form to use with module Search.'); // @translate
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
