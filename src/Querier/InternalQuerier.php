@@ -85,7 +85,7 @@ class InternalQuerier extends AbstractQuerier
 
         // TODO Manage the date range filters (one or two properties?).
         /*
-         $dateRangeFilters = $query->getDateRangeFilters();
+        $dateRangeFilters = $query->getDateRangeFilters();
         foreach ($dateRangeFilters as $name => $filterValues) {
             foreach ($filterValues as $filterValue) {
                 $start = $filterValue['start'] ? $filterValue['start'] : '*';
