@@ -93,7 +93,7 @@ class SearchPageController extends AbstractActionController
         ));
         $this->manageSearchPageOnSites(
             $searchPage,
-            $formData['manage_page_default'],
+            $formData['manage_page_default'] ?: [],
             $formData['manage_page_availability']
         );
         if (!in_array($formData['manage_page_availability'], ['disable', 'enable'])
@@ -142,7 +142,7 @@ class SearchPageController extends AbstractActionController
 
         $this->manageSearchPageOnSites(
             $searchPage,
-            $formData['manage_page_default'],
+            $formData['manage_page_default'] ?: [],
             $formData['manage_page_availability']
         );
 

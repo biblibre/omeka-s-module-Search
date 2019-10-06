@@ -142,6 +142,10 @@ class SearchPageForm extends Form
         $inputFilter = $this->getInputFilter();
         $inputFilter
             ->add([
+                'name' => 'manage_page_default',
+                'required' => false,
+            ])
+            ->add([
                 'name' => 'manage_page_availability',
                 'required' => false,
             ])
