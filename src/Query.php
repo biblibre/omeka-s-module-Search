@@ -31,7 +31,7 @@ namespace Search;
 
 use Omeka\Api\Representation\SiteRepresentation;
 
-class Query
+class Query implements \JsonSerializable
 {
     /**
      * @var string
@@ -301,6 +301,23 @@ class Query
     public function getSiteId()
     {
         return $this->siteId;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'query' => $this->getQuery(),
+            'is_public' => $this->getIsPublic(),
+            'filters' => $this->getFilters(),
+            'date_range_filters' => $this->getDateRangeFilters(),
+            'filter_queries' => $this->getFilterQueries(),
+            'sort' => $this->getSort(),
+            'offset' => $this->getOffset(),
+            'limit' => $this->getLimit(),
+            'facet_fields' => $this->getFacetFields(),
+            'facet_limit' => $this->getFacetLimit(),
+            'site_id' => $this->getSiteId(),
+        ];
     }
 
     /**
