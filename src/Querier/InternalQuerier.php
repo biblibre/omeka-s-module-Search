@@ -13,11 +13,6 @@ class InternalQuerier extends AbstractQuerier
         // TODO Normalize search url arguments. Here, the ones from Solr are taken.
 
         $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings');
-
-        // Old versions don't support named properties.
-        $isOldOmeka = version_compare($settings->get('version'), '1.2.0-alpha.2', '<');
-
         $plugins = $services->get('ControllerPluginManager');
         /** @var \Omeka\Mvc\Controller\Plugin\Api $api */
         $api = $plugins->get('api');
@@ -66,9 +61,6 @@ class InternalQuerier extends AbstractQuerier
         // TODO Make core search properties groupable ("or" inside a group, "and" between group).
         $filters = $query->getFilters();
         foreach ($filters as $name => $values) {
-            if ($isOldOmeka) {
-                $name = $api->searchOne('properties', ['term' => $name], ['returnScalar' => 'id'])->getContent();
-            }
             foreach ($values as $value) {
                 if (is_array($value)) {
                     if (empty($value)) {
@@ -116,9 +108,6 @@ class InternalQuerier extends AbstractQuerier
 
         $filters = $query->getFilterQueries();
         foreach ($filters as $name => $values) {
-            if ($isOldOmeka) {
-                $name = $api->searchOne('properties', ['term' => $name], ['returnScalar' => 'id'])->getContent();
-            }
             foreach ($values as $value) {
                 $data['property'][] = [
                     'joiner' => $value['joiner'],
