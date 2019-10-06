@@ -51,98 +51,101 @@ class SearchPageForm extends Form
     {
         $translator = $this->getTranslator();
 
-        $this->add([
-            'name' => 'o:name',
-            'type' => Element\Text::class,
-            'options' => [
-                'label' => 'Name', // @translate
-            ],
-            'attributes' => [
-                'required' => true,
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'o:path',
-            'type' => Element\Text::class,
-            'options' => [
-                'label' => 'Path', // @translate
-                'info' => $translator->translate('The path to the search form.') // @translate
-                    . ' ' . $translator->translate('The site path will be automatically prepended.'), // @translate
-            ],
-            'attributes' => [
-                'required' => true,
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'o:index_id',
-            'type' => Element\Select::class,
-            'options' => [
-                'label' => 'Index', // @translate
-                'value_options' => $this->getIndexesOptions(),
-                'empty_option' => 'Select an index below…', // @translate
-            ],
-            'attributes' => [
-                'required' => true,
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'o:form',
-            'type' => Element\Select::class,
-            'options' => [
-                'label' => 'Form', // @translate
-                'value_options' => $this->getFormsOptions(),
-                'empty_option' => 'Select a form below…', // @translate
-            ],
-            'attributes' => [
-                'required' => true,
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'manage_page_default',
-            'type' => SiteSelect::class,
-            'options' => [
-                'label' => 'Set as default search page for sites', // @translate
-                'empty_option' => '[No change]', // @translate
-                'info' => 'The page will be made available on all selected sites. This param can be set in each site settings too.', // @translate
-                'prepend_value_options' => [
-                    'all' => '[All sites]', // @translate
-                    'admin' => 'Admin', // @translate
+        $this
+            ->add([
+                'name' => 'o:name',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Name', // @translate
                 ],
-            ],
-            'attributes' => [
-                'id' => 'manage_page_default',
-                'class' => 'chosen-select',
-                'multiple' => true,
-                'data-placeholder' => 'Select sites…', // @translate
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'manage_page_availability',
-            'type' => Element\Radio::class,
-            'options' => [
-                'label' => 'Availability on sites', // @translate
-                'info' => 'The admin settings are not modified.', // @translate
-                'value_options' => [
-                    'disable' => 'Make unavailable in all sites', // @translate
-                    'let' => 'Don’t modify', // @translate
-                    'enable' => 'Make available in all sites', // @translate
+                'attributes' => [
+                    'required' => true,
                 ],
-            ],
-            'attributes' => [
-                'value' => 'let',
-            ],
-        ]);
+            ])
+
+            ->add([
+                'name' => 'o:path',
+                'type' => Element\Text::class,
+                'options' => [
+                    'label' => 'Path', // @translate
+                    'info' => $translator->translate('The path to the search form.') // @translate
+                        . ' ' . $translator->translate('The site path will be automatically prepended.'), // @translate
+                ],
+                'attributes' => [
+                    'required' => true,
+                ],
+            ])
+
+            ->add([
+                'name' => 'o:index_id',
+                'type' => Element\Select::class,
+                'options' => [
+                    'label' => 'Index', // @translate
+                    'value_options' => $this->getIndexesOptions(),
+                    'empty_option' => 'Select an index below…', // @translate
+                ],
+                'attributes' => [
+                    'required' => true,
+                ],
+            ])
+
+            ->add([
+                'name' => 'o:form',
+                'type' => Element\Select::class,
+                'options' => [
+                    'label' => 'Form', // @translate
+                    'value_options' => $this->getFormsOptions(),
+                    'empty_option' => 'Select a form below…', // @translate
+                ],
+                'attributes' => [
+                    'required' => true,
+                ],
+            ])
+
+            ->add([
+                'name' => 'manage_page_default',
+                'type' => SiteSelect::class,
+                'options' => [
+                    'label' => 'Set as default search page for sites', // @translate
+                    'empty_option' => '[No change]', // @translate
+                    'info' => 'The page will be made available on all selected sites. This param can be set in each site settings too.', // @translate
+                    'prepend_value_options' => [
+                        'all' => '[All sites]', // @translate
+                        'admin' => 'Admin', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'manage_page_default',
+                    'class' => 'chosen-select',
+                    'multiple' => true,
+                    'data-placeholder' => 'Select sites…', // @translate
+                ],
+            ])
+
+            ->add([
+                'name' => 'manage_page_availability',
+                'type' => Element\Radio::class,
+                'options' => [
+                    'label' => 'Availability on sites', // @translate
+                    'info' => 'The admin settings are not modified.', // @translate
+                    'value_options' => [
+                        'disable' => 'Make unavailable in all sites', // @translate
+                        'let' => 'Don’t modify', // @translate
+                        'enable' => 'Make available in all sites', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'value' => 'let',
+                ],
+            ]);
 
         $inputFilter = $this->getInputFilter();
-        $inputFilter->add([
-            'name' => 'manage_page_availability',
-            'required' => false,
-        ]);
+        $inputFilter
+            ->add([
+                'name' => 'manage_page_availability',
+                'required' => false,
+            ])
+        ;
     }
 
     /**
