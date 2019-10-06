@@ -295,7 +295,29 @@ class SearchPageController extends AbstractActionController
             return false;
         }
 
-        $form->setData($this->params()->fromPost());
+        // Check if the name of the path is single in the database.
+        $params = $this->params()->fromPost();
+        $id = $this->params('id');
+        $path = $params['o:path'];
+
+        $paths = $this->api()
+            ->search('search_pages', [], ['returnScalar' => 'path'])
+            ->getContent();
+        if (in_array($path, $paths)) {
+            if (!$id) {
+                $this->messenger()->addError('The path should be unique.'); // @translate
+                return false;
+            }
+            $searchPageId = $this->api()
+                ->searchOne('search_pages', ['path' => $path], ['returnScalar' => 'id'])
+                ->getContent();
+            if ($id !== $searchPageId) {
+                $this->messenger()->addError('The path should be unique.'); // @translate
+                return false;
+            }
+        }
+
+        $form->setData($params);
         if ($form->isValid()) {
             return true;
         }
