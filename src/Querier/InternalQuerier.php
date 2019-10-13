@@ -71,20 +71,23 @@ class InternalQuerier extends AbstractQuerier
                 if (!is_array($values)) {
                     $values = [$values];
                 }
-                $data['item_set_id'] = array_map('intval', $values);
+                $data['item_set_id'] = array_filter(array_map('intval', $values));
                 continue;
             }
             foreach ($values as $value) {
+                // Use "or" when multiple (checkbox), else "and" (radio).
                 if (is_array($value)) {
                     if (empty($value)) {
                         continue;
                     }
-                    $data['property'][] = [
-                        'joiner' => 'or',
-                        'property' => $name,
-                        'type' => 'eq',
-                        'text' => $value,
-                    ];
+                    foreach ($value as $val) {
+                        $data['property'][] = [
+                            'joiner' => 'or',
+                            'property' => $name,
+                            'type' => 'eq',
+                            'text' => $val,
+                        ];
+                    }
                 } else {
                     $data['property'][] = [
                         'joiner' => 'and',
