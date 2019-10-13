@@ -431,7 +431,7 @@ SQL;
     public function handleMainSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->get('search_module')
+        $inputFilter->get('search')
             ->add([
                 'name' => 'search_pages',
                 'required' => false,
@@ -449,6 +449,7 @@ SQL;
     public function handleSiteSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
+        // Key "search_module" is used to avoid to override core site settings.
         $inputFilter->get('search_module')
             ->add([
                 'name' => 'search_pages',
