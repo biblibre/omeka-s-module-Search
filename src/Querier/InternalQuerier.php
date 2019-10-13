@@ -70,6 +70,8 @@ class InternalQuerier extends AbstractQuerier
             if ($name === 'item_set_id_field') {
                 if (!is_array($values)) {
                     $values = [$values];
+                } elseif (is_array(reset($values))) {
+                    $values = array_merge(...$values);
                 }
                 $data['item_set_id'] = array_filter(array_map('intval', $values));
                 continue;
