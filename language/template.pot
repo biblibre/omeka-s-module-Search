@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 00:00+0200\n"
+"POT-Creation-Date: 2019-10-14 00:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,25 +30,25 @@ msgstr ""
 msgid "[Missing adapter \"%s\"]"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:70
+#: src/Form/Admin/SearchPageForm.php:71
 msgid "The path to the search form."
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:71
+#: src/Form/Admin/SearchPageForm.php:72
 msgid "The site path will be automatically prepended."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:494
+#: src/Generic/AbstractModule.php:498
 #, php-format
 msgid "This module requires the module \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:514
+#: src/Generic/AbstractModule.php:518
 #, php-format
 msgid "This module requires modules \"%s\"."
 msgstr ""
 
-#: src/Generic/AbstractModule.php:582
+#: src/Generic/AbstractModule.php:586
 #, php-format
 msgid ""
 "The module \"%s\" was automatically deactivated because the dependencies are "
@@ -56,7 +56,7 @@ msgid ""
 msgstr ""
 
 #: src/Site/BlockLayout/Search.php:23
-msgid "Insert a themable search form."
+msgid "Insert a themable search form to use with module Search."
 msgstr ""
 
 #: view/search/admin/index/browse.phtml:43
@@ -229,23 +229,23 @@ msgid ""
 "admin) and in site settings (for public)."
 msgstr ""
 
-#: Module.php:364
+#: Module.php:374
 #, php-format
 msgid "Unable to delete the search index for resource #%d: %s"
 msgstr ""
 
-#: Module.php:367
+#: Module.php:377
 #, php-format
 msgid ""
 "Unable to delete the search index for the deleted resource #%d: see log."
 msgstr ""
 
-#: Module.php:385
+#: Module.php:395
 #, php-format
 msgid "Unable to index metadata of resource #%d for search: %s"
 msgstr ""
 
-#: Module.php:388
+#: Module.php:398
 #, php-format
 msgid "Unable to update the search index for resource #%d: see log."
 msgstr ""
@@ -266,7 +266,7 @@ msgstr ""
 msgid "Select the search engine for the admin bar…"
 msgstr ""
 
-#: src/Form/SettingsFieldset.php:62 src/Form/SiteSettingsFieldset.php:46
+#: src/Form/SettingsFieldset.php:62 src/Form/SiteSettingsFieldset.php:50
 msgid "Available search pages"
 msgstr ""
 
@@ -294,11 +294,15 @@ msgid ""
 "size, your mapping and your architecture."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:33
+#: src/Form/SiteSettingsFieldset.php:19
+msgid "Search module"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:37
 msgid "Default search page"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:35
+#: src/Form/SiteSettingsFieldset.php:39
 msgid "Select the default search engine for the site…"
 msgstr ""
 
@@ -375,41 +379,41 @@ msgstr ""
 msgid "Resources indexed"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:84
+#: src/Form/Admin/SearchPageForm.php:85
 msgid "Select an index below…"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:97
+#: src/Form/Admin/SearchPageForm.php:98
 msgid "Select a form below…"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:108
+#: src/Form/Admin/SearchPageForm.php:109
 msgid "Set as default search page for sites"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:110
+#: src/Form/Admin/SearchPageForm.php:111
 msgid ""
 "The page will be made available on all selected sites. This param can be set "
 "in each site settings too."
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:128
+#: src/Form/Admin/SearchPageForm.php:129
 msgid "Availability on sites"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:129
+#: src/Form/Admin/SearchPageForm.php:130
 msgid "The admin settings are not modified."
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:131
+#: src/Form/Admin/SearchPageForm.php:132
 msgid "Make unavailable in all sites"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:132
+#: src/Form/Admin/SearchPageForm.php:133
 msgid "Don’t modify"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:133
+#: src/Form/Admin/SearchPageForm.php:134
 msgid "Make available in all sites"
 msgstr ""
 
@@ -486,7 +490,7 @@ msgstr ""
 
 #: src/Controller/IndexController.php:118
 #: src/Controller/Admin/SearchPageController.php:200
-#: src/Controller/Admin/SearchPageController.php:307
+#: src/Controller/Admin/SearchPageController.php:329
 #: src/Controller/Admin/SearchIndexController.php:75
 #: src/Controller/Admin/SearchIndexController.php:124
 msgid "There was an error during validation"
@@ -535,20 +539,29 @@ msgstr ""
 msgid "Search page \"%s\" could not be deleted"
 msgstr ""
 
-#: src/Controller/Admin/SearchPageController.php:554
+#: src/Controller/Admin/SearchPageController.php:308
+#: src/Controller/Admin/SearchPageController.php:315
+msgid "The path should be unique."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:576
 msgid "The page has been set by default in admin board."
 msgstr ""
 
-#: src/Controller/Admin/SearchPageController.php:558
+#: src/Controller/Admin/SearchPageController.php:580
 msgid "The page has been unset in admin board."
 msgstr ""
 
-#: src/Controller/Admin/SearchPageController.php:567
+#: src/Controller/Admin/SearchPageController.php:589
 msgid "The page has been disabled in all specified sites."
 msgstr ""
 
-#: src/Controller/Admin/SearchPageController.php:571
+#: src/Controller/Admin/SearchPageController.php:593
 msgid "The page has been made available in all specified sites."
+msgstr ""
+
+#: src/Controller/Admin/SearchPageController.php:597
+msgid "The availability of pages of sites was let unmodified."
 msgstr ""
 
 #: src/Controller/Admin/SearchIndexController.php:81
@@ -653,7 +666,7 @@ msgid "Internal"
 msgstr ""
 
 #: src/Site/BlockLayout/Search.php:14
-msgid "Search form"
+msgid "Search form (module Search)"
 msgstr ""
 
 #: src/Site/Navigation/Link/SearchPage.php:51
