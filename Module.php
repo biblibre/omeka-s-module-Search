@@ -32,7 +32,7 @@ namespace Search;
 
 if (!class_exists(\Generic\AbstractModule::class)) {
     require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
-    ? dirname(__DIR__) . '/Generic/AbstractModule.php'
+        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
         : __DIR__ . '/src/Generic/AbstractModule.php';
 }
 
@@ -403,14 +403,35 @@ SQL;
     public function handleSiteSettings(Event $event)
     {
         // This is an exception, because there is already a fieldset named
-        // "search" in the core.
-        $this->handleAnySettings($event, 'site_settings', true);
+        // "search" in the core, so it should be named "search_module".
+
+        $services = $this->getServiceLocator();
+        $settingsType = 'site_settings';
+        $settings = $services->get('Omeka\Settings\Site');
+
+        $site = $services->get('ControllerPluginManager')->get('currentSite');
+        $id = $site()->id();
+
+        $this->initDataToPopulate($settings, $settingsType, $id);
+
+        $data = $this->prepareDataToPopulate($settings, $settingsType);
+        if (is_null($data)) {
+            return;
+        }
+
+        $space = 'search_module';
+
+        $fieldset = $services->get('FormElementManager')->get(\Search\Form\SiteSettingsFieldset::class);
+        $fieldset->setName($space);
+        $form = $event->getTarget();
+        $form->add($fieldset);
+        $form->get($space)->populateValues($data);
     }
 
     public function handleMainSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->get('search')
+        $inputFilter->get('search_module')
             ->add([
                 'name' => 'search_pages',
                 'required' => false,
@@ -428,7 +449,7 @@ SQL;
     public function handleSiteSettingsFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->get('search')
+        $inputFilter->get('search_module')
             ->add([
                 'name' => 'search_pages',
                 'required' => false,
