@@ -175,7 +175,7 @@ class SearchPageController extends AbstractActionController
         $form = $this->getConfigureForm($searchPage);
         $isSimple = $form instanceof SearchPageConfigureSimpleForm;
 
-        $settings = $searchPage->settings();
+        $settings = $searchPage->settings() ?: [];
 
         if ($isSimple) {
             $settings = $this->prepareSettingsForSimpleForm($searchPage, $settings);

@@ -113,7 +113,7 @@ class SearchIndexController extends AbstractActionController
             $adapterFieldset->setLabel('Adapter settings'); // @translate
             $form->add($adapterFieldset);
         }
-        $form->setData($searchIndex->getSettings());
+        $form->setData($searchIndex->getSettings() ?: []);
 
         $view = new ViewModel;
         $view->setVariable('form', $form);
