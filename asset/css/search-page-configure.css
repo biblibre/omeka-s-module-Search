@@ -15,8 +15,8 @@
 
 .ui-sortable-handle::before {
   display: inline-block;
-  font-family: FontAwesome;
-  content: "\f047";
+  font-family: "Font Awesome 5 Free";
+  content: "\f0b2";
   width: 1.5em;
 }
 

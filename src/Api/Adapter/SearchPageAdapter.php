@@ -114,19 +114,19 @@ class SearchPageAdapter extends AbstractEntityAdapter
     {
         if (isset($query['name'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".name",
+                'omeka_root.name',
                 $this->createNamedParameter($qb, $query['name']))
             );
         }
         if (isset($query['path'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".path",
+                'omeka_root.path',
                 $this->createNamedParameter($qb, $query['path']))
             );
         }
         if (isset($query['form'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".formAdapter",
+                'omeka_root.formAdapter',
                 $this->createNamedParameter($qb, $query['form']))
             );
         }

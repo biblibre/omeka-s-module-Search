@@ -102,13 +102,13 @@ class SearchIndexAdapter extends AbstractEntityAdapter
     {
         if (isset($query['name'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".name",
+                'omeka_root.name',
                 $this->createNamedParameter($qb, $query['name']))
             );
         }
         if (isset($query['adapter'])) {
             $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . ".adapter",
+                'omeka_root.adapter',
                 $this->createNamedParameter($qb, $query['adapter']))
             );
         }

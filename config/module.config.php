@@ -1,46 +1,48 @@
 <?php
+namespace Search;
+
 return [
     'controllers' => [
         'invokables' => [
-            'Search\Controller\Index' => 'Search\Controller\IndexController',
-            'Search\Controller\Admin\Index' => 'Search\Controller\Admin\IndexController',
+            'Search\Controller\Index' => Controller\IndexController::class,
+            'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
         ],
         'factories' => [
-            'Search\Controller\Admin\SearchIndex' => 'Search\Service\Controller\Admin\SearchIndexControllerFactory',
-            'Search\Controller\Admin\SearchPage' => 'Search\Service\Controller\Admin\SearchPageControllerFactory',
+            'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
+            'Search\Controller\Admin\SearchPage' => Service\Controller\Admin\SearchPageControllerFactory::class,
         ],
     ],
     'controller_plugins' => [
         'factories' => [
-            'searchForm' => 'Search\Service\Mvc\Controller\Plugin\SearchFormFactory',
+            'searchForm' => Service\Mvc\Controller\Plugin\SearchFormFactory::class,
         ],
     ],
     'entity_manager' => [
         'mapping_classes_paths' => [
-            __DIR__ . '/../src/Entity',
+            dirname(__DIR__) . '/src/Entity',
         ],
         'proxy_paths' => [
-            __DIR__ . '/../data/doctrine-proxies',
+            dirname(__DIR__) . '/data/doctrine-proxies',
         ],
     ],
     'api_adapters' => [
         'invokables' => [
-            'search_indexes' => 'Search\Api\Adapter\SearchIndexAdapter',
-            'search_pages' => 'Search\Api\Adapter\SearchPageAdapter',
+            'search_indexes' => Api\Adapter\SearchIndexAdapter::class,
+            'search_pages' => Api\Adapter\SearchPageAdapter::class,
         ],
     ],
     'form_elements' => [
         'factories' => [
-            'Search\Form\Admin\SearchIndexForm' => 'Search\Service\Form\SearchIndexFormFactory',
-            'Search\Form\Admin\SearchIndexConfigureForm' => 'Search\Service\Form\SearchIndexConfigureFormFactory',
-            'Search\Form\Admin\SearchPageForm' => 'Search\Service\Form\SearchPageFormFactory',
-            'Search\Form\Admin\SearchPageConfigureForm' => 'Search\Service\Form\SearchPageConfigureFormFactory',
-            'Search\Form\BasicForm' => 'Search\Service\Form\BasicFormFactory',
-            'Search\Form\Element\SearchPageSelect' => 'Search\Service\Form\Element\SearchPageSelectFactory',
+            'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
+            'Search\Form\Admin\SearchIndexConfigureForm' => Service\Form\SearchIndexConfigureFormFactory::class,
+            'Search\Form\Admin\SearchPageForm' => Service\Form\SearchPageFormFactory::class,
+            'Search\Form\Admin\SearchPageConfigureForm' => Service\Form\SearchPageConfigureFormFactory::class,
+            'Search\Form\BasicForm' => Service\Form\BasicFormFactory::class,
+            'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
         ],
     ],
     'navigation' => [
-        'AdminGlobal' => [
+        'AdminModule' => [
             [
                 'label' => 'Search',
                 'route' => 'admin/search',
@@ -52,7 +54,7 @@ return [
     ],
     'navigation_links' => [
         'invokables' => [
-            'search-page' => 'Search\Site\Navigation\Link\SearchPage',
+            'search-page' => Site\Navigation\Link\SearchPage::class,
         ],
     ],
     'router' => [
@@ -133,34 +135,34 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            'Search\AdapterManager' => 'Search\Service\AdapterManagerFactory',
-            'Search\FormAdapterManager' => 'Search\Service\FormAdapterManagerFactory',
+            'Search\AdapterManager' => Service\AdapterManagerFactory::class,
+            'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
         ],
     ],
     'view_manager' => [
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            dirname(__DIR__) . '/view',
         ],
     ],
     'view_helpers' => [
         'factories' => [
-            'facetLink' => 'Search\Service\ViewHelper\FacetLinkFactory',
-            'facetLabel' => 'Search\Service\ViewHelper\FacetLabelFactory',
+            'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
+            'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
         ],
         'invokables' => [
-            'searchForm' => 'Search\View\Helper\SearchForm',
+            'searchForm' => View\Helper\SearchForm::class,
         ],
     ],
     'search_form_adapters' => [
         'invokables' => [
-            'basic' => 'Search\FormAdapter\BasicFormAdapter',
+            'basic' => FormAdapter\BasicFormAdapter::class,
         ],
     ],
     'translator' => [
         'translation_file_patterns' => [
             [
                 'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
+                'base_dir' => dirname(__DIR__) . '/language',
                 'pattern' => '%s.mo',
                 'text_domain' => null,
             ],
