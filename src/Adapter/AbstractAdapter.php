@@ -45,7 +45,12 @@ abstract class AbstractAdapter implements AdapterInterface
         return [];
     }
 
-    public function getAvailableFields(SearchIndexRepresentation $index)
+    public function getAvailableSearchFields(SearchIndexRepresentation $index)
+    {
+        return [];
+    }
+
+    public function getAvailableOperators(SearchIndexRepresentation $index)
     {
         return [];
     }

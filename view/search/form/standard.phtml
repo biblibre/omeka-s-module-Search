@@ -1,0 +1,125 @@
+<?php
+    $translate = $this->plugin('translate');
+
+    $availableFields = $this->searchForm()->getAvailableSearchFields();
+    $availableFieldsOptions = array_column($availableFields, 'label', 'name');
+    $availableOperators = $this->searchForm()->getAvailableOperators();
+    $availableOperatorsOptions = array_column($availableOperators, 'display_name', 'name');
+    $settings = $form->getOption('search_page')->settings();
+
+    $form->prepare();
+    $form->setAttribute('id', 'search-form-standard');
+?>
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formRow($form->get('q')); ?>
+
+<?php $query = $this->params()->fromQuery(); ?>
+
+<?php if (!empty($settings['form']['search_fields'])): ?>
+    <div class="field">
+        <div class="field-meta">
+            <label><?php echo $translate('Filters'); ?></label>
+        </div>
+        <div class="inputs">
+            <?php echo $this->partial('search/form/standard-match-group', [
+                'availableFieldsOptions' => $availableFieldsOptions,
+                'availableOperatorsOptions' => $availableOperatorsOptions,
+                'data' => $query['filters'] ?? [],
+                'namePrefix' => 'filters',
+                'mainGroup' => true,
+            ]); ?>
+        </div>
+    </div>
+
+    <template id="template-search-filter">
+        <div class="search-form-standard-match-group-item">
+            <?php echo $this->partial('search/form/standard-match-group-filter', [
+                'availableFieldsOptions' => $availableFieldsOptions,
+                'availableOperatorsOptions' => $availableOperatorsOptions,
+                'query' => [],
+                'namePrefix' => '__placeholder__',
+            ]); ?>
+        </div>
+    </template>
+
+    <template id="template-search-group">
+        <div class="search-form-standard-match-group-item">
+            <?php echo $this->partial('search/form/standard-match-group', [
+                'availableFieldsOptions' => $availableFieldsOptions,
+                'availableOperatorsOptions' => $availableOperatorsOptions,
+                'data' => [],
+                'namePrefix' => '__placeholder__',
+                'mainGroup' => false,
+            ]); ?>
+        </div>
+    </template>
+
+    <script>
+        $(document).ready(function () {
+            $('#search-form-standard').on('click', '.search-add-filter', function (ev) {
+                ev.preventDefault();
+                insertFilterBefore(this.parentNode);
+                renameAllFormControls();
+            });
+
+            $('#search-form-standard').on('click', '.search-add-group', function (ev) {
+                ev.preventDefault();
+                const template = document.getElementById('template-search-group');
+                const group = template.content.cloneNode(true).firstElementChild;
+                this.parentNode.insertAdjacentElement('beforebegin', group);
+
+                renameAllFormControls();
+            });
+
+            $('#search-form-standard').on('click', '.search-delete-filter', function (ev) {
+                ev.preventDefault();
+                $(this).closest('.search-form-standard-match-group-item').remove();
+                renameAllFormControls();
+            });
+
+            function insertFilterBefore(element) {
+                const template = document.getElementById('template-search-filter');
+                const filter = template.content.cloneNode(true).firstElementChild;
+                element.insertAdjacentElement('beforebegin', filter);
+            }
+
+            function renameFormControls (element, namePrefix) {
+                $(element).children('select').attr('name', namePrefix + '[match]');
+
+                const items = $(element)
+                    .children('.search-form-standard-match-group-items')
+                    .children('.search-form-standard-match-group-item');
+
+                for (let i = 0; i < items.length; i++) {
+                    const item = items.get(i);
+                    $(item).children('input,select').each(function () {
+                        const match = $(this).attr('name').match(/\[([^[]+)\]$/);
+                        if (match) {
+                            $(this).attr('name', namePrefix + '[queries][' + i + '][' + match[1] + ']');
+                        }
+                    });
+                    $(item).children('.search-form-standard-match-group').each(function () {
+                        renameFormControls(this, namePrefix + '[queries][' + i + ']');
+                    });
+                }
+            }
+
+            function renameAllFormControls () {
+                const mainGroup = document.querySelector('#search-form-standard > .field > .inputs > .search-form-standard-match-group');
+                renameFormControls(mainGroup, 'filters');
+            }
+        });
+    </script>
+<?php endif; ?>
+
+<?php if (!empty($settings['form']['resource_class_field'])): ?>
+    <?php echo $this->partial('common/advanced-search/resource-class', ['query' => $query]); ?>
+<?php endif; ?>
+
+<?php if (!empty($settings['form']['item_sets_field'])): ?>
+    <?php echo $this->partial('common/advanced-search/item-sets', ['query' => $query]); ?>
+<?php endif; ?>
+
+<button type="submit">Search</button>
+
+<?php echo $this->form()->closeTag(); ?>

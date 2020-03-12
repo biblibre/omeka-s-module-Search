@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2020
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,40 +27,50 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\FormAdapter;
+namespace Search\Form;
 
-use Search\Query;
+use Zend\Form\Form;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorAwareTrait;
 
-class BasicFormAdapter implements FormAdapterInterface
+class StandardForm extends Form implements TranslatorAwareInterface
 {
-    public function getLabel()
-    {
-        return 'Basic';
-    }
+    use TranslatorAwareTrait;
 
-    public function getFormClass()
+    public function init()
     {
-        return 'Search\Form\BasicForm';
-    }
+        $translator = $this->getTranslator();
 
-    public function getFormPartial()
-    {
-        return null;
-    }
+        $this->add([
+            'name' => 'q',
+            'type' => 'Text',
+            'options' => [
+                'label' => $translator->translate('Search full-text'),
+            ],
+            'attributes' => [
+                'placeholder' => $translator->translate('Search'),
+            ],
+        ]);
 
-    public function getConfigFormClass()
-    {
-        return null;
-    }
+        $searchPage = $this->getOption('search_page');
+        $settings = $searchPage->settings();
 
-    public function toQuery($data, $formSettings)
-    {
-        $query = new Query();
-
-        if (isset($data['q'])) {
-            $query->setQuery($data['q']);
+        if (!empty($settings['form']['search_fields'])) {
+            $this->add([
+                'name' => 'filters',
+            ]);
         }
 
-        return $query;
+        if (!empty($settings['form']['resource_class_field'])) {
+            $this->add([
+                'name' => 'resource_class_id',
+            ]);
+        }
+
+        if (!empty($settings['form']['item_sets_field'])) {
+            $this->add([
+                'name' => 'item_set_id',
+            ]);
+        }
     }
 }

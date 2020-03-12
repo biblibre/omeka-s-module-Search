@@ -35,58 +35,72 @@
     $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
 ?>
 
-<?php $this->pageTitle($this->translate('Search')); ?>
+<?php echo $this->pageTitle($this->translate('Search'), 2); ?>
 
-<div id="content" role="main">
+<?php echo $this->messages(); ?>
+
+<div id="search-form-wrapper">
     <?php echo $this->searchForm(); ?>
-
-    <?php if (isset($response)): ?>
-        <div class="search-results-wrapper">
-            <div class="search-results">
-                <?php if ($response->getTotalResults() > 0): ?>
-                    <?php
-                        echo $this->partial('search/results-header', [
-                            'query' => $query,
-                            'response' => $response,
-                            'sortOptions' => $sortOptions,
-                        ]);
-                    ?>
-
-                    <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
-                    <?php echo $this->partial('search/resource-list', [
-                        'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
-                        'response' => $response,
-                        'resourceName' => 'item_sets',
-                        'site' => $site,
-                    ]);
-                    ?>
-
-                    <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
-                    <?php echo $this->partial('search/resource-list', [
-                        'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
-                        'response' => $response,
-                        'resourceName' => 'items',
-                        'site' => $site
-                    ]); ?>
-
-                    <?php
-                        echo $this->partial('search/results-footer', [
-                            'query' => $query,
-                            'response' => $response,
-                            'sortOptions' => $sortOptions,
-                        ]);
-                    ?>
-                <?php else: ?>
-                    <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
-                <?php endif; ?>
-            </div>
-
-            <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
-        </div>
-    <?php endif; ?>
 </div>
+<a href="#" id="search-form-show-link" style="display: none"><?php echo $this->translate('Edit search'); ?></a>
+
+<?php if (isset($response)): ?>
+    <div class="search-results-wrapper">
+        <div class="search-results">
+            <?php if ($response->getTotalResults() > 0): ?>
+                <?php
+                    echo $this->partial('search/results-header', [
+                        'query' => $query,
+                        'response' => $response,
+                        'sortOptions' => $sortOptions,
+                    ]);
+                ?>
+
+                <?php $itemSetsCount = $response->getResourceTotalResults('item_sets'); ?>
+                <?php echo $this->partial('search/resource-list', [
+                    'title' => sprintf($this->translatePlural('%s item set', '%s item sets', $itemSetsCount), $itemSetsCount),
+                    'response' => $response,
+                    'resourceName' => 'item_sets',
+                    'site' => $site,
+                ]);
+                ?>
+
+                <?php $itemsCount = $response->getResourceTotalResults('items'); ?>
+                <?php echo $this->partial('search/resource-list', [
+                    'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
+                    'response' => $response,
+                    'resourceName' => 'items',
+                    'site' => $site
+                ]); ?>
+
+                <?php
+                    echo $this->partial('search/results-footer', [
+                        'query' => $query,
+                        'response' => $response,
+                        'sortOptions' => $sortOptions,
+                    ]);
+                ?>
+            <?php else: ?>
+                <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
+            <?php endif; ?>
+        </div>
+
+        <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
+    </div>
+<?php endif; ?>
+
 <script>
     $(document).ready(function() {
+        $('#search-form-show-link').on('click', function (ev) {
+            ev.preventDefault();
+            $('#search-form-wrapper').show();
+            $('#search-form-show-link').hide();
+        });
+        if (document.querySelector('.search-results')) {
+            $('#search-form-wrapper').hide();
+            $('#search-form-show-link').show();
+        }
+
         $('.search-results-sort select').on('change', function() {
             Search.sortBy($(this).val());
         });

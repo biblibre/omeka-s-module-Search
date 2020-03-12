@@ -186,7 +186,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             return null;
         }
 
-        $fieldset = $formElementManager->get($formAdapter->getConfigFormClass(), [
+        $fieldset = $formElementManager->get($configFormClass, [
             'search_page' => $searchPage,
         ]);
         $fieldset->setName('form');

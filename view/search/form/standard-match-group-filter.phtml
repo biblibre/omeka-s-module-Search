@@ -1,0 +1,27 @@
+<?php
+    $fieldSelect = new \Zend\Form\Element\Select($namePrefix . '[field]');
+    $fieldSelect->setValueOptions($availableFieldsOptions);
+    if (isset($query['field'])) {
+        $fieldSelect->setValue($query['field']);
+    }
+    echo $this->formSelect($fieldSelect);
+?>
+
+<?php
+    $operatorSelect = new \Zend\Form\Element\Select($namePrefix . '[operator]');
+    $operatorSelect->setValueOptions($availableOperatorsOptions);
+    if (isset($query['operator'])) {
+        $operatorSelect->setValue($query['operator']);
+    }
+    echo $this->formSelect($operatorSelect);
+?>
+
+<?php
+    $termText = new \Zend\Form\Element\Text($namePrefix . '[term]');
+    if (isset($query['term'])) {
+        $termText->setValue($query['term']);
+    }
+    echo $this->formText($termText);
+?>
+
+<button type="button" class="o-icon-delete search-delete-filter"></button>

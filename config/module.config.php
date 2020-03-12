@@ -37,7 +37,8 @@ return [
             'Search\Form\Admin\SearchIndexConfigureForm' => Service\Form\SearchIndexConfigureFormFactory::class,
             'Search\Form\Admin\SearchPageForm' => Service\Form\SearchPageFormFactory::class,
             'Search\Form\Admin\SearchPageConfigureForm' => Service\Form\SearchPageConfigureFormFactory::class,
-            'Search\Form\BasicForm' => Service\Form\BasicFormFactory::class,
+            'Search\Form\StandardForm' => Service\Form\StandardFormFactory::class,
+            'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
         ],
     ],
@@ -154,8 +155,8 @@ return [
         ],
     ],
     'search_form_adapters' => [
-        'invokables' => [
-            'basic' => FormAdapter\BasicFormAdapter::class,
+        'factories' => [
+            'standard' => Service\FormAdapter\StandardFormAdapterFactory::class,
         ],
     ],
     'translator' => [

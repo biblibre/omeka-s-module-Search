@@ -104,7 +104,7 @@ class IndexController extends AbstractActionController
         if (isset($params['limit'])) {
             foreach ($params['limit'] as $name => $values) {
                 foreach ($values as $value) {
-                    $query->addFilter($name, $value);
+                    $query->addFacetFilter($name, $value);
                 }
             }
         }

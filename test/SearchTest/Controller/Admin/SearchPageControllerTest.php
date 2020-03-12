@@ -28,7 +28,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
             'o:name' => 'TestPage2',
             'o:path' => 'search/test2',
             'o:index_id' => $this->searchIndex->id(),
-            'o:form' => 'basic',
+            'o:form' => 'standard',
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $response = $this->api()->search('search_pages', [
