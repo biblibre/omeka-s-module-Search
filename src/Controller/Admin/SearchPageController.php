@@ -75,7 +75,7 @@ class SearchPageController extends AbstractActionController
         $formData = $form->getData();
         $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
 
-        $this->messenger()->addSuccess('Search page created.');
+        $this->messenger()->addSuccess('Search page updated.');
         return $this->redirect()->toUrl($page->url('configure'));
     }
 

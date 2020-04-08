@@ -32,7 +32,7 @@ abstract class SearchControllerTestCase extends OmekaControllerTestCase
             'o:name' => 'TestPage',
             'o:path' => 'test/search',
             'o:index_id' => $searchIndex->id(),
-            'o:form' => 'basic',
+            'o:form' => 'standard',
             'o:settings' => [
                 'facets' => [],
                 'sort_fields' => [],

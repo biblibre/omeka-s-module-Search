@@ -37,7 +37,8 @@ class Query
     protected $sort;
     protected $facetLimit;
     protected $facetFields = [];
-    protected $filters = [];
+    protected $facetFilters = [];
+    protected $queryFilters = [];
     protected $dateRangeFilters = [];
     protected $offset = 0 ;
     protected $limit = 0;
@@ -84,14 +85,24 @@ class Query
         return $this->site;
     }
 
-    public function addFilter($name, $value)
+    public function addFacetFilter($name, $value)
     {
-        $this->filters[$name][] = $value;
+        $this->facetFilters[$name][] = $value;
     }
 
-    public function getFilters()
+    public function getFacetFilters()
     {
-        return $this->filters;
+        return $this->facetFilters;
+    }
+
+    public function addQueryFilter($query)
+    {
+        $this->queryFilters[] = $query;
+    }
+
+    public function getQueryFilters()
+    {
+        return $this->queryFilters;
     }
 
     public function addDateRangeFilter($name, $start, $end)

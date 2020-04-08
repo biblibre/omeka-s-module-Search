@@ -72,3 +72,17 @@
 .resource-list.grid .description {
   display: none;
 }
+
+.search-form-standard-match-group-items {
+  padding-left: 2em;
+  margin-top: 0.5em;
+}
+
+.search-form-standard-match-group-item {
+  margin-bottom: 0.5em;
+}
+
+.search-delete-filter {
+  width: 45px;
+  height: 45px;
+}

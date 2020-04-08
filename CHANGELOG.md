@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added a standard form which mimics the item advanced search form
+
+### Changed
+
+- *BREAKING CHANGE* `Search\Adapter\AdapterInterface::getAvailableFields` was
+  renamed to `getAvailableSearchFields`
+- *BREAKING CHANGE* A new method `getAvailableOperators` was added to
+  `Search\Adapter\AdapterInterface`
+- *BREAKING CHANGE* `Search\Query::addFilter` was renamed to `addFacetFilter`
+- *BREAKING CHANGE* `Search\Query::getFilters` was renamed to `getFacetFilters`
+- *BREAKING CHANGE* New methods `addQueryFilter` and `getQueryFilters` were
+  added to `Search\Query`
+- Search form is now hidden when displaying results.
+
+### Removed
+
+- Basic form was removed (it can be replaced by standard form)
 
 ## [0.5.0] - 2019-03-06
 

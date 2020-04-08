@@ -39,7 +39,8 @@ interface AdapterInterface
     public function getQuerierClass();
     public function getAvailableFacetFields(SearchIndexRepresentation $index);
     public function getAvailableSortFields(SearchIndexRepresentation $index);
-    public function getAvailableFields(SearchIndexRepresentation $index);
+    public function getAvailableSearchFields(SearchIndexRepresentation $index);
+    public function getAvailableOperators(SearchIndexRepresentation $index);
 
     public function setServiceLocator($serviceLocator);
     public function getServiceLocator();

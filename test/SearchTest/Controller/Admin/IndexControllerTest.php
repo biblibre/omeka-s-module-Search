@@ -19,6 +19,6 @@ class IndexControllerTest extends SearchControllerTestCase
         $this->assertXpathQueryContentRegex('//table[2]//td[1]', '/TestPage/');
         $this->assertXpathQueryContentRegex('//table[2]//td[2]', '/test\/search/');
         $this->assertXpathQueryContentRegex('//table[2]//td[3]', '/TestIndex/');
-        $this->assertXpathQueryContentRegex('//table[2]//td[4]', '/Basic/');
+        $this->assertXpathQueryContentRegex('//table[2]//td[4]', '/Standard/');
     }
 }

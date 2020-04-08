@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2020
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,29 +27,19 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Form;
+namespace Search\Service\FormAdapter;
 
-use Zend\Form\Form;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
+use Interop\Container\ContainerInterface;
+use Search\FormAdapter\StandardFormAdapter;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
-class BasicForm extends Form implements TranslatorAwareInterface
+class StandardFormAdapterFactory implements FactoryInterface
 {
-    use TranslatorAwareTrait;
-
-    public function init()
+    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $translator = $this->getTranslator();
+        $formAdapter = new StandardFormAdapter();
+        $formAdapter->setApiManager($services->get('Omeka\ApiManager'));
 
-        $this->add([
-            'name' => 'q',
-            'type' => 'Text',
-            'options' => [
-                'label' => $translator->translate('Search'),
-            ],
-            'attributes' => [
-                'placeholder' => $translator->translate('Search items'),
-            ],
-        ]);
+        return $formAdapter;
     }
 }
