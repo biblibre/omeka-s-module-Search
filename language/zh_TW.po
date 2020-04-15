@@ -1,0 +1,196 @@
+# Translation template for module Search.
+# Copyright (C) 2016 BibLibre
+# This file is distributed under the same license as the Search package.
+# Julian Maurice <julian.maurice@biblibre.com>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Search\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-15 00:00+0000\n"
+"PO-Revision-Date: 2020-04-15 00:00+0000\n"
+"Last-Translator: billxu <billxu0521@gmail.com>\n"
+"Language-Team: DLLL (http://dlll-info.dlll.nccu.edu.tw/)\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/Api/Representation/SearchIndexRepresentation.php:101
+msgid "[No adapter]"
+msgstr "[沒有轉接器]"
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:51
+msgid "Resources indexed"
+msgstr "資源索引"
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:81
+msgid "Items"
+msgstr "條目"
+
+#: src/Form/Admin/SearchIndexConfigureForm.php:82
+msgid "Item sets"
+msgstr "條目集"
+
+#: src/Form/Admin/SearchIndexForm.php:50 src/Form/Admin/SearchPageForm.php:51
+msgid "Name"
+msgstr "名稱"
+
+#: src/Form/Admin/SearchIndexForm.php:63
+msgid "Adapter"
+msgstr "轉接器"
+
+#: src/Form/Admin/SearchIndexForm.php:89 src/Form/Admin/SearchPageForm.php:120
+#: src/Form/Admin/SearchPageForm.php:136
+msgid "None"
+msgstr "無"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:55
+msgid "Facet limit"
+msgstr "構面限制"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:56
+msgid "The maximum number of values fetched for each facet"
+msgstr "每個構面獲取的最大值數"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:65
+msgid "Facets"
+msgstr "構面"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:80
+#: src/Form/Admin/SearchPageConfigureForm.php:118
+msgid "Enabled"
+msgstr "啟動"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:88
+#: src/Form/Admin/SearchPageConfigureForm.php:126
+msgid "Weight"
+msgstr "權重"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:103
+msgid "Sort fields"
+msgstr "排序欄位"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:174
+msgid "Form settings"
+msgstr "表單設定"
+
+#: src/Form/Admin/SearchPageForm.php:62
+msgid "Path"
+msgstr "路徑"
+
+#: src/Form/Admin/SearchPageForm.php:73
+msgid "Index"
+msgstr "索引"
+
+#: src/Form/Admin/SearchPageForm.php:85
+msgid "Form"
+msgstr "表單"
+
+#: src/Form/BasicForm.php:48 view/search/index/search.phtml:37
+msgid "Search"
+msgstr "搜尋"
+
+#: src/Form/BasicForm.php:51
+msgid "Search items"
+msgstr "搜尋條目"
+
+#: view/search/admin/index/browse.phtml:32
+msgid "Search configuration"
+msgstr "搜尋組態"
+
+#: view/search/admin/index/browse.phtml:60
+#: view/search/admin/index/browse.phtml:120
+#: view/search/admin/search-page/configure.phtml:42
+msgid "Configure"
+msgstr "組態"
+
+#: view/search/admin/index/browse.phtml:68
+msgid "Reindex all"
+msgstr "重新所有索引"
+
+#: view/search/admin/index/browse.phtml:77
+#: view/search/admin/index/browse.phtml:78
+#: view/search/admin/index/browse.phtml:128
+#: view/search/admin/index/browse.phtml:129
+msgid "Delete"
+msgstr "刪除"
+
+#: view/search/admin/index/browse.phtml:89
+msgid "No search indexes created yet."
+msgstr "尚未創建搜尋索引"
+
+#: view/search/admin/index/browse.phtml:112
+#: view/search/admin/search-page/edit.phtml:36
+msgid "Edit"
+msgstr "編輯"
+
+#: view/search/admin/index/browse.phtml:151
+msgid "No search pages created yet."
+msgstr "尚未創建搜尋頁面"
+
+#: view/search/admin/index/browse.phtml:157
+#: view/search/admin/index/browse.phtml:158
+msgid "Close"
+msgstr "關閉"
+
+#: view/search/admin/search-index/add.phtml:32
+msgid "Add search index"
+msgstr "新增搜尋索引"
+
+#: view/search/admin/search-index/add.phtml:36
+#: view/search/admin/search-page/add.phtml:36
+msgid "Add"
+msgstr "新增"
+
+#: view/search/admin/search-index/configure.phtml:32
+msgid "Configure search index"
+msgstr "設定搜尋索引"
+
+#: view/search/admin/search-index/configure.phtml:36
+msgid "Save configuration"
+msgstr "儲存設定"
+
+#: view/search/admin/search-page/add.phtml:32
+msgid "Add search page"
+msgstr "新增設定頁面"
+
+#: view/search/admin/search-page/configure.phtml:38
+msgid "Configure search page"
+msgstr "設定搜尋頁面"
+
+#: view/search/admin/search-page/edit.phtml:32
+msgid "Edit search page"
+msgstr "編輯搜尋頁面"
+
+#: view/search/facets.phtml:32
+msgid "Filters"
+msgstr "篩選器"
+
+#: view/search/index/search.phtml:56
+#, php-format
+msgid "%s item set"
+msgid_plural "%s item sets"
+msgstr[0] "%s 條目集"
+msgstr[1] "%s 條目集"
+
+#: view/search/index/search.phtml:63
+#, php-format
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] "%s 條目"
+msgstr[1] "%s 條目"
+
+#: view/search/index/search.phtml:77
+msgid "Your query returned no results"
+msgstr "您的查詢沒有結果"
+
+#: view/search/results-header.phtml:11
+msgid "Sort by"
+msgstr "排序方式"
+
+#: src/Controller/Admin/SearchIndexController.php:122
+#, php-format
+msgid "Indexing started in %sjob %s%s"
+msgstr "索引開始於 %s 到 %s%s"
