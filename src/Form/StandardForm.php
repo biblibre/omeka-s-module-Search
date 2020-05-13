@@ -45,7 +45,7 @@ class StandardForm extends Form implements TranslatorAwareInterface
             'name' => 'q',
             'type' => 'Text',
             'options' => [
-                'label' => $translator->translate('Search full-text'),
+                'label' => $translator->translate('Search everywhere'),
             ],
             'attributes' => [
                 'placeholder' => $translator->translate('Search'),
