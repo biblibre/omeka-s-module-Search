@@ -1,14 +1,14 @@
-# Translation template for module Search.
-# Copyright (C) 2016 BibLibre
-# This file is distributed under the same license as the Search package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Search\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-29 15:13+0100\n"
+"POT-Creation-Date: 2020-05-13 09:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,29 +21,12 @@ msgstr ""
 msgid "[No adapter]"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:51
+#: src/Form/Admin/SearchIndexConfigureForm.php:50
 msgid "Resources indexed"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:81
-msgid "Items"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexConfigureForm.php:82
-msgid "Item sets"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexForm.php:50 src/Form/Admin/SearchPageForm.php:51
-msgid "Name"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexForm.php:63
+#: src/Form/Admin/SearchIndexForm.php:62
 msgid "Adapter"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexForm.php:89 src/Form/Admin/SearchPageForm.php:120
-#: src/Form/Admin/SearchPageForm.php:136
-msgid "None"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:55
@@ -58,90 +41,70 @@ msgstr ""
 msgid "Facets"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:80
-#: src/Form/Admin/SearchPageConfigureForm.php:118
+#: src/Form/Admin/SearchPageConfigureForm.php:90
+#: src/Form/Admin/SearchPageConfigureForm.php:137
 msgid "Enabled"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:88
-#: src/Form/Admin/SearchPageConfigureForm.php:126
+#: src/Form/Admin/SearchPageConfigureForm.php:98
+#: src/Form/Admin/SearchPageConfigureForm.php:145
 msgid "Weight"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:103
+#: src/Form/Admin/SearchPageConfigureForm.php:112
 msgid "Sort fields"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:174
+#: src/Form/Admin/SearchPageConfigureForm.php:193
 msgid "Form settings"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:62
+#: src/Form/Admin/SearchPageForm.php:61
 msgid "Path"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:73
+#: src/Form/Admin/SearchPageForm.php:72
 msgid "Index"
 msgstr ""
 
-#: src/Form/Admin/SearchPageForm.php:85
+#: src/Form/Admin/SearchPageForm.php:84
 msgid "Form"
 msgstr ""
 
-#: src/Form/BasicForm.php:48 view/search/index/search.phtml:37
-msgid "Search"
+#: src/Form/StandardConfigForm.php:49
+msgid "Search fields"
 msgstr ""
 
-#: src/Form/BasicForm.php:51
-msgid "Search items"
+#: src/Form/StandardConfigForm.php:58
+msgid "Resource class field"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:32
+#: src/Form/StandardConfigForm.php:68
+msgid "Item sets field"
+msgstr ""
+
+#: src/Form/StandardForm.php:48
+msgid "Search everywhere"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:33
 msgid "Search configuration"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:60
-#: view/search/admin/index/browse.phtml:120
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Configure"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:68
+#: view/search/admin/index/browse.phtml:70
 msgid "Reindex all"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:77
-#: view/search/admin/index/browse.phtml:78
-#: view/search/admin/index/browse.phtml:128
-#: view/search/admin/index/browse.phtml:129
-msgid "Delete"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:89
+#: view/search/admin/index/browse.phtml:90
 msgid "No search indexes created yet."
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:112
-#: view/search/admin/search-page/edit.phtml:36
-msgid "Edit"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:151
+#: view/search/admin/index/browse.phtml:152
 msgid "No search pages created yet."
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:157
-#: view/search/admin/index/browse.phtml:158
-msgid "Close"
 msgstr ""
 
 #: view/search/admin/search-index/add.phtml:32
 msgid "Add search index"
-msgstr ""
-
-#: view/search/admin/search-index/add.phtml:36
-#: view/search/admin/search-page/add.phtml:36
-msgid "Add"
 msgstr ""
 
 #: view/search/admin/search-index/configure.phtml:32
@@ -149,6 +112,7 @@ msgid "Configure search index"
 msgstr ""
 
 #: view/search/admin/search-index/configure.phtml:36
+#: view/search/admin/search-page/configure.phtml:42
 msgid "Save configuration"
 msgstr ""
 
@@ -164,33 +128,35 @@ msgstr ""
 msgid "Edit search page"
 msgstr ""
 
-#: view/search/facets.phtml:32
+#: view/search/facets.phtml:32 view/search/form/standard.phtml:21
 msgid "Filters"
 msgstr ""
 
-#: view/search/index/search.phtml:56
-#, php-format
-msgid "%s item set"
-msgid_plural "%s item sets"
-msgstr[0] ""
-msgstr[1] ""
+#: view/search/form/standard-match-group.phtml:3
+msgid "Match all of the following criteria:"
+msgstr ""
 
-#: view/search/index/search.phtml:63
-#, php-format
-msgid "%s item"
-msgid_plural "%s items"
-msgstr[0] ""
-msgstr[1] ""
+#: view/search/form/standard-match-group.phtml:4
+msgid "Match any of the following criteria:"
+msgstr ""
 
-#: view/search/index/search.phtml:77
+#: view/search/form/standard-match-group.phtml:53
+msgid "Add filter"
+msgstr ""
+
+#: view/search/form/standard-match-group.phtml:54
+msgid "Add group"
+msgstr ""
+
+#: view/search/index/search.phtml:45
+msgid "Edit search"
+msgstr ""
+
+#: view/search/index/search.phtml:84
 msgid "Your query returned no results"
 msgstr ""
 
-#: view/search/results-header.phtml:11
-msgid "Sort by"
-msgstr ""
-
-#: src/Controller/Admin/SearchIndexController.php:122
+#: src/Controller/Admin/SearchIndexController.php:118
 #, php-format
 msgid "Indexing started in %sjob %s%s"
 msgstr ""

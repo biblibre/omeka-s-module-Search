@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-29 15:13+0100\n"
-"PO-Revision-Date: 2016-11-29 15:16+0100\n"
+"POT-Creation-Date: 2020-05-13 09:41+0200\n"
+"PO-Revision-Date: 2020-05-13 10:31+0200\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -16,35 +16,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: src/Api/Representation/SearchIndexRepresentation.php:101
 msgid "[No adapter]"
 msgstr "[Aucun adaptateur]"
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:51
+#: src/Form/Admin/SearchIndexConfigureForm.php:50
 msgid "Resources indexed"
 msgstr "Ressources indexées"
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:81
-msgid "Items"
-msgstr "Contenus"
-
-#: src/Form/Admin/SearchIndexConfigureForm.php:82
-msgid "Item sets"
-msgstr "Collections"
-
-#: src/Form/Admin/SearchIndexForm.php:50 src/Form/Admin/SearchPageForm.php:51
-msgid "Name"
-msgstr "Nom"
-
-#: src/Form/Admin/SearchIndexForm.php:63
+#: src/Form/Admin/SearchIndexForm.php:62
 msgid "Adapter"
 msgstr "Adaptateur"
-
-#: src/Form/Admin/SearchIndexForm.php:89 src/Form/Admin/SearchPageForm.php:120
-#: src/Form/Admin/SearchPageForm.php:136
-msgid "None"
-msgstr "Aucun"
 
 #: src/Form/Admin/SearchPageConfigureForm.php:55
 msgid "Facet limit"
@@ -58,97 +42,78 @@ msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
 msgid "Facets"
 msgstr "Facettes"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:80
-#: src/Form/Admin/SearchPageConfigureForm.php:118
+#: src/Form/Admin/SearchPageConfigureForm.php:90
+#: src/Form/Admin/SearchPageConfigureForm.php:137
 msgid "Enabled"
 msgstr "Activé"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:88
-#: src/Form/Admin/SearchPageConfigureForm.php:126
+#: src/Form/Admin/SearchPageConfigureForm.php:98
+#: src/Form/Admin/SearchPageConfigureForm.php:145
 msgid "Weight"
 msgstr "Poids"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:103
+#: src/Form/Admin/SearchPageConfigureForm.php:112
 msgid "Sort fields"
 msgstr "Champs de tri"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:174
+#: src/Form/Admin/SearchPageConfigureForm.php:193
 msgid "Form settings"
 msgstr "Paramètres du formulaire"
 
-#: src/Form/Admin/SearchPageForm.php:62
+#: src/Form/Admin/SearchPageForm.php:61
 msgid "Path"
 msgstr "Chemin"
 
-#: src/Form/Admin/SearchPageForm.php:73
+#: src/Form/Admin/SearchPageForm.php:72
 msgid "Index"
 msgstr "Index"
 
-#: src/Form/Admin/SearchPageForm.php:85
+#: src/Form/Admin/SearchPageForm.php:84
 msgid "Form"
 msgstr "Formulaire"
 
-#: src/Form/BasicForm.php:48 view/search/index/search.phtml:37
-msgid "Search"
-msgstr "Recherche"
+#: src/Form/StandardConfigForm.php:49
+msgid "Search fields"
+msgstr "Champs de recherche"
 
-#: src/Form/BasicForm.php:51
-msgid "Search items"
-msgstr "Recherche de contenus"
+#: src/Form/StandardConfigForm.php:58
+msgid "Resource class field"
+msgstr "Champ de la classe de ressource"
 
-#: view/search/admin/index/browse.phtml:32
+#: src/Form/StandardConfigForm.php:68
+msgid "Item sets field"
+msgstr "Champ des collections"
+
+#: src/Form/StandardForm.php:48
+msgid "Search everywhere"
+msgstr "Rechercher partout"
+
+#: view/search/admin/index/browse.phtml:33
 msgid "Search configuration"
 msgstr "Configuration de la recherche"
 
-#: view/search/admin/index/browse.phtml:60
-#: view/search/admin/index/browse.phtml:120
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Configure"
-msgstr "Configurer"
-
-#: view/search/admin/index/browse.phtml:68
+#: view/search/admin/index/browse.phtml:70
 msgid "Reindex all"
 msgstr "Tout réindexer"
 
-#: view/search/admin/index/browse.phtml:77
-#: view/search/admin/index/browse.phtml:78
-#: view/search/admin/index/browse.phtml:128
-#: view/search/admin/index/browse.phtml:129
-msgid "Delete"
-msgstr "Supprimer"
-
-#: view/search/admin/index/browse.phtml:89
+#: view/search/admin/index/browse.phtml:90
 msgid "No search indexes created yet."
-msgstr "Aucun index créé pour l'instant"
+msgstr "Aucun index de recherche créé pour l'instant."
 
-#: view/search/admin/index/browse.phtml:112
-#: view/search/admin/search-page/edit.phtml:36
-msgid "Edit"
-msgstr "Modifier"
-
-#: view/search/admin/index/browse.phtml:151
+#: view/search/admin/index/browse.phtml:152
 msgid "No search pages created yet."
-msgstr "Aucune page de recherche créée pour l'instant"
-
-#: view/search/admin/index/browse.phtml:157
-#: view/search/admin/index/browse.phtml:158
-msgid "Close"
-msgstr "Fermer"
+msgstr "Aucune page de recherche créée pour l'instant."
 
 #: view/search/admin/search-index/add.phtml:32
 msgid "Add search index"
 msgstr "Ajouter un index de recherche"
-
-#: view/search/admin/search-index/add.phtml:36
-#: view/search/admin/search-page/add.phtml:36
-msgid "Add"
-msgstr "Ajouter"
 
 #: view/search/admin/search-index/configure.phtml:32
 msgid "Configure search index"
 msgstr "Configure l'index de recherche"
 
 #: view/search/admin/search-index/configure.phtml:36
+#: view/search/admin/search-page/configure.phtml:42
 msgid "Save configuration"
 msgstr "Enregistrer la configuration"
 
@@ -164,33 +129,75 @@ msgstr "Configurer la page de recherche"
 msgid "Edit search page"
 msgstr "Modifier la page de recherche"
 
-#: view/search/facets.phtml:32
+#: view/search/facets.phtml:32 view/search/form/standard.phtml:21
 msgid "Filters"
 msgstr "Filtres"
 
-#: view/search/index/search.phtml:56
-#, php-format
-msgid "%s item set"
-msgid_plural "%s item sets"
-msgstr[0] "%s collection"
-msgstr[1] "%s collections"
+#: view/search/form/standard-match-group.phtml:3
+msgid "Match all of the following criteria:"
+msgstr "Correspond à tous les critères suivants :"
 
-#: view/search/index/search.phtml:63
-#, php-format
-msgid "%s item"
-msgid_plural "%s items"
-msgstr[0] "%s contenu"
-msgstr[1] "%s contenus"
+#: view/search/form/standard-match-group.phtml:4
+msgid "Match any of the following criteria:"
+msgstr "Correspond à au moins un des critères suivants :"
 
-#: view/search/index/search.phtml:77
+#: view/search/form/standard-match-group.phtml:53
+msgid "Add filter"
+msgstr "Ajouter un filtre"
+
+#: view/search/form/standard-match-group.phtml:54
+msgid "Add group"
+msgstr "Ajouter un groupe"
+
+#: view/search/index/search.phtml:45
+msgid "Edit search"
+msgstr "Modifier la recherche"
+
+#: view/search/index/search.phtml:84
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
 
-#: view/search/results-header.phtml:11
-msgid "Sort by"
-msgstr "Trier par"
-
-#: src/Controller/Admin/SearchIndexController.php:122
+#: src/Controller/Admin/SearchIndexController.php:118
 #, php-format
 msgid "Indexing started in %sjob %s%s"
 msgstr "L'indexation a commencé dans %sla tâche %s%s"
+
+#~ msgid "Items"
+#~ msgstr "Contenus"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
+#~ msgid "None"
+#~ msgstr "Aucun"
+
+#~ msgid "Search"
+#~ msgstr "Recherche"
+
+#~ msgid "Configure"
+#~ msgstr "Configurer"
+
+#~ msgid "Delete"
+#~ msgstr "Supprimer"
+
+#~ msgid "Edit"
+#~ msgstr "Modifier"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "Add"
+#~ msgstr "Ajouter"
+
+#~ msgid "%s item set"
+#~ msgid_plural "%s item sets"
+#~ msgstr[0] "%s collection"
+#~ msgstr[1] "%s collections"
+
+#~ msgid "%s item"
+#~ msgid_plural "%s items"
+#~ msgstr[0] "%s contenu"
+#~ msgstr[1] "%s contenus"
+
+#~ msgid "Sort by"
+#~ msgstr "Trier par"
