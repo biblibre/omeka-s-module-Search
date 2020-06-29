@@ -74,6 +74,7 @@ class Index extends AbstractJob
                     $entities[] = $em->find($entityClass, $resource->id());
                 }
                 $indexer->indexResources($entities);
+                $em->clear();
                 $data['page']++;
             } while (count($resources) == self::BATCH_SIZE);
         }
