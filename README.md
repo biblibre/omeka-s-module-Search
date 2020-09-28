@@ -14,10 +14,6 @@ A standard form is provided, but no adapters.
 However the [Solr module](https://github.com/biblibre/omeka-s-module-Solr)
 provides a search adapter for [Solr](https://lucene.apache.org/solr/).
 
-## Requirements
-
-- [jQueryUI module](https://github.com/biblibre/omeka-s-module-jQueryUI) for admin interface
-
 ## Build status
 
 [![Build Status](https://travis-ci.org/biblibre/omeka-s-module-Search.svg?branch=master)](https://travis-ci.org/biblibre/omeka-s-module-Search)
