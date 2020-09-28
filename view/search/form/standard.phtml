@@ -2,7 +2,15 @@
     $translate = $this->plugin('translate');
 
     $availableFields = $this->searchForm()->getAvailableSearchFields();
-    $availableFieldsOptions = array_column($availableFields, 'label', 'name');
+    $availableFieldsOptions = array_map(function ($field) {
+        return [
+            'value' => $field['name'],
+            'label' => $field['label'],
+            'attributes' => [
+                'data-valid-operators' => implode(' ', $field['valid_operators'] ?? []),
+            ],
+        ];
+    }, $availableFields);
     $availableOperators = $this->searchForm()->getAvailableOperators();
     $availableOperatorsOptions = array_column($availableOperators, 'display_name', 'name');
     $settings = $form->getOption('search_page')->settings();
@@ -76,6 +84,21 @@
                 $(this).closest('.search-form-standard-match-group-item').remove();
                 renameAllFormControls();
             });
+
+            // Disable operators that are not valid to use with the selected field
+            $('#search-form-standard').on('change', '.search-form-standard-filter-field', function () {
+                const validOperators = $(this).find('option:selected').attr('data-valid-operators').split(' ');
+                const options = $(this).siblings('.search-form-standard-filter-operator').find('option');
+                options.attr('disabled', false);
+                options.each(function () {
+                    const option = $(this);
+                    if (!validOperators.includes(option.val())) {
+                        option.attr('disabled', true);
+                        option.prop('selected', false);
+                    }
+                })
+            });
+            $('#search-form-standard .search-form-standard-filter-field').trigger('change');
 
             function insertFilterBefore(element) {
                 const template = document.getElementById('template-search-filter');

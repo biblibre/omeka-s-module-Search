@@ -4,6 +4,7 @@
     if (isset($query['field'])) {
         $fieldSelect->setValue($query['field']);
     }
+    $fieldSelect->setAttribute('class', 'search-form-standard-filter-field');
     echo $this->formSelect($fieldSelect);
 ?>
 
@@ -13,6 +14,7 @@
     if (isset($query['operator'])) {
         $operatorSelect->setValue($query['operator']);
     }
+    $operatorSelect->setAttribute('class', 'search-form-standard-filter-operator');
     echo $this->formSelect($operatorSelect);
 ?>
 
@@ -21,6 +23,7 @@
     if (isset($query['term'])) {
         $termText->setValue($query['term']);
     }
+    $termText->setAttribute('class', 'search-form-standard-filter-term');
     echo $this->formText($termText);
 ?>
 
