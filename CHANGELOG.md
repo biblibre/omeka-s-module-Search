@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0]
+## [0.7.0] - 2020-09-28
+
+### Changed
+
+- Reword 'Search full-text' into 'Search everywhere'
+- Drop dependency to jQueryUI module
+- Prevent use of invalid operators in standard form
+
+### Fixed
+
+- Make standard form submit button translatable
+- Prevent indexation job to run out of memory and make it faster
+
+## [0.6.0] - 2020-04-08
 
 ### Added
 
@@ -70,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First release
 
+[0.7.0]: https://github.com/biblibre/omeka-s-module-Search/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/biblibre/omeka-s-module-Search/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/biblibre/omeka-s-module-Search/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/biblibre/omeka-s-module-Search/compare/v0.3.0...v0.4.0
