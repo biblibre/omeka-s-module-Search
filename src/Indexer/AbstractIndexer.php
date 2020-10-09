@@ -29,8 +29,8 @@
 
 namespace Search\Indexer;
 
-use Zend\Log\LoggerAwareTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Log\LoggerAwareTrait;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Search\Api\Representation\SearchIndexRepresentation;
 
 abstract class AbstractIndexer implements IndexerInterface

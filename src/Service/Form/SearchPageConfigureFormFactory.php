@@ -2,7 +2,7 @@
 namespace Search\Service\Form;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Search\Form\Admin\SearchPageConfigureForm;
 
 class SearchPageConfigureFormFactory implements FactoryInterface

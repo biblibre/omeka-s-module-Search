@@ -29,10 +29,10 @@
 
 namespace Search\Form;
 
-use Zend\Form\Fieldset;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Fieldset;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Laminas\I18n\Translator\TranslatorAwareTrait;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, InputFilterProviderInterface
 {

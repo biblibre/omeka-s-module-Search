@@ -2,8 +2,8 @@
 
 namespace Search\Mvc\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\View\HelperPluginManager;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\View\HelperPluginManager;
 use Search\Api\Representation\SearchPageRepresentation;
 
 class SearchForm extends AbstractPlugin

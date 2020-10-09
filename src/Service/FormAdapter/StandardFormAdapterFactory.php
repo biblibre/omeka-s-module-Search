@@ -31,7 +31,7 @@ namespace Search\Service\FormAdapter;
 
 use Interop\Container\ContainerInterface;
 use Search\FormAdapter\StandardFormAdapter;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class StandardFormAdapterFactory implements FactoryInterface
 {

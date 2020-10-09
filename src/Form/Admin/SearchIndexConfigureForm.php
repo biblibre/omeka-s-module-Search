@@ -29,9 +29,9 @@
 
 namespace Search\Form\Admin;
 
-use Zend\Form\Form;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\I18n\Translator\TranslatorAwareTrait;
+use Laminas\Form\Form;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Laminas\I18n\Translator\TranslatorAwareTrait;
 
 class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
 {

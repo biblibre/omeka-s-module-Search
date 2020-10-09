@@ -29,10 +29,10 @@
 
 namespace Search;
 
-use Zend\ModuleManager\ModuleManager;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ModuleManager\ModuleManager;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Omeka\Module\AbstractModule;
 
 class Module extends AbstractModule
@@ -198,7 +198,7 @@ class Module extends AbstractModule
         $router = $serviceLocator->get('Router');
         $api = $serviceLocator->get('Omeka\ApiManager');
 
-        if (!$router instanceof \Zend\Router\Http\TreeRouteStack) {
+        if (!$router instanceof \Laminas\Router\Http\TreeRouteStack) {
             return;
         }
 

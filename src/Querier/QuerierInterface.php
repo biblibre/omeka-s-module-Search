@@ -29,8 +29,8 @@
 
 namespace Search\Querier;
 
-use Zend\Log\LoggerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Log\LoggerAwareInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Search\Api\Representation\SearchIndexRepresentation;
 use Search\Query;
 

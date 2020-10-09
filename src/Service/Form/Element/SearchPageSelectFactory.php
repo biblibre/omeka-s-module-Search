@@ -3,7 +3,7 @@
 namespace Search\Service\Form\Element;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Search\Form\Element\SearchPageSelect;
 
 class SearchPageSelectFactory implements FactoryInterface

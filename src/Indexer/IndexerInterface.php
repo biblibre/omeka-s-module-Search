@@ -29,7 +29,7 @@
 
 namespace Search\Indexer;
 
-use Zend\Log\LoggerAwareInterface;
+use Laminas\Log\LoggerAwareInterface;
 use Omeka\Entity\Resource;
 use Search\Api\Representation\SearchIndexRepresentation;
 

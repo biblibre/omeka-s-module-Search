@@ -29,8 +29,8 @@
 
 namespace Search\Controller\Admin;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 use Search\Form\Admin\SearchPageForm;
 use Search\Form\Admin\SearchPageConfigureForm;

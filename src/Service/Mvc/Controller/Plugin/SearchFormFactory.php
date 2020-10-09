@@ -3,7 +3,7 @@
 namespace Search\Service\Mvc\Controller\Plugin;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Search\Mvc\Controller\Plugin\SearchForm;
 
 class SearchFormFactory implements FactoryInterface

@@ -3,7 +3,7 @@ namespace Search\Service\Form;
 
 use Search\Form\Admin\SearchIndexConfigureForm;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SearchIndexConfigureFormFactory implements FactoryInterface
 {

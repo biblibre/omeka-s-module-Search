@@ -29,8 +29,8 @@
 
 namespace Search\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
 use Search\Querier\Exception\QuerierException;

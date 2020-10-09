@@ -29,7 +29,7 @@
 
 namespace Search\Service;
 
-use Zend\Mvc\Service\AbstractPluginManagerFactory;
+use Laminas\Mvc\Service\AbstractPluginManagerFactory;
 use Search\Adapter\Manager;
 
 class AdapterManagerFactory extends AbstractPluginManagerFactory

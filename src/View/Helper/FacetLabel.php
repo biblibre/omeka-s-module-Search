@@ -29,8 +29,8 @@
 
 namespace Search\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-use Zend\Mvc\Application;
+use Laminas\View\Helper\AbstractHelper;
+use Laminas\Mvc\Application;
 use Omeka\Api\Manager as ApiManager;
 
 class FacetLabel extends AbstractHelper

@@ -2,7 +2,7 @@
 namespace Search\Service\Controller\Admin;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Search\Controller\Admin\SearchIndexController;
 
 class SearchIndexControllerFactory implements FactoryInterface

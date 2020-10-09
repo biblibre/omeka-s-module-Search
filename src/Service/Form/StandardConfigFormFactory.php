@@ -3,7 +3,7 @@ namespace Search\Service\Form;
 
 use Interop\Container\ContainerInterface;
 use Search\Form\StandardConfigForm;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class StandardConfigFormFactory implements FactoryInterface
 {
