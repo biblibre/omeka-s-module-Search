@@ -37,6 +37,7 @@ interface AdapterInterface
     public function getConfigFieldset();
     public function getIndexerClass();
     public function getQuerierClass();
+    public function getHandledResources();
     public function getAvailableFacetFields(SearchIndexRepresentation $index);
     public function getAvailableSortFields(SearchIndexRepresentation $index);
     public function getAvailableSearchFields(SearchIndexRepresentation $index);

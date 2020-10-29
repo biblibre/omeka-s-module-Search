@@ -35,6 +35,14 @@ abstract class AbstractAdapter implements AdapterInterface
 {
     protected $serviceLocator;
 
+    public function getHandledResources()
+    {
+        return [
+            'items' => $this->translator->translate('Items'),
+            'item_sets' => $this->translator->translate('Item sets'),
+        ];
+    }
+
     public function getAvailableFacetFields(SearchIndexRepresentation $index)
     {
         return [];
