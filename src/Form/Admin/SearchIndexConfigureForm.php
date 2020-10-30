@@ -75,11 +75,9 @@ class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
         $response = $api->read('search_indexes', $searchIndexId);
         $searchIndex = $response->getContent();
         $indexer = $searchIndex->indexer();
+        $adapter = $searchIndex->adapter();
 
-        $options = [
-            'items' => $translator->translate('Items'),
-            'item_sets' => $translator->translate('Item sets'),
-        ];
+        $options = $adapter->getHandledResources();
 
         return $options;
     }
