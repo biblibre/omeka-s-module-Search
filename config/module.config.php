@@ -32,6 +32,9 @@ return [
         ],
     ],
     'form_elements' => [
+        'invokables' => [
+            'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
+        ],
         'factories' => [
             'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
             'Search\Form\Admin\SearchIndexConfigureForm' => Service\Form\SearchIndexConfigureFormFactory::class,

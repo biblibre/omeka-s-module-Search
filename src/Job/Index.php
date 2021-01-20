@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2021
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -33,7 +33,7 @@ use Omeka\Job\AbstractJob;
 
 class Index extends AbstractJob
 {
-    const BATCH_SIZE = 100;
+    const DEFAULT_BATCH_SIZE = 100;
 
     protected $logger;
 
@@ -46,15 +46,25 @@ class Index extends AbstractJob
         $this->logger = $serviceLocator->get('Omeka\Logger');
 
         $indexId = $this->getArg('index-id');
+        $batchSize = $this->getArg('batch-size', self::DEFAULT_BATCH_SIZE);
+
         $this->logger->info('Start');
-        $this->logger->info('Index id: ' . $indexId);
+        $em->flush();
 
         $searchIndex = $api->read('search_indexes', $indexId)->getContent();
         $indexer = $searchIndex->indexer();
         $indexer->setServiceLocator($serviceLocator);
         $indexer->setLogger($this->logger);
 
-        $indexer->clearIndex();
+        if ($this->getArg('clear-index')) {
+            try {
+                $indexer->clearIndex();
+                $this->logger->info('The index has been cleared');
+            } catch (\Exception $e) {
+                $this->logger->err(sprintf('The attempt to clear the index has failed : %s', $e->getMessage()));
+                $em->flush();
+            }
+        }
 
         $searchIndexSettings = $searchIndex->settings();
         $resourceNames = $searchIndexSettings['resources'];
@@ -64,21 +74,46 @@ class Index extends AbstractJob
         });
 
         foreach ($resourceNames as $resourceName) {
-            $data = ['page' => 1, 'per_page' => self::BATCH_SIZE];
             $adapter = $apiAdapters->get($resourceName);
             $entityClass = $adapter->getEntityClass();
+            $repository = $em->getRepository($entityClass);
+            $totalEntities = $repository->count([]);
+            $query = $repository->createQueryBuilder('r')
+                ->where('r.id > :lastId')
+                ->orderBy('r.id', 'ASC')
+                ->setMaxResults($batchSize)
+                ->getQuery();
+
+            $query->setParameter('lastId', 0);
+            $totalIndexed = 0;
+
             do {
-                $resources = $api->search($resourceName, $data)->getContent();
-                $entities = [];
-                foreach ($resources as $resource) {
-                    $entities[] = $em->find($entityClass, $resource->id());
+                if ($this->shouldStop()) {
+                    $this->logger->info('Job stopped');
+                    $em->flush();
+                    return;
                 }
-                $indexer->indexResources($entities);
-                $em->clear();
-                $data['page']++;
-            } while (count($resources) == self::BATCH_SIZE);
+
+                $entities = $query->getResult();
+                if (!empty($entities)) {
+                    $ids = array_map(function ($e) { return $e->getId(); }, $entities);
+                    try {
+                        $indexer->indexResources($entities);
+                        $totalIndexed += count($entities);
+                        $this->logger->info(sprintf('Indexed %d out of %d %s (%.2f%%)', $totalIndexed, $totalEntities, $resourceName, $totalIndexed * 100 / $totalEntities));
+                    } catch (\Exception $e) {
+                        $this->logger->err(sprintf('Indexing %s has failed: %s (ids: %s)', $resourceName, $e->getMessage(), implode(', ', $ids)));
+                    }
+                    $em->flush();
+                    $em->clear();
+                    $em->merge($this->job);
+
+                    $query->setParameter('lastId', $ids[count($ids) - 1]);
+                }
+            } while (!empty($entities));
         }
 
         $this->logger->info('End');
+        $em->flush();
     }
 }
