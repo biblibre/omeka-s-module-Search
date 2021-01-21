@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-13 09:41+0200\n"
+"POT-Creation-Date: 2021-01-21 13:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,7 +92,7 @@ msgid "Search configuration"
 msgstr ""
 
 #: view/search/admin/index/browse.phtml:70
-msgid "Reindex all"
+msgid "Rebuild index"
 msgstr ""
 
 #: view/search/admin/index/browse.phtml:90
@@ -116,6 +116,14 @@ msgstr ""
 msgid "Save configuration"
 msgstr ""
 
+#: view/search/admin/search-index/rebuild.phtml:30
+msgid "Index rebuild"
+msgstr ""
+
+#: view/search/admin/search-index/rebuild.phtml:42
+msgid "Start index rebuild"
+msgstr ""
+
 #: view/search/admin/search-page/add.phtml:32
 msgid "Add search page"
 msgstr ""
@@ -128,7 +136,7 @@ msgstr ""
 msgid "Edit search page"
 msgstr ""
 
-#: view/search/facets.phtml:32 view/search/form/standard.phtml:21
+#: view/search/facets.phtml:32 view/search/form/standard.phtml:29
 msgid "Filters"
 msgstr ""
 
@@ -156,7 +164,25 @@ msgstr ""
 msgid "Your query returned no results"
 msgstr ""
 
-#: src/Controller/Admin/SearchIndexController.php:118
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
+msgid "Clear index"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:45
+msgid "Empty the index before rebuilding it"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:56
+msgid "Batch size"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:57
+msgid ""
+"Index that much resources at once. Large batchs will be faster but will use "
+"more memory"
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
-msgid "Indexing started in %sjob %s%s"
+msgid "Index rebuilding started in %sjob %s%s"
 msgstr ""
