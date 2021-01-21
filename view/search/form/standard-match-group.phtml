@@ -1,5 +1,5 @@
 <div class="search-form-standard-match-group">
-    <?php echo $this->formSelect((new \Zend\Form\Element\Select($namePrefix . '[match]'))->setValueOptions([
+    <?php echo $this->formSelect((new \Laminas\Form\Element\Select($namePrefix . '[match]'))->setValueOptions([
         'all' => $this->translate('Match all of the following criteria:'),
         'any' => $this->translate('Match any of the following criteria:'),
     ])->setValue(!empty($data) ? $data['match'] : '')); ?>

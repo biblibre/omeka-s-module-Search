@@ -5,7 +5,7 @@
     <div class="search-results-sort">
         <form>
             <?php if ($sortOptions):
-                $sortSelect = new Zend\Form\Element\Select('sort');
+                $sortSelect = new Laminas\Form\Element\Select('sort');
                 $sortSelect->setValueOptions($sortOptions);
                 $sortSelect->setValue($query->getSort());
                 $sortSelect->setLabel($this->translate('Sort by'));
