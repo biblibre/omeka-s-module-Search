@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2016-2021
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -35,6 +35,7 @@ use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexForm;
 use Search\Form\Admin\SearchIndexConfigureForm;
+use Search\Form\Admin\SearchIndexRebuildForm;
 
 class SearchIndexController extends AbstractActionController
 {
@@ -101,30 +102,50 @@ class SearchIndexController extends AbstractActionController
         return $view;
     }
 
-    public function indexAction()
+    public function rebuildAction()
     {
         $jobDispatcher = $this->getJobDispatcher();
         $indexId = $this->params('id');
 
-        $job = $jobDispatcher->dispatch('Search\Job\Index', ['index-id' => $indexId]);
+        $form = $this->getForm(SearchIndexRebuildForm::class);
 
-        $jobUrl = $this->url()->fromRoute('admin/id', [
-            'controller' => 'job',
-            'action' => 'show',
-            'id' => $job->getId(),
-        ]);
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $jobArgs = [
+                    'index-id' => $indexId,
+                    'clear-index' => $data['clear-index'] ?? 0,
+                    'batch-size' => $data['batch-size'],
+                ];
+                $job = $jobDispatcher->dispatch('Search\Job\Index', $jobArgs);
 
-        $message = new Message(
-            'Indexing started in %sjob %s%s', // @translate
-            sprintf('<a href="%s">', htmlspecialchars($jobUrl)),
-            $job->getId(),
-            '</a>'
-        );
+                $jobUrl = $this->url()->fromRoute('admin/id', [
+                    'controller' => 'job',
+                    'action' => 'show',
+                    'id' => $job->getId(),
+                ]);
 
-        $message->setEscapeHtml(false);
-        $this->messenger()->addSuccess($message);
+                $message = new Message(
+                    'Index rebuilding started in %sjob %s%s', // @translate
+                    sprintf('<a href="%s">', htmlspecialchars($jobUrl)),
+                    $job->getId(),
+                    '</a>'
+                );
 
-        return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
+                $message->setEscapeHtml(false);
+                $this->messenger()->addSuccess($message);
+
+                return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
+            } else {
+                $this->messenger()->addFormErrors($form);
+            }
+        }
+
+        $view = new ViewModel;
+        $view->setVariable('form', $form);
+
+        return $view;
     }
 
     public function deleteConfirmAction()

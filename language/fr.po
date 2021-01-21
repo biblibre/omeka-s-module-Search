@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-13 09:41+0200\n"
-"PO-Revision-Date: 2020-05-13 10:31+0200\n"
+"POT-Creation-Date: 2021-01-21 13:36+0100\n"
+"PO-Revision-Date: 2021-01-21 13:44+0100\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -93,8 +93,8 @@ msgid "Search configuration"
 msgstr "Configuration de la recherche"
 
 #: view/search/admin/index/browse.phtml:70
-msgid "Reindex all"
-msgstr "Tout réindexer"
+msgid "Rebuild index"
+msgstr "Reconstruire l'index"
 
 #: view/search/admin/index/browse.phtml:90
 msgid "No search indexes created yet."
@@ -117,6 +117,14 @@ msgstr "Configure l'index de recherche"
 msgid "Save configuration"
 msgstr "Enregistrer la configuration"
 
+#: view/search/admin/search-index/rebuild.phtml:30
+msgid "Index rebuild"
+msgstr "Reconstruction de l'index"
+
+#: view/search/admin/search-index/rebuild.phtml:42
+msgid "Start index rebuild"
+msgstr "Commencer la reconstruction de l'index"
+
 #: view/search/admin/search-page/add.phtml:32
 msgid "Add search page"
 msgstr "Ajouter une page de recherche"
@@ -129,7 +137,7 @@ msgstr "Configurer la page de recherche"
 msgid "Edit search page"
 msgstr "Modifier la page de recherche"
 
-#: view/search/facets.phtml:32 view/search/form/standard.phtml:21
+#: view/search/facets.phtml:32 view/search/form/standard.phtml:29
 msgid "Filters"
 msgstr "Filtres"
 
@@ -157,10 +165,33 @@ msgstr "Modifier la recherche"
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
 
-#: src/Controller/Admin/SearchIndexController.php:118
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
+msgid "Clear index"
+msgstr "Nettoyer l'index"
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:45
+msgid "Empty the index before rebuilding it"
+msgstr "Vider l'index avant de le reconstruire"
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:56
+msgid "Batch size"
+msgstr "Taille de lot"
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:57
+msgid ""
+"Index that much resources at once. Large batchs will be faster but will use "
+"more memory"
+msgstr ""
+"Indexer cette quantité de ressources par lot. Une grande taille de lot sera "
+"plus rapide, mais utilisera plus de mémoire"
+
+#: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
-msgid "Indexing started in %sjob %s%s"
-msgstr "L'indexation a commencé dans %sla tâche %s%s"
+msgid "Index rebuilding started in %sjob %s%s"
+msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
+
+#~ msgid "Reindex all"
+#~ msgstr "Tout réindexer"
 
 #~ msgid "Items"
 #~ msgstr "Contenus"
