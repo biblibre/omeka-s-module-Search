@@ -111,6 +111,10 @@ class IndexController extends AbstractActionController
 
         $query->setSite($this->currentSite());
 
+        if (!$this->userIsAllowed('Omeka\Entity\Resource', 'view-all')) {
+            $query->setIsPublic(true);
+        }
+
         $sortOptions = $this->getSortOptions();
 
         if (isset($params['sort'])) {
