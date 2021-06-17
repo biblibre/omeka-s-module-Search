@@ -2,9 +2,9 @@
 
 namespace SearchTest\Controller;
 
-use OmekaTestHelper\Controller\OmekaControllerTestCase;
+use Omeka\Test\AbstractHttpControllerTestCase;
 
-abstract class SearchControllerTestCase extends OmekaControllerTestCase
+abstract class SearchControllerTestCase extends AbstractHttpControllerTestCase
 {
     protected $searchIndex;
     protected $searchPage;
@@ -64,8 +64,50 @@ abstract class SearchControllerTestCase extends OmekaControllerTestCase
 
     protected function resetApplication()
     {
-        parent::resetApplication();
+        $this->application = null;
 
         $this->setupTestSearchAdapter();
+    }
+
+    protected function getServiceLocator()
+    {
+        return $this->getApplication()->getServiceManager();
+    }
+
+    protected function api()
+    {
+        return $this->getServiceLocator()->get('Omeka\ApiManager');
+    }
+
+    protected function settings()
+    {
+        return $this->getServiceLocator()->get('Omeka\Settings');
+    }
+
+    protected function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('Omeka\EntityManager');
+    }
+
+    protected function login($email, $password)
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $auth = $serviceLocator->get('Omeka\AuthenticationService');
+        $adapter = $auth->getAdapter();
+        $adapter->setIdentity($email);
+        $adapter->setCredential($password);
+        return $auth->authenticate();
+    }
+
+    protected function loginAsAdmin()
+    {
+        $this->login('admin@example.com', 'root');
+    }
+
+    protected function logout()
+    {
+        $serviceLocator = $this->getServiceLocator();
+        $auth = $serviceLocator->get('Omeka\AuthenticationService');
+        $auth->clearIdentity();
     }
 }

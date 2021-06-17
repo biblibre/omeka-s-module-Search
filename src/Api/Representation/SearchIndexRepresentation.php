@@ -73,9 +73,13 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
 
     public function adapter()
     {
+        $services = $this->getServiceLocator();
         $name = $this->resource->getAdapter();
-        $adapterManager = $this->getServiceLocator()->get('Search\AdapterManager');
-        return $adapterManager->get($name);
+        $adapterManager = $services->get('Search\AdapterManager');
+        $adapter = $adapterManager->get($name);
+        $adapter->setServiceLocator($services);
+
+        return $adapter;
     }
 
     public function settings()

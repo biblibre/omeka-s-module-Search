@@ -37,9 +37,11 @@ abstract class AbstractAdapter implements AdapterInterface
 
     public function getHandledResources()
     {
+        $translator = $this->getServiceLocator()->get('MvcTranslator');
+
         return [
-            'items' => $this->translator->translate('Items'),
-            'item_sets' => $this->translator->translate('Item sets'),
+            'items' => $translator->translate('Items'),
+            'item_sets' => $translator->translate('Item sets'),
         ];
     }
 

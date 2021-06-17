@@ -7,6 +7,7 @@ require_once __DIR__ . '/../SearchControllerTestCase.php';
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexConfigureForm;
+use Search\Form\Admin\SearchIndexRebuildForm;
 use SearchTest\Controller\SearchControllerTestCase;
 
 class SearchIndexControllerTest extends SearchControllerTestCase
@@ -62,7 +63,14 @@ class SearchIndexControllerTest extends SearchControllerTestCase
 
     public function testIndexAction()
     {
-        $this->dispatch($this->searchIndex->adminUrl('index'));
+        $forms = $this->getServiceLocator()->get('FormElementManager');
+        $form = $forms->get(SearchIndexRebuildForm::class);
+
+        $this->dispatch($this->searchIndex->adminUrl('rebuild'), 'POST', [
+            'clear-index' => '0',
+            'batch-size' => '100',
+            'csrf' => $form->get('csrf')->getValue(),
+        ]);
 
         $this->assertRedirectTo("/admin/search");
 
@@ -70,6 +78,6 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         $messages = $messenger->get();
         $message = $messages[Messenger::SUCCESS][0];
         $this->assertInstanceOf(Message::class, $message);
-        $this->assertEquals('Indexing started in %sjob %s%s', $message->getMessage());
+        $this->assertEquals('Index rebuilding started in %sjob %s%s', $message->getMessage());
     }
 }
