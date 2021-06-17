@@ -1,0 +1,614 @@
+---
+kind: pipeline
+type: docker
+name: php:7.1 mysql:5.7
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.1
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mysql:5.7
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.1 mariadb:10.2
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.1
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.1 mariadb:10.3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.1
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.3
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.1 mariadb:10.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.1
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.4
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.1 mariadb:10.5
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.1
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.5
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.2 mysql:5.7
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.2
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mysql:5.7
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.2 mariadb:10.2
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.2
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.2 mariadb:10.3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.2
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.3
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.2 mariadb:10.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.2
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.4
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.2 mariadb:10.5
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.2
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.5
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.3 mysql:5.7
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.3
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mysql:5.7
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.3 mariadb:10.2
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.3
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.3 mariadb:10.3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.3
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.3
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.3 mariadb:10.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.3
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.4
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.3 mariadb:10.5
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.3
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.5
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mysql:5.7
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mysql:5.7
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mysql:8.0
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mysql:8.0
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mariadb:10.2
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.2
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mariadb:10.3
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.3
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mariadb:10.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.4
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: pipeline
+type: docker
+name: php:7.4 mariadb:10.5
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: omeka-s/modules/Search
+
+steps:
+- name: test
+  image: biblibre/omeka-s-ci:3.0.2-php7.4
+  commands:
+  - cp -rT /usr/src/omeka-s ../..
+  - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n' > ../../application/test/config/database.ini
+  - php ../../build/composer.phar install
+  - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
+  - ../../vendor/bin/phpunit
+
+services:
+- name: db
+  image: mariadb:10.5
+  environment:
+    MYSQL_DATABASE: omeka_test
+    MYSQL_ROOT_PASSWORD: root
+
+---
+kind: signature
+hmac: 704a96dad070e568e894c8f9ec1fa4ab4cd4213a21cb464155ad459318c02bcc
+
+...
