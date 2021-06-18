@@ -15,6 +15,7 @@ local Pipeline(phpVersion, dbImage) = {
                 'php ../../build/composer.phar install',
                 'bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"',
                 '../../vendor/bin/phpunit',
+                '../../node_modules/.bin/gulp test:module:cs',
             ],
         },
     ],

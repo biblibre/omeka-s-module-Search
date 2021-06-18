@@ -96,7 +96,9 @@ class Index extends AbstractJob
 
                 $entities = $query->getResult();
                 if (!empty($entities)) {
-                    $ids = array_map(function ($e) { return $e->getId(); }, $entities);
+                    $ids = array_map(function ($e) {
+                        return $e->getId();
+                    }, $entities);
                     try {
                         $indexer->indexResources($entities);
                         $totalIndexed += count($entities);

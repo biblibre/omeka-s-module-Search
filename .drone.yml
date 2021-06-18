@@ -19,6 +19,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -48,6 +49,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -77,6 +79,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -106,6 +109,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -135,6 +139,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -164,6 +169,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -193,6 +199,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -222,6 +229,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -251,6 +259,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -280,6 +289,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -309,6 +319,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -338,6 +349,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -367,6 +379,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -396,6 +409,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -425,6 +439,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -454,6 +469,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -483,6 +499,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -512,6 +529,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -541,6 +559,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -570,6 +589,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -599,6 +619,7 @@ steps:
   - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
+  - ../../node_modules/.bin/gulp test:module:cs
 
 services:
 - name: db
@@ -609,6 +630,6 @@ services:
 
 ---
 kind: signature
-hmac: 704a96dad070e568e894c8f9ec1fa4ab4cd4213a21cb464155ad459318c02bcc
+hmac: f25b587a90f40c283b84006776266df94156c320870f9ccbeb93869b8e78e46c
 
 ...
