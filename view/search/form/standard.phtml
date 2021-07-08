@@ -88,7 +88,7 @@
             // Disable operators that are not valid to use with the selected field
             $('#search-form-standard').on('change', '.search-form-standard-filter-field', function () {
                 const validOperators = $(this).find('option:selected').attr('data-valid-operators').split(' ');
-                const options = $(this).siblings('.search-form-standard-filter-operator').find('option');
+                const options = $(this).closest('.search-form-standard-match-group-item').find('.search-form-standard-filter-operator').find('option');
                 options.attr('disabled', false);
                 options.each(function () {
                     const option = $(this);
