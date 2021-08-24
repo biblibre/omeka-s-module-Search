@@ -49,6 +49,15 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $settings = $searchPage->settings();
 
         $this->add([
+            'name' => 'spellchecking',
+            'type' => 'Checkbox',
+            'options' => [
+                'label' => $translator->translate('Spellchecking'),
+                'info' => $translator->translate('To correct query if a word or more are misspelled'),
+            ],
+        ]);
+
+        $this->add([
             'name' => 'facet_limit',
             'type' => 'Number',
             'options' => [
@@ -154,6 +163,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         }
 
         $this->add($sort_fields_fieldset);
+        
 
         $formFieldset = $this->getFormFieldset();
         if ($formFieldset) {
@@ -191,6 +201,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         ]);
         $fieldset->setName('form');
         $fieldset->setLabel($this->getTranslator()->translate('Form settings'));
+
 
         return $fieldset;
     }

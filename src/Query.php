@@ -45,6 +45,7 @@ class Query
     protected $resources = [];
     protected $site;
     protected $isPublic;
+    protected $spellchecking=false;
 
     public function setQuery($query)
     {
@@ -94,6 +95,16 @@ class Query
     public function getIsPublic(): ?bool
     {
         return $this->isPublic;
+    }
+
+    public function setSpellchecking(bool $spellchecking)
+    {
+        $this->spellchecking = $spellchecking;
+    }
+
+    public function getSpellchecking()
+    {
+        return $this->spellchecking;
     }
 
     public function addFacetFilter($name, $value)

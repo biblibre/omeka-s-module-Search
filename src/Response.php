@@ -33,10 +33,10 @@ class Response
 {
     protected $totalResults;
     protected $resourceTotalResults = [];
-
     protected $results = [];
     protected $facetCounts = [];
-
+    public $suggestTerms = [];
+    
     public function setTotalResults($totalResults)
     {
         $this->totalResults = $totalResults;
@@ -82,5 +82,10 @@ class Response
     public function getFacetCounts()
     {
         return $this->facetCounts;
+    }
+
+    public function getSuggestTerms()
+    {
+        return $this->suggestTerms;
     }
 }

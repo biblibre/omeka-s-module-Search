@@ -42,11 +42,31 @@
 <div id="search-form-wrapper">
     <?php echo $this->searchForm(); ?>
 </div>
+        
+    <?php if (isset($response) && !empty($response->getSuggestTerms()) && $spellchecking) : ?> 
+            <div class="suggestTerms"><?php echo $this->translate('Did you mean : ');
+            foreach ($response->getSuggestTerms() as $suggestTerms) { ?>
+            <?php
+            $query->setQuery($suggestTerms['word']);
+            $newQuery = $_GET;
+            $newQuery['q'] = $query->getQuery();
+            $newQuerySearch = $this->url(null, [], ['query' => $newQuery], true);
+            ?>
+                <button>
+                    <a href = '<?php echo $newQuerySearch; ?>'>
+                        <?php echo $suggestTerms['word']; ?>
+                    </a>
+                </button>
+                <?php } ?>
+            </div>
+            <?php endif; ?>
+    
 <a href="#" id="search-form-show-link" style="display: none"><?php echo $this->translate('Edit search'); ?></a>
 
 <?php if (isset($response)): ?>
     <div class="search-results-wrapper">
         <div class="search-results">
+        
             <?php if ($response->getTotalResults() > 0): ?>
                 <?php
                     echo $this->partial('search/results-header', [
@@ -82,6 +102,7 @@
                 ?>
             <?php else: ?>
                 <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
+               
             <?php endif; ?>
         </div>
 

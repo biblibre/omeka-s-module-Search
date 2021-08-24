@@ -101,6 +101,10 @@ class IndexController extends AbstractActionController
             $query->setFacetLimit($settings['facet_limit']);
         }
 
+        if (isset($settings['spellchecking'])) {
+            $query->setSpellchecking($settings['spellchecking']);
+        }
+
         if (isset($params['limit'])) {
             foreach ($params['limit'] as $name => $values) {
                 foreach ($values as $value) {
@@ -137,6 +141,8 @@ class IndexController extends AbstractActionController
         $facets = $response->getFacetCounts();
         $facets = $this->sortByWeight($facets, 'facets');
 
+        $spellchecking = $query->getSpellchecking();
+       
         $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
@@ -145,6 +151,7 @@ class IndexController extends AbstractActionController
         $view->setVariable('site', $site);
         $view->setVariable('response', $response);
         $view->setVariable('facets', $facets);
+        $view->setVariable('spellchecking', $spellchecking);
         $view->setVariable('sortOptions', $sortOptions);
 
         return $view;
@@ -159,7 +166,7 @@ class IndexController extends AbstractActionController
     protected function sortByWeight($fields, $setting_name)
     {
         $settings = $this->page->settings();
-        uksort($fields, function ($a, $b) use ($settings,$setting_name) {
+        uksort($fields, function ($a, $b) use ($settings, $setting_name) {
             $aWeight = $settings[$setting_name][$a]['weight'];
             $bWeight = $settings[$setting_name][$b]['weight'];
             return $aWeight - $bWeight;
