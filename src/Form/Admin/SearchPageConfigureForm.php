@@ -49,6 +49,15 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $settings = $searchPage->settings();
 
         $this->add([
+            'name' => 'save_queries',
+            'type' => 'Checkbox',
+            'options' => [
+                'label' => $translator->translate('Save queries'),
+                'info' => $translator->translate('Add ability to save your query and reload it later with result update'),
+            ],
+        ]);
+
+        $this->add([
             'name' => 'facet_limit',
             'type' => 'Number',
             'options' => [

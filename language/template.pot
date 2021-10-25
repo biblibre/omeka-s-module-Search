@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:36+0100\n"
+"POT-Creation-Date: 2022-12-09 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:101
+#: src/Api/Representation/SearchIndexRepresentation.php:105
 msgid "[No adapter]"
 msgstr ""
 
@@ -30,32 +30,42 @@ msgid "Adapter"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:55
-msgid "Facet limit"
+msgid "Save queries"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:56
-msgid "The maximum number of values fetched for each facet"
+msgid "Add ability to save your query and reload it later with result update"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:64
+msgid "Facet limit"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:65
+msgid "The maximum number of values fetched for each facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:74
 msgid "Facets"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:90
-#: src/Form/Admin/SearchPageConfigureForm.php:137
+#: src/Form/Admin/SearchPageConfigureForm.php:99
+#: src/Form/Admin/SearchPageConfigureForm.php:146
+#: src/Form/StandardConfigForm.php:62
 msgid "Enabled"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-#: src/Form/Admin/SearchPageConfigureForm.php:145
+#: src/Form/Admin/SearchPageConfigureForm.php:107
+#: src/Form/Admin/SearchPageConfigureForm.php:154
+#: src/Form/StandardConfigForm.php:70
 msgid "Weight"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:112
+#: src/Form/Admin/SearchPageConfigureForm.php:121
 msgid "Sort fields"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:193
+#: src/Form/Admin/SearchPageConfigureForm.php:202
 msgid "Form settings"
 msgstr ""
 
@@ -71,15 +81,15 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/Form/StandardConfigForm.php:49
+#: src/Form/StandardConfigForm.php:46
 msgid "Search fields"
 msgstr ""
 
-#: src/Form/StandardConfigForm.php:58
+#: src/Form/StandardConfigForm.php:86
 msgid "Resource class field"
 msgstr ""
 
-#: src/Form/StandardConfigForm.php:68
+#: src/Form/StandardConfigForm.php:96
 msgid "Item sets field"
 msgstr ""
 
@@ -112,7 +122,7 @@ msgid "Configure search index"
 msgstr ""
 
 #: view/search/admin/search-index/configure.phtml:36
-#: view/search/admin/search-page/configure.phtml:42
+#: view/search/admin/search-page/configure.phtml:43
 msgid "Save configuration"
 msgstr ""
 
@@ -128,7 +138,7 @@ msgstr ""
 msgid "Add search page"
 msgstr ""
 
-#: view/search/admin/search-page/configure.phtml:38
+#: view/search/admin/search-page/configure.phtml:39
 msgid "Configure search page"
 msgstr ""
 
@@ -156,12 +166,32 @@ msgstr ""
 msgid "Add group"
 msgstr ""
 
-#: view/search/index/search.phtml:45
+#: view/search/index/search.phtml:53
+msgid "Save this query"
+msgstr ""
+
+#: view/search/index/search.phtml:63
 msgid "Edit search"
 msgstr ""
 
-#: view/search/index/search.phtml:84
+#: view/search/index/search.phtml:102
 msgid "Your query returned no results"
+msgstr ""
+
+#: view/search/saved-queries.phtml:41
+msgid "Actions"
+msgstr ""
+
+#: view/search/saved-queries.phtml:62
+msgid "Reload"
+msgstr ""
+
+#: view/search/saved-queries.phtml:67
+msgid "Delete this saved query"
+msgstr ""
+
+#: view/search/saved-queries.phtml:76
+msgid "None saved queries yet"
 msgstr ""
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
@@ -185,4 +215,12 @@ msgstr ""
 #: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
+msgstr ""
+
+#: src/Site/BlockLayout/SavedQueries.php:30
+msgid "Saved Queries"
+msgstr ""
+
+#: src/Site/BlockLayout/SavedQueries.php:51
+msgid "Label for this block"
 msgstr ""

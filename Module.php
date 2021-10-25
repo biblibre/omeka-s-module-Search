@@ -34,6 +34,7 @@ use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Omeka\Module\AbstractModule;
+use Composer\Semver\Comparator;
 
 class Module extends AbstractModule
 {
@@ -49,9 +50,13 @@ class Module extends AbstractModule
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(null, 'Search\Api\Adapter\SearchPageAdapter');
         $acl->allow(null, 'Search\Api\Adapter\SearchIndexAdapter');
+        $acl->allow(null, 'Search\Api\Adapter\SavedQueryAdapter');
         $acl->allow(null, 'Search\Entity\SearchPage', 'read');
         $acl->allow(null, 'Search\Entity\SearchIndex', 'read');
+        $acl->allow(null, 'Search\Entity\SavedQuery', 'create');
+        $acl->allow(null, 'Search\Entity\SavedQuery', 'delete');
         $acl->allow(null, 'Search\Controller\Index');
+        $acl->allow(null, 'Search\Controller\SavedQuery');
 
         $this->addRoutes();
     }
@@ -93,7 +98,7 @@ class Module extends AbstractModule
         $connection->exec($sql);
         $sql = '
             CREATE TABLE IF NOT EXISTS `search_page` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                id INT AUTO_INCREMENT NOT NULL,
                 `name` varchar(255) NOT NULL,
                 `path` varchar(255) NOT NULL,
                 `index_id` int(11) unsigned NOT NULL,
@@ -101,11 +106,16 @@ class Module extends AbstractModule
                 `settings` text,
                 `created` datetime NOT NULL,
                 `modified` datetime DEFAULT NULL,
-                PRIMARY KEY (`id`),
+                PRIMARY KEY (id),
                 FOREIGN KEY (`index_id`) REFERENCES `search_index` (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
         ';
         $connection->exec($sql);
+
+        $connection->exec('CREATE TABLE saved_query (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, site_id INT DEFAULT NULL, search_page_id INT DEFAULT NULL, query_string LONGTEXT NOT NULL, query_title VARCHAR(255) NOT NULL, query_description LONGTEXT DEFAULT NULL, INDEX IDX_496E6EF2A76ED395 (user_id), INDEX IDX_496E6EF2F6BD1646 (site_id), INDEX IDX_496E6EF281978C7E (search_page_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
+        $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2F6BD1646 FOREIGN KEY (site_id) REFERENCES site (id) ON DELETE CASCADE');
+        $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF281978C7E FOREIGN KEY (search_page_id) REFERENCES search_page (id) ON DELETE CASCADE');
     }
 
     public function upgrade($oldVersion, $newVersion,
@@ -137,15 +147,24 @@ class Module extends AbstractModule
                 }
             }
         }
+
+        if (Comparator::lessThan($oldVersion, '0.11.0')) {
+            $connection->exec('ALTER TABLE search_page MODIFY id INT AUTO_INCREMENT NOT NULL');
+
+            $connection->exec('CREATE TABLE saved_query (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, site_id INT DEFAULT NULL, search_page_id INT DEFAULT NULL, query_string LONGTEXT NOT NULL, query_title VARCHAR(255) NOT NULL, query_description LONGTEXT DEFAULT NULL, INDEX IDX_496E6EF2A76ED395 (user_id), INDEX IDX_496E6EF2F6BD1646 (site_id), INDEX IDX_496E6EF281978C7E (search_page_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+            $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
+            $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2F6BD1646 FOREIGN KEY (site_id) REFERENCES site (id) ON DELETE CASCADE');
+            $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF281978C7E FOREIGN KEY (search_page_id) REFERENCES search_page (id) ON DELETE CASCADE');
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $connection = $serviceLocator->get('Omeka\Connection');
-        $sql = 'DROP TABLE IF EXISTS `search_page`';
-        $connection->exec($sql);
-        $sql = 'DROP TABLE IF EXISTS `search_index`';
-        $connection->exec($sql);
+
+        $connection->exec('DROP TABLE IF EXISTS saved_query');
+        $connection->exec('DROP TABLE IF EXISTS search_page');
+        $connection->exec('DROP TABLE IF EXISTS search_index');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)

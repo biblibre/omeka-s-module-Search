@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added ability to save queries and manage them with block display
+
 ### Fixed
 
 - Add advanced-search js and css assets to correctly add specific input on form (class, item set)
