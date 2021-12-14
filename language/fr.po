@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:36+0100\n"
+"POT-Creation-Date: 2021-12-14 08:39+0000\n"
 "PO-Revision-Date: 2021-01-21 13:44+0100\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:101
+#: src/Api/Representation/SearchIndexRepresentation.php:105
 msgid "[No adapter]"
 msgstr "[Aucun adaptateur]"
 
@@ -31,32 +31,40 @@ msgid "Adapter"
 msgstr "Adaptateur"
 
 #: src/Form/Admin/SearchPageConfigureForm.php:55
+msgid "Spellchecking"
+msgstr "Correction orthographique"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:56
+msgid "To correct query if a word or more are misspelled"
+msgstr "Pour corriger si un ou plusieurs mots sont mal orthographiés"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:64
 msgid "Facet limit"
 msgstr "Limite de facette"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:56
+#: src/Form/Admin/SearchPageConfigureForm.php:65
 msgid "The maximum number of values fetched for each facet"
 msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:65
+#: src/Form/Admin/SearchPageConfigureForm.php:74
 msgid "Facets"
 msgstr "Facettes"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:90
-#: src/Form/Admin/SearchPageConfigureForm.php:137
+#: src/Form/Admin/SearchPageConfigureForm.php:99
+#: src/Form/Admin/SearchPageConfigureForm.php:146
 msgid "Enabled"
 msgstr "Activé"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-#: src/Form/Admin/SearchPageConfigureForm.php:145
+#: src/Form/Admin/SearchPageConfigureForm.php:107
+#: src/Form/Admin/SearchPageConfigureForm.php:154
 msgid "Weight"
 msgstr "Poids"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:112
+#: src/Form/Admin/SearchPageConfigureForm.php:121
 msgid "Sort fields"
 msgstr "Champs de tri"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:193
+#: src/Form/Admin/SearchPageConfigureForm.php:203
 msgid "Form settings"
 msgstr "Paramètres du formulaire"
 
@@ -157,11 +165,15 @@ msgstr "Ajouter un filtre"
 msgid "Add group"
 msgstr "Ajouter un groupe"
 
-#: view/search/index/search.phtml:45
+#: view/search/index/search.phtml:47
+msgid "Did you mean : "
+msgstr "Vouliez vous dire : "
+
+#: view/search/index/search.phtml:64
 msgid "Edit search"
 msgstr "Modifier la recherche"
 
-#: view/search/index/search.phtml:84
+#: view/search/index/search.phtml:104
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
 
