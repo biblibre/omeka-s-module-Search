@@ -169,6 +169,7 @@ class Module extends AbstractModule
     {
         $serviceLocator = $this->getServiceLocator();
         $api = $serviceLocator->get('Omeka\ApiManager');
+        $logger = $serviceLocator->get('Omeka\Logger');
 
         $request = $event->getParam('request');
         $response = $event->getParam('response');
@@ -182,10 +183,18 @@ class Module extends AbstractModule
 
                 if ($request->getOperation() == 'delete') {
                     $id = $request->getId();
-                    $indexer->deleteResource($requestResource, $id);
+                    try {
+                        $indexer->deleteResource($requestResource, $id);
+                    } catch (\Exception $e) {
+                        $logger->err(sprintf('Search: failed to delete resource: %s', $e));
+                    }
                 } else {
                     $resource = $response->getContent();
-                    $indexer->indexResource($resource);
+                    try {
+                        $indexer->indexResource($resource);
+                    } catch (\Exception $e) {
+                        $logger->err(sprintf('Search: failed to index resource: %s', $e));
+                    }
                 }
             }
         }
