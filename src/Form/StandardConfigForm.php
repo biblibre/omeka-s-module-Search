@@ -42,14 +42,42 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
     {
         $translator = $this->getTranslator();
 
-        $this->add([
-            'name' => 'search_fields',
-            'type' => 'MultiCheckbox',
-            'options' => [
-                'label' => $translator->translate('Search fields'),
-                'value_options' => $this->getAdapterSearchFieldsOptions(),
-            ],
-        ]);
+        $search_fields_fieldset = new Fieldset('search_fields');
+        $search_fields_fieldset->setLabel($translator->translate('Search fields'));
+        $search_fields_fieldset->setAttribute('data-sortable', '1');
+
+        $index = $this->getIndex();
+        $searchFields = $index->adapter()->getAvailableSearchFields($index);
+        $weights = range(0, count($searchFields));
+        $weight_options = array_combine($weights, $weights);
+        $weight = 0;
+        foreach ($searchFields as $field) {
+            $fieldset = new Fieldset($field['name']);
+            $fieldset->setLabel($field['label']);
+
+            $fieldset->add([
+                'name' => 'enabled',
+                'type' => 'Checkbox',
+                'options' => [
+                    'label' => $translator->translate('Enabled'),
+                ],
+            ]);
+
+            $fieldset->add([
+                'name' => 'weight',
+                'type' => 'Select',
+                'options' => [
+                    'label' => $translator->translate('Weight'),
+                    'value_options' => $weight_options,
+                ],
+                'attributes' => [
+                    'value' => $weight++,
+                ],
+            ]);
+
+            $search_fields_fieldset->add($fieldset);
+        }
+        $this->add($search_fields_fieldset);
 
         $this->add([
             'name' => 'resource_class_field',
@@ -72,20 +100,17 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
         ]);
     }
 
-    protected function getAdapterFacetFieldsOptions()
+    protected function getIndex()
     {
         $searchPage = $this->getOption('search_page');
-        $index = $searchPage->index();
-        $fields = $index->adapter()->getAvailableFacetFields($index);
 
-        return array_column($fields, 'label', 'name');
+        return $searchPage->index();
     }
 
-    protected function getAdapterSearchFieldsOptions()
+    protected function getAdapterFacetFieldsOptions()
     {
-        $searchPage = $this->getOption('search_page');
-        $index = $searchPage->index();
-        $fields = $index->adapter()->getAvailableSearchFields($index);
+        $index = $this->getIndex();
+        $fields = $index->adapter()->getAvailableFacetFields($index);
 
         return array_column($fields, 'label', 'name');
     }

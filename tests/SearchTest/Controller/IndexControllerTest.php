@@ -6,7 +6,7 @@ require_once __DIR__ . '/SearchControllerTestCase.php';
 
 class IndexControllerTest extends SearchControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -20,7 +20,7 @@ class IndexControllerTest extends SearchControllerTestCase
         $this->resetApplication();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

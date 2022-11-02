@@ -119,6 +119,24 @@ class Module extends AbstractModule
                 CHANGE `form` `form_adapter` varchar(255) NOT NULL
             ');
         }
+
+        if (version_compare($oldVersion, '0.10.0', '<')) {
+            $pages = $connection->fetchAllAssociative('SELECT id, settings FROM search_page WHERE form_adapter = ?', ['standard']);
+            foreach ($pages as $page) {
+                $settings = json_decode($page['settings'], true);
+                $search_fields = [];
+                if (isset($settings['form']['search_fields'])) {
+                    foreach ($settings['form']['search_fields'] as $i => $fieldName) {
+                        $search_fields[$fieldName] = [
+                            'enabled' => '1',
+                            'weight' => $i,
+                        ];
+                    }
+                    $settings['form']['search_fields'] = $search_fields;
+                    $connection->executeStatement('UPDATE search_page SET settings = ? WHERE id = ?', [json_encode($settings), $page['id']]);
+                }
+            }
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)

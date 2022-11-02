@@ -28,6 +28,7 @@
 ?>
 
 <?php
+    $this->headScript()->appendFile($this->assetUrl('vendor/sortablejs/Sortable.min.js', 'Omeka'));
     $this->headScript()->appendFile('https://code.jquery.com/ui/1.12.1/jquery-ui.min.js', 'text/javascript', ['integrity' => 'sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=', 'crossorigin' => 'anonymous']);
     $this->headLink()->appendStylesheet('https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
     $this->headLink()->appendStylesheet($this->assetUrl('css/search-page-configure.css', 'Search'));
@@ -63,7 +64,7 @@
 
 <script>
     $(document).ready(function() {
-        $('[data-sortable="1"]').each(function() {
+        $('[data-sortable="1"]').each(function(i) {
             var container = $('<div>').addClass('container');
             $(this).append(container);
 
@@ -142,19 +143,22 @@
                 enabledContainer.find('.sortable').append(handles.enabled);
             });
 
-            container.find('.sortable').sortable({
-                "connectWith": container.find('.sortable'),
-                "update": function(e, ui) {
-                    var enabled = $.contains(enabledContainer.get(0), ui.item.get(0));
-                    ui.item.find('input[name*="enabled"]').prop('checked', enabled);
-
-                    container.children().each(function() {
-                        var i = 0;
-                        $(this).find('select[name*="weight"]').each(function() {
-                            $(this).val(i++);
-                        });
-                    });
-                },
+            container.find('.sortable').each(function () {
+                Sortable.create(this, {
+                    animation: 150,
+                    group: 'sortable-' + i,
+                    onEnd: function (ev) {
+                        var enabled = enabledContainer.get(0).contains(ev.item);
+                        const checkbox = ev.item.querySelector('input[type="checkbox"][name*="enabled"]');
+                        setTimeout(function() { checkbox.checked = enabled; }, 0);
+                        for (const sortable of [ev.from, ev.to]) {
+                            let i = 0;
+                            sortable.querySelectorAll('select[name*="weight"]').forEach(function (el) {
+                                el.value = i++;
+                            });
+                        }
+                    },
+                });
             });
 
             container.css('display', 'flex');

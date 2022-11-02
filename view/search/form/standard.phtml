@@ -23,7 +23,7 @@
 
 <?php $query = $this->params()->fromQuery(); ?>
 
-<?php if (!empty($settings['form']['search_fields'])): ?>
+<?php if (!empty($availableFieldsOptions)): ?>
     <div class="field">
         <div class="field-meta">
             <label><?php echo $translate('Filters'); ?></label>
