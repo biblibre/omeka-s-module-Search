@@ -121,11 +121,7 @@ class Module extends AbstractModule
         }
 
         if (version_compare($oldVersion, '0.10.0', '<')) {
-            if (method_exists($connection, 'fetchAllAssociative')) {
-                $pages = $connection->fetchAllAssociative('SELECT id, settings FROM search_page WHERE form_adapter = ?', ['standard']);
-            } else {
-                $pages = $connection->fetchAll('SELECT id, settings FROM search_page WHERE form_adapter = ?', ['standard']);
-            }
+            $pages = $connection->fetchAll('SELECT id, settings FROM search_page WHERE form_adapter = ?', ['standard']);
             foreach ($pages as $page) {
                 $settings = json_decode($page['settings'], true);
                 $search_fields = [];
@@ -137,11 +133,7 @@ class Module extends AbstractModule
                         ];
                     }
                     $settings['form']['search_fields'] = $search_fields;
-                    if (method_exists($connection, 'executeStatement')) {
-                        $connection->executeStatement('UPDATE search_page SET settings = ? WHERE id = ?', [json_encode($settings), $page['id']]);
-                    } else {
-                        $connection->executeUpdate('UPDATE search_page SET settings = ? WHERE id = ?', [json_encode($settings), $page['id']]);
-                    }
+                    $connection->update('search_page', ['settings' => json_encode($settings)], ['id' => $page['id']]);
                 }
             }
         }
