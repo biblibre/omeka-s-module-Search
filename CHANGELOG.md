@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added ability to modify the order of search fields in standard form's
+  configuration
+
 ### Fixed
 
 - Exceptions thrown by indexers are now caught and logged

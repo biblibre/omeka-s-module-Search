@@ -47,10 +47,20 @@ class SearchForm extends AbstractHelper
         $settings = $this->searchPage->settings();
 
         if (!empty($settings['form']['search_fields'])) {
-            $searchFields = $adapter->getAvailableSearchFields($index);
-            return array_filter($searchFields, function ($searchField) use ($settings) {
-                return in_array($searchField['name'], $settings['form']['search_fields']);
+            $enabledSearchFields = array_filter($settings['form']['search_fields'], function ($f) {
+                return $f['enabled'];
             });
+            uasort($enabledSearchFields, function ($a, $b) {
+                return $a['weight'] - $b['weight'];
+            });
+            $searchFields = $adapter->getAvailableSearchFields($index);
+            $searchFieldsByName = [];
+            foreach ($searchFields as $searchField) {
+                $searchFieldsByName[ $searchField['name'] ] = $searchField;
+            }
+            return array_filter(array_map(function ($searchFieldName) use ($searchFieldsByName) {
+                return $searchFieldsByName[$searchFieldName];
+            }, array_keys($enabledSearchFields)));
         }
 
         return [];

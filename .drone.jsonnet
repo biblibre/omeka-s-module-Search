@@ -1,14 +1,14 @@
-local Pipeline(phpVersion, dbImage) = {
+local Pipeline(omekaVersion, phpVersion, dbImage) = {
     kind: 'pipeline',
     type: 'docker',
-    name: 'php:' + phpVersion + ' ' + dbImage,
+    name: 'omeka:' + omekaVersion + ' php:' + phpVersion + ' ' + dbImage,
     workspace: {
         path: 'omeka-s/modules/Search',
     },
     steps: [
         {
             name: 'test',
-            image: 'biblibre/omeka-s-ci:3.0.2-php' + phpVersion,
+            image: 'biblibre/omeka-s-ci:' + omekaVersion + '-php' + phpVersion,
             commands: [
                 'cp -rT /usr/src/omeka-s ../..',
                 "echo 'host = \"db\"\\nuser = \"root\"\\npassword = \"root\"\\ndbname = \"omeka_test\"\\n' > ../../application/test/config/database.ini",
@@ -32,31 +32,7 @@ local Pipeline(phpVersion, dbImage) = {
 };
 
 [
-    Pipeline('7.1', 'mysql:5.7'),
-    // PHP 7.1 does not work with MySQL 8 default authentication plugin
-    // Pipeline('7.1', 'mysql:8.0'),
-    Pipeline('7.1', 'mariadb:10.2'),
-    Pipeline('7.1', 'mariadb:10.3'),
-    Pipeline('7.1', 'mariadb:10.4'),
-    Pipeline('7.1', 'mariadb:10.5'),
-    Pipeline('7.2', 'mysql:5.7'),
-    // PHP 7.2 does not work with MySQL 8 default authentication plugin
-    // Pipeline('7.2', 'mysql:8.0'),
-    Pipeline('7.2', 'mariadb:10.2'),
-    Pipeline('7.2', 'mariadb:10.3'),
-    Pipeline('7.2', 'mariadb:10.4'),
-    Pipeline('7.2', 'mariadb:10.5'),
-    Pipeline('7.3', 'mysql:5.7'),
-    // PHP 7.3 does not work with MySQL 8 default authentication plugin
-    // Pipeline('7.3', 'mysql:8.0'),
-    Pipeline('7.3', 'mariadb:10.2'),
-    Pipeline('7.3', 'mariadb:10.3'),
-    Pipeline('7.3', 'mariadb:10.4'),
-    Pipeline('7.3', 'mariadb:10.5'),
-    Pipeline('7.4', 'mysql:5.7'),
-    Pipeline('7.4', 'mysql:8.0'),
-    Pipeline('7.4', 'mariadb:10.2'),
-    Pipeline('7.4', 'mariadb:10.3'),
-    Pipeline('7.4', 'mariadb:10.4'),
-    Pipeline('7.4', 'mariadb:10.5'),
+    Pipeline('3.0.2', '7.4', 'mariadb:10.5'),
+    Pipeline('3.1.2', '7.4', 'mariadb:10.5'),
+    Pipeline('3.2.3', '7.4', 'mariadb:10.5'),
 ]

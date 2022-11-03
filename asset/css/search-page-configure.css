@@ -1,9 +1,9 @@
-.ui-sortable {
+.sortable {
   background-color: #eeeeee;
   padding: 5px;
 }
 
-.ui-sortable-handle {
+.sortable > * {
   margin: 5px 0;
   padding: 5px;
   border: 1px solid black;
@@ -13,13 +13,13 @@
   align-items: center;
 }
 
-.ui-sortable-handle::before {
+.sortable > *::before {
   display: inline-block;
   font-family: "Font Awesome 5 Free";
   content: "\f0b2";
   width: 1.5em;
 }
 
-.ui-sortable-handle > span {
+.sortable > * > span {
   flex-grow: 1;
 }
