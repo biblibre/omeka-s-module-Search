@@ -137,6 +137,12 @@ class IndexController extends AbstractActionController
         $facets = $response->getFacetCounts();
         $facets = $this->sortByWeight($facets, 'facets');
 
+        $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
+
+        $queryParams = json_encode($this->params()->fromQuery());
+        $searchPageId = $this->page->id();
+        $siteId = $site->id();
+
         $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
@@ -145,7 +151,10 @@ class IndexController extends AbstractActionController
         $view->setVariable('site', $site);
         $view->setVariable('response', $response);
         $view->setVariable('facets', $facets);
+        $view->setVariable('saveQueryParam', $saveQueryParam);
         $view->setVariable('sortOptions', $sortOptions);
+        $view->setVariable('queryParams', $queryParams);
+        $view->setVariable('searchPageId', $searchPageId);
 
         return $view;
     }

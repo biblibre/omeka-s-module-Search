@@ -33,9 +33,10 @@
     $escape = $this->plugin('escapeHtml');
     $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
     $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
+    $user = $this->identity();
 ?>
 
-<?php echo $this->pageTitle($this->translate('Search'), 2); ?>
+<?php echo $this->pageTitle($this->translate('Search'), 2); ?> 
 
 <?php echo $this->messages(); ?>
 
@@ -83,7 +84,23 @@
             <?php else: ?>
                 <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
             <?php endif; ?>
+            <?php if(isset($user) && $saveQueryParam) : ?>
+            <form method="post" action="<?php echo $this->url('site/save-query', [], true)  ?>">
+                <input id="save_site_id" type="hidden" name="site_id" value="<?php echo $site->id() ?>">
+                <input id="save_search_page_id" type="hidden" name="search_page_id" value="<?php echo $searchPageId ?>">
+                <input id="save_newquerystring" type="hidden" name="query_string" value='<?php echo $queryParams ?>'>
+                <div>
+                    <input id="save_newquerytitle" type="text" name="query_title" size="20" title="New query title" placeholder="<?php echo $this->translate('Title')?>" value="">
+                </div>
+                <div>
+                    <textarea id="save_newquerydescription" type="text" rows="5" cols="30" name="query_description" title="New query description" placeholder="<?php echo $this->translate('Description')?>" value=""></textarea>
+                </div>
+                <div>
+                    <input id="saveSearch" type="submit" value="<?php echo $this->translate('Save this query') ?>">
+                </div>
+            </form>
         </div>
+<?php endif; ?>
 
         <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
     </div>

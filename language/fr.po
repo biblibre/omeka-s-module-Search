@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:36+0100\n"
-"PO-Revision-Date: 2021-01-21 13:44+0100\n"
+"POT-Creation-Date: 2022-12-09 15:30+0000\n"
+"PO-Revision-Date: 2022-12-09 16:31+0100\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:101
+#: src/Api/Representation/SearchIndexRepresentation.php:105
 msgid "[No adapter]"
 msgstr "[Aucun adaptateur]"
 
@@ -31,32 +31,44 @@ msgid "Adapter"
 msgstr "Adaptateur"
 
 #: src/Form/Admin/SearchPageConfigureForm.php:55
+msgid "Save queries"
+msgstr "Sauvegarde des requêtes"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:56
+msgid "Add ability to save your query and reload it later with result update"
+msgstr ""
+"Ajoute la possibilité de sauvegarder votre requête et de la recharger avec "
+"des résultats actualisés"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:64
 msgid "Facet limit"
 msgstr "Limite de facette"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:56
+#: src/Form/Admin/SearchPageConfigureForm.php:65
 msgid "The maximum number of values fetched for each facet"
 msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:65
+#: src/Form/Admin/SearchPageConfigureForm.php:74
 msgid "Facets"
 msgstr "Facettes"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:90
-#: src/Form/Admin/SearchPageConfigureForm.php:137
+#: src/Form/Admin/SearchPageConfigureForm.php:99
+#: src/Form/Admin/SearchPageConfigureForm.php:146
+#: src/Form/StandardConfigForm.php:62
 msgid "Enabled"
 msgstr "Activé"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-#: src/Form/Admin/SearchPageConfigureForm.php:145
+#: src/Form/Admin/SearchPageConfigureForm.php:107
+#: src/Form/Admin/SearchPageConfigureForm.php:154
+#: src/Form/StandardConfigForm.php:70
 msgid "Weight"
 msgstr "Poids"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:112
+#: src/Form/Admin/SearchPageConfigureForm.php:121
 msgid "Sort fields"
 msgstr "Champs de tri"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:193
+#: src/Form/Admin/SearchPageConfigureForm.php:202
 msgid "Form settings"
 msgstr "Paramètres du formulaire"
 
@@ -72,15 +84,15 @@ msgstr "Index"
 msgid "Form"
 msgstr "Formulaire"
 
-#: src/Form/StandardConfigForm.php:49
+#: src/Form/StandardConfigForm.php:46
 msgid "Search fields"
 msgstr "Champs de recherche"
 
-#: src/Form/StandardConfigForm.php:58
+#: src/Form/StandardConfigForm.php:86
 msgid "Resource class field"
 msgstr "Champ de la classe de ressource"
 
-#: src/Form/StandardConfigForm.php:68
+#: src/Form/StandardConfigForm.php:96
 msgid "Item sets field"
 msgstr "Champ des collections"
 
@@ -113,7 +125,7 @@ msgid "Configure search index"
 msgstr "Configure l'index de recherche"
 
 #: view/search/admin/search-index/configure.phtml:36
-#: view/search/admin/search-page/configure.phtml:42
+#: view/search/admin/search-page/configure.phtml:43
 msgid "Save configuration"
 msgstr "Enregistrer la configuration"
 
@@ -129,7 +141,7 @@ msgstr "Commencer la reconstruction de l'index"
 msgid "Add search page"
 msgstr "Ajouter une page de recherche"
 
-#: view/search/admin/search-page/configure.phtml:38
+#: view/search/admin/search-page/configure.phtml:39
 msgid "Configure search page"
 msgstr "Configurer la page de recherche"
 
@@ -157,13 +169,33 @@ msgstr "Ajouter un filtre"
 msgid "Add group"
 msgstr "Ajouter un groupe"
 
-#: view/search/index/search.phtml:45
+#: view/search/index/search.phtml:53
+msgid "Save this query"
+msgstr "Sauvegarder cette requête"
+
+#: view/search/index/search.phtml:63
 msgid "Edit search"
 msgstr "Modifier la recherche"
 
-#: view/search/index/search.phtml:84
+#: view/search/index/search.phtml:102
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
+
+#: view/search/saved-queries.phtml:41
+msgid "Actions"
+msgstr "Actions"
+
+#: view/search/saved-queries.phtml:62
+msgid "Reload"
+msgstr "Recharger"
+
+#: view/search/saved-queries.phtml:67
+msgid "Delete this saved query"
+msgstr "Supprimer cette requête sauvegardée"
+
+#: view/search/saved-queries.phtml:76
+msgid "None saved queries yet"
+msgstr "Aucunes requêtes sauvegardées"
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
 msgid "Clear index"
@@ -189,6 +221,14 @@ msgstr ""
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
 msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
+
+#: src/Site/BlockLayout/SavedQueries.php:30
+msgid "Saved Queries"
+msgstr "Requêtes sauvegardées"
+
+#: src/Site/BlockLayout/SavedQueries.php:51
+msgid "Label for this block"
+msgstr "Libellé pour ce bloc"
 
 #~ msgid "Reindex all"
 #~ msgstr "Tout réindexer"

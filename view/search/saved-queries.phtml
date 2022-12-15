@@ -1,0 +1,77 @@
+<?php
+/*
+ * Copyright BibLibre, 2016
+ *
+ * This software is governed by the CeCILL license under French law and abiding
+ * by the rules of distribution of free software.  You can use, modify and/ or
+ * redistribute the software under the terms of the CeCILL license as circulated
+ * by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy, modify
+ * and redistribute granted by the license, users are provided only with a
+ * limited warranty and the software's author, the holder of the economic
+ * rights, and the successive licensors have only limited liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated with
+ * loading, using, modifying and/or developing or reproducing the software by
+ * the user in light of its specific status of free software, that may mean that
+ * it is complicated to manipulate, and that also therefore means that it is
+ * reserved for developers and experienced professionals having in-depth
+ * computer knowledge. Users are therefore encouraged to load and test the
+ * software's suitability as regards their requirements in conditions enabling
+ * the security of their systems and/or data to be ensured and, more generally,
+ * to use and operate it in the same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL license and that you accept its terms.
+ */
+?>
+
+<?php 
+$escape = $this->plugin('escapeHtml'); 
+?>
+
+<?php if (!empty($savedQueries)): ?>
+  <table id="saved-query-table" class="tablesaw" data-tablesaw-mode="stack">
+    <thead>
+      <tr>
+        <th><?php echo $escape($this->translate('Title'));?></th>
+        <th><?php echo $escape($this->translate('Description'));?></th>
+        <th><?php echo $escape($this->translate('Query'));?></th>
+        <th><?php echo $escape($this->translate('Actions'));?></th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach($savedQueries as $savedQuery) :
+      $url = $this->url('search-page-' . $savedQuery->searchPage()->getId(), [], ['query' => json_decode($savedQuery->queryString(), true)], true);
+      $title = $savedQuery->queryTitle();
+      $description = $savedQuery->queryDescription();
+      $id = $savedQuery->id();
+      ?>
+        <form method="post" action="<?php echo $this->url("site/delete-query", [], true)?>">
+          <tr id="saved_query-<?php echo $savedQuery->id() ;?>">
+            <input id="delete_query_id" type="hidden" name="query_id" value="<?php echo $id ?>">
+            <input id="delete_query_currenturl" type="hidden" name="current_url" value="<?php echo $this->url(null, [], [], true) ?>">
+            <td>
+                <?php echo $title;?>
+            </td>
+            <td>
+                <?php echo $description;?>
+            </td>
+            <td>
+              <?php echo $this->hyperlink($this->translate('Reload'), $url, ['class' => 'o-icon-external', 'target' => '_blank']); ?>
+              </a>
+            </td>
+            <td>
+              <button type="submit">
+                  <a class="o-icon-delete" <?php echo $this->translate("Delete this saved query") ?> title=<?php echo $this->translate("Delete") ?> style="display: inline;"></a>
+              </button>
+            </td>
+          </tr>
+        </form>
+      <?php endforeach ; ?>
+    </tbody>
+  </table>
+<?php else : ?>
+  <?php echo $this->translate("None saved queries yet") ?>
+<?php endif; ?>
