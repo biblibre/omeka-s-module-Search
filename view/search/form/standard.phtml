@@ -1,5 +1,7 @@
 <?php
     $translate = $this->plugin('translate');
+    $this->headLink()->prependStylesheet($this->assetUrl('css/advanced-search.css', 'Omeka'));
+    $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
 
     $availableFields = $this->searchForm()->getAvailableSearchFields();
     $availableFieldsOptions = array_map(function ($field) {
@@ -64,6 +66,8 @@
 
     <script>
         $(document).ready(function () {
+            Omeka.prepareSearchForm($('#search-form-standard'));
+
             $('#search-form-standard').on('click', '.search-add-filter', function (ev) {
                 ev.preventDefault();
                 insertFilterBefore(this.parentNode);
