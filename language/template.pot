@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-09 15:30+0000\n"
+"POT-Creation-Date: 2022-12-19 08:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,34 +38,42 @@ msgid "Add ability to save your query and reload it later with result update"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:64
-msgid "Facet limit"
+msgid "Spellchecking"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:65
-msgid "The maximum number of values fetched for each facet"
+msgid "To correct query if a word or more are misspelled"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:73
+msgid "Facet limit"
 msgstr ""
 
 #: src/Form/Admin/SearchPageConfigureForm.php:74
+msgid "The maximum number of values fetched for each facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:83
 msgid "Facets"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:99
-#: src/Form/Admin/SearchPageConfigureForm.php:146
+#: src/Form/Admin/SearchPageConfigureForm.php:108
+#: src/Form/Admin/SearchPageConfigureForm.php:155
 #: src/Form/StandardConfigForm.php:62
 msgid "Enabled"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:107
-#: src/Form/Admin/SearchPageConfigureForm.php:154
+#: src/Form/Admin/SearchPageConfigureForm.php:116
+#: src/Form/Admin/SearchPageConfigureForm.php:163
 #: src/Form/StandardConfigForm.php:70
 msgid "Weight"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:121
+#: src/Form/Admin/SearchPageConfigureForm.php:130
 msgid "Sort fields"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:202
+#: src/Form/Admin/SearchPageConfigureForm.php:212
 msgid "Form settings"
 msgstr ""
 
@@ -146,7 +154,7 @@ msgstr ""
 msgid "Edit search page"
 msgstr ""
 
-#: view/search/facets.phtml:32 view/search/form/standard.phtml:29
+#: view/search/facets.phtml:32 view/search/form/standard.phtml:31
 msgid "Filters"
 msgstr ""
 
@@ -166,16 +174,20 @@ msgstr ""
 msgid "Add group"
 msgstr ""
 
-#: view/search/index/search.phtml:53
-msgid "Save this query"
+#: view/search/index/search.phtml:48
+msgid "Did you mean : "
 msgstr ""
 
-#: view/search/index/search.phtml:63
+#: view/search/index/search.phtml:65
 msgid "Edit search"
 msgstr ""
 
-#: view/search/index/search.phtml:102
+#: view/search/index/search.phtml:105
 msgid "Your query returned no results"
+msgstr ""
+
+#: view/search/index/search.phtml:120
+msgid "Save this query"
 msgstr ""
 
 #: view/search/saved-queries.phtml:41

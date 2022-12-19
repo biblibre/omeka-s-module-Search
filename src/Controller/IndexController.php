@@ -101,6 +101,10 @@ class IndexController extends AbstractActionController
             $query->setFacetLimit($settings['facet_limit']);
         }
 
+        if (isset($settings['spellchecking'])) {
+            $query->setSpellchecking($settings['spellchecking']);
+        }
+
         if (isset($params['limit'])) {
             foreach ($params['limit'] as $name => $values) {
                 foreach ($values as $value) {
@@ -143,6 +147,8 @@ class IndexController extends AbstractActionController
         $searchPageId = $this->page->id();
         $siteId = $site->id();
 
+        $spellchecking = $query->getSpellchecking();
+       
         $totalResults = array_map(function ($resource) use ($response) {
             return $response->getResourceTotalResults($resource);
         }, $indexSettings['resources']);
@@ -152,6 +158,7 @@ class IndexController extends AbstractActionController
         $view->setVariable('response', $response);
         $view->setVariable('facets', $facets);
         $view->setVariable('saveQueryParam', $saveQueryParam);
+        $view->setVariable('spellchecking', $spellchecking);
         $view->setVariable('sortOptions', $sortOptions);
         $view->setVariable('queryParams', $queryParams);
         $view->setVariable('searchPageId', $searchPageId);
