@@ -11,7 +11,7 @@ class SearchIndexFormFactory implements FactoryInterface
     {
         $searchAdapterManager = $services->get('Search\AdapterManager');
 
-        $form = new SearchIndexForm(null, $options);
+        $form = new SearchIndexForm(null, $options ?? []);
         $form->setTranslator($services->get('MvcTranslator'));
         $form->setSearchAdapterManager($searchAdapterManager);
         return $form;

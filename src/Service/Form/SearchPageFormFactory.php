@@ -13,7 +13,7 @@ class SearchPageFormFactory implements FactoryInterface
         $api = $services->get('Omeka\ApiManager');
         $formAdapterManager = $services->get('Search\FormAdapterManager');
 
-        $form = new SearchPageForm(null, $options);
+        $form = new SearchPageForm(null, $options ?? []);
         $form->setTranslator($translator);
         $form->setApiManager($api);
         $form->setFormAdapterManager($formAdapterManager);
