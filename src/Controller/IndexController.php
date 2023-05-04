@@ -125,7 +125,7 @@ class IndexController extends AbstractActionController
         }
 
         $query->setSort($sort);
-        $page_number = isset($params['page']) ? $params['page'] : 1;
+        $page_number = $params['page'] ?? 1;
         $this->setPagination($query, $page_number);
         try {
             $response = $querier->query($query);

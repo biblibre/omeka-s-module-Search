@@ -33,7 +33,7 @@ class SavedQueries extends AbstractBlockLayout
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
     {
         $data = $block->getData();
-        $label = isset($data['label']) ? $data['label'] : '';
+        $label = $data['label'] ?? '';
         $data['label'] = $label;
         $block->setData($data);
     }
