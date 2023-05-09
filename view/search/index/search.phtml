@@ -99,8 +99,8 @@
                     <input id="saveSearch" type="submit" value="<?php echo $this->translate('Save this query') ?>">
                 </div>
             </form>
+            <?php endif; ?>
         </div>
-<?php endif; ?>
 
         <?php echo $this->partial('search/facets', ['facets' => $facets]); ?>
     </div>
