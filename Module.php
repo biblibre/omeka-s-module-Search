@@ -205,36 +205,16 @@ class Module extends AbstractModule
     public function updateSearchIndex($event)
     {
         $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
-        $logger = $serviceLocator->get('Omeka\Logger');
 
         $request = $event->getParam('request');
-        $response = $event->getParam('response');
-        $requestResource = $request->getResource();
+        $resourceDetail = [
+            'type' => $request->getResource(),
+            'id' => $request->getId(),
+            'operation' => $request->getOperation(),
+        ];
+        $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
+        $jobDispatcher->dispatch('Search\Job\IndexSingle', ['resource_detail' => $resourceDetail]);
 
-        $searchIndexes = $api->search('search_indexes')->getContent();
-        foreach ($searchIndexes as $searchIndex) {
-            $searchIndexSettings = $searchIndex->settings();
-            if (in_array($requestResource, $searchIndexSettings['resources'])) {
-                $indexer = $searchIndex->indexer();
-
-                if ($request->getOperation() == 'delete') {
-                    $id = $request->getId();
-                    try {
-                        $indexer->deleteResource($requestResource, $id);
-                    } catch (\Exception $e) {
-                        $logger->err(sprintf('Search: failed to delete resource: %s', $e));
-                    }
-                } else {
-                    $resource = $response->getContent();
-                    try {
-                        $indexer->indexResource($resource);
-                    } catch (\Exception $e) {
-                        $logger->err(sprintf('Search: failed to index resource: %s', $e));
-                    }
-                }
-            }
-        }
     }
 
     protected function addRoutes()
