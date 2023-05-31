@@ -37,6 +37,7 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
+            'Search\Form\SaveQueryForm' => Form\SaveQueryForm::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
@@ -186,11 +187,12 @@ return [
         'factories' => [
             'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
             'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
+            'saveQuery' => Service\ViewHelper\SaveQueryFactory::class,
 
         ],
         'invokables' => [
             'searchForm' => View\Helper\SearchForm::class,
-            'savedQueries' => View\Helper\SavedQueries::class,
+            'showSavedQueries' => View\Helper\ShowSavedQueries::class,
         ],
     ],
     'search_form_adapters' => [

@@ -86,3 +86,9 @@
   width: 45px;
   height: 45px;
 }
+
+#save-query-form {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}

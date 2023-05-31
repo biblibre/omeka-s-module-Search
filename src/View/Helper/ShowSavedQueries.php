@@ -4,7 +4,7 @@ namespace Search\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
 
-class SavedQueries extends AbstractHelper
+class ShowSavedQueries extends AbstractHelper
 {
     public function __invoke($savedQueries = null)
     {
