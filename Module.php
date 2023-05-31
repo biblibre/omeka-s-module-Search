@@ -207,13 +207,9 @@ class Module extends AbstractModule
         $serviceLocator = $this->getServiceLocator();
 
         $request = $event->getParam('request');
-        $resourceDetail = [
-            'type' => $request->getResource(),
-            'id' => $request->getId(),
-            'operation' => $request->getOperation(),
-        ];
         $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
-        $jobDispatcher->dispatch('Search\Job\IndexSingle', ['resource_detail' => $resourceDetail]);
+        $jobClass = $request->getOperation() === 'delete' ? 'Search\Job\DeleteIndexSingle' : 'Search\Job\IndexSingle';
+        $jobDispatcher->dispatch($jobClass, ['id' => $request->getId(), 'type' => $request->getResource()]);
 
     }
 
