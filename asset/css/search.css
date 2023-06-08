@@ -92,3 +92,7 @@
   flex-direction: column;
   width: fit-content;
 }
+
+#saved-queries-table {
+  margin-left: 0;
+}
