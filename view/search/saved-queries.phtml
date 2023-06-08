@@ -32,7 +32,7 @@ $escape = $this->plugin('escapeHtml');
 ?>
 
 <?php if (!empty($savedQueries)): ?>
-  <table id="saved-query-table" class="tablesaw" data-tablesaw-mode="stack">
+  <table id="saved-queries-table" class="tablesaw" data-tablesaw-mode="stack" style="margin:0">
     <thead>
       <tr>
         <th><?php echo $escape($this->translate('Title'));?></th>
