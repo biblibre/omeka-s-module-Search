@@ -213,7 +213,6 @@ class Module extends AbstractModule
         $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
         $jobClass = $request->getOperation() === 'delete' ? 'Search\Job\DeleteIndexSingle' : 'Search\Job\IndexSingle';
         $jobDispatcher->dispatch($jobClass, ['id' => $resourceId, 'type' => $request->getResource()]);
-
     }
 
     protected function addRoutes()
