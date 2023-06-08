@@ -14,8 +14,8 @@ class ShowSavedQueries extends AbstractHelper
             $savedQueries = $view->api()->search('saved_queries', ['user_id' => $user->getId()])->getContent();
 
             return $view->partial('search/saved-queries', [
-            'savedQueries' => $savedQueries,
-        ]);
+                'savedQueries' => $savedQueries,
+            ]);
         }
     }
 }
