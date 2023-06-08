@@ -19,9 +19,10 @@ class SaveQuery extends AbstractHelper
         if (isset($user)) {
             $form = $this->saveQueryForm;
             $form->setData(['site_id' => $params['site_id'], 'search_page_id' => $params['search_page_id'], 'query_string' => $params['query_string']]);
+
             return $view->partial('search/save-query-form', [
-            'form' => $form,
-        ]);
+                'form' => $form,
+            ]);
         }
     }
 
