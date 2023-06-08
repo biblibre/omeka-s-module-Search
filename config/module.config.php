@@ -37,7 +37,6 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
-            'Search\Form\SaveQueryForm' => Form\SaveQueryForm::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
@@ -47,6 +46,7 @@ return [
             'Search\Form\StandardForm' => Service\Form\StandardFormFactory::class,
             'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
+            'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
         ],
     ],
     'navigation' => [

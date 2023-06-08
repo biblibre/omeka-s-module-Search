@@ -7,10 +7,13 @@ use Laminas\Form\Element;
 
 class SaveQueryForm extends Form
 {
+    protected $urlHelper;
+
     public function init()
     {
+        $urlHelper = $this->getUrlHelper();
         $this->setAttribute('id', 'save-query-form');
-        $this->setAttribute('action', 'save-query');
+        $this->setAttribute('action', $urlHelper('site/save-query', [], [], true));
 
         $this->add([
             'name' => 'site_id',
@@ -49,9 +52,19 @@ class SaveQueryForm extends Form
             'name' => 'query_description',
             'type' => Element\Textarea::class,
             'attributes' => [
-                'required' => true,
                 'placeholder' => 'Description', // @translate
             ],
         ]);
+    }
+
+    public function setUrlHelper($urlHelper)
+    {
+        $this->urlHelper = $urlHelper;
+        return $this;
+    }
+
+    public function getUrlHelper()
+    {
+        return $this->urlHelper;
     }
 }
