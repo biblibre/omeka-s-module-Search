@@ -28,11 +28,12 @@
 ?>
 
 <?php 
-$escape = $this->plugin('escapeHtml'); 
+$escape = $this->plugin('escapeHtml');
+$this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
 ?>
 
 <?php if (!empty($savedQueries)): ?>
-  <table id="saved-query-table" class="tablesaw" data-tablesaw-mode="stack">
+  <table id="saved-queries-table" class="tablesaw" data-tablesaw-mode="stack">
     <thead>
       <tr>
         <th><?php echo $escape($this->translate('Title'));?></th>
@@ -64,7 +65,7 @@ $escape = $this->plugin('escapeHtml');
             </td>
             <td>
               <button type="submit">
-                  <a class="o-icon-delete" <?php echo $this->translate("Delete this saved query") ?> title=<?php echo $this->translate("Delete") ?> style="display: inline;"></a>
+                  <a class="o-icon-delete" <?php echo $this->translate("Delete this saved query") ?> title=<?php echo $this->translate("Delete") ?>></a>
               </button>
             </td>
           </tr>

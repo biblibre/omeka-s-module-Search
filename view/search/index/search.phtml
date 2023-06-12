@@ -85,20 +85,7 @@
                 <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
             <?php endif; ?>
             <?php if(isset($user) && $saveQueryParam) : ?>
-            <form method="post" action="<?php echo $this->url('site/save-query', [], true)  ?>">
-                <input id="save_site_id" type="hidden" name="site_id" value="<?php echo $site->id() ?>">
-                <input id="save_search_page_id" type="hidden" name="search_page_id" value="<?php echo $searchPageId ?>">
-                <input id="save_newquerystring" type="hidden" name="query_string" value='<?php echo $queryParams ?>'>
-                <div>
-                    <input id="save_newquerytitle" type="text" name="query_title" size="20" title="New query title" placeholder="<?php echo $this->translate('Title')?>" value="">
-                </div>
-                <div>
-                    <textarea id="save_newquerydescription" type="text" rows="5" cols="30" name="query_description" title="New query description" placeholder="<?php echo $this->translate('Description')?>" value=""></textarea>
-                </div>
-                <div>
-                    <input id="saveSearch" type="submit" value="<?php echo $this->translate('Save this query') ?>">
-                </div>
-            </form>
+            <?php echo $this->saveQuery(['site_id' => $site->id(), 'search_page_id' => $searchPageId, 'query_string' => $queryParams ]) ;?>
             <?php endif; ?>
         </div>
 

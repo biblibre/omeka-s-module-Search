@@ -46,6 +46,7 @@ return [
             'Search\Form\StandardForm' => Service\Form\StandardFormFactory::class,
             'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
+            'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
         ],
     ],
     'navigation' => [
@@ -186,11 +187,12 @@ return [
         'factories' => [
             'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
             'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
+            'saveQuery' => Service\ViewHelper\SaveQueryFactory::class,
 
         ],
         'invokables' => [
             'searchForm' => View\Helper\SearchForm::class,
-            'savedQueries' => View\Helper\SavedQueries::class,
+            'showSavedQueries' => View\Helper\ShowSavedQueries::class,
         ],
     ],
     'search_form_adapters' => [
