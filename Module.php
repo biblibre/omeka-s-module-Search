@@ -313,6 +313,7 @@ class Module extends AbstractModule
         }
 
         $serviceLocator = $this->getServiceLocator();
+        $logger = $serviceLocator->get('Omeka\Logger');
         $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
 
         // If we are in a background job or a script executed from the command
