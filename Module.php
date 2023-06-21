@@ -315,8 +315,32 @@ class Module extends AbstractModule
         $serviceLocator = $this->getServiceLocator();
         $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
 
-        $ids = array_map(fn($resource) => $resource->getId(), $resources);
-        $jobDispatcher->dispatch(Job\UpdateIndex::class, ['ids' => $ids]);
+        // If we are in a background job or a script executed from the command
+        // line, we do not have a time limit so we can index resources
+        // immediately.
+        // Otherwise, index resources in a background job in order to not slow
+        // down the request
+        if (PHP_SAPI === 'cli') {
+            $api = $serviceLocator->get('Omeka\ApiManager');
+            $searchIndexes = $api->search('search_indexes')->getContent();
+            foreach ($searchIndexes as $searchIndex) {
+                $searchIndexSettings = $searchIndex->settings();
+                $filteredResources = array_filter($resources, fn($resource) => in_array($resource->getResourceName(), $searchIndexSettings['resources']));
+                if (empty($filteredResources)) {
+                    continue;
+                }
+
+                try {
+                    $indexer = $searchIndex->indexer();
+                    $indexer->indexResources($filteredResources);
+                } catch (\Exception $e) {
+                    $logger->err(sprintf('Search: failed to index resources: %s', $e));
+                }
+            }
+        } else {
+            $ids = array_map(fn($resource) => $resource->getId(), $resources);
+            $jobDispatcher->dispatch(Job\UpdateIndex::class, ['ids' => $ids]);
+        }
     }
 
     protected function addRoutes()

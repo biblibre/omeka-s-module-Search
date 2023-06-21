@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resources that are created or updated in batch are now indexed in batch.
   Previously each resource was indexed separately. It allows adapters to
   optimize the indexing process.
+- Resources that are created or updated are now indexed in a background job in
+  order to not slow down the request. Except when we are already in a
+  background job or a script executed from command line. In that case resources
+  are indexed immediately.
 
 ## [0.12.1] - 2023-05-09
 
