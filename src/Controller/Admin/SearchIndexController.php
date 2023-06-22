@@ -118,7 +118,7 @@ class SearchIndexController extends AbstractActionController
                     'clear-index' => $data['clear-index'] ?? 0,
                     'batch-size' => $data['batch-size'],
                 ];
-                $job = $jobDispatcher->dispatch('Search\Job\Index', $jobArgs);
+                $job = $jobDispatcher->dispatch('Search\Job\RebuildIndex', $jobArgs);
 
                 $jobUrl = $this->url()->fromRoute('admin/id', [
                     'controller' => 'job',

@@ -31,7 +31,7 @@ namespace Search\Job;
 
 use Omeka\Job\AbstractJob;
 
-class Index extends AbstractJob
+class RebuildIndex extends AbstractJob
 {
     const DEFAULT_BATCH_SIZE = 100;
 
