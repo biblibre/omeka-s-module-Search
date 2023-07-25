@@ -14,8 +14,15 @@
         ];
     }, $availableFields);
     $availableOperators = $this->searchForm()->getAvailableOperators();
-    $availableOperatorsOptions = array_column($availableOperators, 'display_name', 'name');
+    $availableOperatorsOptions = array_map(function ($operator) {
+        return [
+            'value' => $operator['name'],
+            'label' => $operator['display_name'],
+            'attributes' => $operator['proximity_support'] ? ['data-proximity-support' => true] : [],
+        ];
+    }, $availableOperators);
     $settings = $form->getOption('search_page')->settings();
+    $proximitySetting = $settings['form']['proximity'];
 
     $form->prepare();
     $form->setAttribute('id', 'search-form-standard');
@@ -37,6 +44,7 @@
                 'data' => $query['filters'] ?? [],
                 'namePrefix' => 'filters',
                 'mainGroup' => true,
+                'proximitySetting' => $proximitySetting,
             ]); ?>
         </div>
     </div>
@@ -48,6 +56,7 @@
                 'availableOperatorsOptions' => $availableOperatorsOptions,
                 'query' => [],
                 'namePrefix' => '__placeholder__',
+                'proximitySetting' => $proximitySetting,
             ]); ?>
         </div>
     </template>
@@ -60,6 +69,7 @@
                 'data' => [],
                 'namePrefix' => '__placeholder__',
                 'mainGroup' => false,
+                'proximitySetting' => $proximitySetting,
             ]); ?>
         </div>
     </template>
@@ -67,11 +77,16 @@
     <script>
         $(document).ready(function () {
             Omeka.prepareSearchForm($('#search-form-standard'));
+            initProximityVisibility();
+            $('#search-form-standard').on('change', '.search-form-standard-filter-operator', function () {
+                toggleProximityVisibility($(this));
+            });
 
             $('#search-form-standard').on('click', '.search-add-filter', function (ev) {
                 ev.preventDefault();
                 insertFilterBefore(this.parentNode);
                 renameAllFormControls();
+                initProximityVisibility();
             });
 
             $('#search-form-standard').on('click', '.search-add-group', function (ev) {
@@ -81,6 +96,7 @@
                 this.parentNode.insertAdjacentElement('beforebegin', group);
 
                 renameAllFormControls();
+                initProximityVisibility();
             });
 
             $('#search-form-standard').on('click', '.search-delete-filter', function (ev) {
@@ -135,6 +151,24 @@
                 const mainGroup = document.querySelector('#search-form-standard > .field > .inputs > .search-form-standard-match-group');
                 renameFormControls(mainGroup, 'filters');
             }
+
+            // Hide proximity input if "Contains all words" operator is not selected
+            function initProximityVisibility() {
+                const operatorInputs = $('#search-form-standard').find('.search-form-standard-filter-operator');
+                $(operatorInputs).each(function () {
+                    toggleProximityVisibility($(this));
+               });
+            }
+           
+            function toggleProximityVisibility(element) {
+                const operatorSupportProx = $(element).find('option:selected').attr('data-proximity-support');
+                const proxElement = $(element).siblings('.search-form-standard-filter-proximity');
+                if (operatorSupportProx) {
+                    proxElement.show();
+                } else {
+                    proxElement.hide();
+                }
+            };
         });
     </script>
 <?php endif; ?>

@@ -19,6 +19,7 @@
                             'data' => $query,
                             'namePrefix' => $namePrefix . "[queries][$i]",
                             'mainGroup' => false,
+                            'proximitySetting' => $proximitySetting,
                         ]); ?>
                     <?php else: ?>
                         <?php echo $this->partial('search/form/standard-match-group-filter', [
@@ -26,6 +27,7 @@
                             'availableOperatorsOptions' => $availableOperatorsOptions,
                             'query' => $query,
                             'namePrefix' => $namePrefix . "[queries][$i]",
+                            'proximitySetting' => $proximitySetting,
                         ]); ?>
                     <?php endif; ?>
                 </div>
@@ -37,6 +39,7 @@
                     'availableOperatorsOptions' => $availableOperatorsOptions,
                     'query' => [],
                     'namePrefix' => $namePrefix . '[queries][0]',
+                    'proximitySetting' => $proximitySetting,
                 ]); ?>
             </div>
             <div class="search-form-standard-match-group-item">
@@ -45,6 +48,7 @@
                     'availableOperatorsOptions' => $availableOperatorsOptions,
                     'query' => [],
                     'namePrefix' => $namePrefix . '[queries][1]',
+                    'proximitySetting' => $proximitySetting,
                 ]); ?>
             </div>
         <?php endif; ?>

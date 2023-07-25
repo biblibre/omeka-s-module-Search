@@ -96,3 +96,7 @@
 #saved-queries-table {
   margin-left: 0;
 }
+
+.search-form-standard-filter-proximity {
+  width: 4em;
+}

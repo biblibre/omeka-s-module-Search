@@ -19,6 +19,20 @@
 ?>
 
 <?php
+    if ($proximitySetting) {
+        $proximityNumber = new \Laminas\Form\Element\Text($namePrefix . '[proximity]');
+        $proximityNumber->setAttribute('class', 'search-form-standard-filter-proximity');
+        $proximityNumber->setAttribute('pattern', '\d+');
+        $proximityNumber->setAttribute('title', $this->translate('Proximity option (e.g. 2)'));
+        $proximityNumber->setAttribute('placeholder', $this->translate('prox.'));
+        if (isset($query['proximity'])) {
+            $proximityNumber->setValue($query['proximity']);
+        }
+        echo $this->formText($proximityNumber);
+    }
+?>
+
+<?php
     $termText = new \Laminas\Form\Element\Text($namePrefix . '[term]');
     if (isset($query['term'])) {
         $termText->setValue($query['term']);

@@ -80,6 +80,15 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
         $this->add($search_fields_fieldset);
 
         $this->add([
+            'name' => 'proximity',
+            'type' => 'Checkbox',
+            'options' => [
+                'label' => $translator->translate('Proximity'),
+                'info' => $translator->translate('Add proximity option on search form to choose distance between terms'),
+            ],
+        ]);
+
+        $this->add([
             'name' => 'resource_class_field',
             'type' => 'Select',
             'options' => [
