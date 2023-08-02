@@ -1,0 +1,19 @@
+
+<div class="highlights_extracts">
+    <h5 class="highlights_extracts_fieldname">
+        <?php echo sprintf("%s (%d)", $this->translate($field), $totalExtracts); ?>
+        <span class="highlights_extracts_view o-icon-view"></span>
+    </h5>
+    <div class="highlights_extracts_quotes">
+        <?php foreach ($extracts as $extract): ?>
+            <p class="highlights_extracts_quote">
+                <?php foreach ($extract as $position => $quote): ?>
+                    <?php if ($totalExtracts > 1): ?>
+                        <span class="highlights_extracts_quote_position"><?php echo $position; ?></span>
+                    <?php endif; ?>
+                    <q class="highlights_extracts_quote_extract"><?php echo $quote; ?></q>
+                <?php endforeach; ?>
+            </p>
+        <?php endforeach; ?>
+    </div>
+</div>

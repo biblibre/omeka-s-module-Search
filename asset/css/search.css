@@ -100,3 +100,52 @@
 .search-form-standard-filter-proximity {
   width: 4em;
 }
+
+.highlights {
+  background-color: rgba(128, 128, 128, 0.1);
+  border-radius: 1em;
+  margin: 0.5em 0 0.5em 0;
+  padding: 0.5em;
+}
+
+.highlights_extracts {
+  display: flex;
+  flex-direction: column;
+}
+
+.highlights_extracts_fieldname {
+  color: #920b0bbe;
+  display: none;
+}
+
+.highlights_extracts_quote {
+  font-size: smaller;
+}
+
+.highlights_extracts_quote > q > em {
+  background-color: rgb(253, 231, 200);
+  font-weight: 600;
+}
+
+.highlights_extracts_quote_position {
+  font-size: smaller;
+  font-weight: bolder;
+}
+
+.highlights_extracts_quotes {
+  transition: opacity 0.5s;
+}
+
+.highlights .showAll {
+  display: block !important;
+}
+
+.highlights_extracts_view {
+  cursor: pointer;
+}
+
+.highlights_comment {
+  font-size: smaller;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+}

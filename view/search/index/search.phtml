@@ -33,6 +33,7 @@
     $escape = $this->plugin('escapeHtml');
     $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
     $this->headScript()->appendFile($this->assetUrl('js/search.js', 'Search'));
+    $this->headScript()->appendFile($this->assetUrl('js/highlights.js', 'Search'));
     $user = $this->identity();
 ?>
 

@@ -36,6 +36,7 @@ class Response
 
     protected $results = [];
     protected $facetCounts = [];
+    protected $highlightedResults = [];
 
     public function setTotalResults($totalResults)
     {
@@ -82,5 +83,20 @@ class Response
     public function getFacetCounts()
     {
         return $this->facetCounts;
+    }
+
+    public function addHighlight($resourceId, $termsByProperties)
+    {
+        $this->highlightedResults[$resourceId] = $termsByProperties;
+    }
+
+    public function getHighlightedResults($resourceId)
+    {
+        return $this->highlightedResults[$resourceId] ?? [];
+    }
+
+    public function getHighlightedResultsTotal()
+    {
+        return $this->highlightedResults;
     }
 }

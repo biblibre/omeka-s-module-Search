@@ -1,0 +1,8 @@
+<div class="highlights">
+    <span class="highlights_comment">
+        <?php echo $this->translate("Extracts according to your search, you will find the label of the field as well as the number of occurrence on it."); ?>
+    </span>
+    <?php foreach ($highlights as $field => $extracts): ?>
+        <?php echo $this->showHighlights($field, $extracts); ?>
+    <?php endforeach ?>
+</div>
