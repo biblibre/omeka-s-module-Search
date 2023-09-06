@@ -45,10 +45,5 @@
         </div>
     <?php endif; ?>
 
-    <?php if (!empty($highlights)): ?>
-        <?php echo $this->partial('search/highlights', [
-                'highlights' => $highlights,
-            ]); ?>
-    <?php endif; ?>
-
+    <?= $this->partial('search/highlights', ['highlights' => $highlights, 'limit' => 3]); ?>
 </<?php echo $tag ?>>
