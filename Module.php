@@ -326,7 +326,7 @@ class Module extends AbstractModule
             $searchIndexes = $api->search('search_indexes')->getContent();
             foreach ($searchIndexes as $searchIndex) {
                 $searchIndexSettings = $searchIndex->settings();
-                $filteredResources = array_filter($resources, fn($resource) => in_array($resource->getResourceName(), $searchIndexSettings['resources']));
+                $filteredResources = array_filter($resources, fn ($resource) => in_array($resource->getResourceName(), $searchIndexSettings['resources']));
                 if (empty($filteredResources)) {
                     continue;
                 }
@@ -339,7 +339,7 @@ class Module extends AbstractModule
                 }
             }
         } else {
-            $ids = array_map(fn($resource) => $resource->getId(), $resources);
+            $ids = array_map(fn ($resource) => $resource->getId(), $resources);
             $jobDispatcher->dispatch(Job\UpdateIndex::class, ['ids' => $ids]);
         }
     }
