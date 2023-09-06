@@ -136,6 +136,9 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
             'item_sets_field' => [
                 'required' => false,
             ],
+            'proximity' => [
+                'required' => false,
+            ],
         ];
     }
 }

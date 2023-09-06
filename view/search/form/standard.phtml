@@ -22,7 +22,7 @@
         ];
     }, $availableOperators);
     $settings = $form->getOption('search_page')->settings();
-    $proximitySetting = $settings['form']['proximity'];
+    $proximitySetting = $settings['form']['proximity'] ?? false;
 
     $form->prepare();
     $form->setAttribute('id', 'search-form-standard');
