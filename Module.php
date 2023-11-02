@@ -159,6 +159,47 @@ class Module extends AbstractModule
             $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2F6BD1646 FOREIGN KEY (site_id) REFERENCES site (id) ON DELETE CASCADE');
             $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF281978C7E FOREIGN KEY (search_page_id) REFERENCES search_page (id) ON DELETE CASCADE');
         }
+
+        if (Comparator::lessThan($oldVersion, '0.14.0')) {
+            $pages = $connection->executeQuery('SELECT id, settings, form_adapter FROM search_page')->fetchAll();
+            foreach ($pages as $page) {
+                $settings = json_decode($page['settings'], true);
+
+                $enabled_facets = array_filter($settings['facets'] ?? [], fn ($a) => $a['enabled'] ?? false);
+                uasort($enabled_facets, fn ($a, $b) => $a['weight'] - $b['weight']);
+                $settings['facets'] = [];
+                foreach ($enabled_facets as $fieldName => $facetData) {
+                    $settings['facets'][] = [
+                        'name' => $fieldName,
+                        'label' => $facetData['display']['label'] ?? '',
+                    ];
+                }
+
+                $enabled_sort_fields = array_filter($settings['sort_fields'] ?? [], fn ($a) => $a['enabled'] ?? false);
+                uasort($enabled_sort_fields, fn ($a, $b) => $a['weight'] - $b['weight']);
+                $settings['sort_fields'] = [];
+                foreach ($enabled_sort_fields as $fieldName => $sortFieldData) {
+                    $settings['sort_fields'][] = [
+                        'name' => $fieldName,
+                        'label' => $sortFieldData['display']['label'] ?? '',
+                    ];
+                }
+
+                if ($page['form_adapter'] === 'standard') {
+                    $enabled_search_fields = array_filter($settings['form']['search_fields'] ?? [], fn ($a) => $a['enabled'] ?? false);
+                    uasort($enabled_search_fields, fn ($a, $b) => $a['weight'] - $b['weight']);
+                    $settings['form'] ??= [];
+                    $settings['form']['search_fields'] = [];
+                    foreach ($enabled_search_fields as $fieldName => $searchFieldData) {
+                        $settings['form']['search_fields'][] = [
+                            'name' => $fieldName,
+                        ];
+                    }
+                }
+
+                $connection->update('search_page', ['settings' => json_encode($settings)], ['id' => $page['id']]);
+            }
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)

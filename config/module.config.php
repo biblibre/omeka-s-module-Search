@@ -7,6 +7,9 @@ return [
             'Search\Controller\Index' => Controller\IndexController::class,
             'Search\Controller\SavedQuery' => Controller\SavedQueryController::class,
             'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
+            'Search\Controller\Admin\Facets' => Controller\Admin\FacetsController::class,
+            'Search\Controller\Admin\SearchFields' => Controller\Admin\SearchFieldsController::class,
+            'Search\Controller\Admin\SortFields' => Controller\Admin\SortFieldsController::class,
         ],
         'factories' => [
             'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
@@ -166,6 +169,33 @@ return [
                                     ],
                                 ],
                             ],
+                            'facets' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/facets/:action',
+                                    'defaults' => [
+                                        'controller' => 'Facets',
+                                    ],
+                                ],
+                            ],
+                            'sort-fields' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/sort-fields/:action',
+                                    'defaults' => [
+                                        'controller' => 'SortFields',
+                                    ],
+                                ],
+                            ],
+                            'search-fields' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/search-fields/:action',
+                                    'defaults' => [
+                                        'controller' => 'SearchFields',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -193,6 +223,12 @@ return [
         'invokables' => [
             'searchForm' => View\Helper\SearchForm::class,
             'showSavedQueries' => View\Helper\ShowSavedQueries::class,
+            'formFields' => Form\View\Helper\FormFields::class,
+        ],
+        'delegators' => [
+            'Laminas\Form\View\Helper\FormElement' => [
+                Service\Delegator\FormElementDelegatorFactory::class,
+            ],
         ],
     ],
     'search_form_adapters' => [

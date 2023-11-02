@@ -1,0 +1,11 @@
+<?php if ($searchPage): ?>
+    <?php $availableSearchFields = $searchPage->index()->availableSearchFields(); ?>
+    <?php $availableSearchFieldsNames = array_column($availableSearchFields, 'name'); ?>
+    <?php $settings = $searchPage->settings(); ?>
+    <?php $fields = $settings['form']['search_fields'] ?? [] ?>
+    <?php foreach ($fields as $fieldData): ?>
+        <?php if (in_array($fieldData['name'], $availableSearchFieldsNames)): ?>
+            <?php echo $this->partial('search/admin/search-fields/field-row', ['fieldData' => $fieldData, 'searchPage' => $searchPage]); ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

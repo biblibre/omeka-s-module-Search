@@ -133,4 +133,19 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
 
         return $querier;
     }
+
+    public function availableFacetFields()
+    {
+        return $this->adapter()->getAvailableFacetFields($this);
+    }
+
+    public function availableSortFields()
+    {
+        return $this->adapter()->getAvailableSortFields($this);
+    }
+
+    public function availableSearchFields()
+    {
+        return $this->adapter()->getAvailableSearchFields($this);
+    }
 }

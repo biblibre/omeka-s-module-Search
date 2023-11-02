@@ -1,0 +1,30 @@
+<li class="fields-field row"
+    data-field-name="<?php echo $this->escapeHtml($fieldData['name']); ?>"
+    data-field-data="<?php echo $this->escapeHtml(json_encode($fieldData)); ?>">
+    <span class="sortable-handle"></span>
+    <span class="fields-field-restore" style="display: none;"><?php echo $this->translate('Facet to be removed'); ?></span>
+    <?php
+    $label = $fieldData['label'] ?? '';
+    if (empty($label)) {
+        $facetFields = $searchPage->index()->availableFacetFields();
+        $facetLabelsByName = array_column($facetFields, 'label', 'name');
+        $label = $facetLabelsByName[$fieldData['name']] ?? '';
+    }
+    ?>
+    <span class="fields-field-label"><?php echo $this->escapeHtml($label); ?></span>
+    <ul class="actions">
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-edit fields-field-edit-button',
+            'title' => $this->translate('Edit facet'),
+        ]); ?></li>
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-delete fields-field-remove-button',
+            'title' => $this->translate('Remove facet'),
+        ]); ?></li>
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-undo fields-field-restore-button',
+            'title' => $this->translate('Restore facet'),
+            'style' => 'display: none;',
+        ]); ?></li>
+    </ul>
+</li>

@@ -1,0 +1,30 @@
+<li class="fields-field row"
+    data-field-name="<?php echo $this->escapeHtml($fieldData['name']); ?>"
+    data-field-data="<?php echo $this->escapeHtml(json_encode($fieldData)); ?>">
+    <span class="sortable-handle"></span>
+    <span class="fields-field-restore" style="display: none;"><?php echo $this->translate('Sort field to be removed'); ?></span>
+    <?php
+    $label = $fieldData['label'] ?? '';
+    if (empty($label)) {
+        $sortFields = $searchPage->index()->availableSortFields();
+        $sortFieldLabelsByName = array_column($sortFields, 'label', 'name');
+        $label = $sortFieldLabelsByName[$fieldData['name']];
+    }
+    ?>
+    <span class="fields-field-label"><?php echo $this->escapeHtml($label); ?></span>
+    <ul class="actions">
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-edit fields-field-edit-button',
+            'title' => $this->translate('Edit sort field'),
+        ]); ?></li>
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-delete fields-field-remove-button',
+            'title' => $this->translate('Remove sort field'),
+        ]); ?></li>
+        <li><?php echo $this->hyperlink('', [], [
+            'class' => 'o-icon-undo fields-field-restore-button',
+            'title' => $this->translate('Restore sort field'),
+            'style' => 'display: none;',
+        ]); ?></li>
+    </ul>
+</li>

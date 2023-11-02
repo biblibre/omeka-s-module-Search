@@ -1,0 +1,11 @@
+<?php if ($searchPage): ?>
+    <?php $availableSortFields = $searchPage->index()->availableSortFields(); ?>
+    <?php $availableSortFieldsNames = array_column($availableSortFields, 'name'); ?>
+    <?php $settings = $searchPage->settings(); ?>
+    <?php $fields = $settings['sort_fields'] ?? [] ?>
+    <?php foreach ($fields as $fieldData): ?>
+        <?php if (in_array($fieldData['name'], $availableSortFieldsNames)): ?>
+            <?php echo $this->partial('search/admin/sort-fields/field-row', ['fieldData' => $fieldData, 'searchPage' => $searchPage]); ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

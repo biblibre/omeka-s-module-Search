@@ -1,0 +1,23 @@
+<?php
+$this->headLink()->appendStylesheet($this->assetUrl('css/fields-form.css', 'Search'));
+$this->headScript()->appendFile($this->assetUrl('vendor/sortablejs/Sortable.min.js', 'Omeka'));
+$this->headScript()->appendFile($this->assetUrl('js/fields-form.js', 'Search'));
+?>
+<div class="fields-form-element"
+    data-field-list-url="<?php echo $this->escapeHtml($element->getOption('field_list_url')); ?>"
+    data-field-row-url="<?php echo $this->escapeHtml($element->getOption('field_row_url')); ?>"
+    data-field-edit-sidebar-url="<?php echo $this->escapeHtml($element->getOption('field_edit_sidebar_url')); ?>">
+    <?php $element->setValue(''); ?>
+    <?php echo $this->formHidden($element); ?>
+    <fieldset class="field-add-group">
+        <?php
+        $select = new \Laminas\Form\Element\Select('field_name_select');
+        $select->setAttribute('class', 'fields-field-name-select');
+        $select->setEmptyOption($element->getOption('empty_option'));
+        $select->setValueOptions($element->getOption('value_options'));
+        ?>
+        <?= $this->formSelect($select); ?>
+        <button type="button" class="fields-field-add-button o-icon-add" disabled aria-label="<?php echo $this->translate('Add'); ?>" title="<?php echo $this->translate('Add'); ?>"></button>
+    </fieldset>
+    <ul class="fields-fields"></ul>
+</div>

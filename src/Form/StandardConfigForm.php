@@ -33,51 +33,35 @@ use Laminas\Form\Fieldset;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\InputFilter\InputFilterProviderInterface;
+use Search\Form\Element\Fields;
 
 class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, InputFilterProviderInterface
 {
     use TranslatorAwareTrait;
 
+    protected $urlViewHelper;
+
     public function init()
     {
         $translator = $this->getTranslator();
+        $url = $this->urlViewHelper;
 
-        $search_fields_fieldset = new Fieldset('search_fields');
-        $search_fields_fieldset->setLabel($translator->translate('Search fields'));
-        $search_fields_fieldset->setAttribute('data-sortable', '1');
-
-        $index = $this->getIndex();
-        $searchFields = $index->adapter()->getAvailableSearchFields($index);
-        $weights = range(0, count($searchFields));
-        $weight_options = array_combine($weights, $weights);
-        $weight = 0;
-        foreach ($searchFields as $field) {
-            $fieldset = new Fieldset($field['name']);
-            $fieldset->setLabel($field['label']);
-
-            $fieldset->add([
-                'name' => 'enabled',
-                'type' => 'Checkbox',
-                'options' => [
-                    'label' => $translator->translate('Enabled'),
-                ],
-            ]);
-
-            $fieldset->add([
-                'name' => 'weight',
-                'type' => 'Select',
-                'options' => [
-                    'label' => $translator->translate('Weight'),
-                    'value_options' => $weight_options,
-                ],
-                'attributes' => [
-                    'value' => $weight++,
-                ],
-            ]);
-
-            $search_fields_fieldset->add($fieldset);
-        }
-        $this->add($search_fields_fieldset);
+        $searchPage = $this->getOption('search_page');
+        $index = $searchPage->index();
+        $searchFields = $index->availableSearchFields();
+        $searchFieldValueOptions = array_column($searchFields, 'label', 'name');
+        $this->add([
+            'name' => 'search_fields',
+            'type' => Fields::class,
+            'options' => [
+                'label' => 'Search fields', // @translate
+                'empty_option' => 'Add a search field', // @translate
+                'value_options' => $searchFieldValueOptions,
+                'field_list_url' => $url('admin/search/search-fields', ['action' => 'field-list'], ['query' => ['search_page_id' => $searchPage->id()]]),
+                'field_row_url' => $url('admin/search/search-fields', ['action' => 'field-row'], ['query' => ['search_page_id' => $searchPage->id()]]),
+                'field_edit_sidebar_url' => $url('admin/search/search-fields', ['action' => 'field-edit-sidebar'], ['query' => ['search_page_id' => $searchPage->id()]]),
+            ],
+        ]);
 
         $this->add([
             'name' => 'proximity',
@@ -109,17 +93,15 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
         ]);
     }
 
-    protected function getIndex()
+    public function setUrlViewHelper($urlViewHelper)
     {
-        $searchPage = $this->getOption('search_page');
-
-        return $searchPage->index();
+        $this->urlViewHelper = $urlViewHelper;
     }
 
     protected function getAdapterFacetFieldsOptions()
     {
-        $index = $this->getIndex();
-        $fields = $index->adapter()->getAvailableFacetFields($index);
+        $index = $this->getOption('search_page')->index();
+        $fields = $index->availableFacetFields();
 
         return array_column($fields, 'label', 'name');
     }
@@ -127,9 +109,6 @@ class StandardConfigForm extends Fieldset implements TranslatorAwareInterface, I
     public function getInputFilterSpecification()
     {
         return [
-            'search_fields' => [
-                'required' => false,
-            ],
             'resource_class_field' => [
                 'required' => false,
             ],
