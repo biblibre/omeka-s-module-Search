@@ -40,6 +40,7 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
+            'Search\Form\FacetForm' => Form\FacetForm::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
@@ -50,7 +51,11 @@ return [
             'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
             'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
+            'Search\Form\Element\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
         ],
+    ],
+    'listeners' => [
+        'Search\MvcListeners',
     ],
     'navigation' => [
         'AdminModule' => [
@@ -203,8 +208,12 @@ return [
         ],
     ],
     'service_manager' => [
+        'invokables' => [
+            'Search\MvcListeners' => Mvc\MvcListeners::class,
+        ],
         'factories' => [
             'Search\AdapterManager' => Service\AdapterManagerFactory::class,
+            'Search\FacetValueRendererManager' => Service\FacetValueRendererManagerFactory::class,
             'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
         ],
     ],
@@ -215,15 +224,16 @@ return [
     ],
     'view_helpers' => [
         'factories' => [
-            'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
-            'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
             'saveQuery' => Service\ViewHelper\SaveQueryFactory::class,
-
+            'searchFacetValue' => Service\ViewHelper\SearchFacetValueFactory::class,
         ],
         'invokables' => [
+            'facetLabel' => View\Helper\FacetLabel::class,
+            'facetLink' => View\Helper\FacetLink::class,
             'searchForm' => View\Helper\SearchForm::class,
             'showSavedQueries' => View\Helper\ShowSavedQueries::class,
             'formFields' => Form\View\Helper\FormFields::class,
+            'searchCurrentPage' => View\Helper\SearchCurrentPage::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [
@@ -234,6 +244,14 @@ return [
     'search_form_adapters' => [
         'factories' => [
             'standard' => Service\FormAdapter\StandardFormAdapterFactory::class,
+        ],
+    ],
+    'search_facet_value_renderers' => [
+        'invokables' => [
+            'fallback' => FacetValueRenderer\Fallback::class,
+        ],
+        'factories' => [
+            'resource_title' => Service\FacetValueRenderer\ResourceTitleFactory::class,
         ],
     ],
     'translator' => [

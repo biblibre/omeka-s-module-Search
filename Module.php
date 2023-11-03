@@ -406,6 +406,7 @@ class Module extends AbstractModule
                     'defaults' => [
                         '__NAMESPACE__' => 'Search\Controller',
                         '__SITE__' => true,
+                        '__SEARCH_PAGE__' => true,
                         'controller' => 'Index',
                         'action' => 'search',
                         'id' => $page->id(),
