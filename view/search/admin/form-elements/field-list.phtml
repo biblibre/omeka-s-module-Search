@@ -1,0 +1,7 @@
+<?php if ($searchPage): ?>
+    <?php $settings = $searchPage->settings(); ?>
+    <?php $fields = $settings['form']['elements'] ?? [] ?>
+    <?php foreach ($fields as $fieldData): ?>
+        <?= $this->partial('search/admin/form-elements/field-row', ['fieldData' => $fieldData, 'searchPage' => $searchPage]) ?>
+    <?php endforeach; ?>
+<?php endif; ?>

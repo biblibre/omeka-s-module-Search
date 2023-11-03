@@ -74,7 +74,7 @@ class IndexController extends AbstractActionController
             throw new RuntimeException($msg);
         }
 
-        $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
+        $query = $formAdapter->toQuery($params, $searchFormSettings);
         $response = $this->api()->read('search_indexes', $index_id);
         $this->index = $response->getContent();
 

@@ -13,11 +13,14 @@ const resetFieldNameSelect = function(formElement) {
     fieldAddButton.prop('disabled', true);
     fieldNameSelect.val('');
     fieldNameSelect.find('option').each(function() {
-        const thisOption = $(this);
-        const fieldName = thisOption.val();
-        const numFields = formElement.find(`li[data-field-name="${fieldName}"]`).length;
-        if (numFields >= 1) {
-            thisOption.prop('disabled', true);
+        const repeatable = this.getAttribute('data-repeatable');
+        if (!repeatable) {
+            const thisOption = $(this);
+            const fieldName = thisOption.val();
+            const numFields = formElement.find(`li[data-field-name="${fieldName}"]`).length;
+            if (numFields >= 1) {
+                thisOption.prop('disabled', true);
+            }
         }
     });
 };

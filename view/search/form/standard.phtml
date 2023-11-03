@@ -21,7 +21,8 @@
             'attributes' => $operator['proximity_support'] ? ['data-proximity-support' => true] : [],
         ];
     }, $availableOperators);
-    $settings = $form->getOption('search_page')->settings();
+    $searchPage = $form->getOption('search_page');
+    $settings = $searchPage->settings();
     $proximitySetting = $settings['form']['proximity'] ?? false;
 
     $form->prepare();
@@ -173,13 +174,9 @@
     </script>
 <?php endif; ?>
 
-<?php if (!empty($settings['form']['resource_class_field'])): ?>
-    <?php echo $this->partial('common/advanced-search/resource-class', ['query' => $query]); ?>
-<?php endif; ?>
-
-<?php if (!empty($settings['form']['item_sets_field'])): ?>
-    <?php echo $this->partial('common/advanced-search/item-sets', ['query' => $query]); ?>
-<?php endif; ?>
+<?php foreach ($settings['form']['elements'] ?? [] as $formElementData): ?>
+    <?= $this->searchFormElement()->form($searchPage, $query, $formElementData) ?>
+<?php endforeach; ?>
 
 <button type="submit"><?php echo $translate('Search'); ?></button>
 

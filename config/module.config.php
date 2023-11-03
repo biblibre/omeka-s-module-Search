@@ -8,6 +8,7 @@ return [
             'Search\Controller\SavedQuery' => Controller\SavedQueryController::class,
             'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
             'Search\Controller\Admin\Facets' => Controller\Admin\FacetsController::class,
+            'Search\Controller\Admin\FormElements' => Controller\Admin\FormElementsController::class,
             'Search\Controller\Admin\SearchFields' => Controller\Admin\SearchFieldsController::class,
             'Search\Controller\Admin\SortFields' => Controller\Admin\SortFieldsController::class,
         ],
@@ -201,6 +202,15 @@ return [
                                     ],
                                 ],
                             ],
+                            'form-elements' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/form-elements/:action',
+                                    'defaults' => [
+                                        'controller' => 'FormElements',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -215,6 +225,7 @@ return [
             'Search\AdapterManager' => Service\AdapterManagerFactory::class,
             'Search\FacetValueRendererManager' => Service\FacetValueRendererManagerFactory::class,
             'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
+            'Search\FormElementManager' => Service\FormElementManagerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -226,6 +237,7 @@ return [
         'factories' => [
             'saveQuery' => Service\ViewHelper\SaveQueryFactory::class,
             'searchFacetValue' => Service\ViewHelper\SearchFacetValueFactory::class,
+            'searchFormElement' => Service\ViewHelper\SearchFormElementFactory::class,
         ],
         'invokables' => [
             'facetLabel' => View\Helper\FacetLabel::class,
@@ -246,6 +258,14 @@ return [
             'standard' => Service\FormAdapter\StandardFormAdapterFactory::class,
         ],
     ],
+    'search_form_elements' => [
+        'invokables' => [
+            'item_set_select' => FormElement\ItemSetSelect::class,
+        ],
+        'factories' => [
+            'resource_class_select' => Service\FormElement\ResourceClassSelectFactory::class,
+        ],
+    ],
     'search_facet_value_renderers' => [
         'invokables' => [
             'fallback' => FacetValueRenderer\Fallback::class,
@@ -264,5 +284,4 @@ return [
             ],
         ],
     ],
-
 ];
