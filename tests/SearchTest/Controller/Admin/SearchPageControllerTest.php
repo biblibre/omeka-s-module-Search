@@ -44,8 +44,8 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $this->dispatch($this->searchPage->adminUrl('configure'));
         $this->assertResponseStatusCode(200);
 
-        $this->assertQueryContentContains('h2', 'Facets');
-        $this->assertQueryContentContains('h2', 'Sort fields');
+        $this->assertQueryContentContains('.field .field-meta label', 'Facets');
+        $this->assertQueryContentContains('.field .field-meta label', 'Sort fields');
     }
 
     public function testConfigurePostAction()
@@ -59,6 +59,9 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $this->dispatch($url, 'POST', [
             'facet_limit' => '10',
             'save_queries' => true,
+            'form' => [
+                'proximity' => true,
+            ],
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $this->assertRedirectTo("/admin/search");

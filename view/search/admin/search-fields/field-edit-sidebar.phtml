@@ -1,0 +1,26 @@
+<a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close'); ?></span></a>
+<div class="sidebar-content">
+    <div class="confirm-main">
+        <div id="fields-field-form">
+            <h3><?php echo $this->translate('Edit search field'); ?></h3>
+            <?php
+            $nameInput = new \Laminas\Form\Element\Text('name');
+            $nameInput->setLabel($this->translate('Name'));
+            $nameInput->setValue($fieldData['name']);
+            $nameInput->setAttribute('disabled', true);
+            echo $this->formRow($nameInput);
+            ?>
+
+            <?php
+            $nameInput = new \Laminas\Form\Element\Text('label');
+            $nameInput->setLabel($this->translate('Label'));
+            $nameInput->setValue($fieldData['label'] ?? '');
+            $nameInput->setAttribute('data-field-data-key', 'label');
+            echo $this->formRow($nameInput);
+            ?>
+        </div>
+    </div>
+    <div class="confirm-panel">
+        <button type="button" id="fields-field-set-button"><?php echo $this->translate('Set search field'); ?></button>
+    </div>
+</div>

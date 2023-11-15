@@ -39,6 +39,7 @@ class StandardFormAdapterFactory implements FactoryInterface
     {
         $formAdapter = new StandardFormAdapter();
         $formAdapter->setApiManager($services->get('Omeka\ApiManager'));
+        $formAdapter->setSearchFormElementManager($services->get('Search\FormElementManager'));
 
         return $formAdapter;
     }

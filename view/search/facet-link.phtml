@@ -1,4 +1,4 @@
 <span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-    <a href="<?php echo $this->escapeHtml($url); ?>"><?php echo $this->escapeHtml($value); ?></a>
+    <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, $value) ?></a>
     (<?php echo $count; ?>)
 </span>

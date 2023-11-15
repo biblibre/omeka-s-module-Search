@@ -11,10 +11,12 @@ class SearchPageConfigureFormFactory implements FactoryInterface
     {
         $translator = $services->get('MvcTranslator');
         $formElementManager = $services->get('FormElementManager');
+        $viewHelperManager = $services->get('ViewHelperManager');
 
         $form = new SearchPageConfigureForm(null, $options);
         $form->setTranslator($translator);
         $form->setFormElementManager($formElementManager);
+        $form->setUrlViewHelper($viewHelperManager->get('Url'));
 
         return $form;
     }

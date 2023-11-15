@@ -1,0 +1,11 @@
+<?php if ($searchPage): ?>
+    <?php $availableFacetFields = $searchPage->index()->availableFacetFields(); ?>
+    <?php $availableFacetFieldsNames = array_column($availableFacetFields, 'name'); ?>
+    <?php $settings = $searchPage->settings(); ?>
+    <?php $fields = $settings['facets'] ?? [] ?>
+    <?php foreach ($fields as $fieldData): ?>
+        <?php if (in_array($fieldData['name'], $availableFacetFieldsNames)): ?>
+            <?php echo $this->partial('search/admin/facets/field-row', ['fieldData' => $fieldData, 'searchPage' => $searchPage]); ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

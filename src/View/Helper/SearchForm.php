@@ -42,28 +42,24 @@ class SearchForm extends AbstractHelper
     public function getAvailableSearchFields()
     {
         $index = $this->searchPage->index();
-        $adapter = $index->adapter();
-
         $settings = $this->searchPage->settings();
 
-        if (!empty($settings['form']['search_fields'])) {
-            $enabledSearchFields = array_filter($settings['form']['search_fields'], function ($f) {
-                return $f['enabled'];
-            });
-            uasort($enabledSearchFields, function ($a, $b) {
-                return $a['weight'] - $b['weight'];
-            });
-            $searchFields = $adapter->getAvailableSearchFields($index);
-            $searchFieldsByName = [];
-            foreach ($searchFields as $searchField) {
-                $searchFieldsByName[ $searchField['name'] ] = $searchField;
+        $enabledSearchFields = array_column($settings['form']['search_fields'] ?? [], 'label', 'name');
+        $availableSearchFields = [];
+        if (!empty($enabledSearchFields)) {
+            foreach ($index->availableSearchFields() as $searchField) {
+                $name = $searchField['name'];
+                if (array_key_exists($name, $enabledSearchFields)) {
+                    $label = $enabledSearchFields[$name] ?? '';
+                    if (!empty($label)) {
+                        $searchField['label'] = $label;
+                    }
+                    $availableSearchFields[] = $searchField;
+                }
             }
-            return array_filter(array_map(function ($searchFieldName) use ($searchFieldsByName) {
-                return $searchFieldsByName[$searchFieldName];
-            }, array_keys($enabledSearchFields)));
         }
 
-        return [];
+        return $availableSearchFields;
     }
 
     public function getAvailableOperators()

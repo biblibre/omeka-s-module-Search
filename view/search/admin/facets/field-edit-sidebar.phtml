@@ -1,0 +1,13 @@
+<a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close'); ?></span></a>
+<div class="sidebar-content">
+    <div class="confirm-main">
+        <div id="fields-field-form">
+            <h3><?php echo $this->translate('Edit facet'); ?></h3>
+
+            <?= $this->formCollection($form, false) ?>
+        </div>
+    </div>
+    <div class="confirm-panel">
+        <button type="button" id="fields-field-set-button"><?php echo $this->translate('Set facet'); ?></button>
+    </div>
+</div>

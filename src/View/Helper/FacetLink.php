@@ -3,24 +3,13 @@
 namespace Search\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
-use Laminas\Mvc\Application;
 
 class FacetLink extends AbstractHelper
 {
-    public function __construct(Application $application)
-    {
-        $this->application = $application;
-    }
-
     public function __invoke($name, $facet)
     {
-        $mvcEvent = $this->application->getMvcEvent();
-        $routeMatch = $mvcEvent->getRouteMatch();
-        $request = $mvcEvent->getRequest();
-
-        $route = $routeMatch->getMatchedRouteName();
-        $params = $routeMatch->getParams();
-        $query = $request->getQuery()->toArray();
+        $view = $this->getView();
+        $query = $view->params()->fromQuery();
 
         $active = false;
         if (isset($query['limit'][$name]) && false !== array_search($facet['value'], $query['limit'][$name])) {
@@ -36,12 +25,12 @@ class FacetLink extends AbstractHelper
 
         unset($query['page']);
 
-        $view = $this->getView();
-        $url = $view->url($route, $params, ['query' => $query]);
+        $url = $view->url(null, [], ['query' => $query], true);
 
         return $view->partial('search/facet-link', [
             'url' => $url,
             'active' => $active,
+            'name' => $name,
             'value' => $facet['value'],
             'count' => $facet['count'],
         ]);

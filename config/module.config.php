@@ -7,6 +7,10 @@ return [
             'Search\Controller\Index' => Controller\IndexController::class,
             'Search\Controller\SavedQuery' => Controller\SavedQueryController::class,
             'Search\Controller\Admin\Index' => Controller\Admin\IndexController::class,
+            'Search\Controller\Admin\Facets' => Controller\Admin\FacetsController::class,
+            'Search\Controller\Admin\FormElements' => Controller\Admin\FormElementsController::class,
+            'Search\Controller\Admin\SearchFields' => Controller\Admin\SearchFieldsController::class,
+            'Search\Controller\Admin\SortFields' => Controller\Admin\SortFieldsController::class,
         ],
         'factories' => [
             'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
@@ -37,6 +41,7 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
+            'Search\Form\FacetForm' => Form\FacetForm::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
@@ -47,7 +52,11 @@ return [
             'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
             'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
+            'Search\Form\Element\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
         ],
+    ],
+    'listeners' => [
+        'Search\MvcListeners',
     ],
     'navigation' => [
         'AdminModule' => [
@@ -166,6 +175,42 @@ return [
                                     ],
                                 ],
                             ],
+                            'facets' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/facets/:action',
+                                    'defaults' => [
+                                        'controller' => 'Facets',
+                                    ],
+                                ],
+                            ],
+                            'sort-fields' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/sort-fields/:action',
+                                    'defaults' => [
+                                        'controller' => 'SortFields',
+                                    ],
+                                ],
+                            ],
+                            'search-fields' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/search-fields/:action',
+                                    'defaults' => [
+                                        'controller' => 'SearchFields',
+                                    ],
+                                ],
+                            ],
+                            'form-elements' => [
+                                'type' => 'Segment',
+                                'options' => [
+                                    'route' => '/form-elements/:action',
+                                    'defaults' => [
+                                        'controller' => 'FormElements',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -173,9 +218,14 @@ return [
         ],
     ],
     'service_manager' => [
+        'invokables' => [
+            'Search\MvcListeners' => Mvc\MvcListeners::class,
+        ],
         'factories' => [
             'Search\AdapterManager' => Service\AdapterManagerFactory::class,
+            'Search\FacetValueRendererManager' => Service\FacetValueRendererManagerFactory::class,
             'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
+            'Search\FormElementManager' => Service\FormElementManagerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -185,19 +235,43 @@ return [
     ],
     'view_helpers' => [
         'factories' => [
-            'facetLink' => Service\ViewHelper\FacetLinkFactory::class,
-            'facetLabel' => Service\ViewHelper\FacetLabelFactory::class,
             'saveQuery' => Service\ViewHelper\SaveQueryFactory::class,
-
+            'searchFacetValue' => Service\ViewHelper\SearchFacetValueFactory::class,
+            'searchFormElement' => Service\ViewHelper\SearchFormElementFactory::class,
         ],
         'invokables' => [
+            'facetLabel' => View\Helper\FacetLabel::class,
+            'facetLink' => View\Helper\FacetLink::class,
             'searchForm' => View\Helper\SearchForm::class,
             'showSavedQueries' => View\Helper\ShowSavedQueries::class,
+            'formFields' => Form\View\Helper\FormFields::class,
+            'searchCurrentPage' => View\Helper\SearchCurrentPage::class,
+        ],
+        'delegators' => [
+            'Laminas\Form\View\Helper\FormElement' => [
+                Service\Delegator\FormElementDelegatorFactory::class,
+            ],
         ],
     ],
     'search_form_adapters' => [
         'factories' => [
             'standard' => Service\FormAdapter\StandardFormAdapterFactory::class,
+        ],
+    ],
+    'search_form_elements' => [
+        'invokables' => [
+            'item_set_select' => FormElement\ItemSetSelect::class,
+        ],
+        'factories' => [
+            'resource_class_select' => Service\FormElement\ResourceClassSelectFactory::class,
+        ],
+    ],
+    'search_facet_value_renderers' => [
+        'invokables' => [
+            'fallback' => FacetValueRenderer\Fallback::class,
+        ],
+        'factories' => [
+            'resource_title' => Service\FacetValueRenderer\ResourceTitleFactory::class,
         ],
     ],
     'translator' => [
@@ -210,5 +284,4 @@ return [
             ],
         ],
     ],
-
 ];

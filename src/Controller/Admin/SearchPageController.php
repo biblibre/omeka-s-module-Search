@@ -179,7 +179,7 @@ class SearchPageController extends AbstractActionController
 
         $form->setData($this->params()->fromPost());
         if (!$form->isValid()) {
-            $this->messenger()->addError('There was an error during validation');
+            $this->messenger()->addFormErrors($form);
             return false;
         }
 

@@ -74,7 +74,7 @@ class IndexController extends AbstractActionController
             throw new RuntimeException($msg);
         }
 
-        $query = $formAdapter->toQuery($form->getData(), $searchFormSettings);
+        $query = $formAdapter->toQuery($params, $searchFormSettings);
         $response = $this->api()->read('search_indexes', $index_id);
         $this->index = $response->getContent();
 
@@ -92,10 +92,8 @@ class IndexController extends AbstractActionController
         }
 
         $settings = $this->page->settings();
-        foreach ($settings['facets'] as $name => $facet) {
-            if ($facet['enabled']) {
-                $query->addFacetField($name);
-            }
+        foreach ($settings['facets'] as $facet) {
+            $query->addFacetField($facet['name']);
         }
         if (isset($settings['facet_limit'])) {
             $query->setFacetLimit($settings['facet_limit']);
@@ -134,8 +132,14 @@ class IndexController extends AbstractActionController
             return $view;
         }
 
-        $facets = $response->getFacetCounts();
-        $facets = $this->sortByWeight($facets, 'facets');
+        $facetCounts = $response->getFacetCounts();
+        $facets = [];
+        foreach ($settings['facets'] as $facet) {
+            $name = $facet['name'];
+            if (array_key_exists($name, $facetCounts)) {
+                $facets[$name] = $facetCounts[$name];
+            }
+        }
 
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
 
@@ -165,37 +169,19 @@ class IndexController extends AbstractActionController
         $query->setLimitPage($page, $per_page);
     }
 
-    protected function sortByWeight($fields, $setting_name)
-    {
-        $settings = $this->page->settings();
-        uksort($fields, function ($a, $b) use ($settings, $setting_name) {
-            $aWeight = $settings[$setting_name][$a]['weight'];
-            $bWeight = $settings[$setting_name][$b]['weight'];
-            return $aWeight - $bWeight;
-        });
-        return $fields;
-    }
-
     protected function getSortOptions()
     {
         $sortOptions = [];
 
         $sortFields = $this->index->adapter()->getAvailableSortFields($this->index);
+        $sortFieldsMap = array_combine(array_column($sortFields, 'name'), $sortFields);
         $settings = $this->page->settings();
-        foreach ($settings['sort_fields'] as $name => $sort_field) {
-            if ($sort_field['enabled']) {
-                if (isset($sort_field['display']['label']) && !empty($sort_field['display']['label'])) {
-                    $label = $sort_field['display']['label'];
-                } elseif (isset($sortFields[$name]['label']) && !empty($sortFields[$name]['label'])) {
-                    $label = $sortFields[$name]['label'];
-                } else {
-                    $label = $name;
-                }
+        foreach ($settings['sort_fields'] as $sort_field) {
+            $name = $sort_field['name'];
+            $label = $sort_field['label'] ?? $sortFieldsMap[$name]['label'] ?? $name;
 
-                $sortOptions[$name] = $label;
-            }
+            $sortOptions[$name] = $label;
         }
-        $sortOptions = $this->sortByWeight($sortOptions, 'sort_fields');
 
         return $sortOptions;
     }

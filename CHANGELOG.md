@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add proximity setting to add an input on search form to choose distance between terms.
+- Change UI of search page configuration form for facet fields, sort fields and
+  search fields to be more easily configurable and more "Omeka-like".
+  Remove dependency on jQuery UI.
+- Add "facet value renderers" (extensible by modules) that allow to show to
+  users a value different from what is indexed.
+  The new built-in facet value renderer allows to render a resource's title
+  when only it's ID is indexed.
+- Makes the standard search form easily extensible by breaking it into smaller
+  parts, allowing modules to add new parts and allowing user to enable each
+  part individually and arrange them in any order.
 
 ## [0.13.0] - 2023-06-23
 

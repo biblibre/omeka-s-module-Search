@@ -30,30 +30,20 @@
 namespace Search\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
-use Laminas\Mvc\Application;
-use Omeka\Api\Manager as ApiManager;
 
 class FacetLabel extends AbstractHelper
 {
-    protected $application;
-    protected $api;
-
     protected $availableFacetFields;
-    protected $searchPage;
-
-    public function __construct(Application $application, ApiManager $api)
-    {
-        $this->application = $application;
-        $this->api = $api;
-    }
 
     public function __invoke($name)
     {
-        $searchPage = $this->getSearchPage();
+        $searchPage = $this->getView()->searchCurrentPage();
         $settings = $searchPage->settings();
 
-        if (!empty($settings['facets'][$name]['display']['label'])) {
-            return $settings['facets'][$name]['display']['label'];
+        foreach ($settings['facets'] ?? [] as $facet) {
+            if ($facet['name'] === $name && $facet['label'] ?? '' !== '') {
+                return $facet['label'];
+            }
         }
 
         $availableFacetFields = $this->getAvailableFacetFields();
@@ -67,25 +57,11 @@ class FacetLabel extends AbstractHelper
     protected function getAvailableFacetFields()
     {
         if (!isset($this->availableFacetFields)) {
-            $searchPage = $this->getSearchPage();
-            $searchAdapter = $searchPage->index()->adapter();
+            $searchPage = $this->getView()->searchCurrentPage();
 
-            $this->availableFacetFields = $searchAdapter->getAvailableFacetFields($searchPage->index());
+            $this->availableFacetFields = $searchPage->index()->availableFacetFields();
         }
 
         return $this->availableFacetFields;
-    }
-
-    protected function getSearchPage()
-    {
-        if (!isset($this->searchPage)) {
-            $mvcEvent = $this->application->getMvcEvent();
-            $routeMatch = $mvcEvent->getRouteMatch();
-
-            $response = $this->api->read('search_pages', $routeMatch->getParam('id'));
-            $this->searchPage = $response->getContent();
-        }
-
-        return $this->searchPage;
     }
 }
