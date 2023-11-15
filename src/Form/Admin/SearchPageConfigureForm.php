@@ -30,7 +30,6 @@
 namespace Search\Form\Admin;
 
 use Laminas\Form\Form;
-use Laminas\Form\Fieldset;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Search\Form\Element\Fields;

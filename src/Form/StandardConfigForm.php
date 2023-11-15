@@ -77,7 +77,7 @@ class StandardConfigForm extends Fieldset
                 'label' => $searchFormElement->getLabel(),
                 'attributes' => [
                     'data-repeatable' => $searchFormElement->isRepeatable() ? '1' : '',
-                ]
+                ],
             ];
         }
 

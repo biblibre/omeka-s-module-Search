@@ -2,7 +2,6 @@
 
 namespace Search\FormElement;
 
-use Laminas\Form\Select;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchPageRepresentation;

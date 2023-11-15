@@ -30,8 +30,6 @@
 namespace Search\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
-use Laminas\Mvc\Application;
-use Omeka\Api\Manager as ApiManager;
 
 class FacetLabel extends AbstractHelper
 {

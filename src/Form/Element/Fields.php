@@ -18,7 +18,7 @@ class Fields extends Element implements InputProviderInterface
             'filters' => [
                 // Decode JSON into a PHP array so data can be stored properly.
                 new Callback(function ($json) {
-                    return json_decode($json, true);
+                    return isset($json) ? json_decode($json, true) : [];
                 }),
             ],
         ];
