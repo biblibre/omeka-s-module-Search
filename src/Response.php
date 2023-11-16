@@ -36,6 +36,7 @@ class Response
 
     protected $results = [];
     protected $facetCounts = [];
+    protected $highlights = [];
 
     public function setTotalResults($totalResults)
     {
@@ -82,5 +83,32 @@ class Response
     public function getFacetCounts()
     {
         return $this->facetCounts;
+    }
+
+    /**
+     * Add highlight (a text fragment containing a searched word or phrase)
+     *
+     * @param string $resource resource name
+     * @param int    $id       resource id
+     * @param string $text     highlight text, can contain HTML.
+     */
+    public function addHighlight(string $resource, int $id, string $highlight)
+    {
+        $this->highlights[$resource][$id][] = ['highlight' => $highlight];
+    }
+
+    /**
+     * Get all highlights for a single result
+     *
+     * @param string $resource resource name
+     * @param int    $id       resource id
+     *
+     * @return array[] an array of associative arrays
+     *                 each associative array contains the following key:
+     *                 * 'highlight' - contain the highlight text, which can contain HTML
+     */
+    public function getHighlights(string $resource, int $id): array
+    {
+        return $this->highlights[$resource][$id] ?? [];
     }
 }

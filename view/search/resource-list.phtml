@@ -33,10 +33,12 @@
     <div class="resource-list">
         <?php foreach ($results as $result): ?>
             <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
+            <?php $highlights = $response->getHighlights($resourceName, $result['id']); ?>
             <?php echo $this->partial('search/resource', [
                 'resource' => $resource,
                 'site' => $site,
                 'tag' => 'div',
+                'highlights' => $highlights,
             ]); ?>
         <?php endforeach; ?>
     </div>

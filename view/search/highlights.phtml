@@ -1,0 +1,33 @@
+<?php
+// $limit is the number of visible highlights, the rest will be hidden but can
+// be revealed by a user click
+// It can be set to a negative value to always show all highlights
+$limit ??= 3;
+?>
+
+<?php if (!empty($highlights)): ?>
+    <div class="search-highlights-section">
+        <span class="search-highlights-section-comment">
+            <?php echo $this->translate("Extracts matching your search"); ?>
+        </span>
+
+        <ul class="search-highlights">
+            <?php $totalHighlights = count($highlights); ?>
+            <?php foreach ($highlights as $i => $highlight): ?>
+                <?php $extra = $i >= $limit; ?>
+                <li class="search-highlight <?= $extra ? 'search-highlight-extra' : '' ?>">
+                    <?php if ($totalHighlights > 1): ?>
+                        <span class="search-highlight-position">
+                            <?= sprintf('%d/%d', $i + 1, $totalHighlights); ?>
+                        </span>
+                    <?php endif; ?>
+                    <q><?= $highlight['highlight']; ?></q>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php if ($totalHighlights > $limit): ?>
+            <a href="#" class="search-highlights-show-more"><i class="o-icon-down"></i> <?= $this->translate('Show more'); ?></a>
+            <a href="#" class="search-highlights-show-less"><i class="o-icon-up"></i> <?= $this->translate('Show less'); ?></a>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

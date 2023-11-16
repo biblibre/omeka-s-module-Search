@@ -44,4 +44,6 @@
             <?php echo $description; ?>
         </div>
     <?php endif; ?>
+
+    <?= $this->partial('search/highlights', ['highlights' => $highlights, 'limit' => 3]); ?>
 </<?php echo $tag ?>>

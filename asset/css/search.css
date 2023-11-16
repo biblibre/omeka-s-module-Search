@@ -100,3 +100,52 @@
 .search-form-standard-filter-proximity {
   width: 4em;
 }
+
+.search-highlights-section {
+  font-size: smaller;
+  background-color: rgba(128, 128, 128, 0.1);
+  margin: 0.5em 0 0.5em 0;
+  padding: 0.5em;
+}
+
+.search-highlights-section-comment {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.search-highlights {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.search-highlight-extra {
+    display: none;
+}
+.search-highlights-section-open .search-highlight-extra {
+    display: block;
+}
+
+.search-highlight q > mark {
+  background-color: rgb(253, 231, 200);
+  font-weight: 600;
+}
+
+.search-highlight-position {
+  font-size: smaller;
+  font-weight: bolder;
+}
+
+.search-highlights-show-more {
+    display: inline;
+}
+.search-highlights-section-open .search-highlights-show-more {
+    display: none;
+}
+.search-highlights-show-less {
+    display: none;
+}
+.search-highlights-section-open .search-highlights-show-less {
+    display: inline;
+}
