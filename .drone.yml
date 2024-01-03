@@ -12,7 +12,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -35,7 +34,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -58,7 +56,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -81,7 +78,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -104,7 +100,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -127,7 +122,6 @@ steps:
   - cp -rT /usr/src/omeka-s ../..
   - echo 'host = "db"\nuser = "root"\npassword = "root"\ndbname = "omeka_test"\n'
     > ../../application/test/config/database.ini
-  - php ../../build/composer.phar install
   - bash -c "cd ../.. && php /usr/local/libexec/wait-for-db.php"
   - ../../vendor/bin/phpunit
   - ../../node_modules/.bin/gulp test:module:cs
@@ -138,6 +132,6 @@ workspace:
   path: omeka-s/modules/Search
 ---
 kind: signature
-hmac: ce48cf0a6bc4654da5e30d38edd69fcbfb81cf3cace1a776da289b73235adc2c
+hmac: ad6f9b7d5111629baefb2696989334ea60f65eb7f82e0f2687c20147cfa929dc
 
 ...
