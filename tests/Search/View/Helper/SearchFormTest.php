@@ -8,6 +8,9 @@ use Search\Api\Representation\SearchPageRepresentation;
 
 class SearchFormTest extends SearchControllerTestCase
 {
+    /**
+     * @requires PHPUnit >= 8.4
+     */
     public function testGetAvailableSearchFields()
     {
         $searchIndexStub = $this->createStub(SearchIndexRepresentation::class);
