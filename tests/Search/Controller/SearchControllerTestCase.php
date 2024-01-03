@@ -1,6 +1,6 @@
 <?php
 
-namespace SearchTest\Controller;
+namespace Search\Test\Controller;
 
 use Omeka\Test\AbstractHttpControllerTestCase;
 

@@ -44,18 +44,16 @@ class SearchForm extends AbstractHelper
         $index = $this->searchPage->index();
         $settings = $this->searchPage->settings();
 
-        $enabledSearchFields = array_column($settings['form']['search_fields'] ?? [], 'label', 'name');
+        $indexAvailableSearchFields = array_column($index->availableSearchFields(), null, 'name');
         $availableSearchFields = [];
-        if (!empty($enabledSearchFields)) {
-            foreach ($index->availableSearchFields() as $searchField) {
-                $name = $searchField['name'];
-                if (array_key_exists($name, $enabledSearchFields)) {
-                    $label = $enabledSearchFields[$name] ?? '';
-                    if (!empty($label)) {
-                        $searchField['label'] = $label;
-                    }
-                    $availableSearchFields[] = $searchField;
+        foreach ($settings['form']['search_fields'] ?? [] as $searchField) {
+            $name = $searchField['name'];
+            if (array_key_exists($name, $indexAvailableSearchFields)) {
+                $indexSearchField = $indexAvailableSearchFields[$name];
+                if (!empty($searchField['label'])) {
+                    $indexSearchField['label'] = $searchField['label'];
                 }
+                $availableSearchFields[] = $indexSearchField;
             }
         }
 

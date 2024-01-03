@@ -1,8 +1,6 @@
 <?php
 
-namespace SearchTest\Controller;
-
-require_once __DIR__ . '/SearchControllerTestCase.php';
+namespace Search\Test\Controller;
 
 class IndexControllerTest extends SearchControllerTestCase
 {

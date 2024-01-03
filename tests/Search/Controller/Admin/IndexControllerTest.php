@@ -1,10 +1,8 @@
 <?php
 
-namespace SearchTest\Controller\Admin;
+namespace Search\Test\Controller\Admin;
 
-require_once __DIR__ . '/../SearchControllerTestCase.php';
-
-use SearchTest\Controller\SearchControllerTestCase;
+use Search\Test\Controller\SearchControllerTestCase;
 
 class IndexControllerTest extends SearchControllerTestCase
 {

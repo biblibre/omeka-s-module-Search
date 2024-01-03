@@ -1,14 +1,12 @@
 <?php
 
-namespace SearchTest\Controller\Admin;
-
-require_once __DIR__ . '/../SearchControllerTestCase.php';
+namespace Search\Test\Controller\Admin;
 
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
 use Search\Form\Admin\SearchIndexConfigureForm;
 use Search\Form\Admin\SearchIndexRebuildForm;
-use SearchTest\Controller\SearchControllerTestCase;
+use Search\Test\Controller\SearchControllerTestCase;
 
 class SearchIndexControllerTest extends SearchControllerTestCase
 {

@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../../../bootstrap.php';
+require dirname(__DIR__, 3) . '/bootstrap.php';
 
 //make sure error reporting is on for testing
 error_reporting(E_ALL);
@@ -22,9 +21,27 @@ $adapter->setIdentity('admin@example.com');
 $adapter->setCredential('root');
 $auth->authenticate();
 
+$moduleName = 'Search';
+
 // Enable Search module
 $moduleManager = $serviceLocator->get('Omeka\ModuleManager');
-$module = $moduleManager->getModule('Search');
+$module = $moduleManager->getModule($moduleName);
 if ($module->getState() !== \Omeka\Module\Manager::STATE_ACTIVE) {
     $moduleManager->install($module);
 }
+
+spl_autoload_register(function ($class) use ($moduleName) {
+    $prefix = "$moduleName\\Test\\";
+    $base_dir = __DIR__ . "/$moduleName/";
+
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+
+    $relative_class = substr($class, $len);
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+    if (file_exists($file)) {
+        require $file;
+    }
+});

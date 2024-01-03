@@ -3,7 +3,7 @@
 <phpunit bootstrap="tests/bootstrap.php" colors="true" backupGlobals="false" convertDeprecationsToExceptions="false">
     <testsuites>
         <testsuite name="Search">
-            <directory>tests/SearchTest</directory>
+            <directory>tests/Search</directory>
         </testsuite>
     </testsuites>
     <filter>
