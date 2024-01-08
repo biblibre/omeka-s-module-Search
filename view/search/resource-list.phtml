@@ -29,7 +29,9 @@
 
 <?php $results = $response->getResults($resourceName); ?>
 <?php if (!empty($results)): ?>
-    <h3><?php echo $title; ?></h3>
+    <?php if (!empty($title)): ?>
+        <h3><?php echo $this->escapeHtml($title); ?></h3>
+    <?php endif; ?>
     <div class="resource-list">
         <?php foreach ($results as $result): ?>
             <?php $resource = $this->api()->read($resourceName, $result['id'])->getContent(); ?>
