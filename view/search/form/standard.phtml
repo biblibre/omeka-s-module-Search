@@ -85,7 +85,7 @@
 
             $('#search-form-standard').on('click', '.search-add-filter', function (ev) {
                 ev.preventDefault();
-                insertFilterBefore(this.parentNode);
+                insertFilterBefore(this.closest('.search-form-standard-match-group-item'));
                 renameAllFormControls();
                 initProximityVisibility();
             });
@@ -94,7 +94,7 @@
                 ev.preventDefault();
                 const template = document.getElementById('template-search-group');
                 const group = template.content.cloneNode(true).firstElementChild;
-                this.parentNode.insertAdjacentElement('beforebegin', group);
+                this.closest('.search-form-standard-match-group-item').insertAdjacentElement('beforebegin', group);
 
                 renameAllFormControls();
                 initProximityVisibility();

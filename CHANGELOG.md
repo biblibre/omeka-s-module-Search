@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- Standard form: be more lenient about DOM structure when adding a new filter
+  or a new group of filters (this allow themes that override
+  standard-match-group.phtml to wrap these buttons in other HTML elements)
+
 ## [0.15.2] - 2024-01-08
 
 - Avoid "undefined variable $title" warning in resource-list.phtml
