@@ -71,7 +71,7 @@ msgstr "Rechercher partout"
 #: view/search/admin/facets/field-edit-sidebar.phtml:5
 #: view/search/admin/facets/field-row.phtml:18
 msgid "Edit facet"
-msgstr "Modifier la recherche"
+msgstr "Modifier la facette"
 
 #: view/search/admin/facets/field-edit-sidebar.phtml:11
 msgid "Set facet"
@@ -79,11 +79,11 @@ msgstr "Définir la facette"
 
 #: view/search/admin/facets/field-row.phtml:5
 msgid "Facet to be removed"
-msgstr ""
+msgstr "Facette à supprimer"
 
 #: view/search/admin/facets/field-row.phtml:22
 msgid "Remove facet"
-msgstr "Facette à supprimer"
+msgstr "Supprimer la facette"
 
 #: view/search/admin/facets/field-row.phtml:26
 msgid "Restore facet"
@@ -92,7 +92,7 @@ msgstr "Restaurer la facette"
 #: view/search/admin/form-elements/field-edit-sidebar.phtml:5
 #: view/search/admin/form-elements/field-row.phtml:11
 msgid "Edit form element"
-msgstr "Modifier les éléments du formulaire"
+msgstr "Modifier l'élément du formulaire"
 
 #: view/search/admin/form-elements/field-edit-sidebar.phtml:18
 msgid "Set form element"
@@ -132,7 +132,6 @@ msgid "Edit search field"
 msgstr "Modifier le champ de recherche"
 
 #: view/search/admin/search-fields/field-edit-sidebar.phtml:24
-#, fuzzy
 msgid "Set search field"
 msgstr "Définir le champ de recherche"
 
@@ -183,7 +182,6 @@ msgstr "Modifier la page de recherche"
 
 #: view/search/admin/sort-fields/field-edit-sidebar.phtml:5
 #: view/search/admin/sort-fields/field-row.phtml:18
-#, fuzzy
 msgid "Edit sort field"
 msgstr "Modifier le champ de tri"
 
@@ -209,11 +207,11 @@ msgstr "Filtres"
 
 #: view/search/form/standard-match-group-filter.phtml:26
 msgid "Proximity option (e.g. 2)"
-msgstr "Option proximité (e.g. 2)"
+msgstr "Option de proximité (ex. 2)"
 
 #: view/search/form/standard-match-group-filter.phtml:27
 msgid "prox."
-msgstr "à proximité."
+msgstr "prox."
 
 #: view/search/form/standard-match-group.phtml:3
 msgid "Match all of the following criteria:"
@@ -237,11 +235,11 @@ msgstr "Extraits correspondant à votre recherche"
 
 #: view/search/highlights.phtml:29
 msgid "Show more"
-msgstr "Montre plus"
+msgstr "Voir plus"
 
 #: view/search/highlights.phtml:30
 msgid "Show less"
-msgstr "Montrer moins"
+msgstr "Voir moins"
 
 #: view/search/index/search.phtml:47
 msgid "Edit search"
@@ -257,7 +255,7 @@ msgstr "Sauvegarder cette requête"
 
 #: view/search/saved-queries.phtml:42
 msgid "Actions"
-msgstr "Actions"
+msgstr ""
 
 #: view/search/saved-queries.phtml:63
 msgid "Reload"
@@ -283,7 +281,7 @@ msgstr "Champ à utiliser pour le filtrage. Ce devrait être un champ de facette
 
 #: src/FacetValueRenderer/Fallback.php:11
 msgid "Fallback"
-msgstr "Retomber"
+msgstr "Retirer"
 
 #: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
@@ -316,7 +314,7 @@ msgstr "Ajouter un élément de formulaire"
 
 #: src/Form/FacetForm.php:39
 msgid "Value renderer"
-msgstr "Rendu de valeur"
+msgstr "Valeur rendu"
 
 #: src/Form/FacetForm.php:40
 msgid ""
@@ -326,8 +324,8 @@ msgid ""
 "value as is."
 msgstr ""
 "Le moteur de rendu de valeur modifie la façon dont une valeur de facette est affichée aux utilisateurs. C'est "
-"utile lorsque la valeur indexée est un identifiant ou un code interne qui peut être "
-"associé à un texte convivial. Le moteur de rendu par défaut affiche le "
+"utile lorsque la valeur indexée est un identifiant interne et de code qui peut être "
+"associé à un texte convivial. Le moteur de rendu par défaut affiche le indexé"
 "valeur telle quelle."
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
