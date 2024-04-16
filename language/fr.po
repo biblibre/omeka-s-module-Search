@@ -216,11 +216,11 @@ msgstr "prox."
 
 #: view/search/form/standard-match-group.phtml:3
 msgid "Match all of the following criteria:"
-msgstr "Correspond à tous les critères suivants :"
+msgstr "Correspond à tous les critères suivants:"
 
 #: view/search/form/standard-match-group.phtml:4
 msgid "Match any of the following criteria:"
-msgstr "Correspond à au moins un des critères suivants :"
+msgstr "Correspond à au moins un des critères suivants:"
 
 #: view/search/form/standard-match-group.phtml:57
 msgid "Add filter"
