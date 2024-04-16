@@ -184,7 +184,7 @@ msgstr "Modifier la page de recherche"
 #: view/search/admin/sort-fields/field-edit-sidebar.phtml:5
 #: view/search/admin/sort-fields/field-row.phtml:18
 msgid "Edit sort field"
-msgstr "Edit le champ de tri"
+msgstr "Editer le champ de tri"
 
 #: view/search/admin/sort-fields/field-edit-sidebar.phtml:24
 msgid "Set sort field"
