@@ -326,8 +326,8 @@ msgid ""
 msgstr ""
 "Le moteur de rendu de valeur modifie la façon dont une valeur de facette est affichée aux utilisateurs. C'est "
 "utile lorsque la valeur indexée est un identifiant interne ou un code qui peut être "
-"associé à un texte compréhensible facilement. Le moteur de rendu par défaut affiche le indexé "
-"valeur telle quelle."
+"associé à un texte compréhensible facilement. Le moteur de rendu par défaut affiche la "
+"valeur indexée telle quelle."
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
 msgid "Clear index"
