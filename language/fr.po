@@ -7,7 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2024-04-17 18:23+0200\n"
+=======
+"POT-Creation-Date: 2024-04-15 15:42+0200\n"
+>>>>>>> 82105151065593ce48ea47f7d046875a3c6ad3d1
 "PO-Revision-Date: 2022-12-09 16:31+0100\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
@@ -70,7 +74,10 @@ msgstr "Rechercher partout"
 
 #: view/search/admin/facets/field-edit-sidebar.phtml:5
 #: view/search/admin/facets/field-row.phtml:18
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 82105151065593ce48ea47f7d046875a3c6ad3d1
 msgid "Edit facet"
 msgstr "Modifier la facette"
 
@@ -134,9 +141,16 @@ msgstr "Modifier le champ de recherche"
 
 #: view/search/admin/search-fields/field-edit-sidebar.phtml:24
 msgid "Set search field"
+<<<<<<< HEAD
 msgstr "Champs de recherche"
 
 #: view/search/admin/search-fields/field-row.phtml:5
+=======
+msgstr "Definir le champ de recherche"
+
+#: view/search/admin/search-fields/field-row.phtml:5
+
+>>>>>>> 82105151065593ce48ea47f7d046875a3c6ad3d1
 msgid "Search field to be removed"
 msgstr "Champ de recherche à supprimer"
 
@@ -212,15 +226,19 @@ msgstr "Option de proximité (ex. 2)"
 
 #: view/search/form/standard-match-group-filter.phtml:27
 msgid "prox."
+<<<<<<< HEAD
 msgstr "prox"
+=======
+msgstr "prox."
+>>>>>>> 82105151065593ce48ea47f7d046875a3c6ad3d1
 
 #: view/search/form/standard-match-group.phtml:3
 msgid "Match all of the following criteria:"
-msgstr "Correspond à tous les critères suivants :"
+msgstr "Correspond à tous les critères suivants:"
 
 #: view/search/form/standard-match-group.phtml:4
 msgid "Match any of the following criteria:"
-msgstr "Correspond à au moins un des critères suivants :"
+msgstr "Correspond à au moins un des critères suivants:"
 
 #: view/search/form/standard-match-group.phtml:57
 msgid "Add filter"
@@ -354,7 +372,10 @@ msgid "Facets"
 msgstr "Facettes"
 
 #: src/Form/Admin/SearchPageConfigureForm.php:83
+<<<<<<< HEAD
 #, fuzzy
+=======
+>>>>>>> 82105151065593ce48ea47f7d046875a3c6ad3d1
 msgid "Add a facet"
 msgstr "Ajouter une facette"
 
