@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-18 10:03+0200\n"
+"POT-Creation-Date: 2024-05-15 15:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,23 +266,20 @@ msgstr ""
 msgid "None saved queries yet"
 msgstr ""
 
-#: src/FormElement/ResourceClassSelect.php:24
-#: src/FormElement/ItemSetSelect.php:21
-msgid "Field"
-msgstr ""
-
-#: src/FormElement/ResourceClassSelect.php:25
-#: src/FormElement/ItemSetSelect.php:22
-msgid "Field to use for filtering. It should be a facet field."
-msgstr ""
-
 #: src/FacetValueRenderer/Fallback.php:11
 msgid "Fallback"
 msgstr ""
 
-#: src/Controller/Admin/SearchIndexController.php:130
-#, php-format
-msgid "Index rebuilding started in %sjob %s%s"
+#: src/Form/FacetForm.php:39
+msgid "Value renderer"
+msgstr ""
+
+#: src/Form/FacetForm.php:40
+msgid ""
+"The value renderer changes how a facet value is displayed to users. It is "
+"useful when the indexed value is an internal id or code that can be "
+"associated to a human-friendly text. The default renderer shows the indexed "
+"value as is."
 msgstr ""
 
 #: src/Form/StandardConfigForm.php:53
@@ -309,16 +306,20 @@ msgstr ""
 msgid "Add a form element"
 msgstr ""
 
-#: src/Form/FacetForm.php:39
-msgid "Value renderer"
+#: src/Form/Admin/SearchPageConfigureForm.php:82
+msgid "Facets"
 msgstr ""
 
-#: src/Form/FacetForm.php:40
-msgid ""
-"The value renderer changes how a facet value is displayed to users. It is "
-"useful when the indexed value is an internal id or code that can be "
-"associated to a human-friendly text. The default renderer shows the indexed "
-"value as is."
+#: src/Form/Admin/SearchPageConfigureForm.php:83
+msgid "Add a facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:97
+msgid "Sort fields"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:98
+msgid "Add a sort field"
 msgstr ""
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
@@ -339,20 +340,9 @@ msgid ""
 "more memory"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:82
-msgid "Facets"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:83
-msgid "Add a facet"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:97
-msgid "Sort fields"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-msgid "Add a sort field"
+#: src/Controller/Admin/SearchIndexController.php:130
+#, php-format
+msgid "Index rebuilding started in %sjob %s%s"
 msgstr ""
 
 #: src/Site/BlockLayout/SavedQueries.php:30
@@ -361,4 +351,18 @@ msgstr ""
 
 #: src/Site/BlockLayout/SavedQueries.php:51
 msgid "Label for this block"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:16
+msgid "Resource class"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:24
+#: src/FormElement/ItemSetSelect.php:21
+msgid "Field"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:25
+#: src/FormElement/ItemSetSelect.php:22
+msgid "Field to use for filtering. It should be a facet field."
 msgstr ""

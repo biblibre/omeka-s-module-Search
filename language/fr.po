@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-18 10:03+0200\n"
-"PO-Revision-Date: 2022-12-09 16:31+0100\n"
+"POT-Creation-Date: 2024-05-15 15:47+0200\n"
+"PO-Revision-Date: 2024-05-15 15:55+0200\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: src/Api/Representation/SearchIndexRepresentation.php:105
 msgid "[No adapter]"
@@ -269,24 +269,26 @@ msgstr "Supprimer cette requête sauvegardée"
 msgid "None saved queries yet"
 msgstr "Aucune requête sauvegardée"
 
-#: src/FormElement/ResourceClassSelect.php:24
-#: src/FormElement/ItemSetSelect.php:21
-msgid "Field"
-msgstr "Champ"
-
-#: src/FormElement/ResourceClassSelect.php:25
-#: src/FormElement/ItemSetSelect.php:22
-msgid "Field to use for filtering. It should be a facet field."
-msgstr "Champ à utiliser pour le filtrage. Cela devrait être un champ de facettes."
-
 #: src/FacetValueRenderer/Fallback.php:11
 msgid "Fallback"
-msgstr "Retirer"
+msgstr ""
 
-#: src/Controller/Admin/SearchIndexController.php:130
-#, php-format
-msgid "Index rebuilding started in %sjob %s%s"
-msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
+#: src/Form/FacetForm.php:39
+msgid "Value renderer"
+msgstr "Moteur de rendu"
+
+#: src/Form/FacetForm.php:40
+msgid ""
+"The value renderer changes how a facet value is displayed to users. It is "
+"useful when the indexed value is an internal id or code that can be "
+"associated to a human-friendly text. The default renderer shows the indexed "
+"value as is."
+msgstr ""
+"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est "
+"affichée aux utilisateurs. C'est utile lorsque la valeur indexée est un "
+"identifiant interne ou un code qui peut être associé à un texte "
+"compréhensible facilement. Le moteur de rendu par défaut affiche la valeur "
+"indexée telle quelle."
 
 #: src/Form/StandardConfigForm.php:53
 msgid "Search fields"
@@ -302,7 +304,9 @@ msgstr "Proximité"
 
 #: src/Form/StandardConfigForm.php:67
 msgid "Add proximity option on search form to choose distance between terms"
-msgstr "Ajoutez une option de proximité sur le formulaire de recherche pour choisir la distance entre les termes"
+msgstr ""
+"Ajoutez une option de proximité sur le formulaire de recherche pour choisir "
+"la distance entre les termes"
 
 #: src/Form/StandardConfigForm.php:88
 msgid "Form elements"
@@ -312,21 +316,21 @@ msgstr "Éléments de formulaire"
 msgid "Add a form element"
 msgstr "Ajouter un élément de formulaire"
 
-#: src/Form/FacetForm.php:39
-msgid "Value renderer"
-msgstr "Moteur de rendu"
+#: src/Form/Admin/SearchPageConfigureForm.php:82
+msgid "Facets"
+msgstr "Facettes"
 
-#: src/Form/FacetForm.php:40
-msgid ""
-"The value renderer changes how a facet value is displayed to users. It is "
-"useful when the indexed value is an internal id or code that can be "
-"associated to a human-friendly text. The default renderer shows the indexed "
-"value as is."
-msgstr ""
-"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est affichée aux utilisateurs. C'est "
-"utile lorsque la valeur indexée est un identifiant interne ou un code qui peut être "
-"associé à un texte compréhensible facilement. Le moteur de rendu par défaut affiche la "
-"valeur indexée telle quelle."
+#: src/Form/Admin/SearchPageConfigureForm.php:83
+msgid "Add a facet"
+msgstr "Ajouter une facette"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:97
+msgid "Sort fields"
+msgstr "Champs de tri"
+
+#: src/Form/Admin/SearchPageConfigureForm.php:98
+msgid "Add a sort field"
+msgstr "Ajouter un champ de tri"
 
 #: src/Form/Admin/SearchIndexRebuildForm.php:44
 msgid "Clear index"
@@ -348,21 +352,10 @@ msgstr ""
 "Indexer cette quantité de ressources par lot. Une grande taille de lot sera "
 "plus rapide, mais utilisera plus de mémoire"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:82
-msgid "Facets"
-msgstr "Facettes"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:83
-msgid "Add a facet"
-msgstr "Ajouter une facette"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:97
-msgid "Sort fields"
-msgstr "Champs de tri"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-msgid "Add a sort field"
-msgstr "Ajouter un champ de tri"
+#: src/Controller/Admin/SearchIndexController.php:130
+#, php-format
+msgid "Index rebuilding started in %sjob %s%s"
+msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
 
 #: src/Site/BlockLayout/SavedQueries.php:30
 msgid "Saved Queries"
@@ -371,6 +364,21 @@ msgstr "Requêtes sauvegardées"
 #: src/Site/BlockLayout/SavedQueries.php:51
 msgid "Label for this block"
 msgstr "Libellé pour ce bloc"
+
+#: src/FormElement/ResourceClassSelect.php:16
+msgid "Resource class"
+msgstr "Classe de ressource"
+
+#: src/FormElement/ResourceClassSelect.php:24
+#: src/FormElement/ItemSetSelect.php:21
+msgid "Field"
+msgstr "Champ"
+
+#: src/FormElement/ResourceClassSelect.php:25
+#: src/FormElement/ItemSetSelect.php:22
+msgid "Field to use for filtering. It should be a facet field."
+msgstr ""
+"Champ à utiliser pour le filtrage. Cela devrait être un champ de facettes."
 
 #~ msgid "Enabled"
 #~ msgstr "Activé"
