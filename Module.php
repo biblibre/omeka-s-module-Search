@@ -364,6 +364,8 @@ class Module extends AbstractModule
         // down the request
         if (PHP_SAPI === 'cli') {
             $api = $serviceLocator->get('Omeka\ApiManager');
+            $em = $serviceLocator->get('Omeka\EntityManager');
+            $originalIdentityMap = $em->getUnitOfWork()->getIdentityMap();
             $searchIndexes = $api->search('search_indexes')->getContent();
             foreach ($searchIndexes as $searchIndex) {
                 $searchIndexSettings = $searchIndex->settings();
@@ -377,6 +379,15 @@ class Module extends AbstractModule
                     $indexer->indexResources($filteredResources);
                 } catch (\Exception $e) {
                     $logger->err(sprintf('Search: failed to index resources: %s', $e));
+                }
+            }
+
+            $identityMap = $em->getUnitOfWork()->getIdentityMap();
+            foreach ($identityMap as $entityClass => $entities) {
+                foreach ($entities as $idHash => $entity) {
+                    if (!isset($originalIdentityMap[$entityClass][$idHash])) {
+                        $em->detach($entity);
+                    }
                 }
             }
         } else {

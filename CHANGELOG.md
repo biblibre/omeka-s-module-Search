@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- When indexing outside of UpdateIndex job, detach all entities that have been
+  attached by the indexer, as they can cause weird bugs if not detached.
+  For instance, a batch update adding a value could result in the same value
+  added multiple times to the same resource
+
 ## [0.15.3] - 2024-02-21
 
 - Standard form: be more lenient about DOM structure when adding a new filter
