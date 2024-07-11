@@ -17,6 +17,7 @@
 
 .search-facets {
   flex-basis: 25%;
+  flex-shrink: 0;
   order: -1;
   padding: 0 0.5em;
 }
