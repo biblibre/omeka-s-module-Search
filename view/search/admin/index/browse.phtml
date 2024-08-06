@@ -33,9 +33,9 @@
 <?php echo $this->pageTitle($this->translate('Search configuration')); ?>
 
 <div id="page-actions">
-    <a class="button" href="<?php echo $this->url('admin/search/index', ['action' => 'add']); ?>">Add new index</a>
+    <a class="button" href="<?php echo $this->url('admin/search/index', ['action' => 'add']); ?>"><?php echo $this->translate('Add new index')?></a>
     <?php if (!empty($search_indexes)): ?>
-        <a class="button" href="<?php echo $this->url('admin/search/page', ['action' => 'add']); ?>">Add new page</a>
+        <a class="button" href="<?php echo $this->url('admin/search/page', ['action' => 'add']); ?>"><?php echo $this->translate('Add new page')?></a>
     <?php endif; ?>
 </div>
 

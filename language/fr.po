@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-15 15:47+0200\n"
+"POT-Creation-Date: 2024-08-06 15:01+0200\n"
 "PO-Revision-Date: 2024-05-15 15:55+0200\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
 "Language-Team: French\n"
@@ -113,6 +113,10 @@ msgstr "Restaurer l'élément de formulaire"
 #: view/search/admin/index/browse.phtml:33
 msgid "Search configuration"
 msgstr "Configuration de la recherche"
+
+#: view/search/admin/index/browse.phtml:36
+msgid "Add new index"
+msgstr "Ajouter un index"
 
 #: view/search/admin/index/browse.phtml:70
 msgid "Rebuild index"
@@ -290,32 +294,6 @@ msgstr ""
 "compréhensible facilement. Le moteur de rendu par défaut affiche la valeur "
 "indexée telle quelle."
 
-#: src/Form/StandardConfigForm.php:53
-msgid "Search fields"
-msgstr "Champs de recherche"
-
-#: src/Form/StandardConfigForm.php:54
-msgid "Add a search field"
-msgstr "Ajouter un champ de recherche"
-
-#: src/Form/StandardConfigForm.php:66
-msgid "Proximity"
-msgstr "Proximité"
-
-#: src/Form/StandardConfigForm.php:67
-msgid "Add proximity option on search form to choose distance between terms"
-msgstr ""
-"Ajoutez une option de proximité sur le formulaire de recherche pour choisir "
-"la distance entre les termes"
-
-#: src/Form/StandardConfigForm.php:88
-msgid "Form elements"
-msgstr "Éléments de formulaire"
-
-#: src/Form/StandardConfigForm.php:89
-msgid "Add a form element"
-msgstr "Ajouter un élément de formulaire"
-
 #: src/Form/Admin/SearchPageConfigureForm.php:82
 msgid "Facets"
 msgstr "Facettes"
@@ -352,6 +330,32 @@ msgstr ""
 "Indexer cette quantité de ressources par lot. Une grande taille de lot sera "
 "plus rapide, mais utilisera plus de mémoire"
 
+#: src/Form/StandardConfigForm.php:53
+msgid "Search fields"
+msgstr "Champs de recherche"
+
+#: src/Form/StandardConfigForm.php:54
+msgid "Add a search field"
+msgstr "Ajouter un champ de recherche"
+
+#: src/Form/StandardConfigForm.php:66
+msgid "Proximity"
+msgstr "Proximité"
+
+#: src/Form/StandardConfigForm.php:67
+msgid "Add proximity option on search form to choose distance between terms"
+msgstr ""
+"Ajoutez une option de proximité sur le formulaire de recherche pour choisir "
+"la distance entre les termes"
+
+#: src/Form/StandardConfigForm.php:88
+msgid "Form elements"
+msgstr "Éléments de formulaire"
+
+#: src/Form/StandardConfigForm.php:89
+msgid "Add a form element"
+msgstr "Ajouter un élément de formulaire"
+
 #: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
@@ -365,20 +369,19 @@ msgstr "Requêtes sauvegardées"
 msgid "Label for this block"
 msgstr "Libellé pour ce bloc"
 
-#: src/FormElement/ResourceClassSelect.php:16
-msgid "Resource class"
-msgstr "Classe de ressource"
-
-#: src/FormElement/ResourceClassSelect.php:24
 #: src/FormElement/ItemSetSelect.php:21
+#: src/FormElement/ResourceClassSelect.php:24
 msgid "Field"
 msgstr "Champ"
 
-#: src/FormElement/ResourceClassSelect.php:25
 #: src/FormElement/ItemSetSelect.php:22
+#: src/FormElement/ResourceClassSelect.php:25
 msgid "Field to use for filtering. It should be a facet field."
 msgstr ""
 "Champ à utiliser pour le filtrage. Cela devrait être un champ de facettes."
+
+#~ msgid "Resource class"
+#~ msgstr "Classe de ressource"
 
 #~ msgid "Enabled"
 #~ msgstr "Activé"

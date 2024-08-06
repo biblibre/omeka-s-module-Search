@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-15 15:47+0200\n"
+"POT-Creation-Date: 2024-08-06 15:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,6 +109,10 @@ msgstr ""
 
 #: view/search/admin/index/browse.phtml:33
 msgid "Search configuration"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:36
+msgid "Add new index"
 msgstr ""
 
 #: view/search/admin/index/browse.phtml:70
@@ -282,30 +286,6 @@ msgid ""
 "value as is."
 msgstr ""
 
-#: src/Form/StandardConfigForm.php:53
-msgid "Search fields"
-msgstr ""
-
-#: src/Form/StandardConfigForm.php:54
-msgid "Add a search field"
-msgstr ""
-
-#: src/Form/StandardConfigForm.php:66
-msgid "Proximity"
-msgstr ""
-
-#: src/Form/StandardConfigForm.php:67
-msgid "Add proximity option on search form to choose distance between terms"
-msgstr ""
-
-#: src/Form/StandardConfigForm.php:88
-msgid "Form elements"
-msgstr ""
-
-#: src/Form/StandardConfigForm.php:89
-msgid "Add a form element"
-msgstr ""
-
 #: src/Form/Admin/SearchPageConfigureForm.php:82
 msgid "Facets"
 msgstr ""
@@ -340,6 +320,30 @@ msgid ""
 "more memory"
 msgstr ""
 
+#: src/Form/StandardConfigForm.php:53
+msgid "Search fields"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:54
+msgid "Add a search field"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:66
+msgid "Proximity"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:67
+msgid "Add proximity option on search form to choose distance between terms"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:88
+msgid "Form elements"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:89
+msgid "Add a form element"
+msgstr ""
+
 #: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
@@ -353,16 +357,12 @@ msgstr ""
 msgid "Label for this block"
 msgstr ""
 
-#: src/FormElement/ResourceClassSelect.php:16
-msgid "Resource class"
-msgstr ""
-
-#: src/FormElement/ResourceClassSelect.php:24
 #: src/FormElement/ItemSetSelect.php:21
+#: src/FormElement/ResourceClassSelect.php:24
 msgid "Field"
 msgstr ""
 
-#: src/FormElement/ResourceClassSelect.php:25
 #: src/FormElement/ItemSetSelect.php:22
+#: src/FormElement/ResourceClassSelect.php:25
 msgid "Field to use for filtering. It should be a facet field."
 msgstr ""
