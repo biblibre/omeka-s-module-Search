@@ -246,6 +246,8 @@ return [
             'showSavedQueries' => View\Helper\ShowSavedQueries::class,
             'formFields' => Form\View\Helper\FormFields::class,
             'searchCurrentPage' => View\Helper\SearchCurrentPage::class,
+            'showQuery' => View\Helper\ShowQuery::class,
+            'showQueryFilterDetails' => View\Helper\ShowQueryFilterDetails::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [

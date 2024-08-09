@@ -150,3 +150,42 @@
 .search-highlights-section-open .search-highlights-show-less {
     display: inline;
 }
+
+.search-summary__filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-summary__filters-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-summary__filter-content {
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-summary__filter-match {
+  font-size: 0.9em;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.search-summary__filter-details {
+  font-size: 0.9em;
+  color: #333;
+}
+
+.search-summary__nested-filters {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  margin-top: 4px;
+}
