@@ -1,0 +1,36 @@
+<?php
+$translate = $this->plugin('translate');
+$this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
+?>
+
+<?php if (!empty($queryFilters)) : ?>
+    <div class="search-summary__filters">
+        <ul class="search-summary__filters-list">
+            <?php foreach ($queryFilters as $queryFilter) : ?>
+                <?php $showContent = !empty($queryFilter['term']) || isset($queryFilter['queries']); ?>
+
+                <?php if ($showContent) : ?>
+                    <li class="search-summary__filter-content">
+                        <?php if (isset($queryFilter['match'])) : ?>
+                            <div class="search-summary__filter-match">
+                                <span><?php echo $translate('Match: ' . $queryFilter['match'])?></span>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($queryFilter['term'])) : ?>
+                            <div class="search-summary__filter-details">
+                                <?php echo $this->showQueryFilterDetails($queryFilter); ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (isset($queryFilter['queries'])) : ?>
+                            <ul class="search-summary__nested-filters">
+                                <?php echo $this->showQuery($queryFilter['queries']); ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
