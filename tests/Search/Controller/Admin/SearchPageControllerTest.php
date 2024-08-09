@@ -56,9 +56,10 @@ class SearchPageControllerTest extends SearchControllerTestCase
         $url = '/admin/search/page/' . $this->searchPage->id() . '/configure';
         $this->dispatch($url, 'POST', [
             'facet_limit' => '10',
-            'save_queries' => true,
+            'save_queries' => '1',
+            'show_search_summary' => '1',
             'form' => [
-                'proximity' => true,
+                'proximity' => '1',
             ],
             'csrf' => $form->get('csrf')->getValue(),
         ]);

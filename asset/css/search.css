@@ -150,3 +150,29 @@
 .search-highlights-section-open .search-highlights-show-less {
     display: inline;
 }
+
+#search-form-wrapper {
+    margin-bottom: 1em;
+}
+
+.search-summary__element {
+    background-color: rgb(0 0 0 / 4%);
+    border-radius: 3px;
+    display: inline-flex;
+    font-size: 70%;
+    margin-bottom: 2px;
+    max-width: 100%;
+}
+
+.search-summary__element-name {
+    background-color: rgb(0 0 0 / 4%);
+    border-radius: 3px 0 0 3px;
+    padding: 0 6px;
+}
+
+.search-summary__element-value {
+    overflow: hidden;
+    padding: 0 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

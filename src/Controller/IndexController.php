@@ -33,6 +33,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Mvc\Exception\RuntimeException;
 use Omeka\Stdlib\Paginator;
+use Search\Feature\SummarizeQueryInterface;
 use Search\Querier\Exception\QuerierException;
 
 class IndexController extends AbstractActionController
@@ -138,6 +139,12 @@ class IndexController extends AbstractActionController
         }
 
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
+
+        $show_search_summary = $settings['show_search_summary'] ?? false;
+        if ($show_search_summary && $formAdapter instanceof SummarizeQueryInterface) {
+            $summary = $formAdapter->summarizeQuery($params, $this->page);
+            $view->setVariable('summary', $summary);
+        }
 
         $queryParams = json_encode($this->params()->fromQuery());
         $searchPageId = $this->page->id();

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Fix sort option label being empty
+- Add a summary of the search query above the results (optional, disabled by
+  default)
 
 ## [0.16.0] - 2024-10-25
 
