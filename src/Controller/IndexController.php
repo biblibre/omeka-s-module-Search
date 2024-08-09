@@ -142,6 +142,7 @@ class IndexController extends AbstractActionController
         }
 
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
+        $showSearchSummary = $this->page->settings()['show_search_summary'] ?? false;
 
         $queryParams = json_encode($this->params()->fromQuery());
         $searchPageId = $this->page->id();
@@ -159,6 +160,7 @@ class IndexController extends AbstractActionController
         $view->setVariable('sortOptions', $sortOptions);
         $view->setVariable('queryParams', $queryParams);
         $view->setVariable('searchPageId', $searchPageId);
+        $view->setVariable('showSearchSummary', $showSearchSummary);
 
         return $view;
     }

@@ -72,6 +72,14 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             ],
         ]);
 
+        $this->add([
+            'name' => 'show_search_summary',
+            'type' => 'Checkbox',
+            'options' => [
+                'label' => $translator->translate('Show search summary'),
+            ],
+        ]);
+
         $facetFields = $adapter->getAvailableFacetFields($searchPage->index());
         $facetValueOptions = array_column($facetFields, 'label', 'name');
         $url = $this->urlViewHelper;
