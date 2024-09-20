@@ -55,4 +55,6 @@ interface FormAdapterInterface
      * @return \Search\Query
      */
     public function toQuery($data, $formSettings);
+
+    public function stringifyQuery($data, $formSettings);
 }

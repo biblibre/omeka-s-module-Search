@@ -79,6 +79,65 @@ class StandardFormAdapter implements FormAdapterInterface
         return $query;
     }
 
+    public function stringifyQuery($data, $formSettings)
+    {
+        $queryString = '';
+
+        if (!empty($data['q'])) {
+            $queryString .= $data['q'] . ' ';
+        }
+
+        if (!empty($formSettings['proximity'])) {
+            $queryString .= 'WITH PROXIMITY ';
+        }
+
+        if (!empty($data['filters']['queries'])) {
+            $filters = $this->stringifyFilters($data['filters']['queries'], $formSettings, $data['filters']['match']);
+            if (!empty($filters)) {
+                if (!empty($data['q'])) {
+                    $queryString .= 'AND ';
+                }
+                $queryString .= $filters;
+            }
+        }
+
+        foreach ($formSettings['elements'] ?? [] as $formElementData) {
+            $name = $formElementData['name'];
+            $apiManager = $this->getApiManager();
+            $formElement = $this->searchFormElementManager->get($name);
+            $queryString .= $formElement->stringifyData($data, $formElementData, $apiManager);
+        }
+
+        return trim($queryString);
+    }
+
+    public function stringifyFilters($queries, $formSettings, $match = 'all')
+    {
+        $filters = [];
+
+        foreach ($queries as $query) {
+            if (!empty($query['queries'])) {
+                $filters[] = $this->stringifyFilters($query['queries'], $formSettings, $query['match']);
+            } elseif (!empty($query['term'])) {
+                $label = $this->getLabelForField($query['field'], $formSettings);
+                $filters[] = "{$label} {$query['operator']} '{$query['term']}'";
+            }
+        }
+
+        $separator = ($match === 'all') ? ' AND ' : ' OR ';
+        return count($filters) > 0 ? '(' . implode($separator, $filters) . ')' : '';
+    }
+
+    public function getLabelForField($fieldName, $formSettings)
+    {
+        foreach ($formSettings['search_fields'] as $field) {
+            if ($field['name'] === $fieldName) {
+                return $field['label'];
+            }
+        }
+        return $fieldName;
+    }
+
     public function setApiManager($apiManager)
     {
         $this->apiManager = $apiManager;

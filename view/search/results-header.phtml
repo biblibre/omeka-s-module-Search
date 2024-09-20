@@ -6,19 +6,6 @@
  */
 ?>
 <div class="search-results-header">
-    <?php if($showSearchSummary) : ?>
-        <div class="search-results__search-summary">
-            <span class="search-results__search-summary__header">
-                <?php if (!empty($query->getQuery())) : ?>
-                    <span>
-                        <?php echo $this->translate('Your search: '); ?>
-                        <?php echo $query->getQuery(); ?>
-                    </span>
-                <?php endif; ?>
-            <?php echo $this->showQuery($query->getQueryFilters()) ?>
-            </span>
-        </div>
-    <?php endif; ?>
     <div class="search-results-count">
         <?php echo $this->pagination(); ?>
     </div>
