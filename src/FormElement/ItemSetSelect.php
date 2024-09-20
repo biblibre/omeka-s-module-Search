@@ -44,4 +44,25 @@ class ItemSetSelect implements SearchFormElementInterface
             $query->addFacetFilter($formElementData['field_name'], array_filter($data['item_set_id']));
         }
     }
+
+    public function stringifyData(array $data, array $formElementData, $apiManager)
+    {
+        $dataString = '';
+
+        if (!empty($data['item_set_id'])) {
+            $titles = [];
+            foreach ($data['item_set_id'] as $id) {
+                try {
+                    $itemSet = $apiManager->read('item_sets', $id)->getContent();
+                    $titles[] = $itemSet->title();
+                } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                }
+            }
+
+            if (!empty($titles)) {
+                $dataString = sprintf(" AND %s : ( %s )", $formElementData['field_name'], implode(', ', $titles));
+            }
+        }
+        return $dataString;
+    }
 }

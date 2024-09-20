@@ -69,4 +69,26 @@ class ResourceClassSelect implements SearchFormElementInterface
     {
         return $this->api;
     }
+
+    public function stringifyData(array $data, array $formElementData, $apiManager)
+    {
+        $dataString = '';
+
+        if (!empty($data['resource_class_id'])) {
+            $terms = [];
+            foreach ($data['resource_class_id'] as $id) {
+                try {
+                    $resourceClass = $apiManager->read('resource_classes', $id)->getContent();
+                    $terms[] = $resourceClass->term();
+                } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                }
+            }
+
+            if (!empty($terms)) {
+                $dataString = sprintf(" AND %s : ( %s )", $formElementData['field_name'], implode(', ', $terms));
+            }
+        }
+
+        return $dataString;
+    }
 }
