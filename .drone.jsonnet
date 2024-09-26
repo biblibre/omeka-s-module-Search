@@ -8,7 +8,7 @@ local Pipeline(omekaVersion, phpVersion, dbImage) = {
     steps: [
         {
             name: 'test',
-            image: 'biblibre/omeka-s-ci:' + omekaVersion + '-php' + phpVersion,
+            image: 'git.biblibre.com/omeka-s/omeka-s-ci:' + omekaVersion + '-php' + phpVersion,
             commands: [
                 'cp -rT /usr/src/omeka-s ../..',
                 "echo 'host = \"db\"\\nuser = \"root\"\\npassword = \"root\"\\ndbname = \"omeka_test\"\\n' > ../../application/test/config/database.ini",
