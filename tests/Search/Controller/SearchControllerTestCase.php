@@ -64,6 +64,7 @@ abstract class SearchControllerTestCase extends AbstractHttpControllerTestCase
 
     protected function resetApplication()
     {
+        // @phpstan-ignore assign.propertyType
         $this->application = null;
 
         $this->setupTestSearchAdapter();

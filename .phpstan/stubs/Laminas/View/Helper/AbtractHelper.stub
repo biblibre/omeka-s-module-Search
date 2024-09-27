@@ -1,0 +1,8 @@
+<?php
+
+namespace Laminas\View\Helper;
+
+/**
+ * @method \Laminas\View\Renderer\PhpRenderer getView()
+ */
+abstract class AbstractHelper {}

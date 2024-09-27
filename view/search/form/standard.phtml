@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Laminas\Form\Form $form
+ */
+?>
+<?php
     $translate = $this->plugin('translate');
     $this->headLink()->prependStylesheet($this->assetUrl('css/advanced-search.css', 'Omeka'));
     $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));

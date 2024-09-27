@@ -12,7 +12,7 @@ class ResourceClassSelectFactory implements FactoryInterface
     {
         $api = $services->get('Omeka\ApiManager');
 
-        $resourceClassSelect = new ResourceClassSelect(null, $options ?? []);
+        $resourceClassSelect = new ResourceClassSelect();
         $resourceClassSelect->setApiManager($api);
 
         return $resourceClassSelect;

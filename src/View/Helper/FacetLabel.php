@@ -41,7 +41,7 @@ class FacetLabel extends AbstractHelper
         $settings = $searchPage->settings();
 
         foreach ($settings['facets'] ?? [] as $facet) {
-            if ($facet['name'] === $name && $facet['label'] ?? '' !== '') {
+            if ($facet['name'] === $name && ($facet['label'] ?? '') !== '') {
                 return $facet['label'];
             }
         }

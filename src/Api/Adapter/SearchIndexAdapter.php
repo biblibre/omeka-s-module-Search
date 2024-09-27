@@ -72,7 +72,7 @@ class SearchIndexAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * @param \Search\Entity\SearchIndex $entity
      */
     public function hydrate(Request $request, EntityInterface $entity,
         ErrorStore $errorStore
@@ -89,7 +89,7 @@ class SearchIndexAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * @param \Search\Entity\SearchIndex $entity
      */
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
     {

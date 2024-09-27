@@ -1,0 +1,8 @@
+<?php
+
+namespace Laminas\View\Helper;
+
+/**
+ * @property \Omeka\Api\Representation\SiteRepresentation $site
+ */
+class Layout {}

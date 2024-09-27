@@ -1,0 +1,18 @@
+parameters:
+  level: 4
+  paths:
+    - Module.php
+    - src
+    - view
+    - tests
+  fileExtensions:
+    - php
+    - phtml
+  bootstrapFiles:
+    - .phpstan/bootstrap.php
+  phpVersion: 70400
+  stubFiles:
+    - .phpstan/stubs/Laminas/Mvc/Controller/AbstractActionController.stub
+    - .phpstan/stubs/Laminas/View/Renderer/PhpRenderer.stub
+    - .phpstan/stubs/Laminas/View/Helper/AbtractHelper.stub
+    - .phpstan/stubs/Laminas/View/Helper/Layout.stub

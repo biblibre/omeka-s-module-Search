@@ -1,4 +1,13 @@
 <?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $namePrefix
+ * @var array $availableFieldsOptions
+ * @var array $availableOperatorsOptions
+ * @var bool $proximitySetting
+ */
+?>
+<?php
     $fieldSelect = new \Laminas\Form\Element\Select($namePrefix . '[field]');
     $fieldSelect->setValueOptions($availableFieldsOptions);
     if (isset($query['field'])) {

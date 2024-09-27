@@ -1,4 +1,10 @@
 <?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Laminas\Form\Element $element
+ */
+?>
+<?php
 $this->headLink()->appendStylesheet($this->assetUrl('css/fields-form.css', 'Search'));
 $this->headScript()->appendFile($this->assetUrl('vendor/sortablejs/Sortable.min.js', 'Omeka'));
 $this->headScript()->appendFile($this->assetUrl('js/fields-form.js', 'Search'));

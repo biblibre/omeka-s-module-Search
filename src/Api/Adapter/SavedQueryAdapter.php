@@ -87,7 +87,7 @@ class SavedQueryAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * @param \Search\Entity\SavedQuery $entity
      */
     public function hydrate(
         Request $request,
@@ -100,12 +100,16 @@ class SavedQueryAdapter extends AbstractEntityAdapter
         }
 
         if ($this->shouldHydrate($request, 'o:site_id')) {
-            $site = $this->getAdapter('sites')->findEntity($request->getValue('o:site_id'));
+            /** @var \Omeka\Api\Adapter\SiteAdapter */
+            $siteAdapter = $this->getAdapter('sites');
+            $site = $siteAdapter->findEntity($request->getValue('o:site_id'));
             $entity->setSite($site);
         }
 
         if ($this->shouldHydrate($request, 'o:search_page_id')) {
-            $searchPage = $this->getAdapter('search_pages')->findEntity($request->getValue('o:search_page_id'));
+            /** @var \Omeka\Api\Adapter\SiteAdapter */
+            $searchPageAdapter = $this->getAdapter('search_pages');
+            $searchPage = $searchPageAdapter->findEntity($request->getValue('o:search_page_id'));
             $entity->setSearchPage($searchPage);
         }
 

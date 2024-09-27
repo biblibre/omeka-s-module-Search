@@ -4,6 +4,8 @@ namespace Search\Test\Controller;
 
 class IndexControllerTest extends SearchControllerTestCase
 {
+    protected \Omeka\Api\Representation\SiteRepresentation $site;
+
     public function setUp(): void
     {
         parent::setUp();

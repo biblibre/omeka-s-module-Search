@@ -1,0 +1,15 @@
+<?php
+
+namespace Laminas\View\Renderer;
+
+/**
+ * @method string facetLabel(string $name)
+ * @method string facetLink(string $name, string $facetValue)
+ * @method string searchFacetValue(string $name, string $value)
+ * @method \Search\View\Helper\SearchForm searchForm()
+ * @method \Search\View\Helper\SearchFormElement searchFormElement()
+ * @method \Search\Api\Representation\SearchPageRepresentation searchCurrentPage()
+ * @method string saveQuery(array $params)
+ * @method string showSavedQueries()
+ */
+class PhpRenderer {}

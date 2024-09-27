@@ -30,9 +30,20 @@
 namespace Search\Api\Representation;
 
 use Omeka\Api\Representation\AbstractEntityRepresentation;
+use Search\Entity\SearchIndex;
+use Search\Api\Adapter\SearchIndexAdapter;
 
+/**
+ * @property \Search\Entity\SearchIndex $resource
+ * @property \Search\Api\Adapter\SearchIndexAdapter $adapter
+ */
 class SearchIndexRepresentation extends AbstractEntityRepresentation
 {
+    public function __construct(SearchIndex $resource, SearchIndexAdapter $adapter)
+    {
+        parent::__construct($resource, $adapter);
+    }
+
     /**
      * {@inheritDoc}
      */

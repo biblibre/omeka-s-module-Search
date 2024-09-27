@@ -35,7 +35,6 @@ use Omeka\Entity\AbstractEntity;
 
 /**
  * @Entity
- * @HasLifecycleCallbacks
  */
 class SavedQuery extends AbstractEntity
 {
@@ -142,13 +141,5 @@ class SavedQuery extends AbstractEntity
     public function getQueryDescription()
     {
         return $this->query_description;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function prePersist(LifecycleEventArgs $eventArgs)
-    {
-        $this->created = new DateTime('now');
     }
 }

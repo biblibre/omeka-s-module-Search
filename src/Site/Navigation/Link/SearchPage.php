@@ -78,7 +78,7 @@ class SearchPage implements LinkInterface
 
     public function toJstree(array $data, SiteRepresentation $site)
     {
-        $label = $data['label'] ?? $sitePage->title();
+        $label = $data['label'] ?? 'Search';
         $search_page_id = $data['search_page_id'] ?? null;
         return [
             'label' => $label,

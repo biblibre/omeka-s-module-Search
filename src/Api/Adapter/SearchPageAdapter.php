@@ -72,7 +72,7 @@ class SearchPageAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * @param \Search\Entity\SearchPage $entity
      */
     public function hydrate(Request $request, EntityInterface $entity,
         ErrorStore $errorStore
@@ -84,8 +84,9 @@ class SearchPageAdapter extends AbstractEntityAdapter
             $entity->setPath($request->getValue('o:path'));
         }
         if ($this->shouldHydrate($request, 'o:index_id')) {
-            $indexId = $request->getValue('o:index_id');
-            $entity->setIndex($this->getAdapter('search_indexes')->findEntity($indexId));
+            /** @var \Search\Api\Adapter\SearchIndexAdapter */
+            $searchIndexAdapter = $this->getAdapter('search_indexes');
+            $entity->setIndex($searchIndexAdapter->findEntity($request->getValue('o:index_id')));
         }
         if ($this->shouldHydrate($request, 'o:form')) {
             $entity->setFormAdapter($request->getValue('o:form'));
@@ -96,7 +97,7 @@ class SearchPageAdapter extends AbstractEntityAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * @param \Search\Entity\SearchPage $entity
      */
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
     {

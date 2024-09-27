@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $namePrefix
+ * @var bool $mainGroup
+ * @var array $availableFieldsOptions
+ * @var array $availableOperatorsOptions
+ * @var bool $proximitySetting
+ */
+?>
 <div class="search-form-standard-match-group">
     <?php echo $this->formSelect((new \Laminas\Form\Element\Select($namePrefix . '[match]'))->setValueOptions([
         'all' => $this->translate('Match all of the following criteria:'),

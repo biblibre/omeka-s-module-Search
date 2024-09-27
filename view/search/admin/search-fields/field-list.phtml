@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Search\Api\Representation\SearchPageRepresentation|null $searchPage
+ */
+?>
 <?php if ($searchPage): ?>
     <?php $availableSearchFields = $searchPage->index()->availableSearchFields(); ?>
     <?php $availableSearchFieldsNames = array_column($availableSearchFields, 'name'); ?>

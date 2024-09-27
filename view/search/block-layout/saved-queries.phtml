@@ -26,8 +26,14 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 ?>
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $label
+ */
+?>
 
-<?php 
+<?php
 $escape = $this->plugin('escapeHtml');  
 $user = $this->identity();
 ?>
@@ -38,5 +44,3 @@ $user = $this->identity();
     <?php echo $this->showSavedQueries() ?>
 
 <?php endif; ?>
-
-

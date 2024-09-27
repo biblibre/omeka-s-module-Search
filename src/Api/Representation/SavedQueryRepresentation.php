@@ -30,9 +30,20 @@
 namespace Search\Api\Representation;
 
 use Omeka\Api\Representation\AbstractEntityRepresentation;
+use Search\Entity\SavedQuery;
+use Search\Api\Adapter\SavedQueryAdapter;
 
+/**
+ * @property \Search\Entity\SavedQuery $resource
+ * @property \Search\Api\Adapter\SavedQueryAdapter $adapter
+ */
 class SavedQueryRepresentation extends AbstractEntityRepresentation
 {
+    public function __construct(SavedQuery $resource, SavedQueryAdapter $adapter)
+    {
+        parent::__construct($resource, $adapter);
+    }
+
     /**
      * {@inheritDoc}
      */

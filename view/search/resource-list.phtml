@@ -26,6 +26,14 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 ?>
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Search\Response $response
+ * @var string $resourceName
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ */
+?>
 
 <?php $results = $response->getResults($resourceName); ?>
 <?php if (!empty($results)): ?>

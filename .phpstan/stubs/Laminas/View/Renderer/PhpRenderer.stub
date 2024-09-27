@@ -1,0 +1,46 @@
+<?php
+
+namespace Laminas\View\Renderer;
+
+/**
+ * @method string escapeHtml(string $value)
+ * @method \Laminas\Form\View\Helper\Form form(\Laminas\Form\FormInterface $form = null)
+ * @method string formCollection(\Laminas\Form\ElementInterface $element = null, bool $wrap = true)
+ * @method string formHidden(\Laminas\Form\ElementInterface $element = null, bool $wrap = true)
+ * @method string formLabel(\Laminas\Form\ElementInterface $element = null)
+ * @method string formSelect(\Laminas\Form\ElementInterface $element = null)
+ * @method string formText(\Laminas\Form\ElementInterface $element = null)
+ * @method string formRow(\Laminas\Form\ElementInterface $element = null)
+ * @method \Laminas\View\Helper\HeadLink headLink()
+ * @method \Laminas\View\Helper\HeadScript headScript()
+ * @method \Omeka\Entity\User|null identity()
+ * @method \Laminas\View\Helper\Layout layout()
+ * @method mixed params(string $param = null, mixed $default = null)
+ * @method string partial(string $name, array $values = null)
+ * @method string translate(string $message)
+ * @method string translatePlural(string $singular, string $plural, int $number)
+ * @method string url(string $name = null, array $params = [], array $options = [], $reuseMatchedParams = false)
+ *
+ * @method \Omeka\View\Helper\Api api()
+ * @method string|null assetUrl(string $file, string $module = null, bool $override = false, bool $versioned = true)
+ * @method \Omeka\View\Helper\HtmlElement htmlElement(string $element)
+ * @method string hyperlink(string $text = null, string $href = null, array $attributes = [])
+ * @method string itemSetSelect(array $spec)
+ * @method string lang()
+ * @method string messages()
+ * @method string pageTitle(string $title, int $level = 1, string $subheadLabel = null, string $actionLabel = null)
+ * @method string pagination($partialName = null, $totalCount = null, $currentPage = null, $perPage = null)
+ * @method mixed siteSetting(string $id, mixed $default = null, int $targetId = null)
+ * @method \Omeka\View\Helper\Status status()
+ * @method string trigger(string $name, array $params = [], bool $filter = false, array $ids = null)
+ *
+ * @method string facetLabel(string $name)
+ * @method string facetLink(string $name, string $facetValue)
+ * @method string searchFacetValue(string $name, string $value)
+ * @method \Search\View\Helper\SearchForm searchForm()
+ * @method \Search\View\Helper\SearchFormElement searchFormElement()
+ * @method \Search\Api\Representation\SearchPageRepresentation searchCurrentPage()
+ * @method string saveQuery(array $params)
+ * @method string showSavedQueries()
+ */
+class PhpRenderer {}

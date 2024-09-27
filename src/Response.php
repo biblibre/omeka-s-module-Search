@@ -88,9 +88,9 @@ class Response
     /**
      * Add highlight (a text fragment containing a searched word or phrase)
      *
-     * @param string $resource resource name
-     * @param int    $id       resource id
-     * @param string $text     highlight text, can contain HTML.
+     * @param string $resource  resource name
+     * @param int    $id        resource id
+     * @param string $highlight highlight text, can contain HTML.
      */
     public function addHighlight(string $resource, int $id, string $highlight)
     {
