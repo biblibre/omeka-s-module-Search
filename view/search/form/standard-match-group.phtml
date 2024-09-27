@@ -20,7 +20,7 @@
 
     <div class="search-form-standard-match-group-items">
         <?php if (!empty($data['queries'])): ?>
-            <?php foreach($data['queries'] as $i => $query): ?>
+            <?php foreach ($data['queries'] as $i => $query): ?>
                 <div class="search-form-standard-match-group-item">
                     <?php if (isset($query['match'])): ?>
                         <?php echo $this->partial('search/form/standard-match-group', [

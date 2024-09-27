@@ -32,7 +32,7 @@
  */
 ?>
 
-<?php 
+<?php
 $escape = $this->plugin('escapeHtml');
 $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'));
 ?>
@@ -48,7 +48,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/search.css', 'Search'))
       </tr>
     </thead>
     <tbody>
-      <?php foreach($savedQueries as $savedQuery) :
+      <?php foreach ($savedQueries as $savedQuery) :
       $url = $this->url('search-page-' . $savedQuery->searchPage()->getId(), [], ['query' => json_decode($savedQuery->queryString(), true)], true);
       $title = $savedQuery->queryTitle();
       $description = $savedQuery->queryDescription();

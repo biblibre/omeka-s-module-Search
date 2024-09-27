@@ -29,8 +29,6 @@
 
 namespace Search\Entity;
 
-use DateTime;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Omeka\Entity\AbstractEntity;
 
 /**

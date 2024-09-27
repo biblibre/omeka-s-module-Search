@@ -34,11 +34,11 @@
 ?>
 
 <?php
-$escape = $this->plugin('escapeHtml');  
+$escape = $this->plugin('escapeHtml');
 $user = $this->identity();
 ?>
 
-<?php if(isset($user)) : ?>
+<?php if (isset($user)) : ?>
 
     <h3> <?php echo $label ?> </h3>
     <?php echo $this->showSavedQueries() ?>

@@ -83,7 +83,7 @@
                     'title' => sprintf($this->translatePlural('%s item', '%s items', $itemsCount), $itemsCount),
                     'response' => $response,
                     'resourceName' => 'items',
-                    'site' => $site
+                    'site' => $site,
                 ]); ?>
 
                 <?php
@@ -96,7 +96,7 @@
             <?php else: ?>
                 <div class="noresults"><?php echo $this->translate('Your query returned no results'); ?></div>
             <?php endif; ?>
-            <?php if(isset($user) && $saveQueryParam) : ?>
+            <?php if (isset($user) && $saveQueryParam) : ?>
             <?php echo $this->saveQuery(['site_id' => $site->id(), 'search_page_id' => $searchPageId, 'query_string' => $queryParams ]) ;?>
             <?php endif; ?>
         </div>

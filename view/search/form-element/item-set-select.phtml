@@ -37,7 +37,7 @@ if ($this->status()->isSiteRequest()) {
     $selectOptions = [
         'disable_group_by_owner' => true,
         'query' => ['site_id' => $this->layout()->site->id()],
-        'lang' => $filterLocale ? [$lang, ''] : null
+        'lang' => $filterLocale ? [$lang, ''] : null,
     ];
 } else {
     $selectOptions = [];
@@ -60,7 +60,7 @@ if ($this->status()->isSiteRequest()) {
                 'attributes' => [
                     'value' => $itemSet['id'],
                     'class' => 'item-set-select',
-                    'aria-labelledby' => 'by-item-set-label'
+                    'aria-labelledby' => 'by-item-set-label',
                 ],
                 'options' => $selectOptions,
             ]); ?>
