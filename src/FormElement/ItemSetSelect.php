@@ -3,11 +3,14 @@
 namespace Search\FormElement;
 
 use Laminas\View\Renderer\PhpRenderer;
+use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchPageRepresentation;
 use Search\Query;
 
 class ItemSetSelect implements SearchFormElementInterface
 {
+    protected $api;
+
     public function getLabel(): string
     {
         return 'Item sets'; // @translate
@@ -45,9 +48,21 @@ class ItemSetSelect implements SearchFormElementInterface
         }
     }
 
-    public function stringifyData(array $data, array $formElementData, $apiManager)
+    public function setApiManager(ApiManager $api): void
+    {
+        $this->api = $api;
+    }
+
+    public function getApiManager(): ApiManager
+    {
+        // var_dump(($this->api));
+        return $this->api;
+    }
+
+    public function stringifyData(array $data, array $formElementData) : string
     {
         $dataString = '';
+        $apiManager = $this->getApiManager();
 
         if (!empty($data['item_set_id'])) {
             $titles = [];
@@ -60,7 +75,8 @@ class ItemSetSelect implements SearchFormElementInterface
             }
 
             if (!empty($titles)) {
-                $dataString = sprintf(" AND %s : ( %s )", $formElementData['field_name'], implode(', ', $titles));
+                $description = "Item sets"; // @translate
+                $dataString = sprintf("%s : ( %s )", $description, implode(', ', $titles));
             }
         }
         return $dataString;

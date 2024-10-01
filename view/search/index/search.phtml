@@ -57,7 +57,9 @@
 </div>
 <?php if(!empty($queryString)) : ?>
     <div class="search-results__search-summary">
-        <?php echo $queryString?>
+        <?php echo $this->partial('search/search_summary', [
+            'queryString' => $queryString,
+        ]); ?>
     </div>
 <?php endif; ?>
 <a href="#" id="search-form-show-link" style="display: none"><?php echo $this->translate('Edit search'); ?></a>

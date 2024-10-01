@@ -53,6 +53,7 @@ return [
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
             'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
             'Search\Form\Element\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
+            'Search\FormElement\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
         ],
     ],
     'listeners' => [
@@ -246,8 +247,6 @@ return [
             'showSavedQueries' => View\Helper\ShowSavedQueries::class,
             'formFields' => Form\View\Helper\FormFields::class,
             'searchCurrentPage' => View\Helper\SearchCurrentPage::class,
-            'showQuery' => View\Helper\ShowQuery::class,
-            'showQueryFilterDetails' => View\Helper\ShowQueryFilterDetails::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [
@@ -261,11 +260,9 @@ return [
         ],
     ],
     'search_form_elements' => [
-        'invokables' => [
-            'item_set_select' => FormElement\ItemSetSelect::class,
-        ],
         'factories' => [
             'resource_class_select' => Service\FormElement\ResourceClassSelectFactory::class,
+            'item_set_select' => Service\FormElement\ItemSetSelectFactory::class,
         ],
     ],
     'search_facet_value_renderers' => [

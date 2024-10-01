@@ -70,9 +70,10 @@ class ResourceClassSelect implements SearchFormElementInterface
         return $this->api;
     }
 
-    public function stringifyData(array $data, array $formElementData, $apiManager)
+    public function stringifyData(array $data, array $formElementData) : string
     {
         $dataString = '';
+        $apiManager = $this->getApiManager();
 
         if (!empty($data['resource_class_id'])) {
             $terms = [];
@@ -85,7 +86,8 @@ class ResourceClassSelect implements SearchFormElementInterface
             }
 
             if (!empty($terms)) {
-                $dataString = sprintf(" AND %s : ( %s )", $formElementData['field_name'], implode(', ', $terms));
+                $description = "Resource class"; // @translate
+                $dataString = sprintf("%s : ( %s )", $description, implode(', ', $terms));
             }
         }
 

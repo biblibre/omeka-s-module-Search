@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2016
+ * Copyright BibLibre, 2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,34 +27,9 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\FormAdapter;
+namespace Search\Feature;
 
-interface FormAdapterInterface
+interface StringifyProviderInterface
 {
-    /**
-     * @return string
-     */
-    public function getLabel();
-
-    /**
-     * @return string
-     */
-    public function getFormClass();
-
-    /**
-     * @return string
-     */
-    public function getFormPartial();
-
-    /**
-     * @return string
-     */
-    public function getConfigFormClass();
-
-    /**
-     * @return \Search\Query
-     */
-    public function toQuery($data, $formSettings);
-
-    public function stringifyData($data, $formSettings) : array;
+    public function stringifyData();
 }
