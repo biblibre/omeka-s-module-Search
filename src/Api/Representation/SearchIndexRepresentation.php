@@ -148,4 +148,9 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
     {
         return $this->adapter()->getAvailableSearchFields($this);
     }
+
+    public function availableOperators()
+    {
+        return $this->adapter()->getAvailableOperators($this);
+    }
 }

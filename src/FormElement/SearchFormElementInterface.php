@@ -3,7 +3,6 @@
 namespace Search\FormElement;
 
 use Laminas\View\Renderer\PhpRenderer;
-use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchPageRepresentation;
 use Search\Query;
 
@@ -19,5 +18,5 @@ interface SearchFormElementInterface
 
     public function applyToQuery(Query $query, array $data, array $formElementData): void;
 
-    public function stringifyData(array $data, array $formElementData, ApiManager $apiManager);
+    public function stringifyData(array $data, array $formElementData) : string;
 }

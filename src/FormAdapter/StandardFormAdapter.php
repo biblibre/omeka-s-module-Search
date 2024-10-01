@@ -79,25 +79,19 @@ class StandardFormAdapter implements FormAdapterInterface
         return $query;
     }
 
-    public function stringifyQuery($data, $formSettings)
+    public function stringifyData($data, $page) : array
     {
-        $queryString = '';
+        $dataString = [];
+        $formSettings = $page->settings()['form'];
 
         if (!empty($data['q'])) {
-            $queryString .= $data['q'] . ' ';
-        }
-
-        if (!empty($formSettings['proximity'])) {
-            $queryString .= 'WITH PROXIMITY ';
+            $dataString['main_query'] = $data['q'];
         }
 
         if (!empty($data['filters']['queries'])) {
-            $filters = $this->stringifyFilters($data['filters']['queries'], $formSettings, $data['filters']['match']);
+            $filters = $this->stringifyFilters($data['filters']['queries'], $page, $data['filters']['match']);
             if (!empty($filters)) {
-                if (!empty($data['q'])) {
-                    $queryString .= 'AND ';
-                }
-                $queryString .= $filters;
+                $dataString["filters_subqueries"] = $filters;
             }
         }
 
@@ -105,26 +99,29 @@ class StandardFormAdapter implements FormAdapterInterface
             $name = $formElementData['name'];
             $apiManager = $this->getApiManager();
             $formElement = $this->searchFormElementManager->get($name);
-            $queryString .= $formElement->stringifyData($data, $formElementData, $apiManager);
+            $dataString["form_element_$name"] = $formElement->stringifyData($data, $formElementData, $apiManager);
         }
 
-        return trim($queryString);
+        return $dataString;
     }
 
-    public function stringifyFilters($queries, $formSettings, $match = 'all')
+    public function stringifyFilters($queries, $page, $match = 'all')
     {
         $filters = [];
+        $formSettings = $page->settings()['form'];
+        $index = $page->index();
 
         foreach ($queries as $query) {
             if (!empty($query['queries'])) {
                 $filters[] = $this->stringifyFilters($query['queries'], $formSettings, $query['match']);
             } elseif (!empty($query['term'])) {
                 $label = $this->getLabelForField($query['field'], $formSettings);
-                $filters[] = "{$label} {$query['operator']} '{$query['term']}'";
+                $operator = $page->index()->availableOperators($index)[$query['operator']];
+                $filters[] = sprintf("%s %s '%s'", $label, $operator['display_name'], $query['term']);
             }
         }
 
-        $separator = ($match === 'all') ? ' AND ' : ' OR ';
+        $separator = ($match === 'all') ? ' AND ' : ' OR '; // @translate
         return count($filters) > 0 ? '(' . implode($separator, $filters) . ')' : '';
     }
 
