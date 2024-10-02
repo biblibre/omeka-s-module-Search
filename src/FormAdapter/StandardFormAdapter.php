@@ -29,12 +29,14 @@
 
 namespace Search\FormAdapter;
 
+use Search\Feature\SummarizeQueryInterface;
 use Search\FormElement\Manager as SearchFormElementManager;
 use Search\Query;
 
-class StandardFormAdapter implements FormAdapterInterface
+class StandardFormAdapter implements FormAdapterInterface, SummarizeQueryInterface
 {
     protected $apiManager;
+    protected $translator;
 
     protected $searchFormElementManager;
 
@@ -79,41 +81,41 @@ class StandardFormAdapter implements FormAdapterInterface
         return $query;
     }
 
-    public function stringifyData($data, $page) : array
+    public function summarizeQuery($data, $page) : array
     {
-        $dataString = [];
+        $summarizeQuery = [];
         $formSettings = $page->settings()['form'];
 
         if (!empty($data['q'])) {
-            $dataString['main_query'] = $data['q'];
+            $summarizeQuery[] = ['name' => 'main_query', 'value' => $data['q']];
         }
 
         if (!empty($data['filters']['queries'])) {
-            $filters = $this->stringifyFilters($data['filters']['queries'], $page, $data['filters']['match']);
+            $filters = $this->summarizeFilters($data['filters']['queries'], $page, $data['filters']['match']);
             if (!empty($filters)) {
-                $dataString["filters_subqueries"] = $filters;
+                $summarizeQuery[] = ['name' => 'filters_subqueries', 'value' => $filters];
             }
         }
 
         foreach ($formSettings['elements'] ?? [] as $formElementData) {
             $name = $formElementData['name'];
-            $apiManager = $this->getApiManager();
             $formElement = $this->searchFormElementManager->get($name);
-            $dataString["form_element_$name"] = $formElement->stringifyData($data, $formElementData, $apiManager);
+            $summarizeQuery[] = $formElement->summarizeQuery($data, $page);
         }
 
-        return $dataString;
+        return $summarizeQuery;
     }
 
-    public function stringifyFilters($queries, $page, $match = 'all')
+    public function summarizeFilters($queries, $page, $match = 'all')
     {
         $filters = [];
         $formSettings = $page->settings()['form'];
         $index = $page->index();
+        $translator = $this->getTranslator();
 
         foreach ($queries as $query) {
             if (!empty($query['queries'])) {
-                $filters[] = $this->stringifyFilters($query['queries'], $formSettings, $query['match']);
+                $filters[] = $this->summarizeFilters($query['queries'], $formSettings, $query['match']);
             } elseif (!empty($query['term'])) {
                 $label = $this->getLabelForField($query['field'], $formSettings);
                 $operator = $page->index()->availableOperators($index)[$query['operator']];
@@ -121,7 +123,8 @@ class StandardFormAdapter implements FormAdapterInterface
             }
         }
 
-        $separator = ($match === 'all') ? ' AND ' : ' OR '; // @translate
+        $separator = ($match === 'all') ? ' AND ' : ' OR ';
+        $separator = $translator->translate($separator);
         return count($filters) > 0 ? '(' . implode($separator, $filters) . ')' : '';
     }
 
@@ -148,5 +151,15 @@ class StandardFormAdapter implements FormAdapterInterface
     public function setSearchFormElementManager(SearchFormElementManager $searchFormElementManager): void
     {
         $this->searchFormElementManager = $searchFormElementManager;
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
+
+    public function getTranslator()
+    {
+        return $this->translator;
     }
 }

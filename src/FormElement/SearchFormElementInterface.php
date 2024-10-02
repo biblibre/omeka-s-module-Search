@@ -17,6 +17,4 @@ interface SearchFormElementInterface
     public function getForm(SearchPageRepresentation $searchPage, PhpRenderer $view, array $data, array $formElementData): string;
 
     public function applyToQuery(Query $query, array $data, array $formElementData): void;
-
-    public function stringifyData(array $data, array $formElementData) : string;
 }

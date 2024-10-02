@@ -5,11 +5,13 @@ namespace Search\FormElement;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchPageRepresentation;
+use Search\Feature\SummarizeQueryInterface;
 use Search\Query;
 
-class ItemSetSelect implements SearchFormElementInterface
+class ItemSetSelect implements SearchFormElementInterface, SummarizeQueryInterface
 {
     protected $api;
+    protected $translator;
 
     public function getLabel(): string
     {
@@ -55,14 +57,24 @@ class ItemSetSelect implements SearchFormElementInterface
 
     public function getApiManager(): ApiManager
     {
-        // var_dump(($this->api));
         return $this->api;
     }
 
-    public function stringifyData(array $data, array $formElementData) : string
+    public function setTranslator($translator): void
     {
-        $dataString = '';
+        $this->translator = $translator;
+    }
+
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    public function summarizeQuery($data, $page): array
+    {
+        $summarizeElement = [];
         $apiManager = $this->getApiManager();
+        $translator = $this->getTranslator();
 
         if (!empty($data['item_set_id'])) {
             $titles = [];
@@ -75,10 +87,11 @@ class ItemSetSelect implements SearchFormElementInterface
             }
 
             if (!empty($titles)) {
-                $description = "Item sets"; // @translate
-                $dataString = sprintf("%s : ( %s )", $description, implode(', ', $titles));
+                $description = $translator->translate("Item sets");
+                $summarizeElement['name'] = $description;
+                $summarizeElement['value'] = sprintf("%s : ( %s )", $description, implode(', ', $titles));
             }
         }
-        return $dataString;
+        return $summarizeElement;
     }
 }

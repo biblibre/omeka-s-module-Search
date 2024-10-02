@@ -1,0 +1,7 @@
+<div class="search__summary">
+    <?php foreach ($summarizeQuery as $element): ?>
+        <div class="search__summary__element">
+            <span class="search__summary__element__value"><?php echo htmlspecialchars($element['value']); ?></span>
+        </div>
+    <?php endforeach; ?>
+</div>
