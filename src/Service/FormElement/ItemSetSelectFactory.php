@@ -4,19 +4,19 @@ namespace Search\Service\FormElement;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Search\FormElement\ResourceClassSelect;
+use Search\FormElement\ItemSetSelect;
 
-class ResourceClassSelectFactory implements FactoryInterface
+class ItemSetSelectFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedNamed, array $options = null)
     {
         $api = $services->get('Omeka\ApiManager');
         $translator = $services->get('MvcTranslator');
 
-        $resourceClassSelect = new ResourceClassSelect();
-        $resourceClassSelect->setApiManager($api);
-        $resourceClassSelect->setTranslator($translator);
+        $itemSetSelect = new ItemSetSelect();
+        $itemSetSelect->setApiManager($api);
+        $itemSetSelect->setTranslator($translator);
 
-        return $resourceClassSelect;
+        return $itemSetSelect;
     }
 }

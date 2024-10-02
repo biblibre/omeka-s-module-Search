@@ -5,11 +5,13 @@ namespace Search\FormElement;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Manager as ApiManager;
 use Search\Api\Representation\SearchPageRepresentation;
+use Search\Feature\SummarizeQueryInterface;
 use Search\Query;
 
-class ResourceClassSelect implements SearchFormElementInterface
+class ResourceClassSelect implements SearchFormElementInterface, SummarizeQueryInterface
 {
     protected $api;
+    protected $translator;
 
     public function getLabel(): string
     {
@@ -68,5 +70,41 @@ class ResourceClassSelect implements SearchFormElementInterface
     public function getApiManager(): ApiManager
     {
         return $this->api;
+    }
+
+    public function setTranslator($translator): void
+    {
+        $this->translator = $translator;
+    }
+
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    public function summarizeQuery($data, $page): array
+    {
+        $summarizeElement = [];
+        $apiManager = $this->getApiManager();
+        $translator = $this->getTranslator();
+
+        if (!empty($data['resource_class_id'])) {
+            $terms = [];
+            foreach ($data['resource_class_id'] as $id) {
+                try {
+                    $resourceClass = $apiManager->read('resource_classes', $id)->getContent();
+                    $terms[] = $resourceClass->term();
+                } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                }
+            }
+
+            if (!empty($terms)) {
+                $description = $translator->translate("Resource classes");
+                $summarizeElement['name'] = $description;
+                $summarizeElement['value'] = sprintf("%s : ( %s )", $description, implode(', ', $terms));
+            }
+        }
+
+        return $summarizeElement;
     }
 }

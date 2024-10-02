@@ -142,6 +142,9 @@ class IndexController extends AbstractActionController
         }
 
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
+        if ($settings['show_search_summary']) {
+            $summarizeQuery = $formAdapter->summarizeQuery($params, $this->page);
+        }
 
         $queryParams = json_encode($this->params()->fromQuery());
         $searchPageId = $this->page->id();
@@ -159,6 +162,9 @@ class IndexController extends AbstractActionController
         $view->setVariable('sortOptions', $sortOptions);
         $view->setVariable('queryParams', $queryParams);
         $view->setVariable('searchPageId', $searchPageId);
+        if (isset($summarizeQuery)) {
+            $view->setVariable('summarizeQuery', $summarizeQuery);
+        }
 
         return $view;
     }

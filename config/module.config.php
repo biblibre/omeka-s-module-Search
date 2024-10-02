@@ -259,11 +259,9 @@ return [
         ],
     ],
     'search_form_elements' => [
-        'invokables' => [
-            'item_set_select' => FormElement\ItemSetSelect::class,
-        ],
         'factories' => [
             'resource_class_select' => Service\FormElement\ResourceClassSelectFactory::class,
+            'item_set_select' => Service\FormElement\ItemSetSelectFactory::class,
         ],
     ],
     'search_facet_value_renderers' => [

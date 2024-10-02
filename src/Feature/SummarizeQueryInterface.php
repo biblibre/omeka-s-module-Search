@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright BibLibre, 2020
+ * Copyright BibLibre, 2017
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -27,21 +27,12 @@
  * knowledge of the CeCILL license and that you accept its terms.
  */
 
-namespace Search\Service\FormAdapter;
+namespace Search\Feature;
 
-use Interop\Container\ContainerInterface;
-use Search\FormAdapter\StandardFormAdapter;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-
-class StandardFormAdapterFactory implements FactoryInterface
+interface SummarizeQueryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
-    {
-        $formAdapter = new StandardFormAdapter();
-        $formAdapter->setApiManager($services->get('Omeka\ApiManager'));
-        $formAdapter->setSearchFormElementManager($services->get('Search\FormElementManager'));
-        $formAdapter->setTranslator($services->get('MvcTranslator'));
-
-        return $formAdapter;
-    }
+    /**
+     * @return array
+     */
+    public function summarizeQuery($data, $page);
 }
