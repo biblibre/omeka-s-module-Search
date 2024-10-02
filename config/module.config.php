@@ -53,7 +53,6 @@ return [
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
             'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
             'Search\Form\Element\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
-            'Search\FormElement\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
         ],
     ],
     'listeners' => [

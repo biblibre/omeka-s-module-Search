@@ -29,7 +29,10 @@
 
 namespace Search\Feature;
 
-interface StringifyProviderInterface
+interface SummarizeQueryInterface
 {
-    public function stringifyData();
+    /**
+     * @return array
+     */
+    public function summarizeQuery($data, $page);
 }
