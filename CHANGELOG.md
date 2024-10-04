@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - CSS: Prevent facet column to be shrinked
+- Prevent type error when facet value is an integer
 
 ## [0.15.4] - 2024-05-15
 

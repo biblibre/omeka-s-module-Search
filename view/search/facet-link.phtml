@@ -3,12 +3,12 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var bool $active
  * @var string $name
- * @var string $value
+ * @var mixed $value
  * @var string $url
  * @var int $count
  */
 ?>
 <span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-    <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, $value) ?></a>
+    <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
     (<?php echo $count; ?>)
 </span>
