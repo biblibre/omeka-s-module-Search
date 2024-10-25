@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Breaking changes
+
+- Search adapters are now entirely responsible for filtering out
+  results that users cannot access.
+  `Search\Query::setIsPublic` and `Search\Query::getIsPublic` methods, which
+  were previously used for that purpose, are kept for user queries (for
+  instance if a user want only private resources)
+
 ## [0.15.5] - 2024-10-04
 
 - CSS: Prevent facet column to be shrinked
