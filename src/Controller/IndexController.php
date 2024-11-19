@@ -174,7 +174,14 @@ class IndexController extends AbstractActionController
         $settings = $this->page->settings();
         foreach ($settings['sort_fields'] as $sort_field) {
             $name = $sort_field['name'];
-            $label = $sort_field['label'] ?? $sortFieldsMap[$name]['label'] ?? $name;
+
+            $label = trim($sort_field['label'] ?? '');
+            if ($label === '') {
+                $label = trim($sortFieldsMap[$name]['label'] ?? '');
+            }
+            if ($label === '') {
+                $label = $name;
+            }
 
             $sortOptions[$name] = $label;
         }
