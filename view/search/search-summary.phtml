@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array[] $summary An array of associative arrays. This is the summary
+ *                       returned by {@see \Search\Feature\SummarizeQueryInterface::summarizeQuery}
+ */
+?>
+<div class="search-summary">
+    <?php foreach ($summary as $element): ?>
+        <div class="search-summary__element">
+            <span class="search-summary__element-name"><?= $this->escapeHtml($element['name']) ?></span>
+            <span class="search-summary__element-value" title="<?= $this->escapeHtml($element['value']); ?>"><?= $this->escapeHtml($element['value']); ?></span>
+        </div>
+    <?php endforeach; ?>
+</div>

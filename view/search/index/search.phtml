@@ -55,6 +55,11 @@
 <div id="search-form-wrapper">
     <?php echo $this->searchForm(); ?>
 </div>
+
+<?php if (!empty($summary)): ?>
+    <?= $this->partial('search/search-summary', ['summary' => $summary]) ?>
+<?php endif; ?>
+
 <a href="#" id="search-form-show-link" style="display: none"><?php echo $this->translate('Edit search'); ?></a>
 
 <?php if (isset($response)): ?>
