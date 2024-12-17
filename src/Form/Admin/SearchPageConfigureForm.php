@@ -76,7 +76,8 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             'name' => 'show_search_summary',
             'type' => 'Checkbox',
             'options' => [
-                'label' => $translator->translate('Show search summary'),
+                'label' => 'Show search summary', // @translate
+                'info' => 'Show a summary of user search query near the results.', // @translate
             ],
         ]);
 

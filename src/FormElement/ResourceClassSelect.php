@@ -84,7 +84,7 @@ class ResourceClassSelect implements SearchFormElementInterface, SummarizeQueryI
 
     public function summarizeQuery($data, $page): array
     {
-        $summarizeElement = [];
+        $summary = [];
         $apiManager = $this->getApiManager();
         $translator = $this->getTranslator();
 
@@ -99,12 +99,13 @@ class ResourceClassSelect implements SearchFormElementInterface, SummarizeQueryI
             }
 
             if (!empty($terms)) {
-                $description = $translator->translate("Resource classes");
-                $summarizeElement['name'] = $description;
-                $summarizeElement['value'] = sprintf("%s : ( %s )", $description, implode(', ', $terms));
+                $summary[] = [
+                    'name' => $translator->translate('Resource classes'),
+                    'value' => implode(', ', $terms),
+                ];
             }
         }
 
-        return $summarizeElement;
+        return $summary;
     }
 }

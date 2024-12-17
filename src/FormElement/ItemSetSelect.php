@@ -72,7 +72,7 @@ class ItemSetSelect implements SearchFormElementInterface, SummarizeQueryInterfa
 
     public function summarizeQuery($data, $page): array
     {
-        $summarizeElement = [];
+        $summary = [];
         $apiManager = $this->getApiManager();
         $translator = $this->getTranslator();
 
@@ -87,11 +87,12 @@ class ItemSetSelect implements SearchFormElementInterface, SummarizeQueryInterfa
             }
 
             if (!empty($titles)) {
-                $description = $translator->translate("Item sets");
-                $summarizeElement['name'] = $description;
-                $summarizeElement['value'] = sprintf("%s : ( %s )", $description, implode(', ', $titles));
+                $summary[] = [
+                    'name' => $translator->translate('Item sets'),
+                    'value' => implode(', ', $titles),
+                ];
             }
         }
-        return $summarizeElement;
+        return $summary;
     }
 }
