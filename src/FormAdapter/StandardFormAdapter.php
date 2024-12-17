@@ -121,7 +121,6 @@ class StandardFormAdapter implements FormAdapterInterface, SummarizeQueryInterfa
     public function summarizeFilters($queries, $page, $match = 'all')
     {
         $filters = [];
-        $formSettings = $page->settings()['form'];
         $index = $page->index();
         $translator = $this->getTranslator();
         $availableOperators = $page->index()->availableOperators();
@@ -130,7 +129,7 @@ class StandardFormAdapter implements FormAdapterInterface, SummarizeQueryInterfa
             if (!empty($query['queries'])) {
                 $filters[] = '(' . $this->summarizeFilters($query['queries'], $page, $query['match']) . ')';
             } elseif (!empty($query['term'])) {
-                $label = $this->getLabelForField($query['field'], $formSettings);
+                $label = $this->getLabelForField($query['field'], $page);
                 $operator = $availableOperators[$query['operator']] ?? '';
                 $term = str_replace('"', '\\"', $query['term']);
                 $filters[] = sprintf('%s %s "%s"', $label, $operator['display_name'], $term);
@@ -145,14 +144,19 @@ class StandardFormAdapter implements FormAdapterInterface, SummarizeQueryInterfa
         return implode($separator, $filters);
     }
 
-    public function getLabelForField($fieldName, $formSettings)
+    public function getLabelForField($fieldName, $page)
     {
-        foreach ($formSettings['search_fields'] as $field) {
-            if ($field['name'] === $fieldName) {
+        $settings = $page->settings();
+        $searchFields = $settings['form']['search_fields'] ?? [];
+        foreach ($searchFields as $field) {
+            if ($field['name'] === $fieldName && ($field['label'] ?? null)) {
                 return $field['label'];
             }
         }
-        return $fieldName;
+
+        $availableSearchFields = $page->index()->availableSearchFields();
+
+        return $availableSearchFields[$fieldName]['label'] ?? $fieldName;
     }
 
     public function setApiManager($apiManager)
