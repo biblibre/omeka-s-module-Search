@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-06 15:03+0200\n"
+"POT-Creation-Date: 2024-12-17 14:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:105
+#: src/Api/Representation/SearchIndexRepresentation.php:116
 msgid "[No adapter]"
 msgstr ""
 
@@ -45,7 +45,7 @@ msgstr ""
 msgid "The maximum number of values fetched for each facet"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:146
+#: src/Form/Admin/SearchPageConfigureForm.php:155
 msgid "Form settings"
 msgstr ""
 
@@ -61,212 +61,217 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: src/Form/StandardForm.php:48
+#: src/Form/StandardForm.php:48 src/FormAdapter/StandardFormAdapter.php:92
 msgid "Search everywhere"
 msgstr ""
 
-#: view/search/admin/facets/field-edit-sidebar.phtml:5
-#: view/search/admin/facets/field-row.phtml:18
-msgid "Edit facet"
-msgstr ""
-
-#: view/search/admin/facets/field-edit-sidebar.phtml:11
-msgid "Set facet"
-msgstr ""
-
-#: view/search/admin/facets/field-row.phtml:5
-msgid "Facet to be removed"
-msgstr ""
-
-#: view/search/admin/facets/field-row.phtml:22
-msgid "Remove facet"
-msgstr ""
-
-#: view/search/admin/facets/field-row.phtml:26
-msgid "Restore facet"
-msgstr ""
-
-#: view/search/admin/form-elements/field-edit-sidebar.phtml:5
-#: view/search/admin/form-elements/field-row.phtml:11
-msgid "Edit form element"
-msgstr ""
-
-#: view/search/admin/form-elements/field-edit-sidebar.phtml:18
-msgid "Set form element"
-msgstr ""
-
-#: view/search/admin/form-elements/field-row.phtml:5
-msgid "Form element to be removed"
-msgstr ""
-
-#: view/search/admin/form-elements/field-row.phtml:15
-msgid "Remove form element"
-msgstr ""
-
-#: view/search/admin/form-elements/field-row.phtml:19
-msgid "Restore form element"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:33
-msgid "Search configuration"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:36
-msgid "Add new index"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:70
-msgid "Rebuild index"
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:90
-msgid "No search indexes created yet."
-msgstr ""
-
-#: view/search/admin/index/browse.phtml:152
-msgid "No search pages created yet."
-msgstr ""
-
-#: view/search/admin/search-fields/field-edit-sidebar.phtml:5
-#: view/search/admin/search-fields/field-row.phtml:18
-msgid "Edit search field"
-msgstr ""
-
-#: view/search/admin/search-fields/field-edit-sidebar.phtml:24
-msgid "Set search field"
-msgstr ""
-
-#: view/search/admin/search-fields/field-row.phtml:5
-msgid "Search field to be removed"
-msgstr ""
-
-#: view/search/admin/search-fields/field-row.phtml:22
-msgid "Remove search field"
-msgstr ""
-
-#: view/search/admin/search-fields/field-row.phtml:26
-msgid "Restore search field"
-msgstr ""
-
-#: view/search/admin/search-index/add.phtml:32
-msgid "Add search index"
-msgstr ""
-
-#: view/search/admin/search-index/configure.phtml:32
-msgid "Configure search index"
-msgstr ""
-
-#: view/search/admin/search-index/configure.phtml:36
-#: view/search/admin/search-page/configure.phtml:40
-msgid "Save configuration"
-msgstr ""
-
-#: view/search/admin/search-index/rebuild.phtml:30
-msgid "Index rebuild"
-msgstr ""
-
-#: view/search/admin/search-index/rebuild.phtml:42
-msgid "Start index rebuild"
-msgstr ""
-
-#: view/search/admin/search-page/add.phtml:32
-msgid "Add search page"
-msgstr ""
-
-#: view/search/admin/search-page/configure.phtml:36
-msgid "Configure search page"
-msgstr ""
-
-#: view/search/admin/search-page/edit.phtml:32
-msgid "Edit search page"
-msgstr ""
-
-#: view/search/admin/sort-fields/field-edit-sidebar.phtml:5
-#: view/search/admin/sort-fields/field-row.phtml:18
-msgid "Edit sort field"
-msgstr ""
-
-#: view/search/admin/sort-fields/field-edit-sidebar.phtml:24
-msgid "Set sort field"
-msgstr ""
-
-#: view/search/admin/sort-fields/field-row.phtml:5
-msgid "Sort field to be removed"
-msgstr ""
-
-#: view/search/admin/sort-fields/field-row.phtml:22
-msgid "Remove sort field"
-msgstr ""
-
-#: view/search/admin/sort-fields/field-row.phtml:26
-msgid "Restore sort field"
-msgstr ""
-
-#: view/search/facets.phtml:32 view/search/form/standard.phtml:39
+#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:37
+#: view/search/form/standard.phtml:45
 msgid "Filters"
 msgstr ""
 
-#: view/search/form/standard-match-group-filter.phtml:26
+#: src/FormElement/ResourceClassSelect.php:103
+msgid "Resource classes"
+msgstr ""
+
+#: view/search/admin/facets/field-edit-sidebar.phtml:11
+#: view/search/admin/facets/field-row.phtml:25
+msgid "Edit facet"
+msgstr ""
+
+#: view/search/admin/facets/field-edit-sidebar.phtml:17
+msgid "Set facet"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:12
+msgid "Facet to be removed"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:29
+msgid "Remove facet"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:33
+msgid "Restore facet"
+msgstr ""
+
+#: view/search/admin/form-elements/field-edit-sidebar.phtml:12
+#: view/search/admin/form-elements/field-row.phtml:17
+msgid "Edit form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-edit-sidebar.phtml:25
+msgid "Set form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:11
+msgid "Form element to be removed"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:21
+msgid "Remove form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:25
+msgid "Restore form element"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:39
+msgid "Search configuration"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:42
+msgid "Add new index"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:76
+msgid "Rebuild index"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:96
+msgid "No search indexes created yet."
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:158
+msgid "No search pages created yet."
+msgstr ""
+
+#: view/search/admin/search-fields/field-edit-sidebar.phtml:11
+#: view/search/admin/search-fields/field-row.phtml:25
+msgid "Edit search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-edit-sidebar.phtml:30
+msgid "Set search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:12
+msgid "Search field to be removed"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:29
+msgid "Remove search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:33
+msgid "Restore search field"
+msgstr ""
+
+#: view/search/admin/search-index/add.phtml:38
+msgid "Add search index"
+msgstr ""
+
+#: view/search/admin/search-index/configure.phtml:38
+msgid "Configure search index"
+msgstr ""
+
+#: view/search/admin/search-index/configure.phtml:42
+#: view/search/admin/search-page/configure.phtml:46
+msgid "Save configuration"
+msgstr ""
+
+#: view/search/admin/search-index/rebuild.phtml:36
+msgid "Index rebuild"
+msgstr ""
+
+#: view/search/admin/search-index/rebuild.phtml:48
+msgid "Start index rebuild"
+msgstr ""
+
+#: view/search/admin/search-page/add.phtml:38
+msgid "Add search page"
+msgstr ""
+
+#: view/search/admin/search-page/configure.phtml:42
+msgid "Configure search page"
+msgstr ""
+
+#: view/search/admin/search-page/edit.phtml:38
+msgid "Edit search page"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-edit-sidebar.phtml:11
+#: view/search/admin/sort-fields/field-row.phtml:25
+msgid "Edit sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-edit-sidebar.phtml:30
+msgid "Set sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:12
+msgid "Sort field to be removed"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:29
+msgid "Remove sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:33
+msgid "Restore sort field"
+msgstr ""
+
+#: view/search/form/standard-match-group-filter.phtml:35
 msgid "Proximity option (e.g. 2)"
 msgstr ""
 
-#: view/search/form/standard-match-group-filter.phtml:27
+#: view/search/form/standard-match-group-filter.phtml:36
 msgid "prox."
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:3
+#: view/search/form/standard-match-group.phtml:13
 msgid "Match all of the following criteria:"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:4
+#: view/search/form/standard-match-group.phtml:14
 msgid "Match any of the following criteria:"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:57
+#: view/search/form/standard-match-group.phtml:67
 msgid "Add filter"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:58
+#: view/search/form/standard-match-group.phtml:68
 msgid "Add group"
 msgstr ""
 
-#: view/search/highlights.phtml:11
+#: view/search/highlights.phtml:18
 msgid "Extracts matching your search"
 msgstr ""
 
-#: view/search/highlights.phtml:29
+#: view/search/highlights.phtml:36
 msgid "Show more"
 msgstr ""
 
-#: view/search/highlights.phtml:30
+#: view/search/highlights.phtml:37
 msgid "Show less"
 msgstr ""
 
-#: view/search/index/search.phtml:47
+#: view/search/index/search.phtml:63
 msgid "Edit search"
 msgstr ""
 
-#: view/search/index/search.phtml:86
+#: view/search/index/search.phtml:102
 msgid "Your query returned no results"
 msgstr ""
 
-#: view/search/save-query-form.phtml:5
+#: view/search/save-query-form.phtml:11
 msgid "Save this query"
 msgstr ""
 
-#: view/search/saved-queries.phtml:42
+#: view/search/saved-queries.phtml:47
 msgid "Actions"
 msgstr ""
 
-#: view/search/saved-queries.phtml:63
+#: view/search/saved-queries.phtml:68
 msgid "Reload"
 msgstr ""
 
-#: view/search/saved-queries.phtml:68
+#: view/search/saved-queries.phtml:73
 msgid "Delete this saved query"
 msgstr ""
 
-#: view/search/saved-queries.phtml:77
+#: view/search/saved-queries.phtml:82
 msgid "None saved queries yet"
 msgstr ""
 
@@ -284,40 +289,6 @@ msgid ""
 "useful when the indexed value is an internal id or code that can be "
 "associated to a human-friendly text. The default renderer shows the indexed "
 "value as is."
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:82
-msgid "Facets"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:83
-msgid "Add a facet"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:97
-msgid "Sort fields"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-msgid "Add a sort field"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:44
-msgid "Clear index"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:45
-msgid "Empty the index before rebuilding it"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:56
-msgid "Batch size"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:57
-msgid ""
-"Index that much resources at once. Large batchs will be faster but will use "
-"more memory"
 msgstr ""
 
 #: src/Form/StandardConfigForm.php:53
@@ -344,6 +315,48 @@ msgstr ""
 msgid "Add a form element"
 msgstr ""
 
+#: src/Form/Admin/SearchPageConfigureForm.php:79
+msgid "Show search summary"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:80
+msgid "Show a summary of user search query near the results."
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:91
+msgid "Facets"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:92
+msgid "Add a facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:106
+msgid "Sort fields"
+msgstr ""
+
+#: src/Form/Admin/SearchPageConfigureForm.php:107
+msgid "Add a sort field"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
+msgid "Clear index"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:45
+msgid "Empty the index before rebuilding it"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:56
+msgid "Batch size"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:57
+msgid ""
+"Index that much resources at once. Large batchs will be faster but will use "
+"more memory"
+msgstr ""
+
 #: src/Controller/Admin/SearchIndexController.php:130
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
@@ -357,12 +370,16 @@ msgstr ""
 msgid "Label for this block"
 msgstr ""
 
-#: src/FormElement/ItemSetSelect.php:21
-#: src/FormElement/ResourceClassSelect.php:24
+#: src/FormElement/ResourceClassSelect.php:18
+msgid "Resource class"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:26
+#: src/FormElement/ItemSetSelect.php:26
 msgid "Field"
 msgstr ""
 
-#: src/FormElement/ItemSetSelect.php:22
-#: src/FormElement/ResourceClassSelect.php:25
+#: src/FormElement/ResourceClassSelect.php:27
+#: src/FormElement/ItemSetSelect.php:27
 msgid "Field to use for filtering. It should be a facet field."
 msgstr ""
