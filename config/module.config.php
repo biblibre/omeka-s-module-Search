@@ -10,12 +10,9 @@ return [
             'Search\Controller\Admin\Facets' => Controller\Admin\FacetsController::class,
             'Search\Controller\Admin\FormElements' => Controller\Admin\FormElementsController::class,
             'Search\Controller\Admin\SearchFields' => Controller\Admin\SearchFieldsController::class,
+            'Search\Controller\Admin\SearchIndex' => Controller\Admin\SearchIndexController::class,
+            'Search\Controller\Admin\SearchPage' => Controller\Admin\SearchPageController::class,
             'Search\Controller\Admin\SortFields' => Controller\Admin\SortFieldsController::class,
-        ],
-        'factories' => [
-            'Search\Controller\Admin\SearchIndex' => Service\Controller\Admin\SearchIndexControllerFactory::class,
-            'Search\Controller\Admin\SearchPage' => Service\Controller\Admin\SearchPageControllerFactory::class,
-
         ],
     ],
     'controller_plugins' => [
@@ -44,10 +41,10 @@ return [
             'Search\Form\FacetForm' => Form\FacetForm::class,
         ],
         'factories' => [
-            'Search\Form\Admin\SearchIndexForm' => Service\Form\SearchIndexFormFactory::class,
-            'Search\Form\Admin\SearchIndexConfigureForm' => Service\Form\SearchIndexConfigureFormFactory::class,
-            'Search\Form\Admin\SearchPageForm' => Service\Form\SearchPageFormFactory::class,
-            'Search\Form\Admin\SearchPageConfigureForm' => Service\Form\SearchPageConfigureFormFactory::class,
+            'Search\Form\Admin\SearchIndexAddForm' => Service\Form\SearchIndexAddFormFactory::class,
+            'Search\Form\Admin\SearchIndexEditForm' => Service\Form\SearchIndexEditFormFactory::class,
+            'Search\Form\Admin\SearchPageAddForm' => Service\Form\SearchPageAddFormFactory::class,
+            'Search\Form\Admin\SearchPageEditForm' => Service\Form\SearchPageEditFormFactory::class,
             'Search\Form\StandardForm' => Service\Form\StandardFormFactory::class,
             'Search\Form\StandardConfigForm' => Service\Form\StandardConfigFormFactory::class,
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,

@@ -33,78 +33,71 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;
-use Search\Form\Admin\SearchIndexForm;
-use Search\Form\Admin\SearchIndexConfigureForm;
+use Search\Form\Admin\SearchIndexAddForm;
+use Search\Form\Admin\SearchIndexEditForm;
 use Search\Form\Admin\SearchIndexRebuildForm;
 
 class SearchIndexController extends AbstractActionController
 {
-    protected $entityManager;
-    protected $searchAdapterManager;
-    protected $jobDispatcher;
-
     public function addAction()
     {
-        $form = $this->getForm(SearchIndexForm::class);
+        $form = $this->getForm(SearchIndexAddForm::class);
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
-            if (!$form->isValid()) {
-                $this->messenger()->addError('There was an error during validation');
-                return $view;
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $response = $this->api($form)->create('search_indexes', $formData);
+                if ($response) {
+                    $searchIndex = $response->getContent();
+                    $this->messenger()->addSuccess('Search index created.');
+
+                    return $this->redirect()->toUrl($searchIndex->url('edit'));
+                }
+            } else {
+                $this->messenger()->addFormErrors($form);
             }
-            $formData = $form->getData();
-            $response = $this->api()->create('search_indexes', $formData);
-            $this->messenger()->addSuccess('Search index created.');
-            return $this->redirect()->toUrl($response->getContent()->url('configure'));
         }
         return $view;
     }
 
-    public function configureAction()
+    public function editAction()
     {
-        $entityManager = $this->getEntityManager();
-        $adapterManager = $this->getSearchAdapterManager();
-
         $id = $this->params('id');
 
-        $searchIndex = $entityManager->find('Search\Entity\SearchIndex', $id);
-        $adapter = $adapterManager->get($searchIndex->getAdapter());
+        $searchIndex = $this->api()->read('search_indexes', $id)->getContent();
 
-        $form = $this->getForm(SearchIndexConfigureForm::class, [
+        $form = $this->getForm(SearchIndexEditForm::class, [
             'search_index_id' => $id,
         ]);
-        $adapterFieldset = $adapter->getConfigFieldset();
-        $adapterFieldset->setName('adapter');
-        $adapterFieldset->setLabel('Adapter settings');
-        $form->add($adapterFieldset);
-        $form->setData($searchIndex->getSettings());
-
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
+        $form->setData($searchIndex->jsonSerialize());
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->params()->fromPost());
-            if (!$form->isValid()) {
-                $this->messenger()->addError('There was an error during validation');
-                return $view;
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                unset($formData['o:adapter']);
+                $response = $this->api($form)->update('search_indexes', $id, $formData, [], ['isPartial' => true]);
+                if ($response) {
+                    $this->messenger()->addSuccess('Search index updated');
+
+                    return $this->redirect()->toRoute('admin/search');
+                }
+            } else {
+                $this->messenger()->addFormErrors($form);
             }
-            $formData = $form->getData();
-            unset($formData['csrf']);
-            $searchIndex->setSettings($formData);
-            $entityManager->flush();
-            $this->messenger()->addSuccess('Search index successfully configured');
-            return $this->redirect()->toRoute('admin/search', ['action' => 'browse'], true);
         }
+
+        $view = new ViewModel;
+        $view->setVariable('form', $form);
 
         return $view;
     }
 
     public function rebuildAction()
     {
-        $jobDispatcher = $this->getJobDispatcher();
         $indexId = $this->params('id');
 
         $form = $this->getForm(SearchIndexRebuildForm::class);
@@ -118,7 +111,7 @@ class SearchIndexController extends AbstractActionController
                     'clear-index' => $data['clear-index'] ?? 0,
                     'batch-size' => $data['batch-size'],
                 ];
-                $job = $jobDispatcher->dispatch('Search\Job\RebuildIndex', $jobArgs);
+                $job = $this->jobDispatcher()->dispatch('Search\Job\RebuildIndex', $jobArgs);
 
                 $jobUrl = $this->url()->fromRoute('admin/id', [
                     'controller' => 'job',
@@ -174,35 +167,5 @@ class SearchIndexController extends AbstractActionController
             }
         }
         return $this->redirect()->toRoute('admin/search');
-    }
-
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    public function setSearchAdapterManager($searchAdapterManager)
-    {
-        $this->searchAdapterManager = $searchAdapterManager;
-    }
-
-    public function getSearchAdapterManager()
-    {
-        return $this->searchAdapterManager;
-    }
-
-    public function setJobDispatcher($jobDispatcher)
-    {
-        $this->jobDispatcher = $jobDispatcher;
-    }
-
-    public function getJobDispatcher()
-    {
-        return $this->jobDispatcher;
     }
 }

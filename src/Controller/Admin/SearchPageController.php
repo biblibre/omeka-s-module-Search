@@ -32,84 +32,67 @@ namespace Search\Controller\Admin;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Form\ConfirmForm;
-use Search\Form\Admin\SearchPageForm;
-use Search\Form\Admin\SearchPageConfigureForm;
+use Search\Form\Admin\SearchPageAddForm;
+use Search\Form\Admin\SearchPageEditForm;
 
 class SearchPageController extends AbstractActionController
 {
-    protected $entityManager;
-    protected $searchAdapterManager;
-    protected $searchFormAdapterManager;
-
     public function addAction()
     {
-        $form = $this->getForm(SearchPageForm::class);
+        $form = $this->getForm(SearchPageAddForm::class);
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $response = $this->api($form)->create('search_pages', $formData);
+                if ($response) {
+                    $searchPage = $response->getContent();
+                    $this->messenger()->addSuccess('Search page created.');
+
+                    return $this->redirect()->toUrl($searchPage->url('edit'));
+                }
+            } else {
+                $this->messenger()->addFormErrors($form);
+            }
+        }
 
         $view = new ViewModel;
         $view->setVariable('form', $form);
-        if (!$this->checkPostAndValidForm($form)) {
-            return $view;
-        }
-        $formData = $form->getData();
-        $response = $this->api()->create('search_pages', $formData);
 
-        $this->messenger()->addSuccess('Search page created.');
-        $searchPage = $response->getContent();
-        return $this->redirect()->toUrl($searchPage->url('configure'));
+        return $view;
     }
 
     public function editAction()
     {
         $id = $this->params('id');
-        $page = $this->api()->read('search_pages', $id)->getContent();
-
-        $form = $this->getForm(SearchPageForm::class);
-        $form->setData($page->jsonSerialize());
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
-
-        if (!$this->checkPostAndValidForm($form)) {
-            return $view;
-        }
-
-        $formData = $form->getData();
-        $this->api()->update('search_pages', $id, $formData, [], ['isPartial' => true]);
-
-        $this->messenger()->addSuccess('Search page updated.');
-        return $this->redirect()->toUrl($page->url('configure'));
-    }
-
-    public function configureAction()
-    {
-        $entityManager = $this->getEntityManager();
-        $adapterManager = $this->getSearchAdapterManager();
-        $formAdapterManager = $this->getSearchFormAdapterManager();
-
-        $id = $this->params('id');
-
         $searchPage = $this->api()->read('search_pages', $id)->getContent();
-        $adapter = $searchPage->index()->adapter();
 
-        $form = $this->getForm(SearchPageConfigureForm::class, [
+        $form = $this->getForm(SearchPageEditForm::class, [
             'search_page' => $searchPage,
         ]);
-        $form->setData($searchPage->settings());
+        $form->setData($searchPage->jsonSerialize());
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                unset($formData['o:index_id']);
+                unset($formData['o:form']);
+                $response = $this->api($form)->update('search_pages', $id, $formData, [], ['isPartial' => true]);
+                if ($response) {
+                    $this->messenger()->addSuccess('Search page updated.');
+
+                    return $this->redirect()->toRoute('admin/search');
+                }
+            } else {
+                $this->messenger()->addFormErrors($form);
+            }
+        }
+
         $view = new ViewModel;
         $view->setVariable('form', $form);
 
-        if (!$this->checkPostAndValidForm($form)) {
-            return $view;
-        }
-
-        $formData = $form->getData();
-        unset($formData['csrf']);
-
-        $page = $searchPage->getEntity();
-        $page->setSettings($formData);
-        $entityManager->flush();
-
-        $this->messenger()->addSuccess('Configuration saved.');
-        return $this->redirect()->toRoute('admin/search');
+        return $view;
     }
 
     public function deleteConfirmAction()
@@ -139,50 +122,5 @@ class SearchPageController extends AbstractActionController
             }
         }
         return $this->redirect()->toRoute('admin/search');
-    }
-
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    public function setSearchAdapterManager($searchAdapterManager)
-    {
-        $this->searchAdapterManager = $searchAdapterManager;
-    }
-
-    public function getSearchAdapterManager()
-    {
-        return $this->searchAdapterManager;
-    }
-
-    public function setSearchFormAdapterManager($searchFormAdapterManager)
-    {
-        $this->searchFormAdapterManager = $searchFormAdapterManager;
-    }
-
-    public function getSearchFormAdapterManager()
-    {
-        return $this->searchFormAdapterManager;
-    }
-
-    protected function checkPostAndValidForm($form)
-    {
-        if (!$this->getRequest()->isPost()) {
-            return false;
-        }
-
-        $form->setData($this->params()->fromPost());
-        if (!$form->isValid()) {
-            $this->messenger()->addFormErrors($form);
-            return false;
-        }
-
-        return true;
     }
 }

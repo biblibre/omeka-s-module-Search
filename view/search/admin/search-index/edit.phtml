@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright BibLibre, 2016
  *
@@ -26,59 +25,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL license and that you accept its terms.
  */
+?>
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Laminas\Form\Form $form
+ */
+?>
 
-namespace Search\Form\Admin;
+<?php $form->prepare(); ?>
 
-use Laminas\Form\Form;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
+<?php echo $this->pageTitle($this->translate('Edit search index')); ?>
 
-class SearchIndexConfigureForm extends Form implements TranslatorAwareInterface
-{
-    use TranslatorAwareTrait;
+<?php echo $this->form()->openTag($form); ?>
+<div id="page-actions">
+    <button><?php echo $this->translate('Save'); ?></button>
+</div>
 
-    protected $apiManager;
+<?php echo $this->formCollection($form); ?>
 
-    public function init()
-    {
-        $translator = $this->getTranslator();
+<?php $this->trigger('view.edit.form.after'); ?>
+<?php echo $this->form()->closeTag(); ?>
 
-        $this->add([
-            'name' => 'resources',
-            'type' => 'MultiCheckbox',
-            'options' => [
-                'label' => $translator->translate('Resources indexed'),
-                'value_options' => $this->getResourcesOptions(),
-            ],
-            'attributes' => [
-                'value' => ['items'],
-            ],
-        ]);
-    }
-
-    public function setApiManager($apiManager)
-    {
-        $this->apiManager = $apiManager;
-    }
-
-    public function getApiManager()
-    {
-        return $this->apiManager;
-    }
-
-    protected function getResourcesOptions()
-    {
-        $api = $this->getApiManager();
-        $translator = $this->getTranslator();
-
-        $searchIndexId = $this->getOption('search_index_id');
-        $response = $api->read('search_indexes', $searchIndexId);
-        $searchIndex = $response->getContent();
-        $indexer = $searchIndex->indexer();
-        $adapter = $searchIndex->adapter();
-
-        $options = $adapter->getHandledResources();
-
-        return $options;
-    }
-}
+<?php $this->trigger('view.edit.after'); ?>

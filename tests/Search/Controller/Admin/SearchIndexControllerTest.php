@@ -4,7 +4,7 @@ namespace Search\Test\Controller\Admin;
 
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
-use Search\Form\Admin\SearchIndexConfigureForm;
+use Search\Form\Admin\SearchIndexEditForm;
 use Search\Form\Admin\SearchIndexRebuildForm;
 use Search\Test\Controller\SearchControllerTestCase;
 
@@ -22,7 +22,7 @@ class SearchIndexControllerTest extends SearchControllerTestCase
     public function testAddPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchIndexForm');
+        $form = $forms->get('Search\Form\Admin\SearchIndexAddForm');
 
         $this->dispatch('/admin/search/index/add', 'POST', [
             'o:name' => 'TestIndex2',
@@ -34,32 +34,35 @@ class SearchIndexControllerTest extends SearchControllerTestCase
         ]);
         $searchIndexes = $response->getContent();
         $searchIndex = reset($searchIndexes);
-        $this->assertRedirectTo($searchIndex->adminUrl('configure'));
+        $this->assertRedirectTo($searchIndex->adminUrl('edit'));
     }
 
-    public function testConfigureGetAction()
+    public function testEditGetAction()
     {
-        $this->dispatch($this->searchIndex->adminUrl('configure'));
+        $this->dispatch($this->searchIndex->adminUrl('edit'));
         $this->assertResponseStatusCode(200);
 
-        $this->assertQuery('input[name="resources[]"]');
+        $this->assertQuery('input[name="o:settings[resources][]"]');
     }
 
-    public function testConfigurePostAction()
+    public function testEditPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get(SearchIndexConfigureForm::class, [
+        $form = $forms->get(SearchIndexEditForm::class, [
             'search_index_id' => $this->searchIndex->id(),
         ]);
 
-        $this->dispatch($this->searchIndex->adminUrl('configure'), 'POST', [
-            'resources' => ['items', 'item_sets'],
+        $this->dispatch($this->searchIndex->adminUrl('edit'), 'POST', [
+            'o:name' => 'TestIndex2',
+            'o:settings' => [
+                'resources' => ['items', 'item_sets'],
+            ],
             'csrf' => $form->get('csrf')->getValue(),
         ]);
         $this->assertRedirectTo("/admin/search");
     }
 
-    public function testIndexAction()
+    public function testRebuildAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
         $form = $forms->get(SearchIndexRebuildForm::class);

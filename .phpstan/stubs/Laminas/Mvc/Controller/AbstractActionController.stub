@@ -5,9 +5,10 @@ namespace Laminas\Mvc\Controller;
 /**
  *  @method \Laminas\Http\Request getRequest()
  *
- *  @method \Omeka\Mvc\Controller\Plugin\Api api()
+ *  @method \Omeka\Mvc\Controller\Plugin\Api api(\Laminas\Form\Form $form = null)
  *  @method \Omeka\Api\Representation\SiteRepresentation currentSite()
  *  @method \Laminas\Form\Form getForm(string $class, array $options = null)
+ *  @method \Omeka\Job\Dispatcher jobDispatcher()
  *  @method \Omeka\Mvc\Controller\Plugin\Messenger messenger()
  *  @method \Omeka\View\Helper\Pagination paginator(int $totalCount, int $currentPage = null, int $perPage = null, string $partialName = null)
  *  @method \Omeka\Settings\SettingsInterface settings()

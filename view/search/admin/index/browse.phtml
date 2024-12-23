@@ -63,9 +63,9 @@
                             <?php if ($search_index->adapter()): ?>
                                 <li>
                                     <?php
-                                        echo $search_index->link('', 'configure', [
-                                            'class' => 'o-icon-configure',
-                                            'title' => $this->translate('Configure'),
+                                        echo $search_index->link('', 'edit', [
+                                            'class' => 'o-icon-edit',
+                                            'title' => $this->translate('Edit'),
                                         ]);
                                     ?>
                                 </li>
@@ -118,14 +118,6 @@
                                     echo $search_page->link('', 'edit', [
                                         'class' => 'o-icon-edit',
                                         'title' => $this->translate('Edit'),
-                                    ]);
-                                ?>
-                            </li>
-                            <li>
-                                <?php
-                                    echo $search_page->link('', 'configure', [
-                                        'class' => 'o-icon-configure',
-                                        'title' => $this->translate('Configure'),
                                     ]);
                                 ?>
                             </li>

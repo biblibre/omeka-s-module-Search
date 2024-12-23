@@ -20,7 +20,7 @@ class SearchPageControllerTest extends SearchControllerTestCase
     public function testAddPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchPageForm');
+        $form = $forms->get('Search\Form\Admin\SearchPageAddForm');
 
         $this->dispatch('/admin/search/page/add', 'POST', [
             'o:name' => 'TestPage2',
@@ -34,32 +34,36 @@ class SearchPageControllerTest extends SearchControllerTestCase
         ]);
         $searchPages = $response->getContent();
         $searchPage = reset($searchPages);
-        $this->assertRedirectTo($searchPage->adminUrl('configure'));
+        $this->assertRedirectTo($searchPage->adminUrl('edit'));
     }
 
-    public function testConfigureGetAction()
+    public function testEditGetAction()
     {
-        $this->dispatch($this->searchPage->adminUrl('configure'));
+        $this->dispatch($this->searchPage->adminUrl('edit'));
         $this->assertResponseStatusCode(200);
 
         $this->assertQueryContentContains('.field .field-meta label', 'Facets');
         $this->assertQueryContentContains('.field .field-meta label', 'Sort fields');
     }
 
-    public function testConfigurePostAction()
+    public function testEditPostAction()
     {
         $forms = $this->getServiceLocator()->get('FormElementManager');
-        $form = $forms->get('Search\Form\Admin\SearchPageConfigureForm', [
+        $form = $forms->get('Search\Form\Admin\SearchPageEditForm', [
             'search_page' => $this->searchPage,
         ]);
 
-        $url = '/admin/search/page/' . $this->searchPage->id() . '/configure';
+        $url = '/admin/search/page/' . $this->searchPage->id() . '/edit';
         $this->dispatch($url, 'POST', [
-            'facet_limit' => '10',
-            'save_queries' => '1',
-            'show_search_summary' => '1',
-            'form' => [
-                'proximity' => '1',
+            'o:name' => 'TestPage2',
+            'o:path' => 'search/test2',
+            'o:settings' => [
+                'facet_limit' => '10',
+                'save_queries' => '1',
+                'show_search_summary' => '1',
+                'form' => [
+                    'proximity' => '1',
+                ],
             ],
             'csrf' => $form->get('csrf')->getValue(),
         ]);

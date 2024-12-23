@@ -30,67 +30,108 @@
 namespace Search\Form\Admin;
 
 use Laminas\Form\Form;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
 
-class SearchIndexForm extends Form implements TranslatorAwareInterface
+class SearchPageAddForm extends Form
 {
-    use TranslatorAwareTrait;
-
-    protected $searchAdapterManager;
+    protected $apiManager;
+    protected $formAdapterManager;
 
     public function init()
     {
-        $translator = $this->getTranslator();
-
         $this->add([
             'name' => 'o:name',
             'type' => 'Text',
             'options' => [
-                'label' => $translator->translate('Name'),
+                'label' => 'Name', // @translate
             ],
             'attributes' => [
-                'id' => 'name',
                 'required' => true,
             ],
         ]);
 
         $this->add([
-            'name' => 'o:adapter',
-            'type' => 'Select',
+            'name' => 'o:path',
+            'type' => 'Text',
             'options' => [
-                'label' => $translator->translate('Adapter'),
-                'value_options' => $this->getAdaptersOptions(),
+                'label' => 'Path', // @translate
             ],
             'attributes' => [
-                'id' => 'name',
+                'required' => true,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'o:index_id',
+            'type' => 'Select',
+            'options' => [
+                'label' => 'Index', // @translate
+                'value_options' => $this->getIndexesOptions(),
+            ],
+            'attributes' => [
+                'required' => true,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'o:form',
+            'type' => 'Select',
+            'options' => [
+                'label' => 'Form', // @translate
+                'value_options' => $this->getFormsOptions(),
+            ],
+            'attributes' => [
                 'required' => true,
             ],
         ]);
     }
 
-    public function setSearchAdapterManager($searchAdapterManager)
+    public function setApiManager($apiManager)
     {
-        $this->searchAdapterManager = $searchAdapterManager;
+        $this->apiManager = $apiManager;
     }
 
-    public function getSearchAdapterManager()
+    public function getApiManager()
     {
-        return $this->searchAdapterManager;
+        return $this->apiManager;
     }
 
-    protected function getAdaptersOptions()
+    public function setFormAdapterManager($formAdapterManager)
     {
-        $adapterManager = $this->getSearchAdapterManager();
-        $adapterNames = $adapterManager->getRegisteredNames();
+        $this->formAdapterManager = $formAdapterManager;
+    }
+
+    public function getFormAdapterManager()
+    {
+        return $this->formAdapterManager;
+    }
+
+    protected function getIndexesOptions()
+    {
+        $api = $this->getApiManager();
+
+        $indexes = $api->search('search_indexes')->getContent();
+        $options = [
+            '' => 'None', // @translate
+        ];
+        foreach ($indexes as $index) {
+            $options[$index->id()] =
+                sprintf('%s (%s)', $index->name(), $index->adapterLabel());
+        }
+
+        return $options;
+    }
+
+    protected function getFormsOptions()
+    {
+        $formAdapterManager = $this->getFormAdapterManager();
+        $formAdapterNames = $formAdapterManager->getRegisteredNames();
 
         $options = [
-            '' => $this->getTranslator()->translate('None'),
+            '' => 'None', // @translate
         ];
-
-        foreach ($adapterNames as $name) {
-            $adapter = $adapterManager->get($name);
-            $options[$name] = $adapter->getLabel();
+        foreach ($formAdapterNames as $name) {
+            $formAdapter = $formAdapterManager->get($name);
+            $options[$name] = $formAdapter->getLabel();
         }
 
         return $options;

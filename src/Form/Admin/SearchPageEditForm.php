@@ -29,42 +29,42 @@
 
 namespace Search\Form\Admin;
 
-use Laminas\Form\Form;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
+use Laminas\Form\Fieldset;
 use Search\Form\Element\Fields;
 
-class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
+class SearchPageEditForm extends SearchPageAddForm
 {
-    use TranslatorAwareTrait;
-
     protected $formElementManager;
-
     protected $urlViewHelper;
 
     public function init()
     {
-        $translator = $this->getTranslator();
+        parent::init();
+
+        $this->get('o:index_id')->setAttributes(['disabled' => true, 'required' => null]);
+        $this->get('o:form')->setAttributes(['disabled' => true, 'required' => null]);
 
         $searchPage = $this->getOption('search_page');
         $adapter = $searchPage->index()->adapter();
-        $settings = $searchPage->settings();
 
-        $this->add([
+        $settingsFieldset = new Fieldset('o:settings');
+        $this->add($settingsFieldset);
+
+        $settingsFieldset->add([
             'name' => 'save_queries',
             'type' => 'Checkbox',
             'options' => [
-                'label' => $translator->translate('Save queries'),
-                'info' => $translator->translate('Add ability to save your query and reload it later with result update'),
+                'label' => 'Save queries', // @translate
+                'info' => 'Add ability to save your query and reload it later with result update', // @translate
             ],
         ]);
 
-        $this->add([
+        $settingsFieldset->add([
             'name' => 'facet_limit',
             'type' => 'Number',
             'options' => [
-                'label' => $translator->translate('Facet limit'),
-                'info' => $translator->translate('The maximum number of values fetched for each facet'),
+                'label' => 'Facet limit', // @translate
+                'info' => 'The maximum number of values fetched for each facet', // @translate
             ],
             'attributes' => [
                 'min' => '1',
@@ -72,7 +72,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             ],
         ]);
 
-        $this->add([
+        $settingsFieldset->add([
             'name' => 'show_search_summary',
             'type' => 'Checkbox',
             'options' => [
@@ -84,7 +84,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
         $facetFields = $adapter->getAvailableFacetFields($searchPage->index());
         $facetValueOptions = array_column($facetFields, 'label', 'name');
         $url = $this->urlViewHelper;
-        $this->add([
+        $settingsFieldset->add([
             'name' => 'facets',
             'type' => Fields::class,
             'options' => [
@@ -99,7 +99,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $sortFields = $adapter->getAvailableSortFields($searchPage->index());
         $sortFieldValueOptions = array_column($sortFields, 'label', 'name');
-        $this->add([
+        $settingsFieldset->add([
             'name' => 'sort_fields',
             'type' => Fields::class,
             'options' => [
@@ -114,8 +114,11 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
 
         $formFieldset = $this->getFormFieldset();
         if ($formFieldset) {
-            $this->add($formFieldset);
+            $settingsFieldset->add($formFieldset);
         }
+
+        $this->getInputFilter()->add(['name' => 'o:index_id', 'required' => false]);
+        $this->getInputFilter()->add(['name' => 'o:form', 'required' => false]);
     }
 
     public function setFormElementManager($formElementManager)
@@ -152,7 +155,7 @@ class SearchPageConfigureForm extends Form implements TranslatorAwareInterface
             'search_page' => $searchPage,
         ]);
         $fieldset->setName('form');
-        $fieldset->setLabel($this->getTranslator()->translate('Form settings'));
+        $fieldset->setLabel('Form settings'); // @translate
 
         return $fieldset;
     }
