@@ -3,7 +3,7 @@
 require dirname(__DIR__, 3) . '/bootstrap.php';
 
 //make sure error reporting is on for testing
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 ini_set('display_errors', 1);
 
 // Install a fresh database.
