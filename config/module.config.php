@@ -38,7 +38,6 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
-            'Search\Form\FacetForm' => Form\FacetForm::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexAddForm' => Service\Form\SearchIndexAddFormFactory::class,
@@ -50,6 +49,7 @@ return [
             'Search\Form\Element\SearchPageSelect' => Service\Form\Element\SearchPageSelectFactory::class,
             'Search\Form\SaveQueryForm' => Service\Form\SaveQueryFormFactory::class,
             'Search\Form\Element\FacetValueRendererSelect' => Service\Form\Element\FacetValueRendererSelectFactory::class,
+            'Search\Form\FacetForm' => Service\Form\FacetFormFactory::class,
         ],
     ],
     'listeners' => [

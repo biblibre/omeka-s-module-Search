@@ -38,6 +38,7 @@ class Query
     protected $facetLimit;
     protected $facetFields = [];
     protected $facetFilters = [];
+    protected $facetSorts = [];
     protected $queryFilters = [];
     protected $dateRangeFilters = [];
     protected $offset = 0 ;
@@ -165,5 +166,15 @@ class Query
     public function getResources()
     {
         return $this->resources;
+    }
+
+    public function addFacetSort($name, $sort)
+    {
+        $this->facetSorts[$name] = $sort;
+    }
+
+    public function getFacetSorts()
+    {
+        return $this->facetSorts;
     }
 }

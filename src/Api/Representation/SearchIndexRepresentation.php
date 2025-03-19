@@ -150,6 +150,11 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
         return $this->adapter()->getAvailableFacetFields($this);
     }
 
+    public function availableFacetSorts()
+    {
+        return $this->adapter()->getAvailableFacetSorts($this);
+    }
+
     public function availableSortFields()
     {
         return $this->adapter()->getAvailableSortFields($this);
