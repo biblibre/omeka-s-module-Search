@@ -95,7 +95,9 @@ class IndexController extends AbstractActionController
         $settings = $this->page->settings();
         foreach ($settings['facets'] as $facet) {
             $query->addFacetField($facet['name']);
+            $query->addFacetSort($facet['name'], $facet['sort_by']);
         }
+
         if (isset($settings['facet_limit'])) {
             $query->setFacetLimit($settings['facet_limit']);
         }

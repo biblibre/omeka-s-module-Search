@@ -38,6 +38,7 @@ class Query
     protected $facetLimit;
     protected $facetFields = [];
     protected $facetFilters = [];
+    protected $facetSorts = [];
     protected $queryFilters = [];
     protected $dateRangeFilters = [];
     protected $offset = 0 ;
@@ -165,5 +166,26 @@ class Query
     public function getResources()
     {
         return $this->resources;
+    }
+
+    public function addFacetSort($name, $sort)
+    {
+        $this->facetSorts[$name] = $sort;
+    }
+
+    public function sortFacetValues($name, $values)
+    {
+        $sort = $this->facetSorts[$name];
+        if ($sort === 'alphabetic_asc') {
+            usort($values, function ($a, $b) {
+                return strcmp($a['val'], $b['val']);
+            });
+        }
+        if ($sort === 'alphabetic_desc') {
+            usort($values, function ($a, $b) {
+                return strcmp($b['val'], $a['val']);
+            });
+        }
+        return $values;
     }
 }
