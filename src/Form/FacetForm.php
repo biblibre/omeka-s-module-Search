@@ -40,8 +40,8 @@ class FacetForm extends Form
                 'label' => 'Sort by', // @translate
                 'empty_option' => 'Default', // @translate
                 'value_options' => [
-                    'alphabetic_asc' => 'Alphabetic (asc)', // @translate
-                    'alphabetic_desc' => 'Alphabetic (desc)', // @translate
+                    'index asc' => 'Ascendant', // @translate
+                    'index desc' => 'Descendant', // @translate
                 ],
             ],
             'attributes' => [
