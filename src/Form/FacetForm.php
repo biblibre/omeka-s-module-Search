@@ -39,10 +39,7 @@ class FacetForm extends Form
             'options' => [
                 'label' => 'Sort by', // @translate
                 'empty_option' => 'Default', // @translate
-                'value_options' => [
-                    'index asc' => 'Ascendant', // @translate
-                    'index desc' => 'Descendant', // @translate
-                ],
+                'value_options' => [],
             ],
             'attributes' => [
                 'data-field-data-key' => 'sort_by',
@@ -61,5 +58,10 @@ class FacetForm extends Form
                 'data-field-data-key' => 'value_renderer',
             ],
         ]);
+    }
+
+    public function setFacetSorts(array $facetSorts)
+    {
+        $this->get('sort_by')->setValueOptions($facetSorts);
     }
 }

@@ -37,8 +37,15 @@ class FacetsController extends AbstractActionController
     public function fieldEditSidebarAction()
     {
         $fieldData = $this->params()->fromQuery('field_data');
+        $searchPageId = $this->params()->fromQuery('search_page_id');
+        $searchPage = $this->api()->read('search_pages', $searchPageId)->getContent();
+
         $form = $this->getForm(FacetForm::class);
         $form->setData($fieldData);
+
+        $index = $searchPage->index();
+        $facetSorts = $index->availableFacetSorts();
+        $form->setFacetSorts($facetSorts);
 
         $view = new ViewModel;
         $view->setTerminal(true);
