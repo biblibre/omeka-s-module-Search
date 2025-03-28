@@ -33,18 +33,24 @@ class FacetForm extends Form
             ],
         ]);
 
-        $this->add([
-            'name' => 'sort_by',
-            'type' => Select::class,
-            'options' => [
-                'label' => 'Sort by', // @translate
-                'empty_option' => 'Default', // @translate
-                'value_options' => [],
-            ],
-            'attributes' => [
-                'data-field-data-key' => 'sort_by',
-            ],
-        ]);
+        if ($this->getOption('search_page')) {
+            $searchPage = $this->getOption('search_page');
+            $index = $searchPage->index();
+            $facetSorts = $index->availableFacetSorts();
+
+            $this->add([
+                'name' => 'sort_by',
+                'type' => Select::class,
+                'options' => [
+                    'label' => 'Sort by', // @translate
+                    'empty_option' => 'Default', // @translate
+                    'value_options' => $facetSorts,
+                ],
+                'attributes' => [
+                    'data-field-data-key' => 'sort_by',
+                ],
+            ]);
+        }
 
         $this->add([
             'name' => 'value_renderer',
@@ -58,10 +64,5 @@ class FacetForm extends Form
                 'data-field-data-key' => 'value_renderer',
             ],
         ]);
-    }
-
-    public function setFacetSorts(array $facetSorts)
-    {
-        $this->get('sort_by')->setValueOptions($facetSorts);
     }
 }

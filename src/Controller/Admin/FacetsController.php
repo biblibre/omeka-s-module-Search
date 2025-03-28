@@ -40,12 +40,8 @@ class FacetsController extends AbstractActionController
         $searchPageId = $this->params()->fromQuery('search_page_id');
         $searchPage = $this->api()->read('search_pages', $searchPageId)->getContent();
 
-        $form = $this->getForm(FacetForm::class);
+        $form = $this->getForm(FacetForm::class, ['search_page' => $searchPage]);
         $form->setData($fieldData);
-
-        $index = $searchPage->index();
-        $facetSorts = $index->availableFacetSorts();
-        $form->setFacetSorts($facetSorts);
 
         $view = new ViewModel;
         $view->setTerminal(true);
