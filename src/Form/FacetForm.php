@@ -3,6 +3,7 @@
 namespace Search\Form;
 
 use Laminas\Form\Element\Text;
+use Laminas\Form\Element\Select;
 use Laminas\Form\Form;
 use Search\Form\Element\FacetValueRendererSelect;
 
@@ -31,6 +32,25 @@ class FacetForm extends Form
                 'data-field-data-key' => 'label',
             ],
         ]);
+
+        if ($this->getOption('search_page')) {
+            $searchPage = $this->getOption('search_page');
+            $index = $searchPage->index();
+            $facetSorts = $index->availableFacetSorts();
+
+            $this->add([
+                'name' => 'sort_by',
+                'type' => Select::class,
+                'options' => [
+                    'label' => 'Sort by', // @translate
+                    'empty_option' => 'Default', // @translate
+                    'value_options' => $facetSorts,
+                ],
+                'attributes' => [
+                    'data-field-data-key' => 'sort_by',
+                ],
+            ]);
+        }
 
         $this->add([
             'name' => 'value_renderer',
