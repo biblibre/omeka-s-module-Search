@@ -4,6 +4,7 @@ namespace Search\Test\Adapter;
 
 use Laminas\Form\Fieldset;
 use Search\Adapter\AbstractAdapter;
+use Search\Api\Representation\SearchIndexRepresentation;
 
 class TestAdapter extends AbstractAdapter
 {
@@ -26,4 +27,10 @@ class TestAdapter extends AbstractAdapter
     {
         return 'Search\Test\Querier\TestQuerier';
     }
+
+    public function getAvailableFacetSorts(SearchIndexRepresentation $index): array
+    {
+        return [];
+    }
+
 }
