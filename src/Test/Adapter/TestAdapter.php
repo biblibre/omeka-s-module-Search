@@ -32,5 +32,4 @@ class TestAdapter extends AbstractAdapter
     {
         return [];
     }
-
 }
