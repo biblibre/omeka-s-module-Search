@@ -25,6 +25,7 @@ namespace Laminas\View\Renderer;
  * @method string|null assetUrl(string $file, string $module = null, bool $override = false, bool $versioned = true)
  * @method \Omeka\View\Helper\HtmlElement htmlElement(string $element)
  * @method string hyperlink(string $text = null, string $href = null, array $attributes = [])
+ * @method \Omeka\View\Helper\I18n i18n()
  * @method string itemSetSelect(array $spec)
  * @method string lang()
  * @method string messages()

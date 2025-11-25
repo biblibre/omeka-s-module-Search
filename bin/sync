@@ -1,0 +1,155 @@
+#!/usr/bin/php
+<?php
+
+$opts = getopt('hv', ['help', 'verbose', 'max-execution-time:', 'batch-size:', 'user-id:']);
+$help = isset($opts['h']) || isset($opts['help']);
+$verbose = isset($opts['v']) || isset($opts['verbose']);
+$batch_size = $opts['batch-size'] ?? 100;
+$max_execution_time = (int) ($opts['max-execution-time'] ?? 0);
+$user_id = (int) ($opts['user-id'] ?? 0);
+
+if ($help) {
+    echo <<<'USAGE'
+    Usage: index [options...]
+           index --help
+
+    Options:
+        --batch-size <batch-size>
+            How many resources to index at once. Default: 100
+
+        --max-execution-time <max-execution-time>
+            Maximum execution time in seconds
+
+        --user-id <user-id>
+            Authenticate as this user. Must be able to view all resources (including private resources). Required
+
+        -h, --help
+            Print this help and exit
+
+        -v, --verbose
+            Increase verbosity
+    USAGE;
+    exit;
+}
+
+if (!$user_id) {
+    fprintf(STDERR, "Error: Missing required --user-id\n");
+    exit(1);
+}
+
+$start = time();
+
+require dirname(__DIR__, 3) . '/bootstrap.php';
+$application = Omeka\Mvc\Application::init(require 'application/config/application.config.php');
+$services = $application->getServiceManager();
+
+$moduleManager = $services->get('Omeka\ModuleManager');
+$module = $moduleManager->getModule('Search');
+if (!$module || $module->getState() !== 'active') {
+    if ($verbose) {
+        fprintf(STDERR, "Search module is not active. Exiting.\n");
+    }
+    exit;
+}
+
+$settings = $services->get('Omeka\Settings');
+$connection = $services->get('Omeka\Connection');
+$api = $services->get('Omeka\ApiManager');
+$em = $services->get('Omeka\EntityManager');
+$logger = $services->get('Omeka\Logger');
+$indexationService = $services->get('Search\IndexationService');
+
+$user = $em->find('Omeka\Entity\User', $user_id);
+if (!$user) {
+    fprintf(STDERR, "Error: User %s does not exist\n", $user_id);
+    exit(1);
+}
+$authentication = $services->get('Omeka\AuthenticationService');
+$authentication->getStorage()->write($user);
+
+$acl = $services->get('Omeka\Acl');
+if (!$acl->userIsAllowed('Omeka\Entity\Resource', 'view-all')) {
+    fprintf(STDERR, "Error: User %d is not allowed to view all resources\n", $user_id);
+    exit(1);
+}
+
+$search_indexes = $api->search('search_indexes')->getContent();
+$search_indexes_by_id = [];
+foreach ($search_indexes as $search_index) {
+    $search_indexes_by_id[$search_index->id()] = $search_index;
+}
+
+$exit_status = 0;
+
+// Prevent the background job from running
+$settings->set('search_check_latest', time());
+
+$search_resources = $indexationService->lockAndFetchResources(['limit' => $batch_size]);
+while ($search_resources) {
+    $now = new DateTime();
+
+    $resource_ids = array_map(fn($r) => $r['resource_id'], $search_resources);
+    $resource_ids = array_values(array_unique($resource_ids, SORT_NUMERIC));
+    $resources = $em->getRepository('Omeka\Entity\Resource')->findBy(['id' => $resource_ids]);
+    $resources_by_id = [];
+    foreach ($resources as $resource) {
+        $resources_by_id[$resource->getId()] = $resource;
+    }
+
+    $resources_by_index_id = [];
+    foreach ($search_resources as $search_resource) {
+        $index_id = $search_resource['index_id'];
+        $resource_id = $search_resource['resource_id'];
+        if (isset($resources_by_id[$resource_id])) {
+            $resources_by_index_id[$index_id] ??= [];
+            $resources_by_index_id[$index_id][] = $resources_by_id[$resource_id];
+        }
+    }
+
+    foreach ($resources_by_index_id as $index_id => $resources) {
+        $search_index = $search_indexes_by_id[$index_id];
+        $search_index_settings = $search_index->settings();
+
+        $filtered_resources = array_filter(
+            $resources,
+            fn ($resource) => in_array($resource->getResourceName(), $search_index_settings['resources'] ?? [])
+        );
+        if (empty($filtered_resources)) {
+            continue;
+        }
+
+        try {
+            $indexer = $search_index->indexer();
+            $indexer->indexResources($filtered_resources);
+
+            if ($verbose) {
+                $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
+                $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
+                fprintf(STDERR, "Resources indexed in index %d: %s\n", $index_id, $filtered_resources_ids_string);
+            }
+        } catch (\Exception $e) {
+            $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
+            $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
+            fprintf(STDERR, "Failed to index resources in index %d (%s): %s\n", $index_id, $filtered_resources_ids_string, $e);
+            $logger->err(sprintf('Search: Failed to index resources in index %d (%s): %s', $index_id, $filtered_resources_ids_string, $e));
+            $exit_status = 1;
+        }
+    }
+
+    $search_resource_ids = array_map(fn($r) => $r['id'], $search_resources);
+    $indexationService->unlockAndMarkAsIndexedResources($search_resource_ids, $now);
+
+    if ($max_execution_time && time() - $start >= $max_execution_time) {
+        if ($verbose) {
+            fprintf(STDERR, "Maximum execution time reached\n");
+        }
+        exit($exit_status);
+    }
+
+    // Prevent the background job from running
+    $settings->set('search_check_latest', time());
+
+    $search_resources = $indexationService->lockAndFetchResources(['limit' => $batch_size]);
+}
+
+exit($exit_status);

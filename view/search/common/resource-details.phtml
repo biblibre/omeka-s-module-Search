@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Search\Entity\SearchResource[] $searchResources
+ */
+?>
+<div class="meta-group">
+    <h4><?php echo $this->translate('Latest indexation'); ?></h4>
+    <?php if (!empty($searchResources)): ?>
+        <?php foreach($searchResources as $searchResource): ?>
+            <div class="value">
+                <?= $searchResource->getIndex()->getName() ?>:
+                <?php $indexed = $searchResource->getIndexed(); ?>
+                <?php if ($indexed): ?>
+                    <?= $this->i18n()->dateFormat($indexed, 'short', 'long') ?>
+                <?php else: ?>
+                    <?= $this->translate('Never') ?>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="value">
+            <?= $this->translate('Never') ?>
+        </div>
+    <?php endif; ?>
+</div>

@@ -33,89 +33,46 @@ use Omeka\Job\AbstractJob;
 
 class RebuildIndex extends AbstractJob
 {
-    const DEFAULT_BATCH_SIZE = 100;
-
-    protected $logger;
-
     public function perform()
     {
         $serviceLocator = $this->getServiceLocator();
-        $apiAdapters = $serviceLocator->get('Omeka\ApiAdapterManager');
         $api = $serviceLocator->get('Omeka\ApiManager');
-        $em = $serviceLocator->get('Omeka\EntityManager');
-        $this->logger = $serviceLocator->get('Omeka\Logger');
+        $connection = $serviceLocator->get('Omeka\Connection');
+        $logger = $serviceLocator->get('Omeka\Logger');
 
         $indexId = $this->getArg('index-id');
-        $batchSize = $this->getArg('batch-size', self::DEFAULT_BATCH_SIZE);
-
-        $this->logger->info('Start');
-        $em->flush();
-
-        $searchIndex = $api->read('search_indexes', $indexId)->getContent();
-        $indexer = $searchIndex->indexer();
-        $indexer->setServiceLocator($serviceLocator);
-        $indexer->setLogger($this->logger);
 
         if ($this->getArg('clear-index')) {
             try {
+                $searchIndex = $api->read('search_indexes', $indexId)->getContent();
+                $indexer = $searchIndex->indexer();
+                $indexer->setServiceLocator($serviceLocator);
+                $indexer->setLogger($logger);
+
                 $indexer->clearIndex();
-                $this->logger->info('The index has been cleared');
+                $logger->info('The index has been cleared');
             } catch (\Exception $e) {
-                $this->logger->err(sprintf('The attempt to clear the index has failed : %s', $e->getMessage()));
-                $em->flush();
+                $logger->err(sprintf('The attempt to clear the index has failed : %s', $e->getMessage()));
             }
         }
 
-        $searchIndexSettings = $searchIndex->settings();
-        $resourceNames = $searchIndexSettings['resources'];
+        $now = new \DateTime();
+        $connection->executeStatement(
+            <<<'SQL'
+                INSERT INTO search_resource (index_id, resource_id, touched)
+                SELECT ?, resource.id, ? FROM resource
+                ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+            SQL,
+            [
+                $indexId,
+                $now->format('Y-m-d H:i:s'),
+            ],
+            [
+                \PDO::PARAM_INT,
+                \PDO::PARAM_STR,
+            ]
+        );
 
-        $resourceNames = array_filter($resourceNames, function ($resourceName) use ($indexer) {
-            return $indexer->canIndex($resourceName);
-        });
-
-        foreach ($resourceNames as $resourceName) {
-            $adapter = $apiAdapters->get($resourceName);
-            $entityClass = $adapter->getEntityClass();
-            $repository = $em->getRepository($entityClass);
-            $totalEntities = $repository->count([]);
-            $query = $repository->createQueryBuilder('r')
-                ->where('r.id > :lastId')
-                ->orderBy('r.id', 'ASC')
-                ->setMaxResults($batchSize)
-                ->getQuery();
-
-            $query->setParameter('lastId', 0);
-            $totalIndexed = 0;
-
-            do {
-                if ($this->shouldStop()) {
-                    $this->logger->info('Job stopped');
-                    $em->flush();
-                    return;
-                }
-
-                $entities = $query->getResult();
-                if (!empty($entities)) {
-                    $ids = array_map(function ($e) {
-                        return $e->getId();
-                    }, $entities);
-                    try {
-                        $indexer->indexResources($entities);
-                        $totalIndexed += count($entities);
-                        $this->logger->info(sprintf('Indexed %d out of %d %s (%.2f%%)', $totalIndexed, $totalEntities, $resourceName, $totalIndexed * 100 / $totalEntities));
-                    } catch (\Exception $e) {
-                        $this->logger->err(sprintf('Indexing %s has failed: %s (ids: %s)', $resourceName, $e->getMessage(), implode(', ', $ids)));
-                    }
-                    $em->flush();
-                    $em->clear();
-                    $em->merge($this->job);
-
-                    $query->setParameter('lastId', $ids[count($ids) - 1]);
-                }
-            } while (!empty($entities));
-        }
-
-        $this->logger->info('End');
-        $em->flush();
+        $logger->info('All resources are now marked for reindexation');
     }
 }

@@ -48,18 +48,5 @@ class SearchIndexRebuildForm extends Form
                 'id' => 'clear-index',
             ],
         ]);
-
-        $this->add([
-            'name' => 'batch-size',
-            'type' => Number::class,
-            'options' => [
-                'label' => 'Batch size', // @translate,
-                'info' => 'Index that much resources at once. Large batchs will be faster but will use more memory', // @translate
-            ],
-            'attributes' => [
-                'id' => 'batch-size',
-                'value' => '100',
-            ],
-        ]);
     }
 }

@@ -32,15 +32,15 @@ namespace Search;
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\EventManager\Event;
+use Laminas\Mvc\Controller\AbstractController;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Module\AbstractModule;
 use Composer\Semver\Comparator;
 
 class Module extends AbstractModule
 {
-    protected $resourcesBeingUpdatedInBatch = [];
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -50,7 +50,8 @@ class Module extends AbstractModule
     {
         parent::onBootstrap($event);
 
-        $acl = $this->getServiceLocator()->get('Omeka\Acl');
+        $services = $this->getServiceLocator();
+        $acl = $services->get('Omeka\Acl');
         $acl->allow(null, 'Search\Api\Adapter\SearchPageAdapter');
         $acl->allow(null, 'Search\Api\Adapter\SearchIndexAdapter');
         $acl->allow(null, 'Search\Api\Adapter\SavedQueryAdapter');
@@ -62,6 +63,13 @@ class Module extends AbstractModule
         $acl->allow(null, 'Search\Controller\SavedQuery');
 
         $this->addRoutes();
+
+        // Set the corresponding visibility rules on Search resources.
+        $em = $services->get('Omeka\EntityManager');
+        $filter = $em->getFilters()->getFilter('resource_visibility');
+        $filter->addRelatedEntity('Search\Entity\SearchResource', 'resource_id');
+
+        $this->dispatchSyncJobIfNeeded();
     }
 
     public function init(ModuleManager $moduleManager)
@@ -89,7 +97,7 @@ class Module extends AbstractModule
         $connection = $serviceLocator->get('Omeka\Connection');
         $sql = '
             CREATE TABLE IF NOT EXISTS `search_index` (
-                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `id` int(11) NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL,
                 `adapter` varchar(255) NOT NULL,
                 `settings` text,
@@ -104,7 +112,7 @@ class Module extends AbstractModule
                 id INT AUTO_INCREMENT NOT NULL,
                 `name` varchar(255) NOT NULL,
                 `path` varchar(255) NOT NULL,
-                `index_id` int(11) unsigned NOT NULL,
+                `index_id` int(11) NOT NULL,
                 `form_adapter` varchar(255) NOT NULL,
                 `settings` text,
                 `created` datetime NOT NULL,
@@ -119,6 +127,36 @@ class Module extends AbstractModule
         $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
         $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF2F6BD1646 FOREIGN KEY (site_id) REFERENCES site (id) ON DELETE CASCADE');
         $connection->exec('ALTER TABLE saved_query ADD CONSTRAINT FK_496E6EF281978C7E FOREIGN KEY (search_page_id) REFERENCES search_page (id) ON DELETE CASCADE');
+
+        $connection->executeStatement(<<<'SQL'
+            CREATE TABLE search_resource (
+                id INT AUTO_INCREMENT NOT NULL,
+                index_id INT NOT NULL,
+                resource_id INT NOT NULL,
+                locked_by_pid INT DEFAULT NULL,
+                indexed DATETIME DEFAULT NULL,
+                touched DATETIME DEFAULT NULL,
+                INDEX IDX_ACC65FA384337261 (index_id),
+                INDEX IDX_ACC65FA389329D25 (resource_id),
+                INDEX IDX_ACC65FA33E8304F0 (locked_by_pid),
+                INDEX IDX_ACC65FA3D9416D95 (indexed),
+                INDEX IDX_ACC65FA370D901A0 (touched),
+                UNIQUE INDEX UNIQ_ACC65FA38433726189329D25 (index_id, resource_id),
+                PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+        SQL);
+
+        $connection->executeStatement(<<<'SQL'
+            ALTER TABLE search_resource
+            ADD CONSTRAINT FK_ACC65FA384337261 FOREIGN KEY (index_id) REFERENCES search_index (id)
+            ON DELETE CASCADE
+        SQL);
+
+        $connection->executeStatement(<<<'SQL'
+            ALTER TABLE search_resource
+            ADD CONSTRAINT FK_ACC65FA389329D25 FOREIGN KEY (resource_id) REFERENCES resource (id)
+            ON DELETE CASCADE
+        SQL);
     }
 
     public function upgrade($oldVersion, $newVersion,
@@ -200,6 +238,78 @@ class Module extends AbstractModule
                 $connection->update('search_page', ['settings' => json_encode($settings)], ['id' => $page['id']]);
             }
         }
+
+        if (Comparator::lessThan($oldVersion, '0.18.0')) {
+            $constraint_name = $connection->fetchOne(<<<'SQL'
+                SELECT constraint_name FROM information_schema.key_column_usage
+                WHERE table_schema = database()
+                    AND table_name = 'search_page'
+                    AND column_name = 'index_id'
+                    AND referenced_table_name = 'search_index'
+            SQL);
+            if ($constraint_name) {
+                $connection->executeStatement(<<<SQL
+                    ALTER TABLE search_page DROP CONSTRAINT $constraint_name
+                SQL);
+            }
+
+            $connection->executeStatement(<<<'SQL'
+                ALTER TABLE search_index MODIFY COLUMN id INT AUTO_INCREMENT NOT NULL
+            SQL);
+            $connection->executeStatement(<<<'SQL'
+                ALTER TABLE search_page MODIFY COLUMN index_id INT NOT NULL
+            SQL);
+            $connection->executeStatement(<<<'SQL'
+                ALTER TABLE search_page ADD CONSTRAINT FK_4F10A34984337261 FOREIGN KEY (index_id) REFERENCES search_index (id)
+            SQL);
+
+            $connection->executeStatement(<<<'SQL'
+                CREATE TABLE search_resource (
+                    id INT AUTO_INCREMENT NOT NULL,
+                    index_id INT NOT NULL,
+                    resource_id INT NOT NULL,
+                    locked_by_pid INT DEFAULT NULL,
+                    indexed DATETIME DEFAULT NULL,
+                    touched DATETIME DEFAULT NULL,
+                    INDEX IDX_ACC65FA384337261 (index_id),
+                    INDEX IDX_ACC65FA389329D25 (resource_id),
+                    INDEX IDX_ACC65FA33E8304F0 (locked_by_pid),
+                    INDEX IDX_ACC65FA3D9416D95 (indexed),
+                    INDEX IDX_ACC65FA370D901A0 (touched),
+                    UNIQUE INDEX UNIQ_ACC65FA38433726189329D25 (index_id, resource_id),
+                    PRIMARY KEY(id)
+                ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            SQL);
+
+            $connection->executeStatement(<<<'SQL'
+                ALTER TABLE search_resource
+                ADD CONSTRAINT FK_ACC65FA384337261 FOREIGN KEY (index_id) REFERENCES search_index (id)
+                ON DELETE CASCADE
+            SQL);
+
+            $connection->executeStatement(<<<'SQL'
+                ALTER TABLE search_resource
+                ADD CONSTRAINT FK_ACC65FA389329D25 FOREIGN KEY (resource_id) REFERENCES resource (id)
+                ON DELETE CASCADE
+            SQL);
+
+            $connection->executeStatement(<<<'SQL'
+                INSERT INTO search_resource (index_id, resource_id, indexed, touched)
+                SELECT
+                    search_index.id,
+                    resource.id,
+                    COALESCE(resource.modified, resource.created),
+                    COALESCE(resource.modified, resource.created)
+                FROM resource JOIN search_index
+                ORDER BY search_index.id, resource.id
+                ON DUPLICATE KEY UPDATE indexed = VALUES(indexed), touched = VALUES(touched)
+            SQL);
+
+            // Enable periodic check so that indexation continues to work after
+            // upgrade without having to run bin/sync
+            $settings = $serviceLocator->get('Omeka\Settings');
+            $settings->set('search_check_interval', 60);
+        }
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
@@ -207,8 +317,42 @@ class Module extends AbstractModule
         $connection = $serviceLocator->get('Omeka\Connection');
 
         $connection->exec('DROP TABLE IF EXISTS saved_query');
+        $connection->exec('DROP TABLE IF EXISTS search_resource');
         $connection->exec('DROP TABLE IF EXISTS search_page');
         $connection->exec('DROP TABLE IF EXISTS search_index');
+    }
+
+    public function getConfigForm(PhpRenderer $renderer)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $formElementManager = $services->get('FormElementManager');
+        $form = $formElementManager->get(Form\ConfigForm::class);
+
+        $form->populateValues([
+            'search_check_interval' => $settings->get('search_check_interval', ''),
+        ]);
+
+        return $renderer->formCollection($form, false);
+    }
+
+    public function handleConfigForm(AbstractController $controller)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $formElementManager = $services->get('FormElementManager');
+        $form = $formElementManager->get(Form\ConfigForm::class);
+
+        $form->setData($controller->params()->fromPost());
+        if (!$form->isValid()) {
+            return false;
+        }
+
+        $data = $form->getData();
+
+        $settings->set('search_check_interval', (int) $data['search_check_interval']);
+
+        return true;
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -217,28 +361,8 @@ class Module extends AbstractModule
         foreach ($identifiers as $identifier) {
             $sharedEventManager->attach(
                 $identifier,
-                'api.batch_update.pre',
-                [$this, 'onResourceBatchUpdatePre']
-            );
-            $sharedEventManager->attach(
-                $identifier,
-                'api.batch_update.post',
-                [$this, 'onResourceBatchUpdatePost']
-            );
-            $sharedEventManager->attach(
-                $identifier,
                 'api.update.post',
                 [$this, 'onResourceUpdatePost']
-            );
-            $sharedEventManager->attach(
-                $identifier,
-                'api.batch_create.pre',
-                [$this, 'onResourceBatchCreatePre']
-            );
-            $sharedEventManager->attach(
-                $identifier,
-                'api.batch_create.post',
-                [$this, 'onResourceBatchCreatePost']
             );
             $sharedEventManager->attach(
                 $identifier,
@@ -251,77 +375,70 @@ class Module extends AbstractModule
                 [$this, 'onResourceDeletePost']
             );
         }
-    }
 
-    public function onResourceBatchUpdatePre(Event $event)
-    {
-        $request = $event->getParam('request');
-        $ids = $request->getIds();
-        foreach ($ids as $id) {
-            $key = sprintf('%s:%s', $request->getResource(), $id);
-            $this->resourcesBeingUpdatedInBatch[$key] = true;
+        $identifiers = ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Admin\ItemSet'];
+        foreach ($identifiers as $identifier) {
+            $sharedEventManager->attach(
+                $identifier,
+                'view.details',
+                [$this, 'onResourceViewDetails']
+            );
+            $sharedEventManager->attach(
+                $identifier,
+                'view.show.sidebar',
+                [$this, 'onResourceViewShowSidebar']
+            );
         }
-    }
 
-    public function onResourceBatchUpdatePost(Event $event)
-    {
-        $response = $event->getParam('response');
-        $resources = $response->getContent();
-        $this->indexResources($resources);
-
-        foreach ($resources as $resource) {
-            $key = sprintf('%s:%s', $resource->getResourceName(), $resource->getId());
-            unset($this->resourcesBeingUpdatedInBatch[$key]);
-        }
+        $sharedEventManager->attach(
+            'Search\Api\Adapter\SearchIndexAdapter',
+            'api.create.post',
+            [$this, 'onSearchIndexCreatePost']
+        );
     }
 
     public function onResourceUpdatePost(Event $event)
     {
-        $request = $event->getParam('request');
-        $key = sprintf('%s:%s', $request->getResource(), $request->getId());
-        if (array_key_exists($key, $this->resourcesBeingUpdatedInBatch)) {
-            // Do nothing. These resources will be indexed in
-            // api.batch_update.post listener
-            return;
-        }
-
         $response = $event->getParam('response');
         $resource = $response->getContent();
-        $this->indexResources([$resource]);
-    }
-
-    public function onResourceBatchCreatePre(Event $event)
-    {
-        $request = $event->getParam('request');
-        $content = $request->getContent();
-        foreach ($content as &$c) {
-            // This is used in api.create.post listener to avoid indexing the
-            // same resources twice
-            $c['o-module-search:batch-create'] = true;
-        }
-        $request->setContent($content);
-    }
-
-    public function onResourceBatchCreatePost(Event $event)
-    {
-        $response = $event->getParam('response');
-        $resources = $response->getContent();
-        $this->indexResources($resources);
+        $this->touchResource($resource);
     }
 
     public function onResourceCreatePost(Event $event)
     {
-        $request = $event->getParam('request');
-        $content = $request->getContent();
-        if (array_key_exists('o-module-search:batch-create', $content)) {
-            // Do nothing. These resources will be indexed in
-            // api.batch_create.post listener
-            return;
-        }
-
         $response = $event->getParam('response');
         $resource = $response->getContent();
-        $this->indexResources([$resource]);
+        $this->touchResource($resource);
+    }
+
+    protected function touchResource(\Omeka\Entity\Resource $resource)
+    {
+        $services = $this->getServiceLocator();
+        $em = $services->get('Omeka\EntityManager');
+        $connection = $services->get('Omeka\Connection');
+
+        $searchIndexes = $em->getRepository(Entity\SearchIndex::class)->findAll();
+        $indexIds = [];
+        foreach ($searchIndexes as $searchIndex) {
+            $settings = $searchIndex->getSettings();
+            $resources = $settings['resources'] ?? [];
+            if (in_array($resource->getResourceName(), $resources)) {
+                $indexIds[] = $searchIndex->getId();
+            }
+        }
+
+        $now = new \DateTime();
+        foreach ($indexIds as $indexId) {
+            $connection->executeStatement(
+                <<<'SQL'
+                    INSERT INTO search_resource (index_id, resource_id, touched)
+                    VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                SQL,
+                [$indexId, $resource->getId(), $now->format('Y-m-d H:i:s')],
+                [\PDO::PARAM_INT, \PDO::PARAM_INT, \PDO::PARAM_STR]
+            );
+        }
     }
 
     public function onResourceDeletePost(Event $event)
@@ -347,53 +464,56 @@ class Module extends AbstractModule
         }
     }
 
-    protected function indexResources(array $resources)
+    public function onResourceViewDetails(Event $event)
     {
-        if (empty($resources)) {
-            return;
-        }
+        /** @var \Laminas\View\Renderer\PhpRenderer */
+        $renderer = $event->getTarget();
+        $entity = $event->getParam('entity');
+        $resourceId = $entity->id();
 
-        $serviceLocator = $this->getServiceLocator();
-        $logger = $serviceLocator->get('Omeka\Logger');
-        $jobDispatcher = $serviceLocator->get(\Omeka\Job\Dispatcher::class);
+        $services = $this->getServiceLocator();
+        $em = $services->get('Omeka\EntityManager');
+        $searchResources = $em->getRepository(Entity\SearchResource::class)->findBy(['resource' => $resourceId]);
 
-        // If we are in a background job or a script executed from the command
-        // line, we do not have a time limit so we can index resources
-        // immediately.
-        // Otherwise, index resources in a background job in order to not slow
-        // down the request
-        if (PHP_SAPI === 'cli') {
-            $api = $serviceLocator->get('Omeka\ApiManager');
-            $em = $serviceLocator->get('Omeka\EntityManager');
-            $originalIdentityMap = $em->getUnitOfWork()->getIdentityMap();
-            $searchIndexes = $api->search('search_indexes')->getContent();
-            foreach ($searchIndexes as $searchIndex) {
-                $searchIndexSettings = $searchIndex->settings();
-                $filteredResources = array_filter($resources, fn ($resource) => in_array($resource->getResourceName(), $searchIndexSettings['resources']));
-                if (empty($filteredResources)) {
-                    continue;
-                }
+        echo $renderer->partial('search/common/resource-details', ['resource' => $entity, 'searchResources' => $searchResources]);
+    }
 
-                try {
-                    $indexer = $searchIndex->indexer();
-                    $indexer->indexResources($filteredResources);
-                } catch (\Exception $e) {
-                    $logger->err(sprintf('Search: failed to index resources: %s', $e));
-                }
-            }
+    public function onResourceViewShowSidebar(Event $event)
+    {
+        /** @var \Laminas\View\Renderer\PhpRenderer */
+        $renderer = $event->getTarget();
+        $resource = $renderer->get('resource');
+        $resourceId = $resource->id();
 
-            $identityMap = $em->getUnitOfWork()->getIdentityMap();
-            foreach ($identityMap as $entityClass => $entities) {
-                foreach ($entities as $idHash => $entity) {
-                    if (!isset($originalIdentityMap[$entityClass][$idHash])) {
-                        $em->detach($entity);
-                    }
-                }
-            }
-        } else {
-            $ids = array_map(fn ($resource) => $resource->getId(), $resources);
-            $jobDispatcher->dispatch(Job\UpdateIndex::class, ['ids' => $ids]);
-        }
+        $services = $this->getServiceLocator();
+        $em = $services->get('Omeka\EntityManager');
+        $searchResources = $em->getRepository(Entity\SearchResource::class)->findBy(['resource' => $resourceId]);
+
+        echo $renderer->partial('search/common/resource-details', ['resource' => $resource, 'searchResources' => $searchResources]);
+    }
+
+    public function onSearchIndexCreatePost(Event $event)
+    {
+        $services = $this->getServiceLocator();
+        $connection = $services->get('Omeka\Connection');
+
+        $response = $event->getParam('response');
+        $resource = $response->getContent();
+
+        $connection->executeStatement(
+            <<<'SQL'
+                INSERT INTO search_resource (index_id, resource_id, touched)
+                SELECT
+                    ?,
+                    resource.id,
+                    COALESCE(resource.modified, resource.created)
+                FROM resource
+                ORDER BY resource.id
+                ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+            SQL,
+            [$resource->getId()],
+            [\PDO::PARAM_INT]
+        );
     }
 
     protected function addRoutes()
@@ -424,6 +544,36 @@ class Module extends AbstractModule
                     ],
                 ],
             ]);
+        }
+    }
+
+    protected function dispatchSyncJobIfNeeded()
+    {
+        $services = $this->getServiceLocator();
+        $acl = $services->get('Omeka\Acl');
+
+        if ($acl->userIsAllowed('Omeka\Entity\Resource', 'view-all')) {
+            $settings = $services->get('Omeka\Settings');
+            $check_interval = (int) $settings->get('search_check_interval', 0);
+            if ($check_interval) {
+                $check_latest = (int) $settings->get('search_check_latest', 0);
+                $now = time();
+                if (!$check_latest || $check_latest + $check_interval < $now) {
+                    $settings->set('search_check_latest', $now);
+
+                    $connection = $services->get('Omeka\Connection');
+                    $indexation_needed = $connection->fetchOne(<<<'SQL'
+                        SELECT 1 FROM search_resource
+                        WHERE locked_by_pid IS NULL AND (indexed IS NULL or indexed < touched)
+                        LIMIT 1
+                    SQL);
+
+                    if ($indexation_needed) {
+                        $jobDispatcher = $services->get('Omeka\Job\Dispatcher');
+                        $jobDispatcher->dispatch(Job\Sync::class, ['max_execution_time' => $check_interval]);
+                    }
+                }
+            }
         }
     }
 }

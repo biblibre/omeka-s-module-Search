@@ -223,6 +223,7 @@ return [
             'Search\FacetValueRendererManager' => Service\FacetValueRendererManagerFactory::class,
             'Search\FormAdapterManager' => Service\FormAdapterManagerFactory::class,
             'Search\FormElementManager' => Service\FormElementManagerFactory::class,
+            'Search\IndexationService' => Service\IndexationServiceFactory::class,
         ],
     ],
     'view_manager' => [
