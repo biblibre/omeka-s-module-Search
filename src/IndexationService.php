@@ -9,6 +9,11 @@ use Doctrine\DBAL\Connection;
 class IndexationService
 {
     const DEFAULT_LIMIT = 100;
+    const RESOURCE_TYPE_MAP = [
+        'items' => 'Omeka\Entity\Item',
+        'item_sets' => 'Omeka\Entity\ItemSet',
+        'media' => 'Omeka\Entity\Media',
+    ];
 
     protected Connection $connection;
 
@@ -57,5 +62,82 @@ class IndexationService
             [$indexed->format('Y-m-d H:i:s'), $ids],
             [PDO::PARAM_STR, Connection::PARAM_INT_ARRAY]
         );
+    }
+
+    public function refreshIndexResources(int $index_id, DateTime $touched = null)
+    {
+        $settings_json = $this->connection->fetchOne(
+            'SELECT settings FROM search_index WHERE id = ?',
+            [$index_id],
+            [PDO::PARAM_INT]
+        );
+        $settings = json_decode($settings_json ?? '{}', true);
+        $resources = $settings['resources'] ?? [];
+        $resource_types = $this->resourcesToResourceTypes($resources);
+
+        if ($resources) {
+            $this->connection->executeStatement(
+                <<<'SQL'
+                    DELETE search_resource
+                    FROM search_resource JOIN resource ON (search_resource.resource_id = resource.id)
+                    WHERE search_resource.index_id = ? AND resource.resource_type NOT IN (?)
+                SQL,
+                [$index_id, $resource_types],
+                [PDO::PARAM_INT, Connection::PARAM_STR_ARRAY]
+            );
+
+            if ($touched) {
+                $this->connection->executeStatement(
+                    <<<'SQL'
+                        INSERT INTO search_resource (index_id, resource_id, touched)
+                        SELECT ?, resource.id, ?
+                        FROM resource WHERE resource.resource_type IN (?)
+                        ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                    SQL,
+                    [$index_id, $touched->format('Y-m-d H:i:s')],
+                    [PDO::PARAM_INT, PDO::PARAM_STR, Connection::PARAM_STR_ARRAY]
+                );
+            } else {
+                $this->connection->executeStatement(
+                    <<<'SQL'
+                        INSERT INTO search_resource (index_id, resource_id, touched)
+                        SELECT ?, resource.id, COALESCE(resource.modified, resource.created)
+                        FROM resource WHERE resource.resource_type IN (?)
+                        ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                    SQL,
+                    [$index_id, $resource_types],
+                    [PDO::PARAM_INT, Connection::PARAM_STR_ARRAY]
+                );
+            }
+        } else {
+            $this->connection->executeStatement(
+                'DELETE FROM search_resource WHERE index_id = ?',
+                [$index_id],
+                [\PDO::PARAM_INT]
+            );
+        }
+    }
+
+    public function touchResource(int $index_id, int $resource_id, DateTime $touched = null)
+    {
+        $touched ??= new DateTime();
+
+        $this->connection->executeStatement(
+            <<<'SQL'
+                INSERT INTO search_resource (index_id, resource_id, touched)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+            SQL,
+            [$index_id, $resource_id, $touched->format('Y-m-d H:i:s')],
+            [PDO::PARAM_INT, PDO::PARAM_INT, PDO::PARAM_STR]
+        );
+    }
+
+    public function resourcesToResourceTypes(array $resources): array
+    {
+        $resource_types = array_map(fn($resource) => self::RESOURCE_TYPE_MAP[$resource] ?? null, $resources);
+        $resource_types = array_values(array_filter($resource_types));
+
+        return $resource_types;
     }
 }

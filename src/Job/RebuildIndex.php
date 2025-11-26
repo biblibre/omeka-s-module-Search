@@ -39,39 +39,25 @@ class RebuildIndex extends AbstractJob
         $api = $serviceLocator->get('Omeka\ApiManager');
         $connection = $serviceLocator->get('Omeka\Connection');
         $logger = $serviceLocator->get('Omeka\Logger');
+        $indexationService = $serviceLocator->get('Search\IndexationService');
 
         $indexId = $this->getArg('index-id');
+        $searchIndex = $api->read('search_indexes', $indexId)->getContent();
+        $searchIndexSettings = $searchIndex->settings();
+        $searchIndexResources = $searchIndexSettings['resources'] ?? [];
 
         if ($this->getArg('clear-index')) {
             try {
-                $searchIndex = $api->read('search_indexes', $indexId)->getContent();
                 $indexer = $searchIndex->indexer();
-                $indexer->setServiceLocator($serviceLocator);
-                $indexer->setLogger($logger);
-
                 $indexer->clearIndex();
+
                 $logger->info('The index has been cleared');
             } catch (\Exception $e) {
                 $logger->err(sprintf('The attempt to clear the index has failed : %s', $e->getMessage()));
             }
         }
 
-        $now = new \DateTime();
-        $connection->executeStatement(
-            <<<'SQL'
-                INSERT INTO search_resource (index_id, resource_id, touched)
-                SELECT ?, resource.id, ? FROM resource
-                ON DUPLICATE KEY UPDATE touched = VALUES(touched)
-            SQL,
-            [
-                $indexId,
-                $now->format('Y-m-d H:i:s'),
-            ],
-            [
-                \PDO::PARAM_INT,
-                \PDO::PARAM_STR,
-            ]
-        );
+        $indexationService->refreshIndexResources($indexId, new \DateTime());
 
         $logger->info('All resources are now marked for reindexation');
     }

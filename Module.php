@@ -395,6 +395,11 @@ class Module extends AbstractModule
             'api.create.post',
             [$this, 'onSearchIndexCreatePost']
         );
+        $sharedEventManager->attach(
+            'Search\Api\Adapter\SearchIndexAdapter',
+            'api.update.post',
+            [$this, 'onSearchIndexUpdatePost']
+        );
     }
 
     public function onResourceUpdatePost(Event $event)
@@ -414,30 +419,19 @@ class Module extends AbstractModule
     protected function touchResource(\Omeka\Entity\Resource $resource)
     {
         $services = $this->getServiceLocator();
-        $em = $services->get('Omeka\EntityManager');
+        $indexationService = $services->get('Search\IndexationService');
         $connection = $services->get('Omeka\Connection');
 
-        $searchIndexes = $em->getRepository(Entity\SearchIndex::class)->findAll();
-        $indexIds = [];
-        foreach ($searchIndexes as $searchIndex) {
-            $settings = $searchIndex->getSettings();
-            $resources = $settings['resources'] ?? [];
-            if (in_array($resource->getResourceName(), $resources)) {
-                $indexIds[] = $searchIndex->getId();
-            }
-        }
+        $searchIndexes = $connection->fetchAll('SELECT id, settings FROM search_index');
 
         $now = new \DateTime();
-        foreach ($indexIds as $indexId) {
-            $connection->executeStatement(
-                <<<'SQL'
-                    INSERT INTO search_resource (index_id, resource_id, touched)
-                    VALUES (?, ?, ?)
-                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
-                SQL,
-                [$indexId, $resource->getId(), $now->format('Y-m-d H:i:s')],
-                [\PDO::PARAM_INT, \PDO::PARAM_INT, \PDO::PARAM_STR]
-            );
+        foreach ($searchIndexes as $searchIndex) {
+            $settings_json = $searchIndex['settings'] ?? '{}';
+            $settings = json_decode($settings_json, true);
+            $resources = $settings['resources'] ?? [];
+            if (in_array($resource->getResourceName(), $resources)) {
+                $indexationService->touchResource($searchIndex['id'], $resource->getId(), $now);
+            }
         }
     }
 
@@ -494,26 +488,18 @@ class Module extends AbstractModule
 
     public function onSearchIndexCreatePost(Event $event)
     {
-        $services = $this->getServiceLocator();
-        $connection = $services->get('Omeka\Connection');
+        $indexationService = $this->getServiceLocator()->get('Search\IndexationService');
+        $searchIndex = $event->getParam('response')->getContent();
 
-        $response = $event->getParam('response');
-        $resource = $response->getContent();
+        $indexationService->refreshIndexResources($searchIndex->getId());
+    }
 
-        $connection->executeStatement(
-            <<<'SQL'
-                INSERT INTO search_resource (index_id, resource_id, touched)
-                SELECT
-                    ?,
-                    resource.id,
-                    COALESCE(resource.modified, resource.created)
-                FROM resource
-                ORDER BY resource.id
-                ON DUPLICATE KEY UPDATE touched = VALUES(touched)
-            SQL,
-            [$resource->getId()],
-            [\PDO::PARAM_INT]
-        );
+    public function onSearchIndexUpdatePost(Event $event)
+    {
+        $indexationService = $this->getServiceLocator()->get('Search\IndexationService');
+        $searchIndex = $event->getParam('response')->getContent();
+
+        $indexationService->refreshIndexResources($searchIndex->getId());
     }
 
     protected function addRoutes()
