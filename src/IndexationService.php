@@ -75,7 +75,7 @@ class IndexationService
         $resources = $settings['resources'] ?? [];
         $resource_types = $this->resourcesToResourceTypes($resources);
 
-        if ($resources) {
+        if ($resource_types) {
             $this->connection->executeStatement(
                 <<<'SQL'
                     DELETE search_resource
@@ -94,7 +94,7 @@ class IndexationService
                         FROM resource WHERE resource.resource_type IN (?)
                         ON DUPLICATE KEY UPDATE touched = VALUES(touched)
                     SQL,
-                    [$index_id, $touched->format('Y-m-d H:i:s')],
+                    [$index_id, $touched->format('Y-m-d H:i:s'), $resource_types],
                     [PDO::PARAM_INT, PDO::PARAM_STR, Connection::PARAM_STR_ARRAY]
                 );
             } else {
