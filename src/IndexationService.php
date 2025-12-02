@@ -140,4 +140,22 @@ class IndexationService
 
         return $resource_types;
     }
+
+    public function getIndexedResourcesCount(int $index_id): int
+    {
+        return $this->connection->fetchOne(
+            'SELECT COUNT(*) FROM search_resource WHERE index_id = ? AND indexed >= touched',
+            [$index_id],
+            [PDO::PARAM_INT]
+        );
+    }
+
+    public function getTotalResourcesCount(int $index_id): int
+    {
+        return $this->connection->fetchOne(
+            'SELECT COUNT(*) FROM search_resource WHERE index_id = ?',
+            [$index_id],
+            [PDO::PARAM_INT]
+        );
+    }
 }

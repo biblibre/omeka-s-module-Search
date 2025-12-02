@@ -50,8 +50,9 @@
     <table class="tablesaw" data-tablesaw-mode="stack">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Adapter</th>
+                <th><?= $this->translate('Name') ?></th>
+                <th><?= $this->translate('Adapter') ?></th>
+                <th><?= $this->translate('Indexed resources') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -88,6 +89,14 @@
                         </ul>
                     </td>
                     <td><?php echo $search_index->adapterLabel(); ?></td>
+                    <td>
+                        <?php $indexedResourcesCount = $search_index->indexedResourcesCount(); ?>
+                        <?php $totalResourcesCount = $search_index->totalResourcesCount(); ?>
+                        <?php if ($totalResourcesCount): ?>
+                            <?= $indexedResourcesCount; ?> / <?= $totalResourcesCount; ?>
+                            (<?= sprintf('%d', $indexedResourcesCount * 100 / $totalResourcesCount) ?> %)
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

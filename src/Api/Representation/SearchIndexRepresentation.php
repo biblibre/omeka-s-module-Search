@@ -169,4 +169,18 @@ class SearchIndexRepresentation extends AbstractEntityRepresentation
     {
         return $this->adapter()->getAvailableOperators($this);
     }
+
+    public function indexedResourcesCount()
+    {
+        $indexationService = $this->getServiceLocator()->get('Search\IndexationService');
+
+        return $indexationService->getIndexedResourcesCount($this->id());
+    }
+
+    public function totalResourcesCount()
+    {
+        $indexationService = $this->getServiceLocator()->get('Search\IndexationService');
+
+        return $indexationService->getTotalResourcesCount($this->id());
+    }
 }
