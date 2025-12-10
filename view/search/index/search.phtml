@@ -91,6 +91,14 @@
                     'site' => $site,
                 ]); ?>
 
+                <?php $mediaCount = $response->getResourceTotalResults('media'); ?>
+                <?php echo $this->partial('search/resource-list', [
+                    'title' => sprintf($this->translatePlural('%s media', '%s media', $mediaCount), $mediaCount),
+                    'response' => $response,
+                    'resourceName' => 'media',
+                    'site' => $site,
+                ]); ?>
+
                 <?php
                     echo $this->partial('search/results-footer', [
                         'query' => $query,
