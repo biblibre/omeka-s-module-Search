@@ -159,9 +159,11 @@ class Module extends AbstractModule
         SQL);
     }
 
-    public function upgrade($oldVersion, $newVersion,
-        ServiceLocatorInterface $serviceLocator)
-    {
+    public function upgrade(
+        $oldVersion,
+        $newVersion,
+        ServiceLocatorInterface $serviceLocator
+    ) {
         $connection = $serviceLocator->get('Omeka\Connection');
 
         if (version_compare($oldVersion, '0.1.1', '<')) {
@@ -309,6 +311,24 @@ class Module extends AbstractModule
             // upgrade without having to run bin/sync
             $settings = $serviceLocator->get('Omeka\Settings');
             $settings->set('search_check_interval', 60);
+        }
+        if (Comparator::lessThan($oldVersion, '0.19.0')) {
+            $pages = $connection->executeQuery('SELECT id, settings FROM search_page')->fetchAll();
+            foreach ($pages as $page) {
+                $settings = json_decode($page['settings'], true);
+                $facets = array_filter($settings['facets']);
+                $facet_global_limit = $settings['facet_limit'];
+
+                if (!empty($facets) && !empty($facet_global_limit)) {
+                    foreach ($facets as &$facet) {
+                        $facet['facet_limit'] = $facet_global_limit;
+                        $facet['facet_display_limit'] = $facet_global_limit;
+                    }
+                }
+
+                $settings['facets'] = array_values($facets);
+                $connection->update('search_page', ['settings' => json_encode($settings)], ['id' => $page['id']]);
+            }
         }
     }
 

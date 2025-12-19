@@ -30,22 +30,48 @@
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  */
+$this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
+$facetedFiltering = $this->searchCurrentPage()->settings()['faceted_filtering'] === "1";
 ?>
 
 <?php if (!empty($facets)): ?>
     <aside class="search-facets">
-        <h2><?php echo $this->translate('Filters'); ?></h2>
+        <h2>
+            <?php echo $this->translate('Filters'); ?>
+            <?php if ($facetedFiltering) : ?>
+                <button class="fas fa-sync" id="submit-facets" title="<?php echo $this->translate('Filter with selected facets');?>"></button>
+            <?php endif; ?>
+        </h2>
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
+                <?php $index = array_search($name, array_keys($facets));?>
                 <li class="search-facet">
                     <h3><?php echo $this->facetLabel($name); ?></h3>
-                    <ul class="search-facet-items">
-                        <?php foreach ($facetValues as $facetValue): ?>
-                            <li class="search-facet-item">
-                                <?php echo $this->facetLink($name, $facetValue); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <div>
+                        <ul class="search-facet-items">
+                            <?php foreach ($facetValues['visible'] as $facetValue): ?>
+                                <li class="search-facet-item">
+                                    <?php echo $this->facetLink($name, $facetValue, $facetedFiltering); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php if (!empty($facetValues['hidden'])): ?>
+                        <div class="hidden-facets" data-facet-name="<?php echo $name; ?>" style="display: none;">
+                            <ul class="search-facet-items">
+                                <?php foreach ($facetValues['hidden'] as $hiddenValue): ?>
+                                    <li class="search-facet-item">
+                                        <?php echo $this->facetLink($name, $hiddenValue, $facetedFiltering); ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($facetValues['hidden'])): ?>
+                        <button id="show-hidden-facets" class="o-icon-down">
+                            <?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>
+                        </button>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>

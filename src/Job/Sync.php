@@ -3,8 +3,6 @@
 namespace Search\Job;
 
 use DateTime;
-use PDO;
-use Doctrine\DBAL\Connection;
 use Omeka\Job\AbstractJob;
 
 class Sync extends AbstractJob
@@ -40,7 +38,7 @@ class Sync extends AbstractJob
         while ($search_resources) {
             $now = new DateTime();
 
-            $resource_ids = array_map(fn($r) => $r['resource_id'], $search_resources);
+            $resource_ids = array_map(fn ($r) => $r['resource_id'], $search_resources);
             $resource_ids = array_values(array_unique($resource_ids, SORT_NUMERIC));
             $resources = $em->getRepository('Omeka\Entity\Resource')->findBy(['id' => $resource_ids]);
             $resources_by_id = [];
@@ -74,13 +72,13 @@ class Sync extends AbstractJob
                     $indexer = $search_index->indexer();
                     $indexer->indexResources($filtered_resources);
                 } catch (\Exception $e) {
-                    $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
+                    $filtered_resources_ids = array_map(fn ($r) => $r->getId(), $filtered_resources);
                     $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
                     $logger->err(sprintf('Search: Failed to index resources in index %d (%s): %s', $index_id, $filtered_resources_ids_string, $e));
                 }
             }
 
-            $search_resource_ids = array_map(fn($r) => $r['id'], $search_resources);
+            $search_resource_ids = array_map(fn ($r) => $r['id'], $search_resources);
             $indexationService->unlockAndMarkAsIndexedResources($search_resource_ids, $now);
 
             $number_of_resources_processed += count($search_resources);

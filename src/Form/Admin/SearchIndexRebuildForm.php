@@ -31,7 +31,6 @@ namespace Search\Form\Admin;
 
 use Laminas\Form\Form;
 use Laminas\Form\Element\Checkbox;
-use Laminas\Form\Element\Number;
 
 class SearchIndexRebuildForm extends Form
 {

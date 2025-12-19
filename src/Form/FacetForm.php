@@ -4,6 +4,7 @@ namespace Search\Form;
 
 use Laminas\Form\Element\Text;
 use Laminas\Form\Element\Select;
+use Laminas\Form\Element\Number;
 use Laminas\Form\Form;
 use Search\Form\Element\FacetValueRendererSelect;
 
@@ -62,6 +63,34 @@ class FacetForm extends Form
             ],
             'attributes' => [
                 'data-field-data-key' => 'value_renderer',
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'facet_limit',
+            'type' => Number::class,
+            'options' => [
+                'label' => 'Facet fetched limit', // @translate
+                'info' => 'The maximum number of values fetched', // @translate
+            ],
+            'attributes' => [
+                'data-field-data-key' => 'facet_limit',
+                'min' => '1',
+                'required' => true,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'facet_display_limit',
+            'type' => Number::class,
+            'options' => [
+                'label' => 'Facet display limit', // @translate
+                'info' => 'Limit number of values to display.', // @translate
+            ],
+            'attributes' => [
+                'data-field-data-key' => 'facet_display_limit',
+                'min' => '1',
+                'required' => true,
             ],
         ]);
     }

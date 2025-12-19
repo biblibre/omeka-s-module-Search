@@ -98,10 +98,9 @@ class IndexController extends AbstractActionController
             if (isset($facet['sort_by'])) {
                 $query->addFacetSort($facet['name'], $facet['sort_by']);
             }
-        }
-
-        if (isset($settings['facet_limit'])) {
-            $query->setFacetLimit($settings['facet_limit']);
+            if (isset($facet['facet_limit'])) {
+                $query->setFacetLimit($facet['name'], $facet['facet_limit']);
+            }
         }
 
         if (isset($params['limit'])) {
@@ -137,11 +136,20 @@ class IndexController extends AbstractActionController
         $facets = [];
         foreach ($settings['facets'] as $facet) {
             $name = $facet['name'];
+            $limit = (int) ($facet['facet_display_limit'] ?? 10);
+
             if (array_key_exists($name, $facetCounts)) {
-                $facets[$name] = $facetCounts[$name];
+                $values = $facetCounts[$name];
+
+                $visible = array_slice($values, 0, $limit);
+                $hidden = array_slice($values, $limit);
+
+                $facets[$name] = [
+                    'visible' => $visible,
+                    'hidden' => $hidden,
+                ];
             }
         }
-
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
 
         $show_search_summary = $settings['show_search_summary'] ?? false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var bool $active
@@ -7,8 +8,26 @@
  * @var string $url
  * @var int $count
  */
+$this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
 ?>
-<span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-    <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
-    (<?php echo $count; ?>)
-</span>
+<div>
+    <span class="<?php echo $active ? 'active' : 'inactive'; ?>">
+        <?php if($facetedFiltering) : ?>
+            <input type="checkbox"
+                id="checkbox_<?php echo $id; ?>"
+                name="selectedFacets[<?php echo $this->escapeHtml($name); ?>][]"
+                value="<?php echo $this->escapeHtml($name); ?>"
+                data-facet-name="<?php echo $this->escapeHtml($name); ?>"
+                data-facet-value="<?php echo $this->escapeHtml($value); ?>"
+               <?php echo $active ? 'checked' : ''; ?>
+            />
+            <label for="checkbox_<?php echo $id; ?>">
+                <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
+                (<?php echo $count; ?>)
+            </label>
+        <?php else : ?>
+            <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
+            (<?php echo $count; ?>)
+        <?php endif ; ?>
+    </span>
+</div>

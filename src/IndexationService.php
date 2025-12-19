@@ -135,7 +135,7 @@ class IndexationService
 
     public function resourcesToResourceTypes(array $resources): array
     {
-        $resource_types = array_map(fn($resource) => self::RESOURCE_TYPE_MAP[$resource] ?? null, $resources);
+        $resource_types = array_map(fn ($resource) => self::RESOURCE_TYPE_MAP[$resource] ?? null, $resources);
         $resource_types = array_values(array_filter($resource_types));
 
         return $resource_types;

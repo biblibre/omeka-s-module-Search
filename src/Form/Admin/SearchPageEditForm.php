@@ -60,14 +60,22 @@ class SearchPageEditForm extends SearchPageAddForm
         ]);
 
         $settingsFieldset->add([
-            'name' => 'facet_limit',
-            'type' => 'Number',
+            'name' => 'faceted_filtering',
+            'type' => 'Checkbox',
             'options' => [
-                'label' => 'Facet limit', // @translate
-                'info' => 'The maximum number of values fetched for each facet', // @translate
+                'label' => 'Faceted filtering', // @translate
+                'info' => 'Manually apply facet filters', // @translate
+            ],
+        ]);
+
+        $settingsFieldset->add([
+            'name' => 'facet_limit_expand_label',
+            'type' => 'Text',
+            'options' => [
+                'label' => 'Facet values expand button label', // @translate
             ],
             'attributes' => [
-                'min' => '1',
+                'value' => 'Show all', // @translate
                 'required' => true,
             ],
         ]);

@@ -57,9 +57,9 @@ class Query
         return $this->query;
     }
 
-    public function setFacetLimit($facetLimit)
+    public function setFacetLimit($facetField, $facetFieldLimit)
     {
-        $this->facetLimit = $facetLimit;
+        $this->facetLimit[$facetField] = $facetFieldLimit;
     }
 
     public function getFacetLimit()

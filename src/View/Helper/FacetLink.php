@@ -6,7 +6,7 @@ use Laminas\View\Helper\AbstractHelper;
 
 class FacetLink extends AbstractHelper
 {
-    public function __invoke($name, $facet)
+    public function __invoke($name, $facet, $facetFiltering = false)
     {
         $view = $this->getView();
         $query = $view->params()->fromQuery();
@@ -33,6 +33,8 @@ class FacetLink extends AbstractHelper
             'name' => $name,
             'value' => $facet['value'],
             'count' => $facet['count'],
+            'id' => uniqid($name . '_'),
+            'facetedFiltering' => $facetFiltering,
         ]);
     }
 }
