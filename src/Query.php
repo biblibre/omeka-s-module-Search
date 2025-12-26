@@ -46,6 +46,7 @@ class Query
     protected $resources = [];
     protected $site;
     protected $isPublic;
+    protected $hasMedia;
 
     public function setQuery($query)
     {
@@ -95,6 +96,16 @@ class Query
     public function getIsPublic(): ?bool
     {
         return $this->isPublic;
+    }
+
+    public function setHasMedia(bool $hasMedia)
+    {
+        $this->hasMedia = $hasMedia;
+    }
+
+    public function getHasMedia(): ?bool
+    {
+        return $this->hasMedia;
     }
 
     public function addFacetFilter($name, $value)

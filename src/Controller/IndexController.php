@@ -76,6 +76,7 @@ class IndexController extends AbstractActionController
         }
 
         $query = $formAdapter->toQuery($params, $searchFormSettings);
+
         $response = $this->api()->read('search_indexes', $index_id);
         $this->index = $response->getContent();
 
@@ -91,6 +92,9 @@ class IndexController extends AbstractActionController
         } else {
             $query->setResources($indexSettings['resources']);
         }
+
+        if (isset($params['has_media']))
+            $query->setHasMedia($params['has_media']);
 
         $settings = $this->page->settings();
         foreach ($settings['facets'] as $facet) {
