@@ -38,6 +38,7 @@ return [
     'form_elements' => [
         'invokables' => [
             'Search\Form\Admin\SearchIndexRebuildForm' => Form\Admin\SearchIndexRebuildForm::class,
+            'Search\Form\Element\OptionalSelect' => Form\Element\OptionalSelect::class,
         ],
         'factories' => [
             'Search\Form\Admin\SearchIndexAddForm' => Service\Form\SearchIndexAddFormFactory::class,
