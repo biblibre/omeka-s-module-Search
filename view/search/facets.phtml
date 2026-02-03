@@ -40,6 +40,7 @@ $facetedFiltering = $this->searchCurrentPage()->settings()['faceted_filtering'] 
             <?php echo $this->translate('Filters'); ?>
             <?php if ($facetedFiltering) : ?>
                 <button class="fas fa-sync" id="submit-facets" title="<?php echo $this->translate('Filter with selected facets');?>"></button>
+                <button class="fas fa-times" id="reset-facets" title="<?php echo $this->translate('Reset all filters');?>"></button>
             <?php endif; ?>
         </h2>
         <ul>
@@ -68,8 +69,11 @@ $facetedFiltering = $this->searchCurrentPage()->settings()['faceted_filtering'] 
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($facetValues['hidden'])): ?>
-                        <button id="show-hidden-facets" class="o-icon-down">
-                            <?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>
+                        <button id="show-hidden-facets-<?php echo $this->escapeHtml($name); ?>" class="o-icon-down show-hidden-facets-btn"
+                                data-facet-name="<?php echo $this->escapeHtml($name); ?>"
+                                data-expand-label="<?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>"
+                                data-collapse-label="<?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_collapse_label']); ?>">
+                            &nbsp;<?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>
                         </button>
                     <?php endif; ?>
                 </li>

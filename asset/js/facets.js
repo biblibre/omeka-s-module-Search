@@ -1,29 +1,38 @@
 document.addEventListener('DOMContentLoaded', function () {
     var buttonFilterFacets = document.getElementById('submit-facets');
-    buttonFilterFacets.addEventListener('click', function () {
-        submitFacets();
-    });
+    if (buttonFilterFacets) {
+        buttonFilterFacets.addEventListener('click', function () {
+            submitFacets();
+        });
+    }
 
-    var buttonToggleHiddenFacets = document.querySelectorAll('.o-icon-down');
+    var buttonResetFacets = document.getElementById('reset-facets');
+    if (buttonResetFacets) {
+        buttonResetFacets.addEventListener('click', function () {
+            resetFacets();
+        });
+    }
+
+    var buttonToggleHiddenFacets = document.querySelectorAll('.show-hidden-facets-btn');
     buttonToggleHiddenFacets.forEach(function(button) {
         button.addEventListener('click', function() {
-            var hiddenFacets = button.previousElementSibling;
-            var facetName = hiddenFacets.getAttribute('data-facet-name');
-            toggleHiddenFacets(facetName);
+            var facetName = button.getAttribute('data-facet-name');
+            toggleHiddenFacets(facetName, button);
         });
     });
 
-    function toggleHiddenFacets(name) {
+    function toggleHiddenFacets(name, button) {
         var hiddenFacets = document.querySelector('.hidden-facets[data-facet-name="' + name + '"]');
-        var expandButton = document.getElementById('show-hidden-facets');
         if (hiddenFacets.style.display === 'none' || hiddenFacets.style.display === '') {
             hiddenFacets.style.display = 'block';
-            expandButton.classList.remove('o-icon-down');
-            expandButton.classList.add('o-icon-up');
+            button.classList.remove('o-icon-down');
+            button.classList.add('o-icon-up');
+            button.innerHTML = '&nbsp;' + button.getAttribute('data-collapse-label');
         } else {
             hiddenFacets.style.display = 'none';
-            expandButton.classList.remove('o-icon-up');
-            expandButton.classList.add('o-icon-down');
+            button.classList.remove('o-icon-up');
+            button.classList.add('o-icon-down');
+            button.innerHTML = '&nbsp;' + button.getAttribute('data-expand-label');
         }
     }
 
@@ -38,5 +47,24 @@ document.addEventListener('DOMContentLoaded', function () {
             params.append(`limit[${name}][]`, value);
         });
         window.location.search = params.toString();
+    }
+
+    function resetFacets() {
+        var allInputs = document.querySelectorAll('.search-facets input[type="checkbox"]:checked');
+        allInputs.forEach(input => {
+            input.checked = false;
+        });
+
+        var params = new URLSearchParams(window.location.search);
+
+        var newParams = new URLSearchParams();
+
+        for (let [key, value] of params.entries()) {
+            if (!key.startsWith('limit[')) {
+                newParams.append(key, value);
+            }
+        }
+
+        window.location.search = newParams.toString();
     }
 });
