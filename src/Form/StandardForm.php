@@ -52,20 +52,6 @@ class StandardForm extends Form implements TranslatorAwareInterface
             ],
         ]);
 
-        $element = new Element\OptionalSelect('has_media');
-        $element
-            ->setLabel('Search by media presence') // @translate
-            ->setValueOptions([
-                '1' => 'Has media', // @translate
-                '0' => 'Has no media', // @translate
-            ])
-            ->setEmptyOption('Select media presence…') // @translate
-            ->setValue($query['has_media'] ?? '')
-            ->setAttribute('id', 'has_media')
-            ->setAttribute('optional', true); 
-
-        $this->add($element); 
-
         $searchPage = $this->getOption('search_page');
         $settings = $searchPage->settings();
 

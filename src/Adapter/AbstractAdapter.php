@@ -42,7 +42,6 @@ abstract class AbstractAdapter implements AdapterInterface
         return [
             'items' => $translator->translate('Items'),
             'item_sets' => $translator->translate('Item sets'),
-            'media' => $translator->translate('Media'),
         ];
     }
 
