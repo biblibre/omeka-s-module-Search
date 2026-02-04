@@ -39,7 +39,7 @@ $facetedFiltering = $this->searchCurrentPage()->settings()['faceted_filtering'] 
         <h2>
             <?php echo $this->translate('Filters'); ?>
             <?php if ($facetedFiltering) : ?>
-                <button class="fas fa-sync" id="submit-facets" title="<?php echo $this->translate('Filter with selected facets');?>"></button>
+                <button class="fas fa-filter" id="submit-facets" title="<?php echo $this->translate('Filter with selected facets');?>"></button>
                 <button class="fas fa-times" id="reset-facets" title="<?php echo $this->translate('Reset all filters');?>"></button>
             <?php endif; ?>
         </h2>
