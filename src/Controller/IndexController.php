@@ -93,9 +93,6 @@ class IndexController extends AbstractActionController
             $query->setResources($indexSettings['resources']);
         }
 
-        if (isset($params['has_media']))
-            $query->setHasMedia($params['has_media']);
-
         $settings = $this->page->settings();
         foreach ($settings['facets'] as $facet) {
             $query->addFacetField($facet['name']);

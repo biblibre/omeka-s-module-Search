@@ -261,6 +261,7 @@ return [
         'factories' => [
             'resource_class_select' => Service\FormElement\ResourceClassSelectFactory::class,
             'item_set_select' => Service\FormElement\ItemSetSelectFactory::class,
+            'has_media' => Service\FormElement\HasMediaFactory::class,
         ],
     ],
     'search_facet_value_renderers' => [
