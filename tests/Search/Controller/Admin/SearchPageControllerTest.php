@@ -60,6 +60,8 @@ class SearchPageControllerTest extends SearchControllerTestCase
             'o:settings' => [
                 'facet_limit' => '10',
                 'save_queries' => '1',
+                'faceted_filtering' => '0',
+                'facet_limit_expand_label' => 'Show all',
                 'show_search_summary' => '1',
                 'form' => [
                     'proximity' => '1',

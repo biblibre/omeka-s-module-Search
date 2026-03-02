@@ -31,7 +31,8 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  */
 $this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
-$facetedFiltering = $this->searchCurrentPage()->settings()['faceted_filtering'] === "1";
+$settings = $this->searchCurrentPage()->settings();
+$facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_filtering'] === "1";
 ?>
 
 <?php if (!empty($facets)): ?>
