@@ -29,7 +29,6 @@
 
 namespace Search;
 
-use Laminas\ModuleManager\ModuleManager;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\EventManager\Event;
 use Laminas\Mvc\Controller\AbstractController;
@@ -70,26 +69,6 @@ class Module extends AbstractModule
         $filter->addRelatedEntity('Search\Entity\SearchResource', 'resource_id');
 
         $this->dispatchSyncJobIfNeeded();
-    }
-
-    public function init(ModuleManager $moduleManager)
-    {
-        $event = $moduleManager->getEvent();
-        $container = $event->getParam('ServiceManager');
-        $serviceListener = $container->get('ServiceListener');
-
-        $serviceListener->addServiceManager(
-            'Search\AdapterManager',
-            'search_adapters',
-            'Search\Feature\AdapterProviderInterface',
-            'getSearchAdapterConfig'
-        );
-        $serviceListener->addServiceManager(
-            'Search\FormAdapterManager',
-            'search_form_adapters',
-            'Search\Feature\FormAdapterProviderInterface',
-            'getSearchFormAdapterConfig'
-        );
     }
 
     public function install(ServiceLocatorInterface $serviceLocator)

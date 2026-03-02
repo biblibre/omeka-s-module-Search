@@ -252,6 +252,8 @@ return [
             ],
         ],
     ],
+    'search_adapters' => [
+    ],
     'search_form_adapters' => [
         'factories' => [
             'standard' => Service\FormAdapter\StandardFormAdapterFactory::class,
