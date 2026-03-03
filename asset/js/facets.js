@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     var buttonFilterFacets = document.getElementById('submit-facets');
-    buttonFilterFacets.addEventListener('click', function () {
-        submitFacets();
-    });
+    if (buttonFilterFacets) {
+        buttonFilterFacets.addEventListener('click', function () {
+            submitFacets();
+        });
+    }
 
     var buttonToggleHiddenFacets = document.querySelectorAll('.o-icon-down');
     buttonToggleHiddenFacets.forEach(function(button) {
