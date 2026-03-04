@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.20.1] - 2026-03-04
 
 - Fix JS error when "faceted filtering" is disabled
 - Fix style of facets:
@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix a bug that prevented to cancel an already applied facet
 - Be more "theme-friendly" by applying style using CSS rather than JS or style
   attribute (facet expand button)
+- Move `has_media` to a `FormElement` to make it "opt-in" (disabled by default)
+  and reorderable like other form elements
+- Catch all non-fatal errors in the sync process to avoid resource locks not
+  being released
 
 ## [0.20.0] - 2026-02-16
 
@@ -294,6 +298,9 @@ The minimum Omeka S version required is 3.0.0
 
 First release
 
+[0.20.1]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.20.1
+[0.20.0]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.20.0
+[0.19.0]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.19.0
 [0.18.2]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.18.2
 [0.18.1]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.18.1
 [0.18.0]: https://github.com/biblibre/omeka-s-module-Search/releases/tag/v0.18.0
