@@ -120,14 +120,14 @@ while ($search_resources) {
 
         try {
             $indexer = $search_index->indexer();
-            $indexer->indexResources($filtered_resources);
+            $indexer->indexResources(true);
 
             if ($verbose) {
                 $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
                 $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
                 fprintf(STDERR, "Resources indexed in index %d: %s\n", $index_id, $filtered_resources_ids_string);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
             $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
             fprintf(STDERR, "Failed to index resources in index %d (%s): %s\n", $index_id, $filtered_resources_ids_string, $e);

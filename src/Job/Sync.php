@@ -71,7 +71,7 @@ class Sync extends AbstractJob
                 try {
                     $indexer = $search_index->indexer();
                     $indexer->indexResources($filtered_resources);
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $filtered_resources_ids = array_map(fn ($r) => $r->getId(), $filtered_resources);
                     $filtered_resources_ids_string = implode(',', $filtered_resources_ids);
                     $logger->err(sprintf('Search: Failed to index resources in index %d (%s): %s', $index_id, $filtered_resources_ids_string, $e));
