@@ -7,27 +7,25 @@
  * @var mixed $value
  * @var string $url
  * @var int $count
+ * @var bool $facetedFiltering
  */
 $this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
 ?>
-<div>
-    <span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-        <?php if($facetedFiltering) : ?>
+<span class="<?php echo $active ? 'active' : 'inactive'; ?>">
+    <?php if($facetedFiltering) : ?>
+        <label>
             <input type="checkbox"
-                id="checkbox_<?php echo $id; ?>"
                 name="selectedFacets[<?php echo $this->escapeHtml($name); ?>][]"
                 value="<?php echo $this->escapeHtml($name); ?>"
                 data-facet-name="<?php echo $this->escapeHtml($name); ?>"
                 data-facet-value="<?php echo $this->escapeHtml($value); ?>"
                <?php echo $active ? 'checked' : ''; ?>
             />
-            <label for="checkbox_<?php echo $id; ?>">
-                <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
-                (<?php echo $count; ?>)
-            </label>
-        <?php else : ?>
-            <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
-            (<?php echo $count; ?>)
-        <?php endif ; ?>
-    </span>
-</div>
+            <?= $this->searchFacetValue($name, (string) $value) ?> (<?= $this->escapeHtml($count) ?>)
+        </label>
+    <?php else : ?>
+        <input type="checkbox" disabled <?= $active ? 'checked' : '' ?>>
+        <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
+        (<?= $this->escapeHtml($count) ?>)
+    <?php endif ; ?>
+</span>

@@ -35,22 +35,24 @@
 }
 
 .search-facet-items {
-  padding-left: 1em;
+  padding-left: 0;
 }
 
 .search-facet-item {
   display: block;
 }
 
-.search-facet-item a::before {
-  display: inline-block;
-  font-family: "Font Awesome 5 Free";
-  width: 1.5em;
-  content: "";
+.search-facet-item input[type="checkbox"] {
+    vertical-align: baseline;
 }
 
-.search-facet-item .active a::before {
-  content: "\f00c";
+.search-facet-item .inactive input[type="checkbox"]:disabled {
+    visibility: hidden;
+}
+
+.search-facet-item label {
+    user-select: none;
+    cursor: pointer;
 }
 
 .resource-list {

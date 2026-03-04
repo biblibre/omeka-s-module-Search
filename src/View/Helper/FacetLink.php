@@ -33,7 +33,6 @@ class FacetLink extends AbstractHelper
             'name' => $name,
             'value' => $facet['value'],
             'count' => $facet['count'],
-            'id' => uniqid($name . '_'),
             'facetedFiltering' => $facetFiltering,
         ]);
     }

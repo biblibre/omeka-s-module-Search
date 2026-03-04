@@ -30,9 +30,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function submitFacets() {
-        var checkedBoxes = document.querySelectorAll('input[name^="selectedFacets["]:checked');
         var params = new URLSearchParams(window.location.search);
 
+        const facetCheckboxes = Array.from(document.querySelectorAll('.search-facet-item input[type="checkbox"]'));
+        const facetNames = new Set(facetCheckboxes.map(node => node.dataset.facetName));
+        for (const [key, value] of params.entries()) {
+            for (const facetName of facetNames) {
+                if (key.startsWith(`limit[${facetName}]`)) {
+                    params.delete(key);
+                }
+            }
+        }
+
+        var checkedBoxes = document.querySelectorAll('input[name^="selectedFacets["]:checked');
         checkedBoxes.forEach(box => {
             var name = box.dataset.facetName;
             var value = box.dataset.facetValue;

@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Fix JS error when "faceted filtering" is disabled
+- Fix style of facets:
+  - When faceted filtering is enabled, clicking the text checks the checkbox
+    instead of applying the facet immediately
+  - When faceted filtering is disabled, replace the FontAwesome icon by a
+    disabled checkbox to have style similar to when faceted filtering is
+    enabled
+  - Align the checkbox vertically
+- Fix a bug that prevented to cancel an already applied facet
 
 ## [0.20.0] - 2026-02-16
 
