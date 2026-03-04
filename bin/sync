@@ -120,7 +120,7 @@ while ($search_resources) {
 
         try {
             $indexer = $search_index->indexer();
-            $indexer->indexResources(true);
+            $indexer->indexResources($filtered_resources);
 
             if ($verbose) {
                 $filtered_resources_ids = array_map(fn($r) => $r->getId(), $filtered_resources);
