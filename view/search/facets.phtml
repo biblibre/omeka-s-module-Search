@@ -46,7 +46,7 @@ $facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_
         <ul>
             <?php foreach ($facets as $name => $facetValues): ?>
                 <?php $index = array_search($name, array_keys($facets));?>
-                <li class="search-facet">
+                <li class="search-facet" data-facet-name="<?= $this->escapeHtml($name) ?>">
                     <h3><?php echo $this->facetLabel($name); ?></h3>
                     <div>
                         <ul class="search-facet-items">
@@ -58,7 +58,7 @@ $facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_
                         </ul>
                     </div>
                     <?php if (!empty($facetValues['hidden'])): ?>
-                        <div class="hidden-facets" data-facet-name="<?php echo $name; ?>" style="display: none;">
+                        <div class="hidden-facets">
                             <ul class="search-facet-items">
                                 <?php foreach ($facetValues['hidden'] as $hiddenValue): ?>
                                     <li class="search-facet-item">
@@ -69,7 +69,7 @@ $facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_
                         </div>
                     <?php endif; ?>
                     <?php if (!empty($facetValues['hidden'])): ?>
-                        <button id="show-hidden-facets" class="o-icon-down">
+                        <button class="search-facet-expand-button">
                             <?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>
                         </button>
                     <?php endif; ?>

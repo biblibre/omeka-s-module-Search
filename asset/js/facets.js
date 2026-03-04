@@ -6,27 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    var buttonToggleHiddenFacets = document.querySelectorAll('.o-icon-down');
-    buttonToggleHiddenFacets.forEach(function(button) {
+    for (const button of document.querySelectorAll('.search-facet .search-facet-expand-button')) {
         button.addEventListener('click', function() {
-            var hiddenFacets = button.previousElementSibling;
-            var facetName = hiddenFacets.getAttribute('data-facet-name');
-            toggleHiddenFacets(facetName);
+            this.closest('.search-facet').classList.toggle('search-facet-expanded');
         });
-    });
-
-    function toggleHiddenFacets(name) {
-        var hiddenFacets = document.querySelector('.hidden-facets[data-facet-name="' + name + '"]');
-        var expandButton = document.getElementById('show-hidden-facets');
-        if (hiddenFacets.style.display === 'none' || hiddenFacets.style.display === '') {
-            hiddenFacets.style.display = 'block';
-            expandButton.classList.remove('o-icon-down');
-            expandButton.classList.add('o-icon-up');
-        } else {
-            hiddenFacets.style.display = 'none';
-            expandButton.classList.remove('o-icon-up');
-            expandButton.classList.add('o-icon-down');
-        }
     }
 
     function submitFacets() {

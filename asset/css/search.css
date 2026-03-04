@@ -55,6 +55,20 @@
     cursor: pointer;
 }
 
+.search-facet:not(.search-facet-expanded) .hidden-facets {
+    display: none;
+}
+
+.search-facet-expand-button::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0d7";
+}
+
+.search-facet.search-facet-expanded .search-facet-expand-button::before {
+    content: "\f0d8";
+}
+
 .resource-list {
   display: flex;
 }

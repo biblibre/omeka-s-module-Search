@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     enabled
   - Align the checkbox vertically
 - Fix a bug that prevented to cancel an already applied facet
+- Be more "theme-friendly" by applying style using CSS rather than JS or style
+  attribute (facet expand button)
 
 ## [0.20.0] - 2026-02-16
 
