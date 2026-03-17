@@ -81,7 +81,7 @@ class StandardFormAdapter implements FormAdapterInterface, SummarizeQueryInterfa
         return $query;
     }
 
-    public function summarizeQuery($data, $page) : array
+    public function summarizeQuery($data, $page): array
     {
         $summarizeQuery = [];
         $translator = $this->getTranslator();

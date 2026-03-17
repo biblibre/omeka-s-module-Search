@@ -7,7 +7,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SearchIndexEditFormFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $api = $services->get('Omeka\ApiManager');
         $searchAdapterManager = $services->get('Search\AdapterManager');

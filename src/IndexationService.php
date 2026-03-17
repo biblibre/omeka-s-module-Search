@@ -64,7 +64,7 @@ class IndexationService
         );
     }
 
-    public function refreshIndexResources(int $index_id, DateTime $touched = null)
+    public function refreshIndexResources(int $index_id, ?DateTime $touched = null)
     {
         $settings_json = $this->connection->fetchOne(
             'SELECT settings FROM search_index WHERE id = ?',
@@ -118,7 +118,7 @@ class IndexationService
         }
     }
 
-    public function touchResource(int $index_id, int $resource_id, DateTime $touched = null)
+    public function touchResource(int $index_id, int $resource_id, ?DateTime $touched = null)
     {
         $touched ??= new DateTime();
 
