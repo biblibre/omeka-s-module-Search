@@ -31,13 +31,11 @@ local Pipeline(omekaVersion, phpVersion, dbImage) = {
 };
 
 [
-    Pipeline('3.0.2', '7.4', 'mariadb:10.6'),
-    Pipeline('3.1.2', '8.0', 'mariadb:10.6'),
-    Pipeline('3.2.3', '8.0', 'mariadb:10.6'),
-    Pipeline('4.0.4', '8.0', 'mariadb:10.6'),
-    Pipeline('4.0.4', '8.1', 'mariadb:10.6'),
-    Pipeline('4.0.4', '8.2', 'mariadb:10.6'),
-    Pipeline('4.1.1', '8.0', 'mariadb:10.6'),
-    Pipeline('4.1.1', '8.1', 'mariadb:10.6'),
-    Pipeline('4.1.1', '8.2', 'mariadb:10.6'),
+    Pipeline('3.1.2', '8.0', 'mariadb:11.8'),
+    Pipeline('3.2.3', '8.0', 'mariadb:11.8'),
+    Pipeline('4.0.4', '8.2', 'mariadb:11.8'),
+    Pipeline('4.1.1', '8.2', 'mariadb:11.8'),
+    Pipeline('4.2.0', '8.2', 'mariadb:11.8'),
+    Pipeline('4.2.0', '8.3', 'mariadb:11.8'),
+    Pipeline('4.2.0', '8.4', 'mariadb:11.8'),
 ]

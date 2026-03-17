@@ -7,7 +7,7 @@ use Search\Form\Admin\SearchPageEditForm;
 
 class SearchPageEditFormFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $api = $services->get('Omeka\ApiManager');
         $formAdapterManager = $services->get('Search\FormAdapterManager');

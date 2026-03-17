@@ -8,7 +8,7 @@ use Search\FormElement\ItemSetSelect;
 
 class ItemSetSelectFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedNamed, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedNamed, ?array $options = null)
     {
         $api = $services->get('Omeka\ApiManager');
         $translator = $services->get('MvcTranslator');

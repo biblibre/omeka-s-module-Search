@@ -41,8 +41,8 @@ class SavedQueries extends AbstractBlockLayout
     public function form(
         PhpRenderer $view,
         SiteRepresentation $site,
-        SitePageRepresentation $page = null,
-        SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null,
+        ?SitePageBlockRepresentation $block = null
     ) {
         $form = new Form();
         $label = new Element\Text("o:block[__blockIndex__][o:data][label]");

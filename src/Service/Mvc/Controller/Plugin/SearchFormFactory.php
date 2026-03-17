@@ -8,7 +8,7 @@ use Search\Mvc\Controller\Plugin\SearchForm;
 
 class SearchFormFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $viewHelpers = $services->get('ViewHelperManager');
 
