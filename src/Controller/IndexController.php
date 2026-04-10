@@ -140,15 +140,7 @@ class IndexController extends AbstractActionController
             $limit = (int) ($facet['facet_display_limit'] ?? 10);
 
             if (array_key_exists($name, $facetCounts)) {
-                $values = $facetCounts[$name];
-
-                $visible = array_slice($values, 0, $limit);
-                $hidden = array_slice($values, $limit);
-
-                $facets[$name] = [
-                    'visible' => $visible,
-                    'hidden' => $hidden,
-                ];
+                $facets[$name] = $facetCounts[$name];
             }
         }
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
