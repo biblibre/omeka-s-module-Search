@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Restore $facets content to get theme compatibility back
+- Improve facet limitation display:
+  - Split the single expand button into two distinct buttons (expand / collapse),
+    each with a chevron icon (`fas fa-chevron-down` / `fas fa-chevron-up`), shown
+    or hidden via CSS classes.
+  - Add a new admin setting `facet_limit_collapse_label` to configure the label
+    of the collapse button (like the existing `facet_limit_expand_label`)
+  - Add a "Reset all filters" button (`#reset-facets`) in faceted filtering mode
+    that clears all active facet parameters from the URL without reloading the
+    full page
+  - Fix checkbox `value` attribute in `facet-link.phtml`: was incorrectly set to
+    `$name` instead of `$value`
+  - Fix `submitFacets()`: also delete the `page` parameter when applying facets,
+    and refactor facet-name detection into reusable helper functions
+    (`getVisibleFacetNames`, `isVisibleFacetParam`)
+  - Code style harmonisation (single quotes → double quotes, spacing)
 
 ## [0.20.1] - 2026-03-04
 

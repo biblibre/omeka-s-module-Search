@@ -25,24 +25,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL license and that you accept its terms.
  */
-?>
-<?php
+
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var array $facets associative array indexed by facet name, values are
  *                    associative arrays with keys 'value' and 'count'
  */
-$this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
+
+$this->headScript()->appendFile($this->assetUrl("js/facets.js", "Search"));
 $settings = $this->searchCurrentPage()->settings();
-$facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_filtering'] === "1";
+$facetedFiltering =
+    isset($settings["faceted_filtering"]) &&
+    $settings["faceted_filtering"] === "1";
 ?>
 
 <?php if (!empty($facets)): ?>
     <aside class="search-facets">
         <h2>
-            <?php echo $this->translate('Filters'); ?>
-            <?php if ($facetedFiltering) : ?>
-                <button class="fas fa-sync" id="submit-facets" title="<?php echo $this->translate('Filter with selected facets');?>"></button>
+            <?php echo $this->translate("Filters"); ?>
+            <?php if ($facetedFiltering): ?>
+                <button class="fas fa-filter" id="submit-facets" title="<?php echo $this->escapeHtml($this->translate("Filter with selected facets")); ?>"></button>
+                <button class="fas fa-times" id="reset-facets" title="<?php echo $this->escapeHtml($this->translate("Reset all filters")); ?>"></button>
             <?php endif; ?>
         </h2>
         <ul>
@@ -74,10 +77,13 @@ $facetedFiltering = isset($settings['faceted_filtering']) && $settings['faceted_
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
-                        <?php endif; ?>
-                        <?php if (!empty($hidden_facets)): ?>
-                            <button class="search-facet-expand-button">
-                                <?php echo $this->escapeHtml($this->searchCurrentPage()->settings()['facet_limit_expand_label']); ?>
+                            <button class="search-facet-expand-button search-facet-toggle-btn">
+                                <i class="fas fa-chevron-down"></i>
+                                <?php echo $this->escapeHtml($settings["facet_limit_expand_label"]); ?>
+                            </button>
+                            <button class="search-facet-collapse-button search-facet-toggle-btn">
+                                <i class="fas fa-chevron-up"></i>
+                                <?php echo $this->escapeHtml($settings["facet_limit_collapse_label"]); ?>
                             </button>
                         <?php endif; ?>
                     </li>

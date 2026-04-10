@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var bool $active
@@ -9,23 +8,24 @@
  * @var int $count
  * @var bool $facetedFiltering
  */
-$this->headScript()->appendFile($this->assetUrl('js/facets.js', 'Search'));
 ?>
-<span class="<?php echo $active ? 'active' : 'inactive'; ?>">
-    <?php if($facetedFiltering) : ?>
+<span class="<?php echo $active ? "active" : "inactive"; ?>">
+    <?php if ($facetedFiltering): ?>
         <label>
             <input type="checkbox"
                 name="selectedFacets[<?php echo $this->escapeHtml($name); ?>][]"
-                value="<?php echo $this->escapeHtml($name); ?>"
+                value="<?php echo $this->escapeHtml($value); ?>"
                 data-facet-name="<?php echo $this->escapeHtml($name); ?>"
                 data-facet-value="<?php echo $this->escapeHtml($value); ?>"
-               <?php echo $active ? 'checked' : ''; ?>
+               <?php echo $active ? "checked" : ""; ?>
             />
             <?= $this->searchFacetValue($name, (string) $value) ?> (<?= $this->escapeHtml($count) ?>)
         </label>
-    <?php else : ?>
-        <input type="checkbox" disabled <?= $active ? 'checked' : '' ?>>
-        <a href="<?php echo $this->escapeHtml($url); ?>"><?= $this->searchFacetValue($name, (string) $value) ?></a>
+    <?php else: ?>
+        <input type="checkbox" disabled <?= $active ? "checked" : "" ?>>
+        <a href="<?php echo $this->escapeHtml($url); ?>">
+            <?= $this->searchFacetValue($name, (string) $value) ?>
+        </a>
         (<?= $this->escapeHtml($count) ?>)
-    <?php endif ; ?>
+    <?php endif; ?>
 </span>

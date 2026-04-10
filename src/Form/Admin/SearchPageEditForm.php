@@ -69,6 +69,18 @@ class SearchPageEditForm extends SearchPageAddForm
         ]);
 
         $settingsFieldset->add([
+            'name' => 'facet_limit_collapse_label',
+            'type' => 'Text',
+            'options' => [
+                'label' => 'Facet values collapse button label', // @translate
+            ],
+            'attributes' => [
+                'value' => 'Show less', // @translate
+                'required' => true,
+            ],
+        ]);
+
+        $settingsFieldset->add([
             'name' => 'facet_limit_expand_label',
             'type' => 'Text',
             'options' => [
