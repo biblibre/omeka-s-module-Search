@@ -1,0 +1,6 @@
+.search-glossary-navigation__letters-list {
+    column-gap: .5em;
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}

@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string[] $letters
+ */
+?>
+
+<nav class="search-glossary-navigation">
+    <ul class="search-glossary-navigation__letters-list">
+        <?php foreach ($letters as $letter): ?>
+            <li class="search-glossary-navigation__letter">
+                <a href="#<?= $this->escapeHtml($letter) ?>"><?= $this->escapeHtml($letter) ?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
