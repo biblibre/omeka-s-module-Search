@@ -29,9 +29,21 @@
 
 namespace Search\Adapter;
 
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Omeka\ServiceManager\AbstractPluginManager;
 
 class Manager extends AbstractPluginManager
 {
     protected $instanceOf = AdapterInterface::class;
+
+    public function get($name, $options = [], $usePeeringServiceManagers = true)
+    {
+        try {
+            $instance = parent::get($name, $options, $usePeeringServiceManagers);
+        } catch (ServiceNotFoundException $e) {
+            $instance = new Fallback($name);
+        }
+
+        return $instance;
+    }
 }

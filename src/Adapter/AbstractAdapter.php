@@ -66,6 +66,11 @@ abstract class AbstractAdapter implements AdapterInterface
         return [];
     }
 
+    public function getAvailableFacetSorts(SearchIndexRepresentation $index)
+    {
+        return [];
+    }
+
     public function setServiceLocator($serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
