@@ -75,6 +75,7 @@ return [
     'block_layouts' => [
         'invokables' => [
             'savedQueries' => Site\BlockLayout\SavedQueries::class,
+            'searchGlossary' => Site\BlockLayout\Glossary::class,
         ],
     ],
     'router' => [
