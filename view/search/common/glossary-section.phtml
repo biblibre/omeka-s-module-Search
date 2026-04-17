@@ -1,0 +1,38 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var string[] $terms
+ * @var string $letter
+ */
+
+$facetField = $block->dataValue('facet_field');
+parse_str($block->dataValue('custom_query', ''), $customQuery);
+?>
+<section class="search-glossary-section" id="<?= $this->escapeHtml($letter) ?>">
+    <?php if ($block->dataValue('display_letters', false)): ?>
+        <h3 class="search-glossary-section__title">
+            <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>
+
+            <?php if ($block->dataValue('display_total', false)): ?>
+                <span class="search-glossary-section__count"> (<?= count($terms) ?>)</span>
+            <?php endif; ?>
+        </h3>
+    <?php endif; ?>
+
+    <ul class="search-glossary-section__terms">
+        <?php foreach ($terms as $term): ?>
+            <li class="search-glossary-section__term">
+                <?php $query = array_merge($customQuery, ['limit' => [$facetField => [$term]]]); ?>
+                <?=
+                $this->hyperlink(
+                    $term,
+                    $this->url('search-page-' . $searchPage->id(), [], ['query' => $query], true),
+                    ['class' => 'search-glossary-section__term-link'],
+                )
+                ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>

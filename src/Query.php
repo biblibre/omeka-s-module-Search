@@ -35,7 +35,7 @@ class Query
 {
     protected $query;
     protected $sort;
-    protected $facetLimit;
+    protected array $facetLimit = [];
     protected $facetFields = [];
     protected $facetFilters = [];
     protected $facetSorts = [];
@@ -58,12 +58,18 @@ class Query
         return $this->query;
     }
 
-    public function setFacetLimit($facetField, $facetFieldLimit)
+    /**
+     * Sets the maximum number of values retrieved for a facet.
+     *
+     * @param string $facetField Facet field name
+     * @param ?int $facetFieldLimit Maximum number of values retrieved, or null to retrieve all values
+     */
+    public function setFacetLimit(string $facetField, ?int $facetFieldLimit): void
     {
         $this->facetLimit[$facetField] = $facetFieldLimit;
     }
 
-    public function getFacetLimit()
+    public function getFacetLimit(): array
     {
         return $this->facetLimit;
     }

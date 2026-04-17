@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var array[] $termsByLetter
+ */
+
+$letters = array_keys($termsByLetter);
+?>
+
+<?php if ($letters): ?>
+    <?php if (in_array('before', $block->dataValue('letters_list_position', []))): ?>
+        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters]); ?>
+    <?php endif; ?>
+
+    <div class="search-glossary-content">
+        <?php foreach ($termsByLetter as $letter => $terms): ?>
+            <?= $this->partial('search/common/glossary-section', ['block' => $block, 'searchPage' => $searchPage, 'letter' => $letter, 'terms' => $terms]) ?>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (in_array('after', $block->dataValue('letters_list_position', []))): ?>
+        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters]); ?>
+    <?php endif; ?>
+<?php else: ?>
+    <p><?= $this->translate('Glossary is empty') ?></p>
+<?php endif; ?>
