@@ -13,9 +13,12 @@ use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
+use Transliterator;
 
 class Glossary extends AbstractBlockLayout
 {
+    protected Transliterator $transliterator;
+
     public function getLabel()
     {
         return 'Glossary'; // @translate
@@ -29,6 +32,7 @@ class Glossary extends AbstractBlockLayout
             'page_facet_field' => '',
             'custom_query' => '',
             'letters_list_position' => ['before', 'after'],
+            'group_accented_letters' => '0',
             'display_letters' => '0',
             'display_total' => '0',
 
@@ -84,6 +88,12 @@ class Glossary extends AbstractBlockLayout
         ]);
         $lettersListPositionMultiCheckbox->setValue($data['letters_list_position']);
         $form->add($lettersListPositionMultiCheckbox);
+
+        $groupAccentedLettersCheckbox = new Checkbox('o:block[__blockIndex__][o:data][group_accented_letters]');
+        $groupAccentedLettersCheckbox->setLabel('Group accented letters'); // @translate
+        $groupAccentedLettersCheckbox->setOption('info', 'If enabled, terms starting with "È" or "É" will be displayed under the letter "E" (requires PHP extension intl)'); // @translate
+        $groupAccentedLettersCheckbox->setValue($data['group_accented_letters']);
+        $form->add($groupAccentedLettersCheckbox);
 
         $displayLettersCheckbox = new Checkbox('o:block[__blockIndex__][o:data][display_letters]');
         $displayLettersCheckbox->setLabel('Display letters between results'); // @translate
@@ -154,7 +164,7 @@ class Glossary extends AbstractBlockLayout
         $facetCounts = $response->getFacetCounts();
         foreach ($facetCounts[$facetField] ?? [] as $facetCount) {
             $term = $facetCount['value'];
-            $letter = mb_strtoupper(mb_substr($term, 0, 1));
+            $letter = $this->getFirstLetter($term, $block);
             $termsByLetter[$letter] ??= [];
             $termsByLetter[$letter][] = $term;
         }
@@ -185,5 +195,22 @@ class Glossary extends AbstractBlockLayout
     public function prepareRender(PhpRenderer $view): void
     {
         $view->headLink()->appendStylesheet($view->assetUrl('css/search-glossary.css', 'Search'));
+    }
+
+    protected function getFirstLetter(string $term, SitePageBlockRepresentation $block): string
+    {
+        $letter = mb_substr($term, 0, 1);
+
+        if ($block->dataValue('group_accented_letters') && extension_loaded('intl')) {
+            if (!isset($this->transliterator)) {
+                $this->transliterator = Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: Upper(); :: NFC;');
+            }
+
+            $letter = $this->transliterator->transliterate($letter);
+        } else {
+            $letter = mb_strtoupper($letter);
+        }
+
+        return $letter;
     }
 }
