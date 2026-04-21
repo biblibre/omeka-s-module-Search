@@ -139,6 +139,14 @@ class Glossary extends AbstractBlockLayout
         $query->setResources($searchIndex->settings()['resources']);
         $query->setSite($view->currentSite());
 
+        if (isset($customQuery['limit'])) {
+            foreach ($customQuery['limit'] as $name => $values) {
+                foreach ($values as $value) {
+                    $query->addFacetFilter($name, $value);
+                }
+            }
+        }
+
         $response = $querier->query($query);
 
         $termsByLetter = [];

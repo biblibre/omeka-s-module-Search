@@ -24,7 +24,7 @@ parse_str($block->dataValue('custom_query', ''), $customQuery);
     <ul class="search-glossary-section__terms">
         <?php foreach ($terms as $term): ?>
             <li class="search-glossary-section__term">
-                <?php $query = array_merge($customQuery, ['limit' => [$facetField => [$term]]]); ?>
+                <?php $query = array_merge_recursive($customQuery, ['limit' => [$facetField => [$term]]]); ?>
                 <?=
                 $this->hyperlink(
                     $term,
