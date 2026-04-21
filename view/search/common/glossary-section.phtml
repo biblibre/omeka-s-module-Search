@@ -10,7 +10,7 @@
 $facetField = $block->dataValue('facet_field');
 parse_str($block->dataValue('custom_query', ''), $customQuery);
 ?>
-<section class="search-glossary-section" id="<?= $this->escapeHtml($letter) ?>">
+<section class="search-glossary-section" id="<?= $this->escapeHtml($block->dataValue('section_id_prefix', '')) ?><?= $this->escapeHtml($letter) ?>">
     <?php if ($block->dataValue('display_letters', false)): ?>
         <h3 class="search-glossary-section__title">
             <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>

@@ -33,6 +33,7 @@ class Glossary extends AbstractBlockLayout
             'custom_query' => '',
             'letters_list_position' => ['before', 'after'],
             'group_accented_letters' => '0',
+            'section_id_prefix' => '',
             'display_letters' => '0',
             'display_total' => '0',
 
@@ -94,6 +95,12 @@ class Glossary extends AbstractBlockLayout
         $groupAccentedLettersCheckbox->setOption('info', 'If enabled, terms starting with "È" or "É" will be displayed under the letter "E" (requires PHP extension intl)'); // @translate
         $groupAccentedLettersCheckbox->setValue($data['group_accented_letters']);
         $form->add($groupAccentedLettersCheckbox);
+
+        $sectionIdPrefixText = new Text('o:block[__blockIndex__][o:data][section_id_prefix]');
+        $sectionIdPrefixText->setLabel('Section identifier prefix'); // @translate
+        $sectionIdPrefixText->setOption('info', 'Useful if there several glossary blocks on the same page. This will appear in URL when clicking on a letter'); // @translate
+        $sectionIdPrefixText->setValue($data['section_id_prefix']);
+        $form->add($sectionIdPrefixText);
 
         $displayLettersCheckbox = new Checkbox('o:block[__blockIndex__][o:data][display_letters]');
         $displayLettersCheckbox->setLabel('Display letters between results'); // @translate

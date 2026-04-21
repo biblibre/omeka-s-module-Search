@@ -11,7 +11,7 @@ $letters = array_keys($termsByLetter);
 
 <?php if ($letters): ?>
     <?php if (in_array('before', $block->dataValue('letters_list_position', []))): ?>
-        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters]); ?>
+        <?= $this->partial('search/common/glossary-navigation', ['block' => $block, 'letters' => $letters]); ?>
     <?php endif; ?>
 
     <div class="search-glossary-content">
@@ -21,7 +21,7 @@ $letters = array_keys($termsByLetter);
     </div>
 
     <?php if (in_array('after', $block->dataValue('letters_list_position', []))): ?>
-        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters]); ?>
+        <?= $this->partial('search/common/glossary-navigation', ['block' => $block, 'letters' => $letters]); ?>
     <?php endif; ?>
 <?php else: ?>
     <p><?= $this->translate('Glossary is empty') ?></p>
