@@ -34,8 +34,7 @@ class Glossary extends AbstractBlockLayout
             'letters_list_position' => ['before', 'after'],
             'group_accented_letters' => '0',
             'section_id_prefix' => '',
-            'display_letters' => '0',
-            'display_total' => '0',
+            'section_heading' => '',
 
         ];
 
@@ -102,15 +101,15 @@ class Glossary extends AbstractBlockLayout
         $sectionIdPrefixText->setValue($data['section_id_prefix']);
         $form->add($sectionIdPrefixText);
 
-        $displayLettersCheckbox = new Checkbox('o:block[__blockIndex__][o:data][display_letters]');
-        $displayLettersCheckbox->setLabel('Display letters between results'); // @translate
-        $displayLettersCheckbox->setValue($data['display_letters']);
-        $form->add($displayLettersCheckbox);
-
-        $displayTotalCheckbox = new Checkbox('o:block[__blockIndex__][o:data][display_total]');
-        $displayTotalCheckbox->setLabel('Display total between results'); // @translate
-        $displayTotalCheckbox->setValue($data['display_total']);
-        $form->add($displayTotalCheckbox);
+        $sectionHeadingSelect = new Select('o:block[__blockIndex__][o:data][section_heading]');
+        $sectionHeadingSelect->setLabel('Section heading'); // @translate
+        $sectionHeadingSelect->setEmptyOption('None'); // @translate
+        $sectionHeadingSelect->setValueOptions([
+            'letter' => 'Letter only', // @translate
+            'letter_total' => 'Letter and number of terms', // @translate
+        ]);
+        $sectionHeadingSelect->setValue($data['section_heading']);
+        $form->add($sectionHeadingSelect);
 
         return $view->formCollection($form);
     }

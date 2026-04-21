@@ -11,11 +11,13 @@ $facetField = $block->dataValue('facet_field');
 parse_str($block->dataValue('custom_query', ''), $customQuery);
 ?>
 <section class="search-glossary-section" id="<?= $this->escapeHtml($block->dataValue('section_id_prefix', '')) ?><?= $this->escapeHtml($letter) ?>">
-    <?php if ($block->dataValue('display_letters', false)): ?>
+    <?php if ($sectionHeading = $block->dataValue('section_heading', '')): ?>
         <h3 class="search-glossary-section__title">
-            <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>
+            <?php if ($sectionHeading === 'letter' || $sectionHeading === 'letter_total'): ?>
+                <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>
+            <?php endif; ?>
 
-            <?php if ($block->dataValue('display_total', false)): ?>
+            <?php if ($sectionHeading === 'letter_total'): ?>
                 <span class="search-glossary-section__count"> (<?= count($terms) ?>)</span>
             <?php endif; ?>
         </h3>
