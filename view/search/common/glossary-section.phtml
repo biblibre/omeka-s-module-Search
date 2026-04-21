@@ -23,7 +23,7 @@ parse_str($block->dataValue('custom_query', ''), $customQuery);
         </h3>
     <?php endif; ?>
 
-    <ul class="search-glossary-section__terms">
+    <ul class="search-glossary-section__term-list">
         <?php foreach ($terms as $term): ?>
             <li class="search-glossary-section__term">
                 <?php $query = array_merge_recursive($customQuery, ['limit' => [$facetField => [$term]]]); ?>

@@ -7,7 +7,7 @@
 ?>
 
 <nav class="search-glossary-navigation">
-    <ul class="search-glossary-navigation__letters-list">
+    <ul class="search-glossary-navigation__letter-list">
         <?php foreach ($letters as $letter): ?>
             <li class="search-glossary-navigation__letter">
                 <a href="#<?= $this->escapeHtml($block->dataValue('section_id_prefix', '')) ?><?= $this->escapeHtml($letter) ?>"><?= $this->escapeHtml($letter) ?></a>
