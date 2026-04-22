@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 14:16+0100\n"
+"POT-Creation-Date: 2026-04-22 12:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,51 +21,11 @@ msgstr ""
 msgid "[No adapter]"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:50
-msgid "Resources indexed"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexForm.php:62
-msgid "Adapter"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:57
-msgid "Save queries"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:58
-msgid "Add ability to save your query and reload it later with result update"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:66
-msgid "Facet limit"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:67
-msgid "The maximum number of values fetched for each facet"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:155
-msgid "Form settings"
-msgstr ""
-
-#: src/Form/Admin/SearchPageForm.php:61
-msgid "Path"
-msgstr ""
-
-#: src/Form/Admin/SearchPageForm.php:72
-msgid "Index"
-msgstr ""
-
-#: src/Form/Admin/SearchPageForm.php:84
-msgid "Form"
-msgstr ""
-
 #: src/Form/StandardForm.php:48 src/FormAdapter/StandardFormAdapter.php:92
 msgid "Search everywhere"
 msgstr ""
 
-#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:37
+#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:45
 #: view/search/form/standard.phtml:45
 msgid "Filters"
 msgstr ""
@@ -124,15 +84,23 @@ msgstr ""
 msgid "Add new index"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:76
+#: view/search/admin/index/browse.phtml:54
+msgid "Adapter"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:55
+msgid "Indexed resources"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:77
 msgid "Rebuild index"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:96
+#: view/search/admin/index/browse.phtml:105
 msgid "No search indexes created yet."
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:158
+#: view/search/admin/index/browse.phtml:159
 msgid "No search pages created yet."
 msgstr ""
 
@@ -161,13 +129,8 @@ msgstr ""
 msgid "Add search index"
 msgstr ""
 
-#: view/search/admin/search-index/configure.phtml:38
-msgid "Configure search index"
-msgstr ""
-
-#: view/search/admin/search-index/configure.phtml:42
-#: view/search/admin/search-page/configure.phtml:46
-msgid "Save configuration"
+#: view/search/admin/search-index/edit.phtml:38
+msgid "Edit search index"
 msgstr ""
 
 #: view/search/admin/search-index/rebuild.phtml:36
@@ -180,10 +143,6 @@ msgstr ""
 
 #: view/search/admin/search-page/add.phtml:38
 msgid "Add search page"
-msgstr ""
-
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Configure search page"
 msgstr ""
 
 #: view/search/admin/search-page/edit.phtml:38
@@ -209,6 +168,22 @@ msgstr ""
 
 #: view/search/admin/sort-fields/field-row.phtml:33
 msgid "Restore sort field"
+msgstr ""
+
+#: view/search/block-layout/glossary.phtml:50
+msgid "Glossary is empty"
+msgstr ""
+
+#: view/search/common/resource-details.phtml:8
+msgid "Latest indexation"
+msgstr ""
+
+#: view/search/facets.phtml:47
+msgid "Filter with selected facets"
+msgstr ""
+
+#: view/search/facets.phtml:48
+msgid "Reset all filters"
 msgstr ""
 
 #: view/search/form/standard-match-group-filter.phtml:35
@@ -251,7 +226,7 @@ msgstr ""
 msgid "Edit search"
 msgstr ""
 
-#: view/search/index/search.phtml:102
+#: view/search/index/search.phtml:110
 msgid "Your query returned no results"
 msgstr ""
 
@@ -279,16 +254,32 @@ msgstr ""
 msgid "Fallback"
 msgstr ""
 
-#: src/Form/FacetForm.php:39
+#: src/Form/FacetForm.php:60
 msgid "Value renderer"
 msgstr ""
 
-#: src/Form/FacetForm.php:40
+#: src/Form/FacetForm.php:61
 msgid ""
 "The value renderer changes how a facet value is displayed to users. It is "
 "useful when the indexed value is an internal id or code that can be "
 "associated to a human-friendly text. The default renderer shows the indexed "
 "value as is."
+msgstr ""
+
+#: src/Form/FacetForm.php:73
+msgid "Facet fetched limit"
+msgstr ""
+
+#: src/Form/FacetForm.php:74
+msgid "The maximum number of values fetched"
+msgstr ""
+
+#: src/Form/FacetForm.php:87
+msgid "Facet display limit"
+msgstr ""
+
+#: src/Form/FacetForm.php:88
+msgid "Limit number of values to display."
 msgstr ""
 
 #: src/Form/StandardConfigForm.php:53
@@ -315,51 +306,193 @@ msgstr ""
 msgid "Add a form element"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:79
-msgid "Show search summary"
+#: src/Form/ConfigForm.php:15
+msgid "Check interval (seconds)"
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:80
-msgid "Show a summary of user search query near the results."
+#: src/Form/ConfigForm.php:16
+msgid ""
+"The frequency at which the module checks if there are resources to be "
+"indexed. A smaller interval means a more up-to-date index. This should only "
+"be used if the script `bin/sync` cannot be run periodically (using cron for "
+"instance). Leave empty to disable."
 msgstr ""
 
-#: src/Form/Admin/SearchPageConfigureForm.php:91
-msgid "Facets"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:92
-msgid "Add a facet"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:106
-msgid "Sort fields"
-msgstr ""
-
-#: src/Form/Admin/SearchPageConfigureForm.php:107
-msgid "Add a sort field"
-msgstr ""
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:44
+#: src/Form/Admin/SearchIndexRebuildForm.php:43
 msgid "Clear index"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:45
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
 msgid "Empty the index before rebuilding it"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:56
-msgid "Batch size"
+#: src/Form/Admin/SearchIndexEditForm.php:53
+msgid "Resources indexed"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:57
-msgid ""
-"Index that much resources at once. Large batchs will be faster but will use "
-"more memory"
+#: src/Form/Admin/SearchPageAddForm.php:56
+msgid "Path"
 msgstr ""
 
-#: src/Controller/Admin/SearchIndexController.php:130
+#: src/Form/Admin/SearchPageAddForm.php:67
+msgid "Index"
+msgstr ""
+
+#: src/Form/Admin/SearchPageAddForm.php:79
+msgid "Form"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:57
+msgid "Save queries"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:58
+msgid "Add ability to save your query and reload it later with result update"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:66
+msgid "Faceted filtering"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:67
+msgid "Manually apply facet filters"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:75
+msgid "Facet values collapse button label"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:87
+msgid "Facet values expand button label"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:90
+msgid "Show all"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:99
+msgid "Show search summary"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:100
+msgid "Show a summary of user search query near the results."
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:111
+msgid "Facets"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:112
+msgid "Add a facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:126
+msgid "Sort fields"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:127
+msgid "Add a sort field"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:178
+msgid "Form settings"
+msgstr ""
+
+#: src/Controller/Admin/SearchIndexController.php:122
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:24
+msgid "Glossary"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:61
+msgid "Search page to use"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:62
+msgid ""
+"Glossary terms will be retrieved according to this page's settings (in "
+"particular which search index to use), and clicking on a term will redirect "
+"to this page"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:72
+msgid "Facet field to use"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:73
+msgid ""
+"Glossary terms will be retrieved from this field. The list of available "
+"fields depends on the selected Search page above"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:74
+msgid "Select a facet field"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:80
+msgid "Custom query parameters"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:81
+msgid ""
+"URL parameters added to limit the list of terms. For instance: "
+"\"limit[resource_template][]=Base Resource\" (requires the Search adapter to "
+"expose a \"resource_template\" facet field)"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:86
+msgid "Position of index of letters"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:88
+msgid "Before the term list"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:89
+msgid "After the term list"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:99
+msgid "Group accented letters"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:100
+msgid ""
+"If enabled, terms starting with \"È\" or \"É\" will be displayed under the "
+"letter \"E\" (requires PHP extension intl)"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:105
+msgid "Section identifier prefix"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:106
+msgid ""
+"Useful if there several glossary blocks on the same page. This will appear "
+"in URL when clicking on a letter"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:111
+msgid "Section heading"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:114
+msgid "Letter only"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:115
+msgid "Letter and number of terms"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:121
+msgid "Show term count"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:122
+msgid "Show the number of resources for each term"
 msgstr ""
 
 #: src/Site/BlockLayout/SavedQueries.php:30
@@ -368,10 +501,6 @@ msgstr ""
 
 #: src/Site/BlockLayout/SavedQueries.php:51
 msgid "Label for this block"
-msgstr ""
-
-#: src/FormElement/ResourceClassSelect.php:18
-msgid "Resource class"
 msgstr ""
 
 #: src/FormElement/ResourceClassSelect.php:26

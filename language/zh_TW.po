@@ -1,237 +1,518 @@
-# Translation template for module Search.
-# Copyright (C) 2016 BibLibre
-# This file is distributed under the same license as the Search package.
-# Julian Maurice <julian.maurice@biblibre.com>, 2016.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Julian Maurice <julian.maurice@biblibre.com>, 2025
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Search\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-21 13:36+0100\n"
-"PO-Revision-Date: 2020-04-15 00:00+0000\n"
-"Last-Translator: billxu <billxu0521@gmail.com>\n"
-"Language-Team: DLLL (http://dlll-info.dlll.nccu.edu.tw/)\n"
-"Language: zh_TW\n"
+"POT-Creation-Date: 2026-04-22 12:41+0200\n"
+"PO-Revision-Date: 2025-09-23 13:29+0000\n"
+"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>, 2025\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/biblibre-/teams/298658/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=(n > 1);\n"
+"Language: zh_TW\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/Api/Representation/SearchIndexRepresentation.php:101
+#: src/Api/Representation/SearchIndexRepresentation.php:116
 msgid "[No adapter]"
 msgstr "[沒有轉接器]"
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:50
-msgid "Resources indexed"
-msgstr "資源索引"
-
-#: src/Form/Admin/SearchIndexForm.php:62
-msgid "Adapter"
-msgstr "轉接器"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:55
-msgid "Facet limit"
-msgstr "構面限制"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:56
-msgid "The maximum number of values fetched for each facet"
-msgstr "每個構面獲取的最大值數"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:65
-msgid "Facets"
-msgstr "構面"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:90
-#: src/Form/Admin/SearchPageConfigureForm.php:137
-msgid "Enabled"
-msgstr "啟動"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:98
-#: src/Form/Admin/SearchPageConfigureForm.php:145
-msgid "Weight"
-msgstr "權重"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:112
-msgid "Sort fields"
-msgstr "排序欄位"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:193
-msgid "Form settings"
-msgstr "表單設定"
-
-#: src/Form/Admin/SearchPageForm.php:61
-msgid "Path"
-msgstr "路徑"
-
-#: src/Form/Admin/SearchPageForm.php:72
-msgid "Index"
-msgstr "索引"
-
-#: src/Form/Admin/SearchPageForm.php:84
-msgid "Form"
-msgstr "表單"
-
-#: src/Form/StandardConfigForm.php:49
-#, fuzzy
-msgid "Search fields"
-msgstr "搜尋條目"
-
-#: src/Form/StandardConfigForm.php:58
-#, fuzzy
-msgid "Resource class field"
-msgstr "資源索引"
-
-#: src/Form/StandardConfigForm.php:68
-#, fuzzy
-msgid "Item sets field"
-msgstr "條目集"
-
-#: src/Form/StandardForm.php:48
+#: src/Form/StandardForm.php:48 src/FormAdapter/StandardFormAdapter.php:92
 msgid "Search everywhere"
 msgstr ""
 
-#: view/search/admin/index/browse.phtml:33
-msgid "Search configuration"
-msgstr "搜尋組態"
-
-#: view/search/admin/index/browse.phtml:70
-#, fuzzy
-msgid "Rebuild index"
-msgstr "資源索引"
-
-#: view/search/admin/index/browse.phtml:90
-msgid "No search indexes created yet."
-msgstr "尚未創建搜尋索引"
-
-#: view/search/admin/index/browse.phtml:152
-msgid "No search pages created yet."
-msgstr "尚未創建搜尋頁面"
-
-#: view/search/admin/search-index/add.phtml:32
-msgid "Add search index"
-msgstr "新增搜尋索引"
-
-#: view/search/admin/search-index/configure.phtml:32
-msgid "Configure search index"
-msgstr "設定搜尋索引"
-
-#: view/search/admin/search-index/configure.phtml:36
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Save configuration"
-msgstr "儲存設定"
-
-#: view/search/admin/search-index/rebuild.phtml:30
-msgid "Index rebuild"
-msgstr ""
-
-#: view/search/admin/search-index/rebuild.phtml:42
-msgid "Start index rebuild"
-msgstr ""
-
-#: view/search/admin/search-page/add.phtml:32
-msgid "Add search page"
-msgstr "新增設定頁面"
-
-#: view/search/admin/search-page/configure.phtml:38
-msgid "Configure search page"
-msgstr "設定搜尋頁面"
-
-#: view/search/admin/search-page/edit.phtml:32
-msgid "Edit search page"
-msgstr "編輯搜尋頁面"
-
-#: view/search/facets.phtml:32 view/search/form/standard.phtml:29
+#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:45
+#: view/search/form/standard.phtml:45
 msgid "Filters"
 msgstr "篩選器"
 
-#: view/search/form/standard-match-group.phtml:3
+#: src/FormElement/ResourceClassSelect.php:103
+msgid "Resource classes"
+msgstr ""
+
+#: view/search/admin/facets/field-edit-sidebar.phtml:11
+#: view/search/admin/facets/field-row.phtml:25
+msgid "Edit facet"
+msgstr ""
+
+#: view/search/admin/facets/field-edit-sidebar.phtml:17
+msgid "Set facet"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:12
+msgid "Facet to be removed"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:29
+msgid "Remove facet"
+msgstr ""
+
+#: view/search/admin/facets/field-row.phtml:33
+msgid "Restore facet"
+msgstr ""
+
+#: view/search/admin/form-elements/field-edit-sidebar.phtml:12
+#: view/search/admin/form-elements/field-row.phtml:17
+msgid "Edit form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-edit-sidebar.phtml:25
+msgid "Set form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:11
+msgid "Form element to be removed"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:21
+msgid "Remove form element"
+msgstr ""
+
+#: view/search/admin/form-elements/field-row.phtml:25
+msgid "Restore form element"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:39
+msgid "Search configuration"
+msgstr "搜尋組態"
+
+#: view/search/admin/index/browse.phtml:42
+msgid "Add new index"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:54
+msgid "Adapter"
+msgstr "轉接器"
+
+#: view/search/admin/index/browse.phtml:55
+msgid "Indexed resources"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:77
+msgid "Rebuild index"
+msgstr ""
+
+#: view/search/admin/index/browse.phtml:105
+msgid "No search indexes created yet."
+msgstr "尚未創建搜尋索引"
+
+#: view/search/admin/index/browse.phtml:159
+msgid "No search pages created yet."
+msgstr "尚未創建搜尋頁面"
+
+#: view/search/admin/search-fields/field-edit-sidebar.phtml:11
+#: view/search/admin/search-fields/field-row.phtml:25
+msgid "Edit search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-edit-sidebar.phtml:30
+msgid "Set search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:12
+msgid "Search field to be removed"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:29
+msgid "Remove search field"
+msgstr ""
+
+#: view/search/admin/search-fields/field-row.phtml:33
+msgid "Restore search field"
+msgstr ""
+
+#: view/search/admin/search-index/add.phtml:38
+msgid "Add search index"
+msgstr "新增搜尋索引"
+
+#: view/search/admin/search-index/edit.phtml:38
+msgid "Edit search index"
+msgstr ""
+
+#: view/search/admin/search-index/rebuild.phtml:36
+msgid "Index rebuild"
+msgstr ""
+
+#: view/search/admin/search-index/rebuild.phtml:48
+msgid "Start index rebuild"
+msgstr ""
+
+#: view/search/admin/search-page/add.phtml:38
+msgid "Add search page"
+msgstr "新增設定頁面"
+
+#: view/search/admin/search-page/edit.phtml:38
+msgid "Edit search page"
+msgstr "編輯搜尋頁面"
+
+#: view/search/admin/sort-fields/field-edit-sidebar.phtml:11
+#: view/search/admin/sort-fields/field-row.phtml:25
+msgid "Edit sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-edit-sidebar.phtml:30
+msgid "Set sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:12
+msgid "Sort field to be removed"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:29
+msgid "Remove sort field"
+msgstr ""
+
+#: view/search/admin/sort-fields/field-row.phtml:33
+msgid "Restore sort field"
+msgstr ""
+
+#: view/search/block-layout/glossary.phtml:50
+msgid "Glossary is empty"
+msgstr ""
+
+#: view/search/common/resource-details.phtml:8
+msgid "Latest indexation"
+msgstr ""
+
+#: view/search/facets.phtml:47
+msgid "Filter with selected facets"
+msgstr ""
+
+#: view/search/facets.phtml:48
+msgid "Reset all filters"
+msgstr ""
+
+#: view/search/form/standard-match-group-filter.phtml:35
+msgid "Proximity option (e.g. 2)"
+msgstr ""
+
+#: view/search/form/standard-match-group-filter.phtml:36
+msgid "prox."
+msgstr ""
+
+#: view/search/form/standard-match-group.phtml:13
 msgid "Match all of the following criteria:"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:4
+#: view/search/form/standard-match-group.phtml:14
 msgid "Match any of the following criteria:"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:53
+#: view/search/form/standard-match-group.phtml:67
 msgid "Add filter"
 msgstr ""
 
-#: view/search/form/standard-match-group.phtml:54
+#: view/search/form/standard-match-group.phtml:68
 msgid "Add group"
 msgstr ""
 
-#: view/search/index/search.phtml:45
-#, fuzzy
-msgid "Edit search"
-msgstr "編輯搜尋頁面"
+#: view/search/highlights.phtml:18
+msgid "Extracts matching your search"
+msgstr ""
 
-#: view/search/index/search.phtml:84
+#: view/search/highlights.phtml:36
+msgid "Show more"
+msgstr ""
+
+#: view/search/highlights.phtml:37
+msgid "Show less"
+msgstr ""
+
+#: view/search/index/search.phtml:63
+msgid "Edit search"
+msgstr ""
+
+#: view/search/index/search.phtml:110
 msgid "Your query returned no results"
 msgstr "您的查詢沒有結果"
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:44
-#, fuzzy
-msgid "Clear index"
-msgstr "新增搜尋索引"
+#: view/search/save-query-form.phtml:11
+msgid "Save this query"
+msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:45
+#: view/search/saved-queries.phtml:47
+msgid "Actions"
+msgstr ""
+
+#: view/search/saved-queries.phtml:68
+msgid "Reload"
+msgstr ""
+
+#: view/search/saved-queries.phtml:73
+msgid "Delete this saved query"
+msgstr ""
+
+#: view/search/saved-queries.phtml:82
+msgid "None saved queries yet"
+msgstr ""
+
+#: src/FacetValueRenderer/Fallback.php:11
+msgid "Fallback"
+msgstr ""
+
+#: src/Form/FacetForm.php:60
+msgid "Value renderer"
+msgstr ""
+
+#: src/Form/FacetForm.php:61
+msgid ""
+"The value renderer changes how a facet value is displayed to users. It is "
+"useful when the indexed value is an internal id or code that can be "
+"associated to a human-friendly text. The default renderer shows the indexed "
+"value as is."
+msgstr ""
+
+#: src/Form/FacetForm.php:73
+msgid "Facet fetched limit"
+msgstr ""
+
+#: src/Form/FacetForm.php:74
+msgid "The maximum number of values fetched"
+msgstr ""
+
+#: src/Form/FacetForm.php:87
+msgid "Facet display limit"
+msgstr ""
+
+#: src/Form/FacetForm.php:88
+msgid "Limit number of values to display."
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:53
+msgid "Search fields"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:54
+msgid "Add a search field"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:66
+msgid "Proximity"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:67
+msgid "Add proximity option on search form to choose distance between terms"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:88
+msgid "Form elements"
+msgstr ""
+
+#: src/Form/StandardConfigForm.php:89
+msgid "Add a form element"
+msgstr ""
+
+#: src/Form/ConfigForm.php:15
+msgid "Check interval (seconds)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:16
+msgid ""
+"The frequency at which the module checks if there are resources to be "
+"indexed. A smaller interval means a more up-to-date index. This should only "
+"be used if the script `bin/sync` cannot be run periodically (using cron for "
+"instance). Leave empty to disable."
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:43
+msgid "Clear index"
+msgstr ""
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
 msgid "Empty the index before rebuilding it"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:56
-msgid "Batch size"
+#: src/Form/Admin/SearchIndexEditForm.php:53
+msgid "Resources indexed"
+msgstr "資源索引"
+
+#: src/Form/Admin/SearchPageAddForm.php:56
+msgid "Path"
+msgstr "路徑"
+
+#: src/Form/Admin/SearchPageAddForm.php:67
+msgid "Index"
+msgstr "索引"
+
+#: src/Form/Admin/SearchPageAddForm.php:79
+msgid "Form"
+msgstr "表單"
+
+#: src/Form/Admin/SearchPageEditForm.php:57
+msgid "Save queries"
 msgstr ""
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:57
-msgid ""
-"Index that much resources at once. Large batchs will be faster but will use "
-"more memory"
+#: src/Form/Admin/SearchPageEditForm.php:58
+msgid "Add ability to save your query and reload it later with result update"
 msgstr ""
 
-#: src/Controller/Admin/SearchIndexController.php:130
-#, fuzzy, php-format
+#: src/Form/Admin/SearchPageEditForm.php:66
+msgid "Faceted filtering"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:67
+msgid "Manually apply facet filters"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:75
+msgid "Facet values collapse button label"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:87
+msgid "Facet values expand button label"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:90
+msgid "Show all"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:99
+msgid "Show search summary"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:100
+msgid "Show a summary of user search query near the results."
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:111
+msgid "Facets"
+msgstr "構面"
+
+#: src/Form/Admin/SearchPageEditForm.php:112
+msgid "Add a facet"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:126
+msgid "Sort fields"
+msgstr "排序欄位"
+
+#: src/Form/Admin/SearchPageEditForm.php:127
+msgid "Add a sort field"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:178
+msgid "Form settings"
+msgstr "表單設定"
+
+#: src/Controller/Admin/SearchIndexController.php:122
+#, php-format
 msgid "Index rebuilding started in %sjob %s%s"
-msgstr "索引開始於 %s 到 %s%s"
+msgstr ""
 
-#~ msgid "Items"
-#~ msgstr "條目"
+#: src/Site/BlockLayout/Glossary.php:24
+msgid "Glossary"
+msgstr ""
 
-#~ msgid "Name"
-#~ msgstr "名稱"
+#: src/Site/BlockLayout/Glossary.php:61
+msgid "Search page to use"
+msgstr ""
 
-#~ msgid "None"
-#~ msgstr "無"
+#: src/Site/BlockLayout/Glossary.php:62
+msgid ""
+"Glossary terms will be retrieved according to this page's settings (in "
+"particular which search index to use), and clicking on a term will redirect "
+"to this page"
+msgstr ""
 
-#~ msgid "Search"
-#~ msgstr "搜尋"
+#: src/Site/BlockLayout/Glossary.php:72
+msgid "Facet field to use"
+msgstr ""
 
-#~ msgid "Configure"
-#~ msgstr "組態"
+#: src/Site/BlockLayout/Glossary.php:73
+msgid ""
+"Glossary terms will be retrieved from this field. The list of available "
+"fields depends on the selected Search page above"
+msgstr ""
 
-#~ msgid "Reindex all"
-#~ msgstr "重新所有索引"
+#: src/Site/BlockLayout/Glossary.php:74
+msgid "Select a facet field"
+msgstr ""
 
-#~ msgid "Delete"
-#~ msgstr "刪除"
+#: src/Site/BlockLayout/Glossary.php:80
+msgid "Custom query parameters"
+msgstr ""
 
-#~ msgid "Edit"
-#~ msgstr "編輯"
+#: src/Site/BlockLayout/Glossary.php:81
+msgid ""
+"URL parameters added to limit the list of terms. For instance: "
+"\"limit[resource_template][]=Base Resource\" (requires the Search adapter to"
+" expose a \"resource_template\" facet field)"
+msgstr ""
 
-#~ msgid "Close"
-#~ msgstr "關閉"
+#: src/Site/BlockLayout/Glossary.php:86
+msgid "Position of index of letters"
+msgstr ""
 
-#~ msgid "Add"
-#~ msgstr "新增"
+#: src/Site/BlockLayout/Glossary.php:88
+msgid "Before the term list"
+msgstr ""
 
-#~ msgid "%s item set"
-#~ msgid_plural "%s item sets"
-#~ msgstr[0] "%s 條目集"
-#~ msgstr[1] "%s 條目集"
+#: src/Site/BlockLayout/Glossary.php:89
+msgid "After the term list"
+msgstr ""
 
-#~ msgid "%s item"
-#~ msgid_plural "%s items"
-#~ msgstr[0] "%s 條目"
-#~ msgstr[1] "%s 條目"
+#: src/Site/BlockLayout/Glossary.php:99
+msgid "Group accented letters"
+msgstr ""
 
-#~ msgid "Sort by"
-#~ msgstr "排序方式"
+#: src/Site/BlockLayout/Glossary.php:100
+msgid ""
+"If enabled, terms starting with \"È\" or \"É\" will be displayed under the "
+"letter \"E\" (requires PHP extension intl)"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:105
+msgid "Section identifier prefix"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:106
+msgid ""
+"Useful if there several glossary blocks on the same page. This will appear "
+"in URL when clicking on a letter"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:111
+msgid "Section heading"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:114
+msgid "Letter only"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:115
+msgid "Letter and number of terms"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:121
+msgid "Show term count"
+msgstr ""
+
+#: src/Site/BlockLayout/Glossary.php:122
+msgid "Show the number of resources for each term"
+msgstr ""
+
+#: src/Site/BlockLayout/SavedQueries.php:30
+msgid "Saved Queries"
+msgstr ""
+
+#: src/Site/BlockLayout/SavedQueries.php:51
+msgid "Label for this block"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:26
+#: src/FormElement/ItemSetSelect.php:26
+msgid "Field"
+msgstr ""
+
+#: src/FormElement/ResourceClassSelect.php:27
+#: src/FormElement/ItemSetSelect.php:27
+msgid "Field to use for filtering. It should be a facet field."
+msgstr ""

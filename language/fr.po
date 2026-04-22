@@ -1,74 +1,35 @@
-# Translation template for module Search.
-# Copyright (C) 2016 BibLibre
-# This file is distributed under the same license as the Search package.
-# Julian Maurice <julian.maurice@biblibre.com>, 2016.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Julian Maurice <julian.maurice@biblibre.com>, 2026
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Search\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 14:16+0100\n"
-"PO-Revision-Date: 2024-12-17 14:20+0100\n"
-"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
-"Language-Team: French\n"
-"Language: fr\n"
+"POT-Creation-Date: 2026-04-22 12:41+0200\n"
+"PO-Revision-Date: 2025-09-23 13:29+0000\n"
+"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>, 2026\n"
+"Language-Team: French (https://app.transifex.com/biblibre-/teams/298658/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.5\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/Api/Representation/SearchIndexRepresentation.php:116
 msgid "[No adapter]"
 msgstr "[Aucun adaptateur]"
 
-#: src/Form/Admin/SearchIndexConfigureForm.php:50
-msgid "Resources indexed"
-msgstr "Ressources indexées"
-
-#: src/Form/Admin/SearchIndexForm.php:62
-msgid "Adapter"
-msgstr "Adaptateur"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:57
-msgid "Save queries"
-msgstr "Sauvegarde des requêtes"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:58
-msgid "Add ability to save your query and reload it later with result update"
-msgstr ""
-"Ajoute la possibilité de sauvegarder votre requête et de la recharger avec "
-"des résultats actualisés"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:66
-msgid "Facet limit"
-msgstr "Limite de facette"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:67
-msgid "The maximum number of values fetched for each facet"
-msgstr "Le nombre maximum de valeurs récupérées pour chaque facette"
-
-#: src/Form/Admin/SearchPageConfigureForm.php:155
-msgid "Form settings"
-msgstr "Paramètres du formulaire"
-
-#: src/Form/Admin/SearchPageForm.php:61
-msgid "Path"
-msgstr "Chemin"
-
-#: src/Form/Admin/SearchPageForm.php:72
-msgid "Index"
-msgstr "Index"
-
-#: src/Form/Admin/SearchPageForm.php:84
-msgid "Form"
-msgstr "Formulaire"
-
 #: src/Form/StandardForm.php:48 src/FormAdapter/StandardFormAdapter.php:92
 msgid "Search everywhere"
 msgstr "Rechercher partout"
 
-#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:37
+#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:45
 #: view/search/form/standard.phtml:45
 msgid "Filters"
 msgstr "Filtres"
@@ -127,15 +88,23 @@ msgstr "Configuration de la recherche"
 msgid "Add new index"
 msgstr "Ajouter un index"
 
-#: view/search/admin/index/browse.phtml:76
+#: view/search/admin/index/browse.phtml:54
+msgid "Adapter"
+msgstr "Adaptateur"
+
+#: view/search/admin/index/browse.phtml:55
+msgid "Indexed resources"
+msgstr "Ressources indexées"
+
+#: view/search/admin/index/browse.phtml:77
 msgid "Rebuild index"
 msgstr "Reconstruire l'index"
 
-#: view/search/admin/index/browse.phtml:96
+#: view/search/admin/index/browse.phtml:105
 msgid "No search indexes created yet."
 msgstr "Aucun index de recherche créé pour l'instant."
 
-#: view/search/admin/index/browse.phtml:158
+#: view/search/admin/index/browse.phtml:159
 msgid "No search pages created yet."
 msgstr "Aucune page de recherche créée pour l'instant."
 
@@ -164,14 +133,9 @@ msgstr "Restaurer le champ de recherche"
 msgid "Add search index"
 msgstr "Ajouter un index de recherche"
 
-#: view/search/admin/search-index/configure.phtml:38
-msgid "Configure search index"
-msgstr "Configure l'index de recherche"
-
-#: view/search/admin/search-index/configure.phtml:42
-#: view/search/admin/search-page/configure.phtml:46
-msgid "Save configuration"
-msgstr "Enregistrer la configuration"
+#: view/search/admin/search-index/edit.phtml:38
+msgid "Edit search index"
+msgstr "Modifier l'index de recherche"
 
 #: view/search/admin/search-index/rebuild.phtml:36
 msgid "Index rebuild"
@@ -184,10 +148,6 @@ msgstr "Commencer la reconstruction de l'index"
 #: view/search/admin/search-page/add.phtml:38
 msgid "Add search page"
 msgstr "Ajouter une page de recherche"
-
-#: view/search/admin/search-page/configure.phtml:42
-msgid "Configure search page"
-msgstr "Configurer la page de recherche"
 
 #: view/search/admin/search-page/edit.phtml:38
 msgid "Edit search page"
@@ -213,6 +173,22 @@ msgstr "Supprimer le champ de tri"
 #: view/search/admin/sort-fields/field-row.phtml:33
 msgid "Restore sort field"
 msgstr "Restaurer le champ de tri"
+
+#: view/search/block-layout/glossary.phtml:50
+msgid "Glossary is empty"
+msgstr "Le glossaire est vide"
+
+#: view/search/common/resource-details.phtml:8
+msgid "Latest indexation"
+msgstr "Dernière indexation"
+
+#: view/search/facets.phtml:47
+msgid "Filter with selected facets"
+msgstr "Filtrer avec les facettes sélectionnées"
+
+#: view/search/facets.phtml:48
+msgid "Reset all filters"
+msgstr "Réinitialiser tous les filtres"
 
 #: view/search/form/standard-match-group-filter.phtml:35
 msgid "Proximity option (e.g. 2)"
@@ -254,7 +230,7 @@ msgstr "Voir moins"
 msgid "Edit search"
 msgstr "Modifier la recherche"
 
-#: view/search/index/search.phtml:102
+#: view/search/index/search.phtml:110
 msgid "Your query returned no results"
 msgstr "Votre recherche n'a retourné aucun résultat"
 
@@ -282,22 +258,38 @@ msgstr "Aucune requête sauvegardée"
 msgid "Fallback"
 msgstr "Par défaut"
 
-#: src/Form/FacetForm.php:39
+#: src/Form/FacetForm.php:60
 msgid "Value renderer"
 msgstr "Moteur de rendu"
 
-#: src/Form/FacetForm.php:40
+#: src/Form/FacetForm.php:61
 msgid ""
 "The value renderer changes how a facet value is displayed to users. It is "
 "useful when the indexed value is an internal id or code that can be "
 "associated to a human-friendly text. The default renderer shows the indexed "
 "value as is."
 msgstr ""
-"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est "
-"affichée aux utilisateurs. C'est utile lorsque la valeur indexée est un "
+"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est"
+" affichée aux utilisateurs. C'est utile lorsque la valeur indexée est un "
 "identifiant interne ou un code qui peut être associé à un texte "
 "compréhensible facilement. Le moteur de rendu par défaut affiche la valeur "
 "indexée telle quelle."
+
+#: src/Form/FacetForm.php:73
+msgid "Facet fetched limit"
+msgstr "Limite de récupération des facettes"
+
+#: src/Form/FacetForm.php:74
+msgid "The maximum number of values fetched"
+msgstr "Le nombre maximum de valeurs récupérées"
+
+#: src/Form/FacetForm.php:87
+msgid "Facet display limit"
+msgstr "Limite d'affichage des facettes"
+
+#: src/Form/FacetForm.php:88
+msgid "Limit number of values to display."
+msgstr "Limite le nombre de valeurs affichées"
 
 #: src/Form/StandardConfigForm.php:53
 msgid "Search fields"
@@ -325,55 +317,214 @@ msgstr "Éléments de formulaire"
 msgid "Add a form element"
 msgstr "Ajouter un élément de formulaire"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:79
+#: src/Form/ConfigForm.php:15
+msgid "Check interval (seconds)"
+msgstr "Intervalle de vérification (secondes)"
+
+#: src/Form/ConfigForm.php:16
+msgid ""
+"The frequency at which the module checks if there are resources to be "
+"indexed. A smaller interval means a more up-to-date index. This should only "
+"be used if the script `bin/sync` cannot be run periodically (using cron for "
+"instance). Leave empty to disable."
+msgstr ""
+"La fréquence à laquelle le module vérifie si il y a des ressources à "
+"indexer. Un intervalle plus petit signifie un index plus à jour. Ça doit "
+"être utilisé uniquement si le script `bin/sync` ne peut pas être exécuté "
+"périodiquement (en utilisant cron par exemple). Laisser vide pour "
+"désactiver."
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:43
+msgid "Clear index"
+msgstr "Nettoyer l'index"
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
+msgid "Empty the index before rebuilding it"
+msgstr "Vider l'index avant de le reconstruire"
+
+#: src/Form/Admin/SearchIndexEditForm.php:53
+msgid "Resources indexed"
+msgstr "Ressources indexées"
+
+#: src/Form/Admin/SearchPageAddForm.php:56
+msgid "Path"
+msgstr "Chemin"
+
+#: src/Form/Admin/SearchPageAddForm.php:67
+msgid "Index"
+msgstr "Index"
+
+#: src/Form/Admin/SearchPageAddForm.php:79
+msgid "Form"
+msgstr "Formulaire"
+
+#: src/Form/Admin/SearchPageEditForm.php:57
+msgid "Save queries"
+msgstr "Sauvegarde des requêtes"
+
+#: src/Form/Admin/SearchPageEditForm.php:58
+msgid "Add ability to save your query and reload it later with result update"
+msgstr ""
+"Ajoute la possibilité de sauvegarder votre requête et de la recharger avec "
+"des résultats actualisés"
+
+#: src/Form/Admin/SearchPageEditForm.php:66
+msgid "Faceted filtering"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:67
+msgid "Manually apply facet filters"
+msgstr "Appliquer manuellement les filtres de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:75
+msgid "Facet values collapse button label"
+msgstr "Libellé du bouton de repli des valeurs de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:87
+msgid "Facet values expand button label"
+msgstr "Libellé du bouton de développement des valeurs de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:90
+msgid "Show all"
+msgstr "Montrer tout"
+
+#: src/Form/Admin/SearchPageEditForm.php:99
 msgid "Show search summary"
 msgstr "Afficher le résumé de la recherche"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:80
+#: src/Form/Admin/SearchPageEditForm.php:100
 msgid "Show a summary of user search query near the results."
 msgstr ""
 "Affiche un résumé de la recherche utilisateur à proximité des résultats."
 
-#: src/Form/Admin/SearchPageConfigureForm.php:91
+#: src/Form/Admin/SearchPageEditForm.php:111
 msgid "Facets"
 msgstr "Facettes"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:92
+#: src/Form/Admin/SearchPageEditForm.php:112
 msgid "Add a facet"
 msgstr "Ajouter une facette"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:106
+#: src/Form/Admin/SearchPageEditForm.php:126
 msgid "Sort fields"
 msgstr "Champs de tri"
 
-#: src/Form/Admin/SearchPageConfigureForm.php:107
+#: src/Form/Admin/SearchPageEditForm.php:127
 msgid "Add a sort field"
 msgstr "Ajouter un champ de tri"
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:44
-msgid "Clear index"
-msgstr "Nettoyer l'index"
+#: src/Form/Admin/SearchPageEditForm.php:178
+msgid "Form settings"
+msgstr "Paramètres du formulaire"
 
-#: src/Form/Admin/SearchIndexRebuildForm.php:45
-msgid "Empty the index before rebuilding it"
-msgstr "Vider l'index avant de le reconstruire"
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:56
-msgid "Batch size"
-msgstr "Taille de lot"
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:57
-msgid ""
-"Index that much resources at once. Large batchs will be faster but will use "
-"more memory"
-msgstr ""
-"Indexer cette quantité de ressources par lot. Une grande taille de lot sera "
-"plus rapide, mais utilisera plus de mémoire"
-
-#: src/Controller/Admin/SearchIndexController.php:130
+#: src/Controller/Admin/SearchIndexController.php:122
 #, php-format
 msgid "Index rebuilding started in %sjob %s%s"
 msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
+
+#: src/Site/BlockLayout/Glossary.php:24
+msgid "Glossary"
+msgstr "Glossaire"
+
+#: src/Site/BlockLayout/Glossary.php:61
+msgid "Search page to use"
+msgstr "Page de recherche à utiliser"
+
+#: src/Site/BlockLayout/Glossary.php:62
+msgid ""
+"Glossary terms will be retrieved according to this page's settings (in "
+"particular which search index to use), and clicking on a term will redirect "
+"to this page"
+msgstr ""
+"Les termes de glossaire seront récupérés selon les paramètres de cette page "
+"(en particulier quel index de recherche utiliser), et cliquer sur un terme "
+"redirigera vers cette page"
+
+#: src/Site/BlockLayout/Glossary.php:72
+msgid "Facet field to use"
+msgstr "Champ de facette à utiliser"
+
+#: src/Site/BlockLayout/Glossary.php:73
+msgid ""
+"Glossary terms will be retrieved from this field. The list of available "
+"fields depends on the selected Search page above"
+msgstr ""
+"Les termes de glossaire seront récupérés depuis ce champ. La liste des "
+"champs disponibles dépend de la page de recherche sélectionnée ci-dessus"
+
+#: src/Site/BlockLayout/Glossary.php:74
+msgid "Select a facet field"
+msgstr "Sélectionner un champ de facette"
+
+#: src/Site/BlockLayout/Glossary.php:80
+msgid "Custom query parameters"
+msgstr "Paramètres de requête personnalisés"
+
+#: src/Site/BlockLayout/Glossary.php:81
+msgid ""
+"URL parameters added to limit the list of terms. For instance: "
+"\"limit[resource_template][]=Base Resource\" (requires the Search adapter to"
+" expose a \"resource_template\" facet field)"
+msgstr ""
+"Paramètres d'URL ajoutés pour limiter la liste de termes. Par exemple: "
+"\"limit[resource_template][]=Base Resource\" (nécessite que l'adaptateur "
+"expose un champ de facette \"resource_template\")"
+
+#: src/Site/BlockLayout/Glossary.php:86
+msgid "Position of index of letters"
+msgstr "Position de l'index de lettres"
+
+#: src/Site/BlockLayout/Glossary.php:88
+msgid "Before the term list"
+msgstr "Avant la liste de termes"
+
+#: src/Site/BlockLayout/Glossary.php:89
+msgid "After the term list"
+msgstr "Après la liste de termes"
+
+#: src/Site/BlockLayout/Glossary.php:99
+msgid "Group accented letters"
+msgstr "Grouper les lettres accentuées"
+
+#: src/Site/BlockLayout/Glossary.php:100
+msgid ""
+"If enabled, terms starting with \"È\" or \"É\" will be displayed under the "
+"letter \"E\" (requires PHP extension intl)"
+msgstr ""
+"Si activé, les termes commençant par \"È\" ou \"É\" seront affichés sous la "
+"lettre \"E\" (nécessite l'extension PHP intl)"
+
+#: src/Site/BlockLayout/Glossary.php:105
+msgid "Section identifier prefix"
+msgstr "Préfixe de l'identifiant de section"
+
+#: src/Site/BlockLayout/Glossary.php:106
+msgid ""
+"Useful if there several glossary blocks on the same page. This will appear "
+"in URL when clicking on a letter"
+msgstr ""
+"Utile s'il y a plusieurs blocs de glossaire sur la même page. Ça apparaitra "
+"dans l'URL lors du clic sur une lettre"
+
+#: src/Site/BlockLayout/Glossary.php:111
+msgid "Section heading"
+msgstr "En-tête de section"
+
+#: src/Site/BlockLayout/Glossary.php:114
+msgid "Letter only"
+msgstr "Lettre seulement"
+
+#: src/Site/BlockLayout/Glossary.php:115
+msgid "Letter and number of terms"
+msgstr "Lettre et nombre de termes"
+
+#: src/Site/BlockLayout/Glossary.php:121
+msgid "Show term count"
+msgstr "Montrer le compte du terme"
+
+#: src/Site/BlockLayout/Glossary.php:122
+msgid "Show the number of resources for each term"
+msgstr "Montrer le nombre de ressources pour chaque terme"
 
 #: src/Site/BlockLayout/SavedQueries.php:30
 msgid "Saved Queries"
@@ -382,10 +533,6 @@ msgstr "Requêtes sauvegardées"
 #: src/Site/BlockLayout/SavedQueries.php:51
 msgid "Label for this block"
 msgstr "Libellé pour ce bloc"
-
-#: src/FormElement/ResourceClassSelect.php:18
-msgid "Resource class"
-msgstr "Classe de ressource"
 
 #: src/FormElement/ResourceClassSelect.php:26
 #: src/FormElement/ItemSetSelect.php:26
@@ -397,52 +544,3 @@ msgstr "Champ"
 msgid "Field to use for filtering. It should be a facet field."
 msgstr ""
 "Champ à utiliser pour le filtrage. Cela devrait être un champ de facettes."
-
-#~ msgid "Enabled"
-#~ msgstr "Activé"
-
-#~ msgid "Weight"
-#~ msgstr "Poids"
-
-#~ msgid "Reindex all"
-#~ msgstr "Tout réindexer"
-
-#~ msgid "Items"
-#~ msgstr "Contenus"
-
-#~ msgid "Name"
-#~ msgstr "Nom"
-
-#~ msgid "None"
-#~ msgstr "Aucun"
-
-#~ msgid "Search"
-#~ msgstr "Recherche"
-
-#~ msgid "Configure"
-#~ msgstr "Configurer"
-
-#~ msgid "Delete"
-#~ msgstr "Supprimer"
-
-#~ msgid "Edit"
-#~ msgstr "Modifier"
-
-#~ msgid "Close"
-#~ msgstr "Fermer"
-
-#~ msgid "Add"
-#~ msgstr "Ajouter"
-
-#~ msgid "%s item set"
-#~ msgid_plural "%s item sets"
-#~ msgstr[0] "%s collection"
-#~ msgstr[1] "%s collections"
-
-#~ msgid "%s item"
-#~ msgid_plural "%s items"
-#~ msgstr[0] "%s contenu"
-#~ msgstr[1] "%s contenus"
-
-#~ msgid "Sort by"
-#~ msgstr "Trier par"
