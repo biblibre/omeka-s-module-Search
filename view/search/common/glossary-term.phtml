@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var string $field
+ * @var array $query
+ * @var string $term
+ * @var int $count
+ * @var bool $showTermCount
+ */
+?>
+<?=
+$this->hyperlink(
+    $term,
+    $this->url(
+        'search-page-' . $searchPage->id(),
+        ['site-slug' => $this->params()->fromRoute('site-slug')],
+        [
+            'query' => array_merge_recursive(
+                $query,
+                ['limit' => [$field => [$term]]]
+            ),
+        ]
+    ),
+    ['class' => 'search-glossary-section__term-link'],
+)
+?>
+<?php if ($showTermCount): ?>
+    <span class="search-glossary-section__term-count">(<?= $this->escapeHtml($count) ?>)</span>
+<?php endif; ?>

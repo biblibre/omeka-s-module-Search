@@ -35,7 +35,7 @@ class Glossary extends AbstractBlockLayout
             'group_accented_letters' => '0',
             'section_id_prefix' => '',
             'section_heading' => '',
-
+            'show_term_count' => '0',
         ];
 
         $data = $block ? $block->data() + $defaults : $defaults;
@@ -114,6 +114,12 @@ class Glossary extends AbstractBlockLayout
         $sectionHeadingSelect->setValue($data['section_heading']);
         $form->add($sectionHeadingSelect);
 
+        $showTermCountCheckbox = new Checkbox('o:block[__blockIndex__][o:data][show_term_count]');
+        $showTermCountCheckbox->setLabel('Show term count'); // @translate
+        $showTermCountCheckbox->setOption('info', 'Show the number of resources for each term'); // @translate
+        $showTermCountCheckbox->setValue($data['show_term_count']);
+        $form->add($showTermCountCheckbox);
+
         return $view->formCollection($form);
     }
 
@@ -175,7 +181,10 @@ class Glossary extends AbstractBlockLayout
             $term = $facetCount['value'];
             $letter = $this->getFirstLetter($term, $block);
             $termsByLetter[$letter] ??= [];
-            $termsByLetter[$letter][] = $term;
+            $termsByLetter[$letter][] = [
+                'term' => $term,
+                'count' => $facetCount['count'],
+            ];
         }
 
         if (extension_loaded('intl')) {
@@ -183,15 +192,14 @@ class Glossary extends AbstractBlockLayout
             // accents are ordered next to the same letter without accent,
             // instead of at the end
             $collator = new \Collator('root');
-            uksort($termsByLetter, fn($a, $b) => $collator->compare($a, $b));
-            foreach (array_keys($termsByLetter) as $letter) {
-                usort($termsByLetter[$letter], fn ($a, $b) => $collator->compare($a, $b));
-            }
+            $compare = fn($a, $b) => $collator->compare($a, $b);
         } else {
-            ksort($termsByLetter);
-            foreach (array_keys($termsByLetter) as $letter) {
-                usort($termsByLetter[$letter], fn ($a, $b) => strcasecmp($a, $b));
-            }
+            $compare = fn($a, $b) => strcasecmp($a, $b);
+        }
+
+        uksort($termsByLetter, fn($a, $b) => $compare($a, $b));
+        foreach (array_keys($termsByLetter) as $letter) {
+            usort($termsByLetter[$letter], fn ($a, $b) => $compare($a['term'], $b['term']));
         }
 
         return $view->partial('search/block-layout/glossary', [

@@ -3,7 +3,7 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var Search\Api\Representation\SearchPageRepresentation $searchPage
- * @var string[] $terms
+ * @var array[] $terms An array of associative arrays containing keys 'term' and 'count'
  * @var string $letter
  */
 
@@ -24,16 +24,19 @@ parse_str($block->dataValue('custom_query', ''), $customQuery);
     <?php endif; ?>
 
     <ul class="search-glossary-section__term-list">
-        <?php foreach ($terms as $term): ?>
+        <?php foreach ($terms as ['term' => $term, 'count' => $count]): ?>
             <li class="search-glossary-section__term">
-                <?php $query = array_merge_recursive($customQuery, ['limit' => [$facetField => [$term]]]); ?>
-                <?=
-                $this->hyperlink(
-                    $term,
-                    $this->url('search-page-' . $searchPage->id(), [], ['query' => $query], true),
-                    ['class' => 'search-glossary-section__term-link'],
-                )
-                ?>
+                <?= $this->partial(
+                    'search/common/glossary-term',
+                    [
+                        'term' => $term,
+                        'count' => $count,
+                        'query' => $customQuery,
+                        'field' => $facetField,
+                        'searchPage' => $searchPage,
+                        'showTermCount' => (bool) $block->dataValue('show_term_count'),
+                    ]
+                ) ?>
             </li>
         <?php endforeach; ?>
     </ul>
