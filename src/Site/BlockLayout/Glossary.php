@@ -31,7 +31,6 @@ class Glossary extends AbstractBlockLayout
             'facet_field' => '',
             'page_facet_field' => '',
             'custom_query' => '',
-            'letters_list_position' => ['before', 'after'],
             'group_accented_letters' => '0',
             'section_id_prefix' => '',
             'section_heading' => '',
@@ -89,7 +88,11 @@ class Glossary extends AbstractBlockLayout
             'before' => 'Before the term list', // @translate
             'after' => 'After the term list', // @translate
         ]);
-        $lettersListPositionMultiCheckbox->setValue($data['letters_list_position']);
+        if ($block) {
+            $lettersListPositionMultiCheckbox->setValue($block->dataValue('letters_list_position', []));
+        } else {
+            $lettersListPositionMultiCheckbox->setValue(['before', 'after']);
+        }
         $form->add($lettersListPositionMultiCheckbox);
 
         $groupAccentedLettersCheckbox = new Checkbox('o:block[__blockIndex__][o:data][group_accented_letters]');
