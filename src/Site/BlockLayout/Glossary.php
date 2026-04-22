@@ -60,6 +60,7 @@ class Glossary extends AbstractBlockLayout
 
         $searchPageSelect = new Select('o:block[__blockIndex__][o:data][search_page]');
         $searchPageSelect->setLabel('Search page to use'); // @translate
+        $searchPageSelect->setOption('info', "Glossary terms will be retrieved according to this page's settings (in particular which search index to use), and clicking on a term will redirect to this page"); // @translate
         $searchPageSelect->setValueOptions($searchPagesValueOptions);
         $searchPageSelect->setValue($data['search_page']);
         $form->add($searchPageSelect);
@@ -70,6 +71,7 @@ class Glossary extends AbstractBlockLayout
 
         $pageFacetFieldSelect = new Select('o:block[__blockIndex__][o:data][page_facet_field]');
         $pageFacetFieldSelect->setLabel('Facet field to use'); // @translate
+        $pageFacetFieldSelect->setOption('info', "Glossary terms will be retrieved from this field. The list of available fields depends on the selected Search page above"); // @translate
         $pageFacetFieldSelect->setEmptyOption('Select a facet field'); // @translate
         $pageFacetFieldSelect->setValueOptions($facetFieldOptions);
         $pageFacetFieldSelect->setValue($data['page_facet_field']);
@@ -77,14 +79,15 @@ class Glossary extends AbstractBlockLayout
 
         $customQueryText = new Text('o:block[__blockIndex__][o:data][custom_query]');
         $customQueryText->setLabel('Custom query parameters'); // @translate
+        $customQueryText->setOption('info', 'URL parameters added to limit the list of terms. For instance: "limit[resource_template][]=Base Resource" (requires the Search adapter to expose a "resource_template" facet field)'); // @translate
         $customQueryText->setValue($data['custom_query']);
         $form->add($customQueryText);
 
         $lettersListPositionMultiCheckbox = new MultiCheckbox('o:block[__blockIndex__][o:data][letters_list_position]');
         $lettersListPositionMultiCheckbox->setLabel('Position of index of letters'); // @translate
         $lettersListPositionMultiCheckbox->setValueOptions([
-            'before' => 'Before', // @translate
-            'after' => 'After', // @translate
+            'before' => 'Before the term list', // @translate
+            'after' => 'After the term list', // @translate
         ]);
         $lettersListPositionMultiCheckbox->setValue($data['letters_list_position']);
         $form->add($lettersListPositionMultiCheckbox);
