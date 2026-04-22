@@ -1,0 +1,10 @@
+.search-glossary-navigation__letter-list {
+    column-gap: .5em;
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
+
+.search-glossary-section__term-list {
+    margin: 0;
+}

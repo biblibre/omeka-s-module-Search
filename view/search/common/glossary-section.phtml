@@ -1,0 +1,44 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var array[] $terms An array of associative arrays containing keys 'term' and 'count'
+ * @var string $letter
+ * @var string $field
+ * @var array $query
+ * @var string $sectionHeading
+ * @var string $sectionIdPrefix
+ * @var bool $showTermCount
+ */
+?>
+<section class="search-glossary-section" id="<?= $this->escapeHtml($sectionIdPrefix . $letter) ?>">
+    <?php if ($sectionHeading): ?>
+        <h3 class="search-glossary-section__title">
+            <?php if ($sectionHeading === 'letter' || $sectionHeading === 'letter_total'): ?>
+                <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>
+            <?php endif; ?>
+
+            <?php if ($sectionHeading === 'letter_total'): ?>
+                <span class="search-glossary-section__count"> (<?= count($terms) ?>)</span>
+            <?php endif; ?>
+        </h3>
+    <?php endif; ?>
+
+    <ul class="search-glossary-section__term-list">
+        <?php foreach ($terms as ['term' => $term, 'count' => $count]): ?>
+            <li class="search-glossary-section__term">
+                <?= $this->partial(
+                    'search/common/glossary-term',
+                    [
+                        'term' => $term,
+                        'count' => $count,
+                        'query' => $query,
+                        'field' => $field,
+                        'searchPage' => $searchPage,
+                        'showTermCount' => $showTermCount,
+                    ]
+                ) ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>

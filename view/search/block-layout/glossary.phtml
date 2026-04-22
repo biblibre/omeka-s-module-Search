@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var Search\Api\Representation\SearchPageRepresentation $searchPage
+ * @var array[] $termsByLetter
+ */
+
+$field = $block->dataValue('facet_field');
+$customQuery = $block->dataValue('custom_query', '');
+$sectionHeading = $block->dataValue('section_heading', '');
+$sectionIdPrefix = $block->dataValue('section_id_prefix', '');
+$showTermCount = (bool) $block->dataValue('show_term_count');
+$lettersListPosition = $block->dataValue('letters_list_position', []);
+
+parse_str($customQuery, $query);
+
+$letters = array_keys($termsByLetter);
+?>
+
+<?php if ($letters): ?>
+    <?php if (in_array('before', $lettersListPosition)): ?>
+        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters, 'sectionIdPrefix' => $sectionIdPrefix]); ?>
+    <?php endif; ?>
+
+    <div class="search-glossary-content">
+        <?php foreach ($termsByLetter as $letter => $terms): ?>
+        <?=
+        $this->partial(
+            'search/common/glossary-section',
+            [
+                'searchPage' => $searchPage,
+                'letter' => $letter,
+                'terms' => $terms,
+                'field' => $field,
+                'query' => $query,
+                'sectionIdPrefix' => $sectionIdPrefix,
+                'sectionHeading' => $sectionHeading,
+                'showTermCount' => $showTermCount,
+            ]
+        )
+        ?>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (in_array('after', $lettersListPosition)): ?>
+        <?= $this->partial('search/common/glossary-navigation', ['letters' => $letters, 'sectionIdPrefix' => $sectionIdPrefix]); ?>
+    <?php endif; ?>
+<?php else: ?>
+    <p><?= $this->translate('Glossary is empty') ?></p>
+<?php endif; ?>

@@ -1,0 +1,17 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string[] $letters
+ * @var string $sectionIdPrefix
+ */
+?>
+
+<nav class="search-glossary-navigation">
+    <ul class="search-glossary-navigation__letter-list">
+        <?php foreach ($letters as $letter): ?>
+            <li class="search-glossary-navigation__letter">
+                <a href="#<?= $this->escapeHtml($sectionIdPrefix . $letter) ?>"><?= $this->escapeHtml($letter) ?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
