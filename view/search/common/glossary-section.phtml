@@ -1,17 +1,18 @@
 <?php
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
- * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var Search\Api\Representation\SearchPageRepresentation $searchPage
  * @var array[] $terms An array of associative arrays containing keys 'term' and 'count'
  * @var string $letter
+ * @var string $field
+ * @var array $query
+ * @var string $sectionHeading
+ * @var string $sectionIdPrefix
+ * @var bool $showTermCount
  */
-
-$facetField = $block->dataValue('facet_field');
-parse_str($block->dataValue('custom_query', ''), $customQuery);
 ?>
-<section class="search-glossary-section" id="<?= $this->escapeHtml($block->dataValue('section_id_prefix', '')) ?><?= $this->escapeHtml($letter) ?>">
-    <?php if ($sectionHeading = $block->dataValue('section_heading', '')): ?>
+<section class="search-glossary-section" id="<?= $this->escapeHtml($sectionIdPrefix . $letter) ?>">
+    <?php if ($sectionHeading): ?>
         <h3 class="search-glossary-section__title">
             <?php if ($sectionHeading === 'letter' || $sectionHeading === 'letter_total'): ?>
                 <span class="search-glossary-section__letter"><?= $this->escapeHtml($letter) ?></span>
@@ -31,10 +32,10 @@ parse_str($block->dataValue('custom_query', ''), $customQuery);
                     [
                         'term' => $term,
                         'count' => $count,
-                        'query' => $customQuery,
-                        'field' => $facetField,
+                        'query' => $query,
+                        'field' => $field,
                         'searchPage' => $searchPage,
-                        'showTermCount' => (bool) $block->dataValue('show_term_count'),
+                        'showTermCount' => $showTermCount,
                     ]
                 ) ?>
             </li>

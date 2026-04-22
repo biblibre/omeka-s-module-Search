@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
- * @var Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var string[] $letters
+ * @var string $sectionIdPrefix
  */
 ?>
 
@@ -10,7 +10,7 @@
     <ul class="search-glossary-navigation__letter-list">
         <?php foreach ($letters as $letter): ?>
             <li class="search-glossary-navigation__letter">
-                <a href="#<?= $this->escapeHtml($block->dataValue('section_id_prefix', '')) ?><?= $this->escapeHtml($letter) ?>"><?= $this->escapeHtml($letter) ?></a>
+                <a href="#<?= $this->escapeHtml($sectionIdPrefix . $letter) ?>"><?= $this->escapeHtml($letter) ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
