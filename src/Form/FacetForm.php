@@ -93,5 +93,21 @@ class FacetForm extends Form
                 'required' => true,
             ],
         ]);
+
+        $this->add([
+            'name' => 'operator',
+            'type' => Select::class,
+            'options' => [
+                'label' => 'Operator', // @translate
+                'info' => 'How multiple selected values for this facet are combined. AND: results must match all selected values. OR: results match any selected value.', // @translate
+                'value_options' => [
+                    'AND' => 'AND (default)', // @translate
+                    'OR' => 'OR', // @translate
+                ],
+            ],
+            'attributes' => [
+                'data-field-data-key' => 'operator',
+            ],
+        ]);
     }
 }

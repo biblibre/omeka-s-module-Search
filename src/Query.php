@@ -38,6 +38,7 @@ class Query
     protected array $facetLimit = [];
     protected $facetFields = [];
     protected $facetFilters = [];
+    protected array $facetFilterOperators = [];
     protected $facetSorts = [];
     protected $queryFilters = [];
     protected $dateRangeFilters = [];
@@ -122,6 +123,21 @@ class Query
     public function getFacetFilters()
     {
         return $this->facetFilters;
+    }
+
+    public function setFacetFilterOperator(string $name, string $operator): void
+    {
+        $this->facetFilterOperators[$name] = strtoupper($operator);
+    }
+
+    public function getFacetFilterOperators(): array
+    {
+        return $this->facetFilterOperators;
+    }
+
+    public function getFacetFilterOperator(string $name): string
+    {
+        return $this->facetFilterOperators[$name] ?? 'AND';
     }
 
     public function addQueryFilter($query)
