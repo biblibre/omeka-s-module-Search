@@ -10,10 +10,12 @@ $facetedFiltering =
 <?php if (!empty($facets)): ?>
     <aside class="search-facets">
         <h2>
-            <?php echo $this->translate("Filters"); ?>
+            <?php echo $this->translate("Facets"); ?>
             <?php if ($facetedFiltering): ?>
-                <button class="fas fa-filter" id="submit-facets" title="<?php echo $this->escapeHtml($this->translate("Filter with selected facets")); ?>"></button>
-                <button class="fas fa-times" id="reset-facets" title="<?php echo $this->escapeHtml($this->translate("Reset all filters")); ?>"></button>
+            <div class="actions">
+                <button id="submit-facets"><?php echo $this->translate('Apply') ?></button>
+                <button id="reset-facets"><?php echo $this->translate('Clear') ?></button>
+            </div>
             <?php endif; ?>
         </h2>
         <?= $this->partial('search/active-facets') ?>
