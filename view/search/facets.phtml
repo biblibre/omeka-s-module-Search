@@ -1,43 +1,11 @@
 <?php
-/*
- * Copyright BibLibre, 2016
- *
- * This software is governed by the CeCILL license under French law and abiding
- * by the rules of distribution of free software.  You can use, modify and/ or
- * redistribute the software under the terms of the CeCILL license as circulated
- * by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
- *
- * As a counterpart to the access to the source code and rights to copy, modify
- * and redistribute granted by the license, users are provided only with a
- * limited warranty and the software's author, the holder of the economic
- * rights, and the successive licensors have only limited liability.
- *
- * In this respect, the user's attention is drawn to the risks associated with
- * loading, using, modifying and/or developing or reproducing the software by
- * the user in light of its specific status of free software, that may mean that
- * it is complicated to manipulate, and that also therefore means that it is
- * reserved for developers and experienced professionals having in-depth
- * computer knowledge. Users are therefore encouraged to load and test the
- * software's suitability as regards their requirements in conditions enabling
- * the security of their systems and/or data to be ensured and, more generally,
- * to use and operate it in the same conditions as regards security.
- *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL license and that you accept its terms.
- */
-
-/**
- * @var \Laminas\View\Renderer\PhpRenderer $this
- * @var array $facets associative array indexed by facet name, values are
- *                    associative arrays with keys 'value' and 'count'
- */
-
 $this->headScript()->appendFile($this->assetUrl("js/facets.js", "Search"));
 $settings = $this->searchCurrentPage()->settings();
 $facetedFiltering =
     isset($settings["faceted_filtering"]) &&
     $settings["faceted_filtering"] === "1";
 ?>
+
 
 <?php if (!empty($facets)): ?>
     <aside class="search-facets">
@@ -48,16 +16,19 @@ $facetedFiltering =
                 <button class="fas fa-times" id="reset-facets" title="<?php echo $this->escapeHtml($this->translate("Reset all filters")); ?>"></button>
             <?php endif; ?>
         </h2>
+        <?= $this->partial('search/active-facets') ?>
         <ul>
             <?php foreach ($settings['facets'] as $facetSettings): ?>
                 <?php $name = $facetSettings['name']; ?>
                 <?php $facet_display_limit = $facetSettings['facet_display_limit'] ?? 10; ?>
                 <?php $facet_values = $facets[$name] ?? []; ?>
+                <?php $operator = isset($facetSettings['operator']) ? $facetSettings['operator'] : 'AND'; ?>
                 <?php if ($facet_values): ?>
                     <?php $visible_facets = array_slice($facet_values, 0, $facet_display_limit); ?>
                     <?php $hidden_facets = array_slice($facet_values, $facet_display_limit); ?>
                     <li class="search-facet" data-facet-name="<?= $this->escapeHtml($name) ?>">
                         <h3><?php echo $this->facetLabel($name); ?></h3>
+                        <span class="search-facet-operator"><?= $this->escapeHtml($operator) ?></span>
                         <div>
                             <ul class="search-facet-items">
                                 <?php foreach ($visible_facets as $facetValue): ?>

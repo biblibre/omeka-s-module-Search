@@ -144,26 +144,6 @@ class IndexController extends AbstractActionController
             if (array_key_exists($name, $facetCounts)) {
                 $facets[$name] = $facetCounts[$name];
             }
-
-            if (($facet['operator'] ?? 'AND') === 'OR' && !empty($params['limit'][$name])) {
-                $selectedValues = $params['limit'][$name];
-                $existingValues = array_column($facets[$name] ?? [], 'value');
-                foreach ($selectedValues as $selectedValue) {
-                    if (!in_array($selectedValue, $existingValues, true)) {
-                        $facets[$name][] = ['value' => $selectedValue, 'count' => 0];
-                    }
-                }
-                $selected = [];
-                $nonSelected = [];
-                foreach ($facets[$name] as $facetValue) {
-                    if (in_array($facetValue['value'], $selectedValues, true)) {
-                        $selected[] = $facetValue;
-                    } else {
-                        $nonSelected[] = $facetValue;
-                    }
-                }
-                $facets[$name] = array_merge($selected, $nonSelected);
-            }
         }
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
 

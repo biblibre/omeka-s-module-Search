@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ */
+
+$query = $this->params()->fromQuery();
+$activeLimits = $query['limit'] ?? [];
+
+if (empty($activeLimits)) {
+    return;
+}
+
+$settings = $this->searchCurrentPage()->settings();
+$facetLabelsByName = [];
+foreach ($settings['facets'] ?? [] as $facet) {
+    $facetLabelsByName[$facet['name']] = $facet['label'] ?? $facet['name'];
+}
+?>
+<ul class="active-facets">
+    <?php foreach ($activeLimits as $name => $values): ?>
+        <?php foreach ($values as $value): ?>
+            <?php
+            $removeQuery = $query;
+            $removeQuery['limit'][$name] = array_values(array_filter(
+                $removeQuery['limit'][$name],
+                fn($v) => $v !== $value
+            ));
+            if (empty($removeQuery['limit'][$name])) {
+                unset($removeQuery['limit'][$name]);
+            }
+            if (empty($removeQuery['limit'])) {
+                unset($removeQuery['limit']);
+            }
+            unset($removeQuery['page']);
+            $url = $this->url(null, [], ['query' => $removeQuery], true);
+            ?>
+            <li class="active-facets__element">
+                <span class="active-facets__element-value"><?= $this->searchFacetValue($name, (string) $value) ?></span>
+                <a href="<?= $this->escapeHtml($url) ?>" class="active-facets__element-remove" aria-label="<?= $this->escapeHtml($this->translate('Remove filter')) ?>">×</a>
+            </li>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+</ul>
