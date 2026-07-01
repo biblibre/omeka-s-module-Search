@@ -24,7 +24,7 @@ class Glossary extends AbstractBlockLayout
         return 'Glossary'; // @translate
     }
 
-    public function form(PhpRenderer $view, SiteRepresentation $site, SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null)
+    public function form(PhpRenderer $view, SiteRepresentation $site, ?SitePageRepresentation $page = null, ?SitePageBlockRepresentation $block = null)
     {
         $defaults = [
             'search_page' => '',
@@ -195,12 +195,12 @@ class Glossary extends AbstractBlockLayout
             // accents are ordered next to the same letter without accent,
             // instead of at the end
             $collator = new \Collator('root');
-            $compare = fn($a, $b) => $collator->compare($a, $b);
+            $compare = fn ($a, $b) => $collator->compare($a, $b);
         } else {
-            $compare = fn($a, $b) => strcasecmp($a, $b);
+            $compare = fn ($a, $b) => strcasecmp($a, $b);
         }
 
-        uksort($termsByLetter, fn($a, $b) => $compare($a, $b));
+        uksort($termsByLetter, fn ($a, $b) => $compare($a, $b));
         foreach (array_keys($termsByLetter) as $letter) {
             usort($termsByLetter[$letter], fn ($a, $b) => $compare($a['term'], $b['term']));
         }
