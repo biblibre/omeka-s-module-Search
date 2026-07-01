@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search documentation &mdash; Documentation Search </title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e9c544c0" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d1a510d7"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Quick start" href="quick-start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Search
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-page.html">Search pages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Search</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Search documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="search-documentation">
+<h1>Search documentation<a class="headerlink" href="#search-documentation" title="Lien vers cette rubrique"></a></h1>
+<p>This module adds search capabilities to the public interface of Omeka S. It
+provides a common interface for other modules to extend it.</p>
+<p>It can be extended in two ways:</p>
+<ul class="simple">
+<li><p>Forms adapters: they build the search form and convert form data into
+queries</p></li>
+<li><p>Search adapters: they fetch results based on queries built by form adapters</p></li>
+</ul>
+<p>This module provides a configurable form adapter, but no search adapters.</p>
+<p>The <a class="reference external" href="https://github.com/biblibre/omeka-s-module-Solr">Solr module</a>
+provides a search adapter for <a class="reference external" href="https://lucene.apache.org/solr/">the Solr search engine</a>.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Omeka S &gt;= 3.1.0</p></li>
+<li><p>At least one module implementing a search adapter (like
+<a class="reference external" href="https://github.com/biblibre/omeka-s-module-Solr">Solr</a> for instance)</p></li>
+</ul>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Lien vers cette rubrique"></a></h2>
+<ul>
+<li><p>Search for items, item sets, and/or media</p></li>
+<li><p>Build search forms using configurable form blocks, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A complex query builder that allow to use different fields, operators
+(contains, exact match, …) and boolean operators (AND, OR)</p></li>
+<li><p>A resource class filter</p></li>
+<li><p>An item set filter</p></li>
+<li><p>And more (other modules can add their own)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Filter results using customizable facets</p></li>
+<li><p>Order results using configurable sort options</p></li>
+<li><p>Search history</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#create-a-search-index">Create a search index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#create-a-search-page">Create a search page</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#add-the-search-page-to-your-site-navigation">Add the search page to your site navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="search-page.html">Search pages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="search-page.html#create-a-search-page">Create a search page</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search-page.html#form-settings">Form settings</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="quick-start.html" class="btn btn-neutral float-right" title="Quick start" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, BibLibre.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

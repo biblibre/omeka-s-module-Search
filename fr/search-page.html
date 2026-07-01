@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search pages &mdash; Documentation Search </title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e9c544c0" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d1a510d7"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="Quick start" href="quick-start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Search
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Search pages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-search-page">Create a search page</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#search-page-settings">Search page settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#form-settings">Form settings</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Search</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Search pages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/search-page.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="search-pages">
+<h1>Search pages<a class="headerlink" href="#search-pages" title="Lien vers cette rubrique"></a></h1>
+<p>Search pages are where you can configure the search form, facets, sort options, and more.</p>
+<section id="create-a-search-page">
+<span id="id1"></span><h2>Create a search page<a class="headerlink" href="#create-a-search-page" title="Lien vers cette rubrique"></a></h2>
+<p>To create a search page:</p>
+<ul class="simple">
+<li><p>Go to Omeka S administration interface</p></li>
+<li><p>In the navigation menu on the left, click on « Search »</p></li>
+<li><p>Click on the « Add new page » button</p></li>
+<li><p>Choose a name for it, and a path. The path defines where the search page will
+be available on your public sites. For instance if you set the path to
+« search », the search page will be available at <code class="docutils literal notranslate"><span class="pre">/s/&lt;site-slug&gt;/search</span></code>.</p></li>
+<li><p>For « Index », choose the previously created index</p></li>
+<li><p>For « Form », select the « Standard » form.</p></li>
+<li><p>Once the page is created, you will be redirected to the search page edit
+page, where you will have more settings to configure, depending on the selected
+index and form.</p></li>
+</ul>
+<section id="search-page-settings">
+<h3>Search page settings<a class="headerlink" href="#search-page-settings" title="Lien vers cette rubrique"></a></h3>
+<dl>
+<dt>Save queries</dt><dd><p>If enabled, a small form will be displayed next to the search results,
+allowing to save the query so you can redo the same search later. Saved
+queries are personnal and not shared with other users.</p>
+<p>The « Saved Queries » page block displays all saved queries for the current user.</p>
+</dd>
+<dt>Faceted filtering</dt><dd><p>If enabled, users can select multiple facets and apply them at once. If
+disabled, each click on a facet refreshes the list of results.</p>
+</dd>
+<dt>Facet values collapse button label</dt><dd><p>When the number of facet values exceeds the maximum number of displayed
+values, a button allows to expand/collapse the list of values.</p>
+<p>This parameter defines the text of the « collapse » button.</p>
+</dd>
+<dt>Facet values expand button label</dt><dd><p>When the number of facet values exceeds the maximum number of displayed
+values, a button allows to expand/collapse the list of values.</p>
+<p>This parameter defines the text of the « expand » button.</p>
+</dd>
+<dt>Show search summary</dt><dd><p>If enabled, show a textual description of the search query next to the
+results.</p>
+</dd>
+<dt>Facets</dt><dd><p>This setting allows to add and configure special filters called facets.
+Enabled facets will display a list of filters next to search results, based
+on indexed data. They can be useful to filter by resource type, topic,
+and/or date for instance.</p>
+<p>The list of available facets depends on the search adapter.</p>
+<p>To enable a facet, select one in the dropdown list and click on the « + »
+button. The settings for this facet will appear in a sidebar.</p>
+<dl>
+<dt>Label</dt><dd><p>Title of the facet block</p>
+</dd>
+<dt>Sort by</dt><dd><p>Define the sort order of the facet terms. The list of available options
+depends on the search adapter.</p>
+<p>The default option will most likely be a sort by number of occurrences
+(how many times the term appears in the search results).</p>
+</dd>
+<dt>Value renderer</dt><dd><p>The value renderer changes how a facet value is displayed to users. It
+is useful when the indexed value is an internal id or code that can be
+associated to a human-friendly text. The default renderer shows the
+indexed value as is.</p>
+</dd>
+<dt>Facet fetched limit</dt><dd><p>How many terms to retrieve from the search engine</p>
+</dd>
+<dt>Facet display limit</dt><dd><p>How many terms to display by default. If there are more terms, a button
+to display them will be available.</p>
+</dd>
+<dt>Operator</dt><dd><dl class="simple">
+<dt>AND</dt><dd><p>When multiple terms are selected, the results will be limited to
+those that match all the selected terms.</p>
+</dd>
+<dt>OR</dt><dd><p>When multiple terms are selected, the results will be limited to
+those that match at least one of the selected terms.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>Sort fields</dt><dd><p>This settings allows to add and configure sort options.</p>
+<p>The list of available sort fields depends on the search adapter.</p>
+<p>To enable a sort field, select one in the dropdown list and click on the « + »
+button. The settings for this sort field will appear in a sidebar.</p>
+<dl class="simple">
+<dt>Label</dt><dd><p>Label of the sort field in the sort options dropdown list.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+<section id="form-settings">
+<h2>Form settings<a class="headerlink" href="#form-settings" title="Lien vers cette rubrique"></a></h2>
+<p>This section is entirely dependent on the form adapter chosen at the creation
+of the search page. If you haven chosen the standard form, the following
+settings will be available:</p>
+<dl>
+<dt>Search fields</dt><dd><p>These are the fields that will be available in the main filters section of
+the search form. These filters can be combined with and/or boolean
+operators, and can use special search operators like « contains any word »,
+« contains all words », … (the list of available search operators depends
+on the search adapter)</p>
+<p>The list of available search fields depends on the search adapter.</p>
+<p>To add a search field, select one in the dropdown list and click on the « + »
+button. The settings for this search field will appear in a sidebar.</p>
+<dl class="simple">
+<dt>Label</dt><dd><p>Label of the search field in the search field dropdown list.</p>
+</dd>
+</dl>
+</dd>
+<dt>Proximity</dt><dd><p>Enable proximity search options for compatible search fields. Proximity
+search allows you to search multiple terms with a maximum distance between
+them.</p>
+</dd>
+<dt>Form elements</dt><dd><p>Add more filter options to the search form.</p>
+<dl class="simple">
+<dt>Resource class</dt><dd><p>Filter by resource class</p>
+</dd>
+<dt>Item sets</dt><dd><p>Filter by item set</p>
+</dd>
+<dt>Has media</dt><dd><p>Filter by media presence</p>
+</dd>
+</dl>
+<p>Other modules can implement their own form elements.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="quick-start.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2026, BibLibre.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
