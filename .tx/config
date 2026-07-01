@@ -7,3 +7,10 @@ source_file  = language/template.pot
 source_lang  = en
 type         = PO
 minimum_perc = 10
+
+[o:biblibre-:p:omeka-s-modules:r:search-documentation]
+file_filter  = documentation/locales/<lang>/LC_MESSAGES/documentation.po
+source_file  = documentation/_build/gettext/documentation.pot
+source_lang  = en
+type         = PO
+minimum_perc = 10
