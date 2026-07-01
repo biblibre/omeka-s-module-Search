@@ -30,6 +30,36 @@ local Pipeline(omekaVersion, phpVersion, dbImage) = {
     ],
 };
 
+local DocumentationPipeline() = {
+    kind: 'pipeline',
+    type: 'docker',
+    name: 'documentation',
+    steps: [
+        {
+            name: 'build',
+            image: 'python:3',
+            commands: ['sh .drone/documentation-build.sh'],
+        },
+        {
+            name: 'push',
+            image: 'alpine',
+            commands: [
+                'apk add git openssh',
+                'sh .drone/documentation-push.sh',
+            ],
+            environment: {
+                GH_DEPLOY_KEY: {
+                    from_secret: 'GH_DEPLOY_KEY',
+                },
+            },
+        },
+    ],
+    trigger: {
+        branch: ['master'],
+        event: ['push'],
+    },
+};
+
 [
     Pipeline('3.1.2', '8.0', 'mariadb:11.8'),
     Pipeline('3.2.3', '8.0', 'mariadb:11.8'),
@@ -38,4 +68,5 @@ local Pipeline(omekaVersion, phpVersion, dbImage) = {
     Pipeline('4.2.0', '8.2', 'mariadb:11.8'),
     Pipeline('4.2.0', '8.3', 'mariadb:11.8'),
     Pipeline('4.2.0', '8.4', 'mariadb:11.8'),
+    DocumentationPipeline(),
 ]

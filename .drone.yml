@@ -153,7 +153,29 @@ type: docker
 workspace:
   path: omeka-s/modules/Search
 ---
+kind: pipeline
+name: documentation
+steps:
+- commands:
+  - sh .drone/documentation-build.sh
+  image: python:3
+  name: build
+- commands:
+  - apk add git openssh
+  - sh .drone/documentation-push.sh
+  environment:
+    GH_DEPLOY_KEY:
+      from_secret: GH_DEPLOY_KEY
+  image: alpine
+  name: push
+trigger:
+  branch:
+  - master
+  event:
+  - push
+type: docker
+---
 kind: signature
-hmac: 3730db42cc2278450aed16d634b704030dea20130c52557461f69bdd8ae02edd
+hmac: 110d15bce55f6031bd998c3a060d139380413c2a5d6a7f343f86bbda9f109a9d
 
 ...
