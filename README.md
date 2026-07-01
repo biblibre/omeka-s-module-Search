@@ -14,6 +14,9 @@ This module provides a configurable form adapter, but no search adapters.
 The [Solr module](https://github.com/biblibre/omeka-s-module-Solr)
 provides a search adapter for [the Solr search engine](https://lucene.apache.org/solr/).
 
+The complete documentation of Search can be found at
+<https://biblibre.github.io/omeka-s-module-Search/>
+
 ## Requirements
 
 * Omeka S >= 3.1.0
