@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var string $name
+ * @var mixed $value
+ * @var string $url
+ */
+?>
+<span class="active-facets__element-name"><?= $this->escapeHtml($this->facetLabel($name)) ?></span>
+<span class="active-facets__element-value"><?= $this->searchFacetValue($name, (string) $value) ?></span>
+<a href="<?= $this->escapeHtml($url) ?>" class="active-facets__element-remove" aria-label="<?= $this->escapeHtml($this->translate('Remove filter')) ?>">×</a>

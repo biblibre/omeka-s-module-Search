@@ -14,7 +14,7 @@ $facetedFiltering =
             <?php if ($facetedFiltering): ?>
             <div class="actions">
                 <button id="submit-facets"><?php echo $this->translate('Apply') ?></button>
-                <button id="reset-facets"><?php echo $this->translate('Clear') ?></button>
+                <button id="reset-facets"><?php echo $this->translate('Reset') ?></button>
             </div>
             <?php endif; ?>
         </h2>
@@ -24,13 +24,13 @@ $facetedFiltering =
                 <?php $name = $facetSettings['name']; ?>
                 <?php $facet_display_limit = $facetSettings['facet_display_limit'] ?? 10; ?>
                 <?php $facet_values = $facets[$name] ?? []; ?>
-                <?php $operator = isset($facetSettings['operator']) ? $facetSettings['operator'] : 'AND'; ?>
+                <?php $operatorLabel = ($facetSettings['operator'] ?? 'AND') === 'OR' ? $this->translate('Matching any of:') : $this->translate('Matching all of:'); ?>
                 <?php if ($facet_values): ?>
                     <?php $visible_facets = array_slice($facet_values, 0, $facet_display_limit); ?>
                     <?php $hidden_facets = array_slice($facet_values, $facet_display_limit); ?>
                     <li class="search-facet" data-facet-name="<?= $this->escapeHtml($name) ?>">
                         <h3><?php echo $this->facetLabel($name); ?></h3>
-                        <span class="search-facet-operator"><?= $this->escapeHtml($operator) ?></span>
+                        <span class="search-facet-operator"><?= $this->escapeHtml($operatorLabel) ?></span>
                         <div>
                             <ul class="search-facet-items">
                                 <?php foreach ($visible_facets as $facetValue): ?>

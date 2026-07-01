@@ -191,8 +191,25 @@
 }
 
 .active-facets {
-    list-style: none;
     margin: 0 0 8px;
+}
+
+.active-facets__group {
+    margin-bottom: 6px;
+}
+
+.active-facets__group-label {
+    font-size: 85%;
+    font-weight: bold;
+    margin: 0 0 2px;
+}
+
+.active-facets__group-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
     padding: 0;
 }
 
@@ -201,7 +218,6 @@
     border-radius: 3px;
     display: flex;
     font-size: 70%;
-    margin-bottom: 2px;
     width: fit-content;
     max-width: 100%;
 }
