@@ -144,6 +144,14 @@ class IndexController extends AbstractActionController
             if (array_key_exists($name, $facetCounts)) {
                 $facets[$name] = $facetCounts[$name];
             }
+
+            if (!empty($facets[$name]) && !empty($params['limit'][$name])) {
+                $selectedValues = $params['limit'][$name];
+                $facets[$name] = array_values(array_filter(
+                    $facets[$name],
+                    fn ($facetValue) => !in_array($facetValue['value'], $selectedValues, true)
+                ));
+            }
         }
         $saveQueryParam = $this->page->settings()['save_queries'] ?? false;
 
