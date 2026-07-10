@@ -23,61 +23,55 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-    function getVisibleFacetNames() {
-        return new Set(
-            Array.from(
-                document.querySelectorAll(
-                    '.search-facet-item input[type="checkbox"]',
-                ),
-            ).map((node) => node.dataset.facetName),
-        );
-    }
-
-    function isVisibleFacetParam(key, facetNames) {
-        for (const facetName of facetNames) {
-            if (key.startsWith(`limit[${facetName}]`)) {
-                return true;
-            }
-        }
-        return false;
+    function getRenderedFacetValues() {
+        const facetsSet = new Set();
+        document
+            .querySelectorAll('.search-facet-item input[type="checkbox"]')
+            .forEach((node) => {
+                facetsSet.add(`${node.dataset.facetName}|${node.dataset.facetValue}`);
+            });
+        return facetsSet;
     }
 
     function submitFacets() {
-        var params = new URLSearchParams(window.location.search);
-        const facetNames = getVisibleFacetNames();
+        const params = new URLSearchParams(window.location.search);
+        const facetsSet = getRenderedFacetValues();
 
-        for (const [key] of Array.from(params.entries())) {
-            if (isVisibleFacetParam(key, facetNames)) {
-                params.delete(key);
+        const newParams = new URLSearchParams();
+        for (const [key, value] of params.entries()) {
+            if (key === "page") {
+                continue;
             }
+            const match = key.match(/^limit\[([^\]]+)\]/);
+            if (match && facetsSet.has(`${match[1]}|${value}`)) {
+                continue;
+            }
+            newParams.append(key, value);
         }
 
-        params.delete("page");
+        document
+            .querySelectorAll('input[name^="selectedFacets["]:checked')
+            .forEach((box) => {
+                newParams.append(
+                    `limit[${box.dataset.facetName}][]`,
+                    box.dataset.facetValue,
+                );
+            });
 
-        var checkedBoxes = document.querySelectorAll(
-            'input[name^="selectedFacets["]:checked',
-        );
-        checkedBoxes.forEach((box) => {
-            var name = box.dataset.facetName;
-            var value = box.dataset.facetValue;
-
-            params.append(`limit[${name}][]`, value);
-        });
-        window.location.search = params.toString();
+        window.location.search = newParams.toString();
     }
 
     function resetFacets() {
-        var params = new URLSearchParams(window.location.search);
-        const facetNames = getVisibleFacetNames();
+        const params = new URLSearchParams(window.location.search);
 
-        for (const [key] of Array.from(params.entries())) {
-            if (isVisibleFacetParam(key, facetNames)) {
-                params.delete(key);
+        const newParams = new URLSearchParams();
+        for (const [key, value] of params.entries()) {
+            if (key === "page" || /^limit\[/.test(key)) {
+                continue;
             }
+            newParams.append(key, value);
         }
 
-        params.delete("page");
-
-        window.location.search = params.toString();
+        window.location.search = newParams.toString();
     }
 });

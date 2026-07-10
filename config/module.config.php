@@ -240,6 +240,7 @@ return [
             'searchFormElement' => Service\ViewHelper\SearchFormElementFactory::class,
         ],
         'invokables' => [
+            'activeFacetLink' => View\Helper\ActiveFacetLink::class,
             'facetLabel' => View\Helper\FacetLabel::class,
             'facetLink' => View\Helper\FacetLink::class,
             'searchForm' => View\Helper\SearchForm::class,

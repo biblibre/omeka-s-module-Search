@@ -1,0 +1,55 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ */
+
+$query = $this->params()->fromQuery();
+$activeLimits = $query['limit'] ?? [];
+
+if (empty($activeLimits)) {
+    return;
+}
+
+$settings = $this->searchCurrentPage()->settings();
+$facetOperatorsByName = [];
+foreach ($settings['facets'] ?? [] as $facet) {
+    $facetOperatorsByName[$facet['name']] = $facet['operator'] ?? 'AND';
+}
+
+$groups = ['OR' => [], 'AND' => []];
+foreach ($activeLimits as $name => $values) {
+    if (empty($values)) {
+        continue;
+    }
+    $operator = $facetOperatorsByName[$name] ?? 'AND';
+    foreach ($values as $value) {
+        $groups[$operator][] = ['name' => $name, 'value' => $value];
+    }
+}
+?>
+<div class="active-facets">
+    <?php if (!empty($groups['OR'])): ?>
+        <div class="active-facets__group">
+            <h3 class="active-facets__group-label"><?= $this->escapeHtml($this->translate('Matching any of:')) ?></h3>
+            <ul class="active-facets__group-values">
+                <?php foreach ($groups['OR'] as $item): ?>
+                    <li class="active-facets__element">
+                        <?= $this->activeFacetLink($item['name'], $item['value']) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+    <?php if (!empty($groups['AND'])): ?>
+        <div class="active-facets__group">
+            <h3 class="active-facets__group-label"><?= $this->escapeHtml($this->translate('Matching all of:')) ?></h3>
+            <ul class="active-facets__group-values">
+                <?php foreach ($groups['AND'] as $item): ?>
+                    <li class="active-facets__element">
+                        <?= $this->activeFacetLink($item['name'], $item['value']) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>
