@@ -7,7 +7,9 @@ $facetedFiltering =
 ?>
 
 
-<?php if (!empty($facets)): ?>
+<?php $hasActiveFacets = !empty($this->params()->fromQuery('limit')); ?>
+
+<?php if (!empty($facets) || $hasActiveFacets): ?>
     <aside class="search-facets">
         <h2>
             <?php echo $this->translate("Facets"); ?>
@@ -19,6 +21,7 @@ $facetedFiltering =
             <?php endif; ?>
         </h2>
         <?= $this->partial('search/active-facets') ?>
+        <?php if (!empty($facets)): ?>
         <ul>
             <?php foreach ($settings['facets'] as $facetSettings): ?>
                 <?php $name = $facetSettings['name']; ?>
@@ -63,5 +66,6 @@ $facetedFiltering =
                 <?php endif; ?>
             <?php endforeach; ?>
         </ul>
+        <?php endif; ?>
     </aside>
 <?php endif; ?>
