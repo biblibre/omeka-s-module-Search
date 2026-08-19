@@ -14,13 +14,13 @@ $facetedFiltering =
         <h2>
             <?php echo $this->translate("Facets"); ?>
             <?php if ($facetedFiltering): ?>
-            <div class="actions">
-                <button id="submit-facets"><?php echo $this->translate('Apply') ?></button>
-                <button id="reset-facets"><?php echo $this->translate('Reset') ?></button>
-            </div>
             <?php endif; ?>
         </h2>
         <?= $this->partial('search/active-facets') ?>
+        <div class="actions">
+            <button class="submit-facets-action"><?php echo $this->translate('Apply') ?></button>
+            <button class="reset-facets-action"><?php echo $this->translate('Reset') ?></button>
+        </div>
         <?php if (!empty($facets)): ?>
         <ul>
             <?php foreach ($settings['facets'] as $facetSettings): ?>
@@ -67,5 +67,9 @@ $facetedFiltering =
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+        <div class="actions">
+            <button class="submit-facets-action"><?php echo $this->translate('Apply') ?></button>
+            <button class="reset-facets-action"><?php echo $this->translate('Reset') ?></button>
+        </div>
     </aside>
 <?php endif; ?>
