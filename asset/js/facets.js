@@ -1,17 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var buttonFilterFacets = document.getElementById("submit-facets");
-    if (buttonFilterFacets) {
-        buttonFilterFacets.addEventListener("click", function () {
-            submitFacets();
+    document
+        .querySelectorAll(".submit-facets-action")
+        .forEach(function (button) {
+            button.addEventListener("click", function () {
+                submitFacets();
+            });
         });
-    }
 
-    var buttonResetFacets = document.getElementById("reset-facets");
-    if (buttonResetFacets) {
-        buttonResetFacets.addEventListener("click", function () {
-            resetFacets();
+    document
+        .querySelectorAll(".reset-facets-action")
+        .forEach(function (button) {
+            button.addEventListener("click", function () {
+                resetFacets();
+            });
         });
-    }
 
     document
         .querySelectorAll(".search-facet-toggle-btn")
