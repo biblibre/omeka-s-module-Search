@@ -2,26 +2,24 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Julian Maurice <julian.maurice@biblibre.com>, 2026
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 09:11+0200\n"
+"POT-Creation-Date: 2026-04-22 12:41+0200\n"
 "PO-Revision-Date: 2025-09-23 13:29+0000\n"
 "Last-Translator: Julian Maurice <julian.maurice@biblibre.com>, 2026\n"
-"Language-Team: French (https://app.transifex.com/biblibre-/teams/298658/"
-"fr/)\n"
-"Language: fr\n"
+"Language-Team: French (https://app.transifex.com/biblibre-/teams/298658/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: src/Api/Representation/SearchIndexRepresentation.php:116
 msgid "[No adapter]"
@@ -31,7 +29,7 @@ msgstr "[Aucun adaptateur]"
 msgid "Search everywhere"
 msgstr "Rechercher partout"
 
-#: src/FormAdapter/StandardFormAdapter.php:101
+#: src/FormAdapter/StandardFormAdapter.php:101 view/search/facets.phtml:45
 #: view/search/form/standard.phtml:45
 msgid "Filters"
 msgstr "Filtres"
@@ -39,18 +37,6 @@ msgstr "Filtres"
 #: src/FormElement/ResourceClassSelect.php:103
 msgid "Resource classes"
 msgstr "Classes de ressource"
-
-#: view/search/active-facet-link.phtml:11
-msgid "Remove filter"
-msgstr "Supprimer la facette"
-
-#: view/search/active-facets.phtml:33 view/search/facets.phtml:30
-msgid "Matching any of:"
-msgstr "Correspond à l'un des filtres suivants:"
-
-#: view/search/active-facets.phtml:45 view/search/facets.phtml:30
-msgid "Matching all of:"
-msgstr "Correspond à tous les filtres suivants:"
 
 #: view/search/admin/facets/field-edit-sidebar.phtml:11
 #: view/search/admin/facets/field-row.phtml:25
@@ -196,9 +182,13 @@ msgstr "Le glossaire est vide"
 msgid "Latest indexation"
 msgstr "Dernière indexation"
 
-#: view/search/facets.phtml:15
-msgid "Facets"
-msgstr "Facettes"
+#: view/search/facets.phtml:47
+msgid "Filter with selected facets"
+msgstr "Filtrer avec les facettes sélectionnées"
+
+#: view/search/facets.phtml:48
+msgid "Reset all filters"
+msgstr "Réinitialiser tous les filtres"
 
 #: view/search/form/standard-match-group-filter.phtml:35
 msgid "Proximity option (e.g. 2)"
@@ -268,13 +258,169 @@ msgstr "Aucune requête sauvegardée"
 msgid "Fallback"
 msgstr "Par défaut"
 
-#: src/Site/BlockLayout/SavedQueries.php:30
-msgid "Saved Queries"
-msgstr "Requêtes sauvegardées"
+#: src/Form/FacetForm.php:60
+msgid "Value renderer"
+msgstr "Moteur de rendu"
 
-#: src/Site/BlockLayout/SavedQueries.php:51
-msgid "Label for this block"
-msgstr "Libellé pour ce bloc"
+#: src/Form/FacetForm.php:61
+msgid ""
+"The value renderer changes how a facet value is displayed to users. It is "
+"useful when the indexed value is an internal id or code that can be "
+"associated to a human-friendly text. The default renderer shows the indexed "
+"value as is."
+msgstr ""
+"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est"
+" affichée aux utilisateurs. C'est utile lorsque la valeur indexée est un "
+"identifiant interne ou un code qui peut être associé à un texte "
+"compréhensible facilement. Le moteur de rendu par défaut affiche la valeur "
+"indexée telle quelle."
+
+#: src/Form/FacetForm.php:73
+msgid "Facet fetched limit"
+msgstr "Limite de récupération des facettes"
+
+#: src/Form/FacetForm.php:74
+msgid "The maximum number of values fetched"
+msgstr "Le nombre maximum de valeurs récupérées"
+
+#: src/Form/FacetForm.php:87
+msgid "Facet display limit"
+msgstr "Limite d'affichage des facettes"
+
+#: src/Form/FacetForm.php:88
+msgid "Limit number of values to display."
+msgstr "Limite le nombre de valeurs affichées"
+
+#: src/Form/StandardConfigForm.php:53
+msgid "Search fields"
+msgstr "Champs de recherche"
+
+#: src/Form/StandardConfigForm.php:54
+msgid "Add a search field"
+msgstr "Ajouter un champ de recherche"
+
+#: src/Form/StandardConfigForm.php:66
+msgid "Proximity"
+msgstr "Proximité"
+
+#: src/Form/StandardConfigForm.php:67
+msgid "Add proximity option on search form to choose distance between terms"
+msgstr ""
+"Ajoutez une option de proximité sur le formulaire de recherche pour choisir "
+"la distance entre les termes"
+
+#: src/Form/StandardConfigForm.php:88
+msgid "Form elements"
+msgstr "Éléments de formulaire"
+
+#: src/Form/StandardConfigForm.php:89
+msgid "Add a form element"
+msgstr "Ajouter un élément de formulaire"
+
+#: src/Form/ConfigForm.php:15
+msgid "Check interval (seconds)"
+msgstr "Intervalle de vérification (secondes)"
+
+#: src/Form/ConfigForm.php:16
+msgid ""
+"The frequency at which the module checks if there are resources to be "
+"indexed. A smaller interval means a more up-to-date index. This should only "
+"be used if the script `bin/sync` cannot be run periodically (using cron for "
+"instance). Leave empty to disable."
+msgstr ""
+"La fréquence à laquelle le module vérifie si il y a des ressources à "
+"indexer. Un intervalle plus petit signifie un index plus à jour. Ça doit "
+"être utilisé uniquement si le script `bin/sync` ne peut pas être exécuté "
+"périodiquement (en utilisant cron par exemple). Laisser vide pour "
+"désactiver."
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:43
+msgid "Clear index"
+msgstr "Nettoyer l'index"
+
+#: src/Form/Admin/SearchIndexRebuildForm.php:44
+msgid "Empty the index before rebuilding it"
+msgstr "Vider l'index avant de le reconstruire"
+
+#: src/Form/Admin/SearchIndexEditForm.php:53
+msgid "Resources indexed"
+msgstr "Ressources indexées"
+
+#: src/Form/Admin/SearchPageAddForm.php:56
+msgid "Path"
+msgstr "Chemin"
+
+#: src/Form/Admin/SearchPageAddForm.php:67
+msgid "Index"
+msgstr "Index"
+
+#: src/Form/Admin/SearchPageAddForm.php:79
+msgid "Form"
+msgstr "Formulaire"
+
+#: src/Form/Admin/SearchPageEditForm.php:57
+msgid "Save queries"
+msgstr "Sauvegarde des requêtes"
+
+#: src/Form/Admin/SearchPageEditForm.php:58
+msgid "Add ability to save your query and reload it later with result update"
+msgstr ""
+"Ajoute la possibilité de sauvegarder votre requête et de la recharger avec "
+"des résultats actualisés"
+
+#: src/Form/Admin/SearchPageEditForm.php:66
+msgid "Faceted filtering"
+msgstr ""
+
+#: src/Form/Admin/SearchPageEditForm.php:67
+msgid "Manually apply facet filters"
+msgstr "Appliquer manuellement les filtres de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:75
+msgid "Facet values collapse button label"
+msgstr "Libellé du bouton de repli des valeurs de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:87
+msgid "Facet values expand button label"
+msgstr "Libellé du bouton de développement des valeurs de facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:90
+msgid "Show all"
+msgstr "Montrer tout"
+
+#: src/Form/Admin/SearchPageEditForm.php:99
+msgid "Show search summary"
+msgstr "Afficher le résumé de la recherche"
+
+#: src/Form/Admin/SearchPageEditForm.php:100
+msgid "Show a summary of user search query near the results."
+msgstr ""
+"Affiche un résumé de la recherche utilisateur à proximité des résultats."
+
+#: src/Form/Admin/SearchPageEditForm.php:111
+msgid "Facets"
+msgstr "Facettes"
+
+#: src/Form/Admin/SearchPageEditForm.php:112
+msgid "Add a facet"
+msgstr "Ajouter une facette"
+
+#: src/Form/Admin/SearchPageEditForm.php:126
+msgid "Sort fields"
+msgstr "Champs de tri"
+
+#: src/Form/Admin/SearchPageEditForm.php:127
+msgid "Add a sort field"
+msgstr "Ajouter un champ de tri"
+
+#: src/Form/Admin/SearchPageEditForm.php:178
+msgid "Form settings"
+msgstr "Paramètres du formulaire"
+
+#: src/Controller/Admin/SearchIndexController.php:122
+#, php-format
+msgid "Index rebuilding started in %sjob %s%s"
+msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
 
 #: src/Site/BlockLayout/Glossary.php:24
 msgid "Glossary"
@@ -317,8 +463,8 @@ msgstr "Paramètres de requête personnalisés"
 #: src/Site/BlockLayout/Glossary.php:81
 msgid ""
 "URL parameters added to limit the list of terms. For instance: "
-"\"limit[resource_template][]=Base Resource\" (requires the Search adapter to "
-"expose a \"resource_template\" facet field)"
+"\"limit[resource_template][]=Base Resource\" (requires the Search adapter to"
+" expose a \"resource_template\" facet field)"
 msgstr ""
 "Paramètres d'URL ajoutés pour limiter la liste de termes. Par exemple: "
 "\"limit[resource_template][]=Base Resource\" (nécessite que l'adaptateur "
@@ -380,195 +526,21 @@ msgstr "Montrer le compte du terme"
 msgid "Show the number of resources for each term"
 msgstr "Montrer le nombre de ressources pour chaque terme"
 
-#: src/Controller/Admin/SearchIndexController.php:122
-#, php-format
-msgid "Index rebuilding started in %sjob %s%s"
-msgstr "La reconstruction de l'index a commencé dans %sla tâche %s%s"
+#: src/Site/BlockLayout/SavedQueries.php:30
+msgid "Saved Queries"
+msgstr "Requêtes sauvegardées"
 
-#: src/FormElement/ItemSetSelect.php:26
+#: src/Site/BlockLayout/SavedQueries.php:51
+msgid "Label for this block"
+msgstr "Libellé pour ce bloc"
+
 #: src/FormElement/ResourceClassSelect.php:26
+#: src/FormElement/ItemSetSelect.php:26
 msgid "Field"
 msgstr "Champ"
 
-#: src/FormElement/ItemSetSelect.php:27
 #: src/FormElement/ResourceClassSelect.php:27
+#: src/FormElement/ItemSetSelect.php:27
 msgid "Field to use for filtering. It should be a facet field."
 msgstr ""
 "Champ à utiliser pour le filtrage. Cela devrait être un champ de facettes."
-
-#: src/Form/StandardConfigForm.php:53
-msgid "Search fields"
-msgstr "Champs de recherche"
-
-#: src/Form/StandardConfigForm.php:54
-msgid "Add a search field"
-msgstr "Ajouter un champ de recherche"
-
-#: src/Form/StandardConfigForm.php:66
-msgid "Proximity"
-msgstr "Proximité"
-
-#: src/Form/StandardConfigForm.php:67
-msgid "Add proximity option on search form to choose distance between terms"
-msgstr ""
-"Ajoutez une option de proximité sur le formulaire de recherche pour choisir "
-"la distance entre les termes"
-
-#: src/Form/StandardConfigForm.php:88
-msgid "Form elements"
-msgstr "Éléments de formulaire"
-
-#: src/Form/StandardConfigForm.php:89
-msgid "Add a form element"
-msgstr "Ajouter un élément de formulaire"
-
-#: src/Form/ConfigForm.php:15
-msgid "Check interval (seconds)"
-msgstr "Intervalle de vérification (secondes)"
-
-#: src/Form/ConfigForm.php:16
-msgid ""
-"The frequency at which the module checks if there are resources to be "
-"indexed. A smaller interval means a more up-to-date index. This should only "
-"be used if the script `bin/sync` cannot be run periodically (using cron for "
-"instance). Leave empty to disable."
-msgstr ""
-"La fréquence à laquelle le module vérifie si il y a des ressources à "
-"indexer. Un intervalle plus petit signifie un index plus à jour. Ça doit "
-"être utilisé uniquement si le script `bin/sync` ne peut pas être exécuté "
-"périodiquement (en utilisant cron par exemple). Laisser vide pour désactiver."
-
-#: src/Form/FacetForm.php:60
-msgid "Value renderer"
-msgstr "Moteur de rendu"
-
-#: src/Form/FacetForm.php:61
-msgid ""
-"The value renderer changes how a facet value is displayed to users. It is "
-"useful when the indexed value is an internal id or code that can be "
-"associated to a human-friendly text. The default renderer shows the indexed "
-"value as is."
-msgstr ""
-"Le moteur de rendu de valeur modifie la façon dont une valeur de facette est "
-"affichée aux utilisateurs. C'est utile lorsque la valeur indexée est un "
-"identifiant interne ou un code qui peut être associé à un texte "
-"compréhensible facilement. Le moteur de rendu par défaut affiche la valeur "
-"indexée telle quelle."
-
-#: src/Form/FacetForm.php:73
-msgid "Facet fetched limit"
-msgstr "Limite de récupération des facettes"
-
-#: src/Form/FacetForm.php:74
-msgid "The maximum number of values fetched"
-msgstr "Le nombre maximum de valeurs récupérées"
-
-#: src/Form/FacetForm.php:87
-msgid "Facet display limit"
-msgstr "Limite d'affichage des facettes"
-
-#: src/Form/FacetForm.php:88
-msgid "Limit number of values to display."
-msgstr "Limite le nombre de valeurs affichées"
-
-#: src/Form/FacetForm.php:101
-msgid "Operator"
-msgstr "Opérateur"
-
-#: src/Form/FacetForm.php:102
-msgid ""
-"How multiple selected values for this facet are combined. AND: results must "
-"match all selected values. OR: results match any selected value."
-msgstr ""
-"Façon dont les valeurs sélectionnées pour cette facette sont combinées. "
-"ET: les résultats doivent correspondre à toutes les valeurs sélectionnées. "
-"OU: les résultats doivent correspondre à l'une des valeurs sélectionnées."
-
-#: src/Form/FacetForm.php:104
-msgid "AND (default)"
-msgstr "ET (par défaut)"
-
-#: src/Form/Admin/SearchIndexEditForm.php:53
-msgid "Resources indexed"
-msgstr "Ressources indexées"
-
-#: src/Form/Admin/SearchPageEditForm.php:57
-msgid "Save queries"
-msgstr "Sauvegarde des requêtes"
-
-#: src/Form/Admin/SearchPageEditForm.php:58
-msgid "Add ability to save your query and reload it later with result update"
-msgstr ""
-"Ajoute la possibilité de sauvegarder votre requête et de la recharger avec "
-"des résultats actualisés"
-
-#: src/Form/Admin/SearchPageEditForm.php:66
-msgid "Faceted filtering"
-msgstr "Filtrage par facette"
-
-#: src/Form/Admin/SearchPageEditForm.php:67
-msgid "Manually apply facet filters"
-msgstr "Appliquer manuellement les filtres de facette"
-
-#: src/Form/Admin/SearchPageEditForm.php:75
-msgid "Facet values collapse button label"
-msgstr "Libellé du bouton de repli des valeurs de facette"
-
-#: src/Form/Admin/SearchPageEditForm.php:87
-msgid "Facet values expand button label"
-msgstr "Libellé du bouton de développement des valeurs de facette"
-
-#: src/Form/Admin/SearchPageEditForm.php:90
-msgid "Show all"
-msgstr "Montrer tout"
-
-#: src/Form/Admin/SearchPageEditForm.php:99
-msgid "Show search summary"
-msgstr "Afficher le résumé de la recherche"
-
-#: src/Form/Admin/SearchPageEditForm.php:100
-msgid "Show a summary of user search query near the results."
-msgstr ""
-"Affiche un résumé de la recherche utilisateur à proximité des résultats."
-
-#: src/Form/Admin/SearchPageEditForm.php:112
-msgid "Add a facet"
-msgstr "Ajouter une facette"
-
-#: src/Form/Admin/SearchPageEditForm.php:126
-msgid "Sort fields"
-msgstr "Champs de tri"
-
-#: src/Form/Admin/SearchPageEditForm.php:127
-msgid "Add a sort field"
-msgstr "Ajouter un champ de tri"
-
-#: src/Form/Admin/SearchPageEditForm.php:178
-msgid "Form settings"
-msgstr "Paramètres du formulaire"
-
-#: src/Form/Admin/SearchPageAddForm.php:56
-msgid "Path"
-msgstr "Chemin"
-
-#: src/Form/Admin/SearchPageAddForm.php:67
-msgid "Index"
-msgstr "Index"
-
-#: src/Form/Admin/SearchPageAddForm.php:79
-msgid "Form"
-msgstr "Formulaire"
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:43
-msgid "Clear index"
-msgstr "Nettoyer l'index"
-
-#: src/Form/Admin/SearchIndexRebuildForm.php:44
-msgid "Empty the index before rebuilding it"
-msgstr "Vider l'index avant de le reconstruire"
-
-#~ msgid "Filter with selected facets"
-#~ msgstr "Filtrer avec les facettes sélectionnées"
-
-#~ msgid "Reset all filters"
-#~ msgstr "Réinitialiser tous les filtres"
