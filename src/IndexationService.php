@@ -133,6 +133,67 @@ class IndexationService
         );
     }
 
+    /**
+     * @param int $index_id Search index ID
+     * @param int $resource_id Resource ID to mark as touched
+     * @param string[] $resource_names List of resource types enabled for the given search index
+     * @param DateTime $touched Datetime stored in the touched column. Defaults to now
+     */
+    public function touchRelatedResources(int $index_id, int $resource_id, array $resource_names, ?DateTime $touched = null): void
+    {
+        $touched ??= new DateTime();
+
+        if (in_array('item_sets', $resource_names)) {
+            // When an item is mark as touched, mark all of its item sets as touched too
+            $this->connection->executeStatement(
+                <<<'SQL'
+                    INSERT INTO search_resource (index_id, resource_id, touched)
+                    SELECT ?, item_set_id, ? FROM item_item_set WHERE item_id = ?
+                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                SQL,
+                [$index_id, $touched->format('Y-m-d H:i:s'), $resource_id],
+                [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_INT]
+            );
+        }
+
+        if (in_array('items', $resource_names)) {
+            // When an item set is mark as touched, mark all of its items as touched too
+            $this->connection->executeStatement(
+                <<<'SQL'
+                    INSERT INTO search_resource (index_id, resource_id, touched)
+                    SELECT ?, item_id, ? FROM item_item_set WHERE item_set_id = ?
+                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                SQL,
+                [$index_id, $touched->format('Y-m-d H:i:s'), $resource_id],
+                [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_INT]
+            );
+
+            // When a media is mark as touched, mark its item as touched too
+            $this->connection->executeStatement(
+                <<<'SQL'
+                    INSERT INTO search_resource (index_id, resource_id, touched)
+                    SELECT ?, item_id, ? FROM media WHERE id = ?
+                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                SQL,
+                [$index_id, $touched->format('Y-m-d H:i:s'), $resource_id],
+                [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_INT]
+            );
+        }
+
+        if (in_array('media', $resource_names)) {
+            // When an item is mark as touched, mark all of its media as touched too
+            $this->connection->executeStatement(
+                <<<'SQL'
+                    INSERT INTO search_resource (index_id, resource_id, touched)
+                    SELECT ?, id, ? FROM media WHERE item_id = ?
+                    ON DUPLICATE KEY UPDATE touched = VALUES(touched)
+                SQL,
+                [$index_id, $touched->format('Y-m-d H:i:s'), $resource_id],
+                [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_INT]
+            );
+        }
+    }
+
     public function resourcesToResourceTypes(array $resources): array
     {
         $resource_types = array_map(fn ($resource) => self::RESOURCE_TYPE_MAP[$resource] ?? null, $resources);

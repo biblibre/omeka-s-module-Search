@@ -356,26 +356,30 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
-        $identifiers = ['Omeka\Api\Adapter\ItemAdapter', 'Omeka\Api\Adapter\ItemSetAdapter'];
+        $identifiers = ['Omeka\Entity\Item', 'Omeka\Entity\ItemSet', 'Omeka\Entity\Media'];
         foreach ($identifiers as $identifier) {
             $sharedEventManager->attach(
                 $identifier,
-                'api.update.post',
-                [$this, 'onResourceUpdatePost']
+                'entity.update.post',
+                [$this, 'onEntityUpdatePost']
             );
             $sharedEventManager->attach(
                 $identifier,
-                'api.create.post',
-                [$this, 'onResourceCreatePost']
+                'entity.persist.post',
+                [$this, 'onEntityPersistPost']
             );
+
+            // We use entity.remove.pre instead of entity.remove.post, because
+            // the entity ID is not available in listeners of
+            // entity.remove.post
             $sharedEventManager->attach(
                 $identifier,
-                'api.delete.post',
-                [$this, 'onResourceDeletePost']
+                'entity.remove.pre',
+                [$this, 'onEntityRemovePre']
             );
         }
 
-        $identifiers = ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Admin\ItemSet'];
+        $identifiers = ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Admin\ItemSet', 'Omeka\Controller\Admin\Media'];
         foreach ($identifiers as $identifier) {
             $sharedEventManager->attach(
                 $identifier,
@@ -401,18 +405,46 @@ class Module extends AbstractModule
         );
     }
 
-    public function onResourceUpdatePost(Event $event)
+    public function onEntityUpdatePost(Event $event)
     {
-        $response = $event->getParam('response');
-        $resource = $response->getContent();
-        $this->touchResource($resource);
+        $entity = $event->getTarget();
+        $this->touchResource($entity);
     }
 
-    public function onResourceCreatePost(Event $event)
+    public function onEntityPersistPost(Event $event)
     {
-        $response = $event->getParam('response');
-        $resource = $response->getContent();
-        $this->touchResource($resource);
+        $entity = $event->getTarget();
+        $this->touchResource($entity);
+    }
+
+    public function onEntityRemovePre(Event $event)
+    {
+        $entity = $event->getTarget();
+        $serviceLocator = $this->getServiceLocator();
+        $api = $serviceLocator->get('Omeka\ApiManager');
+        $logger = $serviceLocator->get('Omeka\Logger');
+
+        $searchIndexes = $api->search('search_indexes')->getContent();
+        foreach ($searchIndexes as $searchIndex) {
+            $searchIndexSettings = $searchIndex->settings();
+            if (!in_array($entity->getResourceName(), $searchIndexSettings['resources'])) {
+                continue;
+            }
+
+            try {
+                $indexer = $searchIndex->indexer();
+                $indexer->deleteResource($entity->getResourceName(), $entity->getId());
+            } catch (\Exception $e) {
+                $logger->err(sprintf('Search: failed to delete resource: %s', $e));
+            }
+        }
+
+        // The entity is about to be removed but we need to mark related resources as touched.
+        // Marking the entity itself as touched is useful in case the deletion
+        // fails, because it was just de-indexed and we need to re-index it.
+        // The 'search_resource' row corresponding to the entity will be
+        // automatically removed thanks to the FK constraint.
+        $this->touchResource($entity);
     }
 
     protected function touchResource(\Omeka\Entity\Resource $resource)
@@ -430,29 +462,7 @@ class Module extends AbstractModule
             $resources = $settings['resources'] ?? [];
             if (in_array($resource->getResourceName(), $resources)) {
                 $indexationService->touchResource($searchIndex['id'], $resource->getId(), $now);
-            }
-        }
-    }
-
-    public function onResourceDeletePost(Event $event)
-    {
-        $serviceLocator = $this->getServiceLocator();
-        $api = $serviceLocator->get('Omeka\ApiManager');
-        $logger = $serviceLocator->get('Omeka\Logger');
-        $request = $event->getParam('request');
-
-        $searchIndexes = $api->search('search_indexes')->getContent();
-        foreach ($searchIndexes as $searchIndex) {
-            $searchIndexSettings = $searchIndex->settings();
-            if (!in_array($request->getResource(), $searchIndexSettings['resources'])) {
-                continue;
-            }
-
-            try {
-                $indexer = $searchIndex->indexer();
-                $indexer->deleteResource($request->getResource(), $request->getId());
-            } catch (\Exception $e) {
-                $logger->err(sprintf('Search: failed to delete resource: %s', $e));
+                $indexationService->touchRelatedResources($searchIndex['id'], $resource->getId(), $resources, $now);
             }
         }
     }

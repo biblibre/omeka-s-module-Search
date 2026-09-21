@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- Resources created, modified or deleted using Doctrine's EntityManager are now
+  correctly marked for reindexation
+- Related resources are also marked for reindexation. For instance if a media
+  is modified, its item is also marked for reindexation
+
 ## [0.23.1] - 2026-07-10
 
   - Improve facet filtering display
